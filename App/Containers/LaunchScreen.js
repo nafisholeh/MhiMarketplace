@@ -1,29 +1,53 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, Image, View } from 'react-native'
-import { Images } from '../Themes'
+import { ScrollView, Text, Image, View, TouchableOpacity } from 'react-native'
+import { Query } from 'react-apollo'
 
-// Styles
+import { FETCH_PRODUCT_LIST } from './GraphQL/Query'
+import { Images, Metrics } from '../Themes'
+import { OptimizedList } from 'Components'
 import styles from './Styles/LaunchScreenStyles'
 
 export default class LaunchScreen extends Component {
+  
+  _onClickProduct = (data) => {
+    
+  }
+  
+  _renderRow = (type, data) => {
+    return (
+      <TouchableOpacity 
+        onPress={() => this._onClickProduct(data)}
+        style={{width: Metrics.vw * 50, height: 200}}>
+        <Text>{data.title}</Text>
+        <Text>{data.desc}</Text>
+        <Text>{data.quantity}</Text>
+      </TouchableOpacity>
+    )
+  }
+  
   render () {
     return (
-      <View style={styles.mainContainer}>
-        <Image source={Images.background} style={styles.backgroundImage} resizeMode='stretch' />
-        <ScrollView style={styles.container}>
-          <View style={styles.centered}>
-            <Image source={Images.launch} style={styles.logo} />
-          </View>
+      <ScrollView style={styles.container}>
 
-          <View style={styles.section} >
-            <Image source={Images.ready} />
-            <Text style={styles.sectionText}>
-              This probably isn't what your app is going to look like. Unless your designer handed you this screen and, in that case, congrats! You're ready to ship. For everyone else, this is where you'll see a live preview of your fully functioning app using Ignite.
-            </Text>
-          </View>
+        <View style={styles.section} >
+          <Query query={FETCH_PRODUCT_LIST}>
+            {(renderProps) => {
+              if(renderProps.data) {
+                return (
+                  <OptimizedList
+                    itemWidth={Metrics.vw * 50}
+                    itemHeight={235}
+                    data={renderProps.data.products} 
+                    renderRow={this._renderRow}
+                  />
+                )
+              }
+            }}
+          </Query>
+        </View>
+        
 
-        </ScrollView>
-      </View>
+      </ScrollView>
     )
   }
 }

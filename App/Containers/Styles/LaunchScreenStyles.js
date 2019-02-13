@@ -14,5 +14,11 @@ export default StyleSheet.create({
   },
   centered: {
     alignItems: 'center'
+  },
+  section: {
+    flex: 1,
+    backgroundColor: 'white',
+    minHeight: 100,
+    minWidth: 100,
   }
 })

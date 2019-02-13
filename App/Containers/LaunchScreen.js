@@ -4,6 +4,7 @@ import { Query } from 'react-apollo'
 
 import { FETCH_PRODUCT_LIST } from './GraphQL/Query'
 import { Images, Metrics } from '../Themes'
+import { parseToRupiah } from 'Lib'
 import { OptimizedList } from 'Components'
 import styles from './Styles/LaunchScreenStyles'
 
@@ -24,10 +25,10 @@ export default class LaunchScreen extends Component {
           <Image source={{uri: data.image_url }} style={{width:60, height:60}}/>
           <View style={{flexDirection:'column', justifyContent: 'center'}}>
             <Text style={{textAlign:'right', fontWeight:'bold'}}>{data.title}</Text>
-            <Text style={{textAlign:'right'}}>{data.quantity} kg</Text>
+            <Text style={{textAlign:'right'}}>{parseToRupiah(data.price)}</Text>
+            <Text style={{textAlign:'right'}}>Tersisa {data.quantity} kg</Text>
           </View>
         </View>
-        <Text numberOfLines={1}>{data.desc}</Text>
       </TouchableOpacity>
     )
   }
@@ -43,7 +44,7 @@ export default class LaunchScreen extends Component {
                 return (
                   <OptimizedList
                     itemWidth={Metrics.deviceWidth}
-                    itemHeight={120}
+                    itemHeight={100}
                     data={renderProps.data.products} 
                     renderRow={this._renderRow}
                   />

@@ -5,6 +5,7 @@ import { Query } from 'react-apollo'
 import { FETCH_PRODUCT_LIST } from './GraphQL/Query'
 import { Images, Metrics } from '../Themes'
 import { OptimizedList } from 'Components'
+import { parseToRupiah } from 'Lib'
 import styles from './Styles/LaunchScreenStyles'
 
 export default class ProductDetail extends Component {
@@ -14,13 +15,14 @@ export default class ProductDetail extends Component {
   }
   
   render () {
-    const { navigation: { state: { params: { data: { title, desc, quantity, image_url } }}} } = this.props;
+    const { navigation: { state: { params: { data: { title, price, desc, quantity, image_url } }}} } = this.props;
     return (
       <View style={styles.container}>
         <Image source={{ uri: image_url }} style={{ width: Metrics.deviceWidth, height: 200 }} />
         
         <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
           <Text style={{ fontWeight: 'bold' }}>{title}</Text>
+          <Text style={{ marginTop: 3, fontWeight: 'bold' }}>{parseToRupiah(price)}</Text>
           <Text>{quantity} kg</Text>
           <Text style={{ marginTop: 25 }}>{desc}</Text>
         </View>

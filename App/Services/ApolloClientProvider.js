@@ -6,7 +6,7 @@ class ApolloClientProvider {
 
   constructor() {
     this.client = new ApolloClient({
-      uri: 'http://localhost:4000/graphql/',
+      uri: 'http://192.168.1.3:4000/graphql',
       onError: this._onError,
     })
   }

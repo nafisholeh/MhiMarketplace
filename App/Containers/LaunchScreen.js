@@ -17,10 +17,13 @@ export default class LaunchScreen extends Component {
     return (
       <TouchableOpacity 
         onPress={() => this._onClickProduct(data)}
-        style={{width: Metrics.vw * 50, height: 200}}>
-        <Text>{data.title}</Text>
+        style={styles.product__item}
+        >
+        <View style={styles.product__item_content}>
+          <Text>{data.title}</Text>
+          <Text>{data.quantity} kg</Text>
+        </View>
         <Text>{data.desc}</Text>
-        <Text>{data.quantity}</Text>
       </TouchableOpacity>
     )
   }
@@ -35,8 +38,8 @@ export default class LaunchScreen extends Component {
               if(renderProps.data) {
                 return (
                   <OptimizedList
-                    itemWidth={Metrics.vw * 50}
-                    itemHeight={235}
+                    itemWidth={Metrics.deviceWidth}
+                    itemHeight={80}
                     data={renderProps.data.products} 
                     renderRow={this._renderRow}
                   />

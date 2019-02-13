@@ -10,7 +10,7 @@ import styles from './Styles/LaunchScreenStyles'
 export default class LaunchScreen extends Component {
   
   _onClickProduct = (data) => {
-    
+    this.props.navigation.navigate('ProductDetail')
   }
   
   _renderRow = (type, data) => {

@@ -4,6 +4,7 @@ import { Metrics, ApplicationStyles } from '../../Themes/'
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   container: {
+    flex: 1,
     paddingBottom: Metrics.baseMargin
   },
   logo: {
@@ -19,7 +20,7 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     minHeight: 100,
-    minWidth: 100,
+    // minWidth: 100,
   },
   product__item: {
     width: Metrics.deviceWidth, 

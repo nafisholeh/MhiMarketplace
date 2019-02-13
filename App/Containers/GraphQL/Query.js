@@ -6,6 +6,7 @@ export const FETCH_PRODUCT_LIST = gql`
       title
       desc
       quantity
+      image_url
     }
   }
 `

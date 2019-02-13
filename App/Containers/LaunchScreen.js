@@ -20,17 +20,20 @@ export default class LaunchScreen extends Component {
         style={styles.product__item}
         >
         <View style={styles.product__item_content}>
-          <Text>{data.title}</Text>
-          <Text>{data.quantity} kg</Text>
+          <Image source={{uri: data.image_url }} style={{width:60, height:60}}/>
+          <View style={{flexDirection:'column', justifyContent: 'center'}}>
+            <Text style={{textAlign:'right', fontWeight:'bold'}}>{data.title}</Text>
+            <Text style={{textAlign:'right'}}>{data.quantity} kg</Text>
+          </View>
         </View>
-        <Text>{data.desc}</Text>
+        <Text numberOfLines={1}>{data.desc}</Text>
       </TouchableOpacity>
     )
   }
   
   render () {
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
 
         <View style={styles.section} >
           <Query query={FETCH_PRODUCT_LIST}>
@@ -39,7 +42,7 @@ export default class LaunchScreen extends Component {
                 return (
                   <OptimizedList
                     itemWidth={Metrics.deviceWidth}
-                    itemHeight={80}
+                    itemHeight={120}
                     data={renderProps.data.products} 
                     renderRow={this._renderRow}
                   />
@@ -49,8 +52,7 @@ export default class LaunchScreen extends Component {
           </Query>
         </View>
         
-
-      </ScrollView>
+      </View>
     )
   }
 }

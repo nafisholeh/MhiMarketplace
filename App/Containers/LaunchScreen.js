@@ -11,7 +11,6 @@ import styles from './Styles/LaunchScreenStyles'
 export default class LaunchScreen extends Component {
   
   _onClickProduct = (data) => {
-    console.tron.log('onClick ', data)
     this.props.navigation.navigate('ProductDetail', { data })
   }
   

@@ -1,3 +1,3 @@
-import { parseToRupiah } from './money'
+import { parseToRupiah, calcDiscount } from './money'
 
-export { parseToRupiah }
+export { parseToRupiah, calcDiscount }

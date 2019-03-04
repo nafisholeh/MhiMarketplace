@@ -1,19 +1,9 @@
 import gql from 'graphql-tag'
 
-export const FETCH_PRODUCT_LIST = gql`
-  query fetchProductList {
-    products {
-      title
-      photo
-      price
-      discount
-    }
-  }
-`
-
 export const FETCH_PRODUCT_DETAIL = gql`
-  query fetchProductDetail {
-    products {
+  query fetchProductDetail($_id: ID!) {
+    product(_id: $_id) {
+      _id
       title
       description
       stock

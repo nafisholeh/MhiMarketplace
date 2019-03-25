@@ -1,0 +1,28 @@
+{
+  "extends": "kwri",
+  "rules": {
+    "class-methods-use-this": "off",
+    "import/prefer-default-export": "off",
+    "prefer-promise-reject-errors": "off",
+    "no-underscore-dangle": "off",
+    "consistent-return": "off",
+    "react/prop-types": [
+      2,
+      {
+        "ignore": ["children", "className", "query", "router"]
+      }
+    ],
+    "react/no-unused-prop-types": [2]
+  },
+  "globals": {
+    "cy": true,
+    "Cypress": true
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["App"]
+      }
+    }
+  }
+}

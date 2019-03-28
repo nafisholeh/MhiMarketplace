@@ -43,7 +43,8 @@ export default class Home extends Component {
         />
       
         <TouchableOpacity
-          onPress={this.onStartSignin}>
+          onPress={this.onStartSignin}
+          style={styles.button}>
           <Text>Signin</Text>
         </TouchableOpacity>
         

@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { View, Text, TextInput, TouchableOpacity } from 'react-native'
 import { TextField } from 'react-native-material-textfield';
 
-import { isEmailError } from 'Lib';
+import ApolloClientProvider from 'Services/ApolloClientProvider';
+import { SIGNIN } from 'GraphQL/User/Mutation';
+import { isEmailError, getGraphQLError } from 'Lib';
 import styles from './Styles'
     
 export default class Home extends Component {
@@ -14,7 +16,22 @@ export default class Home extends Component {
   };
   
   onStartSignin = () => {
-    console.tron.log('loggedin')
+    const { email, password } = this.state;
+    ApolloClientProvider.client.mutate({
+      mutation: SIGNIN,
+      variables: { email, password },
+    })
+    .then(data => {
+      console.tron.log('signin success', data);
+    })
+    .catch(error => {
+      const message = getGraphQLError(error);
+      if (message.toLowerCase().indexOf("email") >= 0) {
+        this.setState({ error_email: message });
+      } else if (message.toLowerCase().indexOf("password") >= 0) {
+        this.setState({ error_password: message });
+      }
+    })
   }
   
   render () {

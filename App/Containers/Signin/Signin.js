@@ -15,8 +15,21 @@ export default class Home extends Component {
     error_password: null,
   };
   
-  onStartSignin = () => {
-    const { email, password } = this.state;
+  onStartSignin = async () => {
+    const { email, error_email, password, error_password } = this.state;
+    await this.setState({ error_email: null, error_password: null });
+    if (!password || password === 0) {
+      await this.setState({ error_password: 'Password harus diisi' });
+    }
+    if (!email || email === 0) {
+      await this.setState({ error_email: 'Email harus diisi' });
+    }
+    this.onSignin();
+  }
+  
+  onSignin = () => {
+    const { email, error_email, password, error_password } = this.state;
+    if (!email || error_email || isEmailError(email) || !password || error_password) return;
     ApolloClientProvider.client.mutate({
       mutation: SIGNIN,
       variables: { email, password },
@@ -31,7 +44,7 @@ export default class Home extends Component {
       } else if (message.toLowerCase().indexOf("password") >= 0) {
         this.setState({ error_password: message });
       }
-    })
+    });
   }
   
   render () {

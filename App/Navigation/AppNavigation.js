@@ -12,7 +12,7 @@ const HomeNav = createStackNavigator({
   Signin: { screen: Signin },
 }, {
   headerMode: 'none',
-  initialRouteName: 'Home',
+  initialRouteName: 'Signin',
   navigationOptions: {
     headerStyle: styles.header
   }

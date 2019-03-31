@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { Metrics, ApplicationStyles } from 'Themes'
+import { Metrics, Colors, ApplicationStyles } from 'Themes'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
@@ -10,6 +10,13 @@ export default StyleSheet.create({
   },
   button: {
     marginTop: Metrics.doubleBaseMargin,
-    alignSelf: 'center',
+    backgroundColor: Colors.green_light,
+    paddingVertical: Metrics.marginVertical,
+    paddingHorizontal: Metrics.marginHorizontal,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
+  buttonTitle: {
+    color: Colors.white,
+  }
 })

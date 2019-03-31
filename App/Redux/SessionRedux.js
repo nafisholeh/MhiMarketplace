@@ -1,5 +1,6 @@
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
+import { createSelector } from 'reselect'
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -18,17 +19,18 @@ export const INITIAL_STATE = Immutable({
 
 /* ------------- Selectors ------------- */
 
-export const SessionSelectors = {
-  getUser: state => state.session.user
-}
+export const sessionSelectors = () => state => state.session
+
+export const getUser = () => 
+  createSelector(
+    sessionSelectors(),
+    state => state.user
+  )
 
 /* ------------- Reducers ------------- */
 
 // store user session related data
-export const storeSession = (state, { user }) => {
-  console.log('storeSession redux ', state, user)
-  return state.merge({ user });
-}
+export const storeSession = (state, { user }) => state.merge({ user })
 
 /* ------------- Hookup Reducers To Types ------------- */
 

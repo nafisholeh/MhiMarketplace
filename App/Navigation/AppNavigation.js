@@ -1,18 +1,38 @@
-import { createStackNavigator, createAppContainer } from 'react-navigation'
+import { createAppContainer, createStackNavigator } from 'react-navigation'
+import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs'
 import Signin from '../Containers/Signin/Signin'
+import Home from '../Containers/Home/Home'
+import Detail from '../Containers/Product/Detail'
 
 import styles from './Styles/NavigationStyles'
 
-// Manifest of possible screens
-const PrimaryNav = createStackNavigator({
+const HomeNav = createStackNavigator({
+  Home: { screen: Home },
+  ProductDetail: { screen: Detail },
   Signin: { screen: Signin },
 }, {
-  // Default config for all screens
   headerMode: 'none',
-  initialRouteName: 'Signin',
+  initialRouteName: 'Home',
   navigationOptions: {
     headerStyle: styles.header
   }
 })
 
-export default createAppContainer(PrimaryNav)
+const PrimaryTabNav = createBottomTabNavigator(
+  {
+    Home: { screen: HomeNav },
+  },
+  {
+    initialRouteName: 'Home'
+  }
+)
+
+// it actually styles it's parent navigator, i.e. PrimaryNav
+PrimaryTabNav.navigationOptions = ({ navigation }) => {
+  return {
+    header: null,     // Hide the header from PrimaryNav stack, thus no stacked header should appeared
+    gesturesEnabled: false
+  }
+}
+
+export default createAppContainer(PrimaryTabNav);

@@ -18,6 +18,11 @@ class Signin extends Component {
     error_password: null,
   };
   
+  openSignup = () => {
+    const { navigation } = this.props;
+    navigation.navigate('Signup');
+  }
+  
   onStartSignin = async () => {
     const { email, error_email, password, error_password } = this.state;
     await this.setState({ error_email: null, error_password: null });
@@ -93,6 +98,10 @@ class Signin extends Component {
           style={styles.button}>
           <Text style={styles.buttonTitle}>Signin</Text>
         </TouchableOpacity>
+        
+        <Text onPress={this.openSignup}>
+          Daftar
+        </Text>
         
       </View>
     )

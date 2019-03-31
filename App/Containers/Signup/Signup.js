@@ -60,8 +60,6 @@ export default class Signup extends Component {
       const message = getGraphQLError(error);
       if (message.toLowerCase().indexOf("email") >= 0) {
         this.setState({ error_email: message });
-      } else if (message.toLowerCase().indexOf("password") >= 0) {
-        this.setState({ error_password: message });
       }
     });
   }

@@ -61,12 +61,14 @@ class Signin extends Component {
   
   render () {
     const { email, error_email, password, error_password } = this.state;
+    const { navigation: { state: { params }} } = this.props;
+    const { email: initialEmail = null } = params || {};
     return (
       <View style={styles.container}>
 
         <TextField
           label="Email"
-          value={email || ''}
+          value={(!email && initialEmail) || email || ''}
           error={error_email || isEmailError(email)}
           onChangeText={(text) => this.setState({ email: text })}
           returnKeyType="next"

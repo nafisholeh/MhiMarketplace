@@ -11,7 +11,7 @@ import styles from './Styles'
 export default class Home extends Component {
   
   _onClickProduct = (data) => {
-    this.props.navigation.navigate('Detail', { data })
+    this.props.navigation.navigate('ProductDetail', { data })
   }
   
   _renderRow = (type, data) => {

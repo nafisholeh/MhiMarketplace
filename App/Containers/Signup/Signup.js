@@ -55,6 +55,10 @@ export default class Signup extends Component {
     })
     .then(data => {
       console.tron.log('signup success', data);
+      const { data: response } = data;
+      const { signup: { email } } = response;
+      const { navigation } = this.props;
+      navigation.navigate("Signin", { email });
     })
     .catch(error => {
       const message = getGraphQLError(error);

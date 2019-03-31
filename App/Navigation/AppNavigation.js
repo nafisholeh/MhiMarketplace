@@ -1,6 +1,7 @@
 import { createAppContainer, createStackNavigator } from 'react-navigation'
 import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs'
 import Signin from '../Containers/Signin/Signin'
+import Signup from '../Containers/Signup/Signup'
 import Home from '../Containers/Home/Home'
 import Detail from '../Containers/Product/Detail'
 
@@ -10,9 +11,10 @@ const HomeNav = createStackNavigator({
   Home: { screen: Home },
   ProductDetail: { screen: Detail },
   Signin: { screen: Signin },
+  Signup: { screen: Signup },
 }, {
   headerMode: 'none',
-  initialRouteName: 'Signin',
+  initialRouteName: 'Signup',
   navigationOptions: {
     headerStyle: styles.header
   }

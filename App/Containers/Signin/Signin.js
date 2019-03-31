@@ -42,11 +42,13 @@ class Signin extends Component {
       mutation: SIGNIN,
       variables: { email, password },
     })
-    .then(data => {
+    .then(async data => {
+      const { navigation } = this.props;
       const { data: response } = data;
       const { signin } = response;
       if (signin) {
-        storeSession(signin);
+        await storeSession(signin);
+        navigation.navigate("Home");
       }
     })
     .catch(error => {

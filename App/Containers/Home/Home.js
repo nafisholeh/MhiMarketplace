@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { ScrollView, Text, Image, View, TouchableOpacity } from 'react-native'
 import { Query } from 'react-apollo'
 
-import { FETCH_PRODUCT_LIST } from './GraphQL/Query'
+import { FETCH_PRODUCT_LIST } from 'GraphQL/Product/Query'
 import { Images, Metrics } from 'Themes'
 import { parseToRupiah, calcDiscount } from 'Lib'
 import { OptimizedList } from 'Components'

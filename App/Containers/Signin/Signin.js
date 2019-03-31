@@ -1,13 +1,16 @@
-import React, { Component } from 'react'
-import { View, Text, TextInput, TouchableOpacity } from 'react-native'
+import React, { Component } from 'react';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+import { func } from 'prop-types';
 import { TextField } from 'react-native-material-textfield';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { SIGNIN } from 'GraphQL/User/Mutation';
+import SessionActions from 'Redux/SessionRedux';
 import { isEmailError, getGraphQLError } from 'Lib';
 import styles from './Styles'
     
-export default class Home extends Component {
+class Signin extends Component {
   state = {
     email: null,
     error_email: null,
@@ -34,12 +37,17 @@ export default class Home extends Component {
   
   onSignin = () => {
     const { email, password } = this.state;
+    const { storeSession } = this.props;
     ApolloClientProvider.client.mutate({
       mutation: SIGNIN,
       variables: { email, password },
     })
     .then(data => {
-      console.tron.log('signin success', data);
+      const { data: response } = data;
+      const { signin } = response;
+      if (signin) {
+        storeSession(signin);
+      }
     })
     .catch(error => {
       const message = getGraphQLError(error);
@@ -86,3 +94,13 @@ export default class Home extends Component {
     )
   }
 }
+
+Signin.propTypes = {
+  storeSession: func,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  storeSession: (user) => dispatch(SessionActions.storeSession(user)),
+});
+
+export default connect(null, mapDispatchToProps)(Signin);

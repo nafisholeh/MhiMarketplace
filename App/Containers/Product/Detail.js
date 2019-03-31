@@ -1,27 +1,49 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, Image, View, TouchableOpacity } from 'react-native'
+import { Alert, ScrollView, Text, Image, View, TouchableOpacity } from 'react-native'
+import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
+import { object } from 'prop-types'
 import { Query } from 'react-apollo'
 
 import { FETCH_PRODUCT_DETAIL } from 'GraphQL/Product/Query'
+import { getUser } from 'Redux/SessionRedux';
+
 import { Images, Metrics } from 'Themes'
 import { OptimizedList } from 'Components'
 import { parseToRupiah, calcDiscount } from 'Lib'
 import styles from './Styles'
 
-export default class Detail extends Component {
+class Detail extends Component {
   
   _onAddCart = () => {
-    
+    const { user } = this.props;
+    if (!user) {
+      Alert.alert(
+        'Belum terdaftar',
+        'Silahkan login terlebih dahulu sebelum memesan',
+        [
+          {text: 'OK', onPress: this.openSignin, },
+        ],
+        {cancelable: false},
+      );
+    }
+  }
+  
+  openSignin = () => {
+    const { navigation } = this.props;
+    navigation.navigate('Signin');
   }
   
   render () {
     const { navigation: { state: { params: { data: { _id } }}} } = this.props;
+    console.tron.log('Detail render', this.props.user)
     return (
       <View style={{flex: 1}}>
         <Query 
           variables={{ _id: _id }}
           query={FETCH_PRODUCT_DETAIL}>
           {({ loading, error, data, refetch }) => {
+            console.tron.log('Detail ', loading, error, data)
             if(loading) {
               return <View></View>;
             } else if(error) {
@@ -74,3 +96,13 @@ export default class Detail extends Component {
     )
   }
 }
+
+Detail.propTypes = {
+  user: object,
+}
+
+const mapStateToProps = createStructuredSelector({
+  user: getUser()
+});
+
+export default connect(mapStateToProps, null)(Detail);

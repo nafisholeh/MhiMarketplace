@@ -36,14 +36,12 @@ class Detail extends Component {
   
   render () {
     const { navigation: { state: { params: { data: { _id } }}} } = this.props;
-    console.tron.log('Detail render', this.props.user)
     return (
       <View style={{flex: 1}}>
         <Query 
           variables={{ _id: _id }}
           query={FETCH_PRODUCT_DETAIL}>
           {({ loading, error, data, refetch }) => {
-            console.tron.log('Detail ', loading, error, data)
             if(loading) {
               return <View></View>;
             } else if(error) {

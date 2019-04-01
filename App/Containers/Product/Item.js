@@ -14,12 +14,10 @@ class Item extends Component {
   
   render() {
     const { data } = this.props
-    console.log('Item render', data)
     if (!data) {
       return <View />
     }
     const  { title, price, discount, photo } = data
-    console.tron.log('Item ', this.props, title, price, discount, photo)
     return (
       <TouchableOpacity 
         onPress={this.onClick}
@@ -29,7 +27,13 @@ class Item extends Component {
           <Image source={{uri: photo }} style={{width:60, height:60}}/>
           <View style={{flexDirection:'column', justifyContent: 'center'}}>
             <Text style={{textAlign:'right', fontWeight:'bold'}}>{title}</Text>
-            <Text style={{textAlign:'right'}}>{parseToRupiah(price)}</Text>
+            <Text style={
+                discount ? 
+                  {textAlign:'right', textDecorationLine: 'line-through', textDecorationStyle: 'solid'} 
+                  : {textAlign:'right'}
+            }>
+              {parseToRupiah(price)}
+            </Text>
             <Text style={{textAlign:'right'}}>{parseToRupiah(calcDiscount(price, discount))}</Text>
           </View>
         </View>
@@ -41,8 +45,8 @@ class Item extends Component {
 Item.propTypes = {
   data: shape({
     title: string,
-    price: string,
-    discount: string,
+    price: number,
+    discount: number,
     photo: string,
   }),
 }

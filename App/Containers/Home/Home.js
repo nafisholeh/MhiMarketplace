@@ -10,7 +10,7 @@ import styles from './Styles'
     
 export default class Home extends Component {
   
-  _renderRow = (type, data) => <Item data={data} />
+  _renderRow = (type, data) => <Item data={data} navigation={this.props.navigation} />
   
   render () {
     return (

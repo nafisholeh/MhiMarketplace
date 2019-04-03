@@ -5,7 +5,10 @@ export default StyleSheet.create({
   ...ApplicationStyles.screen,
   container: {
     flex: 1,
-    paddingBottom: Metrics.baseMargin
+  },
+  scrollView: {
+    paddingHorizontal: Metrics.baseMargin,
+    paddingBottom: Metrics.baseMargin,
   },
   logo: {
     marginTop: Metrics.doubleSection,

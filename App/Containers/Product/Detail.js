@@ -51,32 +51,28 @@ class Detail extends Component {
               const { title, description, stock, unit, photo, price, discount, expired_date, minimum_order } = product;
               return (
                 <View style={styles.container}>
-                  <Image source={{ uri: photo }} style={{ width: Metrics.deviceWidth, height: 200 }} />
+                  <ScrollView style={styles.scrollView}>
+                    <Image source={{ uri: photo }} style={{ width: Metrics.deviceWidth, height: 200 }} />
 
-                  <Text style={{ fontWeight: 'bold' }}>{title}</Text>
-                  <View style={{ flex: 1, flexDirection: 'row' }}>
-                    { discount &&
-                      <Text style={{ fontWeight: 'bold', textDecorationLine: 'line-through', textDecorationStyle: 'solid' }}>{parseToRupiah(price)}</Text>
-                    }
-                    <Text style={{ marginTop: 3, marginRight: 5, fontWeight: 'bold' }}>{parseToRupiah(price)}</Text>
-                    <Text style={{ marginTop: 3, fontWeight: 'bold' }}>{parseToRupiah(calcDiscount(price, discount))}</Text>
-                    {/* { discount &&
-                      <Text style={{ marginTop: 3, fontWeight: 'bold', textDecorationLine: 'line-through', textDecorationStyle: 'solid' }}>{parseToRupiah(price)}</Text>
-                    }
-                    { !discount &&
-                      <Text style={{ marginTop: 3, marginRight: 5, fontWeight: 'bold' }}>{parseToRupiah(price)}</Text>
-                    }
-                    { discount &&
-                      <Text style={{ marginTop: 3, fontWeight: 'bold' }}>{parseToRupiah(calcDiscount(price, discount))}</Text>
-                    } */}
-                  </View>
-                  <Text>{stock} {unit}</Text>
-                  <Text style={{ marginTop: 25 }}>{description}</Text>
-                  
+                    <Text style={{ fontWeight: 'bold', marginBottom: 3, marginTop: 15, fontSize: 20 }}>{title}</Text>
+                    <View style={{ flexDirection: 'row', marginBottom: 5 }}>
+                      { discount &&
+                        <Text style={{ marginRight: 5, fontWeight: 'bold', textDecorationLine: 'line-through', textDecorationStyle: 'solid' }}>{parseToRupiah(price)}</Text>
+                      }
+                      { !discount &&
+                        <Text style={{ fontWeight: 'bold' }}>{parseToRupiah(price)}</Text>
+                      }
+                      { discount &&
+                        <Text style={{ fontWeight: 'bold', color: 'red', fontSize: 16 }}>{parseToRupiah(calcDiscount(price, discount))}</Text>
+                      }
+                    </View>
+                    <Text style={{ marginBottom: 15 }}>{stock} {unit}</Text>
+                    <Text style={{ marginBottom: 20 }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Cursus euismod quis viverra nibh cras. Bibendum ut tristique et egestas. Tristique senectus et netus et malesuada fames ac turpis. Enim ut sem viverra aliquet eget sit amet. Proin sagittis nisl rhoncus mattis rhoncus urna. Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed. Dictumst quisque sagittis purus sit amet volutpat consequat. Ut consequat semper viverra nam libero justo. In fermentum posuere urna nec tincidunt praesent semper feugiat nibh. At tellus at urna condimentum mattis pellentesque id nibh tortor. Sit amet nisl suscipit adipiscing bibendum est ultricies. Ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at augue. Congue nisi vitae suscipit tellus mauris a. Quis risus sed vulputate odio ut. Adipiscing vitae proin sagittis nisl rhoncus. Donec et odio pellentesque diam volutpat commodo sed egestas egestas. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Sapien pellentesque habitant morbi tristique senectus et.</Text>
+                  </ScrollView>
                   <TouchableOpacity
                     onPress={() => this._onAddCart()}
                     style={{
-                      position: 'absolute', bottom: 0, left: 0, right: 0, width: Metrics.deviceWidth, height: 50, backgroundColor: 'gray',
+                      height: 50, backgroundColor: 'gray',
                       alignItems: 'center', justifyContent: 'center'
                     }}
                     >
@@ -84,7 +80,6 @@ class Detail extends Component {
                       Pesan Sekarang
                     </Text>
                   </TouchableOpacity>
-                  
                 </View>
               )
             }

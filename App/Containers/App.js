@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import { Provider } from 'react-redux'
 import RootContainer from './RootContainer'
 import createStore from '../Redux'
+import { YellowBox } from 'react-native'
 
 import { ApolloProvider } from 'react-apollo'
 import ApolloClientProvider from 'Services/ApolloClientProvider'
@@ -21,6 +22,14 @@ const store = createStore()
  * We separate like this to play nice with React Native's hot reloading.
  */
 class App extends Component {
+  
+  constructor(props) {
+     super(props);
+     YellowBox.ignoreWarnings(
+        ['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader'
+      ]); 
+  }
+  
   render () {
     return (
       <ApolloProvider client={ApolloClientProvider.client}>

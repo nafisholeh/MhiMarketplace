@@ -11,12 +11,9 @@ export function setTabBarHide(navigation, screenName) {
   let isTabVisible = false
   const { routeName } = routes[index]
   if(Array.isArray(screenName)) {
-    console.tron.log("routename",routeName, screenName.indexOf(routeName))
     isTabVisible = screenName.indexOf(routeName) === -1
   } else if(typeof screenName === 'string') {
-    console.tron.log("routename isString",routeName)
     isTabVisible = routeName !== screenName
   }
-  console.tron.log("setTabBarHide", isTabVisible, navigation, screenName)
   return isTabVisible
 }

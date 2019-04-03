@@ -1,5 +1,9 @@
 import { createAppContainer, createStackNavigator } from 'react-navigation'
 import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs'
+
+import AppConfig from 'Config/AppConfig'
+import { setTabBarHide } from 'Lib'
+
 import Signin from '../Containers/Signin/Signin'
 import Signup from '../Containers/Signup/Signup'
 import Home from '../Containers/Home/Home'
@@ -19,6 +23,12 @@ const HomeNav = createStackNavigator({
     headerStyle: styles.header
   }
 })
+
+HomeNav.navigationOptions = ({ navigation }) => {
+  return {
+    tabBarVisible: setTabBarHide(navigation, AppConfig.hiddenTabScreen)
+  }
+}
 
 const PrimaryTabNav = createBottomTabNavigator(
   {

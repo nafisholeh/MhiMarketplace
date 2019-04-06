@@ -27,6 +27,15 @@ export const getUser = () =>
     state => state.user
   )
 
+export const getUserId = () => 
+  createSelector(
+    sessionSelectors(),
+    state => {
+      const { _id } = state.user;
+      return _id ? _id : null;
+    }
+  )
+
 /* ------------- Reducers ------------- */
 
 // store user session related data

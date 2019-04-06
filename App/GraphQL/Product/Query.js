@@ -28,3 +28,16 @@ export const FETCH_PRODUCT_DETAIL = gql`
     }
   }
 `
+
+export const FETCH_SOME_PRODUCT = gql`
+  query fetchSomeProduct($ids: [ID!]!) {
+    someProducts(ids: $ids) {
+      _id
+      title
+      unit
+      photo
+      price
+      discount
+    }
+  }
+`

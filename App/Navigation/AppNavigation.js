@@ -8,12 +8,14 @@ import Signin from '../Containers/Signin/Signin'
 import Signup from '../Containers/Signup/Signup'
 import Home from '../Containers/Home/Home'
 import Detail from '../Containers/Product/Detail'
+import Cart from '../Containers/Cart/Cart'
 
 import styles from './Styles/NavigationStyles'
 
 const HomeNav = createStackNavigator({
   Home: { screen: Home },
   ProductDetail: { screen: Detail },
+  Cart: { screen: Cart },
   Signin: { screen: Signin },
   Signup: { screen: Signup },
 }, {

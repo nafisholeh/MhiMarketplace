@@ -16,7 +16,7 @@ import styles from './Styles'
 class Detail extends Component {
   
   _onAddCart = () => {
-    const { user } = this.props;
+    const { user, navigation } = this.props;
     if (!user) {
       Alert.alert(
         'Belum terdaftar',
@@ -26,12 +26,19 @@ class Detail extends Component {
         ],
         {cancelable: false},
       );
+    } else {
+      this.openCart();
     }
   }
   
   openSignin = () => {
     const { navigation } = this.props;
     navigation.navigate('Signin');
+  }
+  
+  openCart = () => {
+    const { navigation } = this.props;
+    navigation.navigate('Cart');
   }
   
   render () {

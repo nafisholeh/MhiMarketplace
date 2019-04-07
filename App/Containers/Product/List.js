@@ -12,7 +12,7 @@ import styles from './Styles';
 
 class List extends Component {
   
-  _renderRow = (type, data) => <Item data={data} navigation={this.props.navigation} />
+  _renderRow = (type, data) => <Item data={data} />
 
   render() {
     return (

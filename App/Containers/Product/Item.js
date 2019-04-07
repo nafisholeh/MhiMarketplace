@@ -4,6 +4,7 @@ import { shape, number, string, func } from 'prop-types';
 import { compose } from 'react-apollo';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { withNavigation } from 'react-navigation';
 
 import { parseToRupiah, calcDiscount } from 'Lib';
 import styles from './Styles';
@@ -78,4 +79,4 @@ const mapStateToProps = createStructuredSelector({
 export default compose(
   connect(mapStateToProps, null), 
   UPDATE_CART_ITEM
-)(Item);
+)(withNavigation(Item));

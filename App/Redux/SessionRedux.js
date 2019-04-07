@@ -31,7 +31,9 @@ export const getUserId = () =>
   createSelector(
     sessionSelectors(),
     state => {
-      const { _id } = state.user;
+      const { user } = state;
+      if (!user) return null;
+      const { _id } = user;
       return _id ? _id : null;
     }
   )

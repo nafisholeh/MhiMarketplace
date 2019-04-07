@@ -30,8 +30,12 @@ export const UPDATE_CART_ITEM = graphql(UPDATE_CART_ITEM_SCHEMA, {
       mutate({
         variables: { user_id, product_id, qty },
         update: ( cache, { data } ) => {
-          const cartCache = cache.readQuery({ query: FETCH_CART, variables: { user_id } });
-          console.tron.log('UPDATE_CART_ITEM 2', data, cartCache);
+          try {
+            const cartCache = cache.readQuery({ query: FETCH_CART, variables: { user_id } });
+            console.tron.log('UPDATE_CART_ITEM success', data, cartCache);
+          } catch(err) {
+            console.tron.log('UPDATE_CART_ITEM error', err);
+          }
         }
       })
   })

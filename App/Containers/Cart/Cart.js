@@ -17,10 +17,6 @@ import AppConfig from 'Config/AppConfig';
 
 class Cart extends Component {
   
-  componentDidMount() {
-    this.updateCart();
-  }
-  
   updateCart = (_id, qty) => {
     const { updateCartItem, userId } = this.props;
     updateCartItem({

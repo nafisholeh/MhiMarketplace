@@ -12,7 +12,7 @@ class Item extends Component {
   }
   
   render() {
-    const { data, data: { product: { title, photo } } } = this.props
+    const { data, data: { product: { title, photo }, qty = 0 } } = this.props
     if (!data) {
       return <View />
     }
@@ -20,6 +20,7 @@ class Item extends Component {
       <View style={{ height: 100 }}>
         <Image source={{ uri: photo }} style={{width:60, height:60}}/>
         <Text>{title}</Text>
+        <Text>{qty}</Text>
       </View>
     )
   }

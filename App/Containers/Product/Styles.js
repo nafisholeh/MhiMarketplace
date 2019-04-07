@@ -5,6 +5,8 @@ export default StyleSheet.create({
   ...ApplicationStyles.screen,
   container: {
     flex: 1,
+    backgroundColor: 'white',
+    minHeight: 100,
   },
   scrollView: {
     paddingHorizontal: Metrics.baseMargin,
@@ -34,5 +36,5 @@ export default StyleSheet.create({
   product__item_content: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  }
+  },
 })

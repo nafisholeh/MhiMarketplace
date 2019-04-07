@@ -29,10 +29,12 @@ export const cartSelectors = () => state => state.cart
 /* ------------- Reducers ------------- */
 
 export const fetchCart = (state) => {
-  const { session: { user: { _id: userId } } } = store.getState();
+  const { session: { user } } = store.getState();
+  if (!user) return state;
+  const { _id } = user;
   ApolloClientProvider.client.query({
     query: FETCH_CART,
-    variables: { user_id: userId }
+    variables: { user_id: _id }
   })
   .then(data => console.tron.log('fetchCart success', data))
   .catch(err => console.tron.log('fetchCart error', err))

@@ -1,27 +1,26 @@
-import React, { Component } from 'react'
-import { Text, Image, View, TouchableOpacity } from 'react-native'
-import { shape, number, string } from 'prop-types'
+import React, { Component } from 'react';
+import { Text, Image, View, TouchableOpacity } from 'react-native';
+import { shape, number, string, func } from 'prop-types';
 
-import { parseToRupiah } from 'Lib'
+import { parseToRupiah } from 'Lib';
 
 class Item extends Component {
   
-  onClick = () => {}
+  onQtyChanged = qty => {
+    const { onPress, data: { product: { _id } } } = this.props;
+    onPress(_id, qty);
+  }
   
   render() {
-    const { data: { product: { title, photo } } } = this.props
+    const { data, data: { product: { title, photo } } } = this.props
     if (!data) {
       return <View />
     }
-    console.tron.log('Item render', data)
     return (
-      <TouchableOpacity 
-        onPress={this.onClick}
-        style={{ height: 100 }}
-        >
+      <View style={{ height: 100 }}>
         <Image source={{ uri: photo }} style={{width:60, height:60}}/>
         <Text>{title}</Text>
-      </TouchableOpacity>
+      </View>
     )
   }
 }
@@ -37,6 +36,8 @@ Item.propTypes = {
     },
     qty: number,
   }),
+  userId: string.isRequired,
+  onPress: func.isRequired,
 }
 
 export default Item;

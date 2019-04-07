@@ -1,15 +1,29 @@
-import React, { Component } from 'react'
-import { Text, Image, View, TouchableOpacity } from 'react-native'
-import { shape, number, string } from 'prop-types'
+import React, { Component } from 'react';
+import { Text, Image, View, TouchableOpacity } from 'react-native';
+import { shape, number, string, func } from 'prop-types';
+import { compose } from 'react-apollo';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
-import { parseToRupiah, calcDiscount } from 'Lib'
-import styles from './Styles'
+import { parseToRupiah, calcDiscount } from 'Lib';
+import styles from './Styles';
+import { getUserId } from 'Redux/SessionRedux';
+import { UPDATE_CART_ITEM } from 'GraphQL/Cart/Mutation';
 
 class Item extends Component {
   
-  onClick = () => {
-    const { data, navigation } = this.props
-    navigation.navigate('ProductDetail', { data })
+  onItemClicked = () => {
+    const { data, navigation } = this.props;
+    navigation.navigate('ProductDetail', { data });
+  }
+  
+  onCartClicked = () => {
+    const { updateCartItem, data: { _id }, userId } = this.props;
+    updateCartItem({
+      user_id: userId,
+      product_id: _id,
+      qty: null,
+    })
   }
   
   render() {
@@ -20,7 +34,7 @@ class Item extends Component {
     const  { title, price, discount, photo } = data
     return (
       <TouchableOpacity 
-        onPress={this.onClick}
+        onPress={this.onItemClicked}
         style={styles.product__item}
         >
         <View style={styles.product__item_content}>
@@ -36,6 +50,9 @@ class Item extends Component {
             </Text>
             <Text style={{textAlign:'right'}}>{parseToRupiah(calcDiscount(price, discount))}</Text>
           </View>
+          <TouchableOpacity onPress={this.onCartClicked}>
+            <Text>Beli</Text>
+          </TouchableOpacity>
         </View>
       </TouchableOpacity>
     )
@@ -44,11 +61,21 @@ class Item extends Component {
 
 Item.propTypes = {
   data: shape({
+    _id: string,
     title: string,
     price: number,
     discount: number,
     photo: string,
   }),
+  updateCartItem: func,
+  userId: string,
 }
 
-export default Item;
+const mapStateToProps = createStructuredSelector({
+  userId: getUserId(),
+})
+
+export default compose(
+  connect(mapStateToProps, null), 
+  UPDATE_CART_ITEM
+)(Item);

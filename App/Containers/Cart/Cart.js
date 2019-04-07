@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { Query } from 'react-apollo';
-import { string } from 'prop-types';
+import { Query, compose } from 'react-apollo';
+import { string, func } from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 
 import Item from './Item';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
+import { UPDATE_CART_ITEM } from 'GraphQL/Cart/Mutation';
 import { FETCH_SOME_PRODUCT } from 'GraphQL/Product/Query';
 import { OptimizedList, StatePage } from 'Components';
 import { getUserId } from 'Redux/SessionRedux';
@@ -16,13 +17,30 @@ import AppConfig from 'Config/AppConfig';
 
 class Cart extends Component {
   
+  componentDidMount() {
+    this.updateCart();
+  }
+  
+  updateCart = (_id, qty) => {
+    const { updateCartItem, userId } = this.props;
+    updateCartItem({
+      user_id: userId,
+      product_id: _id,
+      qty
+    })
+  }
+  
   startBuying = () => {
     const { navigation } = this.props;
     navigation.navigate('Home');
   };
   
   renderCartItems = (type, data) => (
-    <Item data navigation={this.props.navigation} />
+    <Item 
+      data={data}
+      navigation={this.props.navigation}
+      onPress={this.updateCart}
+    />
   );
 
   render() {
@@ -69,10 +87,14 @@ class Cart extends Component {
 
 Cart.propTypes = {
   userId: string,
+  updateCartItem: func,
 }
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
 });
 
-export default connect(mapStateToProps, null)(Cart);
+export default compose(
+  connect(mapStateToProps, null),
+  UPDATE_CART_ITEM
+)(Cart);

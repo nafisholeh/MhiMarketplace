@@ -1,14 +1,22 @@
-import React, { Component } from 'react'
-import { ScrollView, Text, Image, View, TouchableOpacity } from 'react-native'
-import { Query } from 'react-apollo'
+import React, { Component } from 'react';
+import { ScrollView, Text, Image, View, TouchableOpacity } from 'react-native';
+import { Query } from 'react-apollo';
+import { connect } from 'react-redux';
+import { func } from 'prop-types';
 
-import Item from '../Product/Item'
-import { FETCH_PRODUCT_LIST } from 'GraphQL/Product/Query'
-import { Images, Metrics } from 'Themes'
-import { OptimizedList } from 'Components'
-import styles from './Styles'
+import Item from '../Product/Item';
+import { FETCH_PRODUCT_LIST } from 'GraphQL/Product/Query';
+import CartActions from 'Redux/CartRedux';
+import { Images, Metrics } from 'Themes';
+import { OptimizedList } from 'Components';
+import ApolloClientProvider from 'Services/ApolloClientProvider';
+import styles from './Styles';
     
-export default class Home extends Component {
+class Home extends Component {
+  
+  componentDidMount() {
+    this.props.fetchCart();
+  }
   
   _renderRow = (type, data) => <Item data={data} navigation={this.props.navigation} />
   
@@ -39,3 +47,13 @@ export default class Home extends Component {
     )
   }
 }
+
+Home.propTypes = {
+  fetchCart: func,
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchCart: () => dispatch(CartActions.fetchCart()),
+});
+
+export default connect(null, mapDispatchToProps)(Home);

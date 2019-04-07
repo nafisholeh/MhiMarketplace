@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { Query } from 'react-apollo';
 import { string } from 'prop-types';
@@ -8,14 +8,22 @@ import { createStructuredSelector } from 'reselect';
 import Item from './Item';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { FETCH_SOME_PRODUCT } from 'GraphQL/Product/Query';
-import { OptimizedList } from 'Components';
+import { OptimizedList, StatePage } from 'Components';
 import { getUserId } from 'Redux/SessionRedux';
 import { Metrics } from 'Themes';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
+import AppConfig from 'Config/AppConfig';
 
 class Cart extends Component {
   
-  _renderRow = (type, data) => <Item data={data} navigation={this.props.navigation} />
+  startBuying = () => {
+    const { navigation } = this.props;
+    navigation.navigate('Home');
+  };
+  
+  renderCartItems = (type, data) => (
+    <Item data navigation={this.props.navigation} />
+  );
 
   render() {
     const { userId } = this.props;
@@ -30,13 +38,25 @@ class Cart extends Component {
             } else if (error) {
               return (<View></View>)
             } else if (data) {
-              const { cart: { products = [] } } = data;
+              const { cart } = data;
+              if (!cart) {
+                return (
+                  <StatePage 
+                    title="Keranjang belanja kosong"
+                    subtitle="ayo mulai belanja"
+                    buttonTitle="Belanja Yuk"
+                    image={AppConfig.pageState.EMPTY_CART}
+                    onPress={this.startBuying}
+                  />
+                )
+              }
+              const { products = [] } = cart;
               return (
                 <OptimizedList
                   itemWidth={Metrics.deviceWidth}
                   itemHeight={100}
                   data={products} 
-                  renderRow={this._renderRow}
+                  renderRow={this.renderCartItems}
                 />
               )
             }

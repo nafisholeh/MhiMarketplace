@@ -1,5 +1,6 @@
-import OptimizedList from './OptimizedList'
+import OptimizedList from './OptimizedList';
+import StatePage from './StatePage';
 
 export {
-  OptimizedList
+  OptimizedList, StatePage
 }

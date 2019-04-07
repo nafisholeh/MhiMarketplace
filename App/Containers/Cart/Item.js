@@ -9,7 +9,7 @@ class Item extends Component {
   onClick = () => {}
   
   render() {
-    const { data } = this.props
+    const { data: { product: { title, photo } } } = this.props
     if (!data) {
       return <View />
     }
@@ -19,15 +19,24 @@ class Item extends Component {
         onPress={this.onClick}
         style={{ height: 100 }}
         >
-        <View>
-        </View>
+        <Image source={{ uri: photo }} style={{width:60, height:60}}/>
+        <Text>{title}</Text>
       </TouchableOpacity>
     )
   }
 }
 
 Item.propTypes = {
-  data: shape({}),
+  data: shape({
+    product: {
+      _id: string,
+      title: string,
+      photo: string,
+      price: number,
+      discount: number,
+    },
+    qty: number,
+  }),
 }
 
 export default Item;

@@ -6,6 +6,13 @@ export default {
   hiddenTabScreen: [
     'ProductDetail',
     'Signin',
-    'Signup'
-  ], 
+    'Signup',
+    'Cart'
+  ],
+  pageState: {
+    ERROR: 'error',
+    INFO: 'info',
+    EMPTY_CART: 'cart',
+    CART: 'cart',
+  },
 }

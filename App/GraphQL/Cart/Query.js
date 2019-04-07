@@ -8,7 +8,13 @@ export const FETCH_CART = gql`
       time
       gross_price
       products {
-        product_id
+        product {
+          _id
+          title
+          photo
+          price
+          discount
+        }
         qty
       }
     }

@@ -37,4 +37,18 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  product__item_detail: {
+    flex: 1,
+    paddingHorizontal: Metrics.baseMargin,
+    flexDirection:'column',
+    alignItems: 'flex-end',
+    justifyContent: 'center'
+  },
+  product__item_cart: {
+    alignSelf: 'center',
+  },
+  itemImage: {
+    width: 20,
+    height: 20,
+  }
 })

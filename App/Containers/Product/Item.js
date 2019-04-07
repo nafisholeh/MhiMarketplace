@@ -7,6 +7,7 @@ import { createStructuredSelector } from 'reselect';
 import { withNavigation } from 'react-navigation';
 
 import { parseToRupiah, calcDiscount } from 'Lib';
+import { Images } from 'Themes';
 import styles from './Styles';
 import { getUserId } from 'Redux/SessionRedux';
 import { UPDATE_CART_ITEM } from 'GraphQL/Cart/Mutation';
@@ -40,19 +41,19 @@ class Item extends Component {
         >
         <View style={styles.product__item_content}>
           <Image source={{uri: photo }} style={{width:60, height:60}}/>
-          <View style={{flexDirection:'column', justifyContent: 'center'}}>
-            <Text style={{textAlign:'right', fontWeight:'bold'}}>{title}</Text>
+          <View style={styles.product__item_detail}>
+            <Text style={{fontWeight:'bold'}}>{title}</Text>
             <Text style={
                 discount ? 
-                  {textAlign:'right', textDecorationLine: 'line-through', textDecorationStyle: 'solid'} 
-                  : {textAlign:'right'}
+                  {textDecorationLine: 'line-through', textDecorationStyle: 'solid'} 
+                  : {}
             }>
               {parseToRupiah(price)}
             </Text>
-            <Text style={{textAlign:'right'}}>{parseToRupiah(calcDiscount(price, discount))}</Text>
+            <Text style={{}}>{parseToRupiah(calcDiscount(price, discount))}</Text>
           </View>
-          <TouchableOpacity onPress={this.onCartClicked}>
-            <Text>Beli</Text>
+          <TouchableOpacity style={styles.product__item_cart} onPress={this.onCartClicked}>
+            <Image source={Images.cart} style={styles.itemImage} />
           </TouchableOpacity>
         </View>
       </TouchableOpacity>

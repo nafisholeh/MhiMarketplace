@@ -3,6 +3,8 @@ import { Text, Image, View, TouchableOpacity } from 'react-native';
 import { shape, number, string, func } from 'prop-types';
 
 import { parseToRupiah } from 'Lib';
+import { UpDownCounter } from 'Components';
+import styles from './Styles';
 
 class Item extends Component {
   
@@ -11,16 +13,30 @@ class Item extends Component {
     onPress(_id, qty);
   }
   
+  onCounterChanged = counter => {
+    console.tron.log('Item onCounterChanged', counter);
+  }
+  
   render() {
-    const { data, data: { product: { title, photo }, qty = 0 } } = this.props
+    const { data, data: { product: { title, photo, price }, qty = 0 } } = this.props
     if (!data) {
       return <View />
     }
     return (
-      <View style={{ height: 100 }}>
-        <Image source={{ uri: photo }} style={{width:60, height:60}}/>
-        <Text>{title}</Text>
-        <Text>{qty}</Text>
+      <View style={styles.container}>
+        <Image
+          source={{ uri: photo }}
+          style={styles.image}
+          resizeMode="contain"
+        />
+        <View style={styles.detail}>
+          <Text style={styles.detailTitle}>{title}</Text>
+          <Text style={styles.detailPrice}>{parseToRupiah(price)}</Text>
+          <UpDownCounter
+            initCounter={qty}
+            onCounterChanged={this.onCounterChanged}
+          />
+        </View>
       </View>
     )
   }

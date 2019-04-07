@@ -14,7 +14,7 @@ class Home extends Component {
     this.props.fetchCart();
   }
   
-  render () {
+  render() {
     return (
       <View style={styles.container}>
         <List />

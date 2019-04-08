@@ -31,13 +31,16 @@ class Cart extends Component {
     navigation.navigate('Home');
   };
   
-  renderCartItems = (type, data) => (
-    <Item 
-      data={data}
-      navigation={this.props.navigation}
-      onPress={this.updateCart}
-    />
-  );
+  renderCartItems = (type, data) => {
+    const { userId } = this.props;
+    return (
+      <Item 
+        data={data}
+        userId={userId}
+        navigation={this.props.navigation}
+      />
+    );
+  };
 
   render() {
     const { userId } = this.props;

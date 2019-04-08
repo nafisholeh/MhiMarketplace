@@ -1,20 +1,37 @@
 import React, { Component } from 'react';
 import { Text, Image, View, TouchableOpacity } from 'react-native';
 import { shape, number, string, func } from 'prop-types';
+import { debounce } from 'throttle-debounce';
+import { compose } from 'react-apollo';
 
-import { parseToRupiah } from 'Lib';
+import AppConfig from 'Config/AppConfig';
+import { parseToRupiah, isString } from 'Lib';
 import { UpDownCounter } from 'Components';
+import { UPDATE_CART_ITEM } from 'GraphQL/Cart/Mutation';
 import styles from './Styles';
+var _ = require('lodash');
 
 class Item extends Component {
-  
-  onQtyChanged = qty => {
-    const { onPress, data: { product: { _id } } } = this.props;
-    onPress(_id, qty);
+  constructor(props) {
+    super(props);
+    this.debounceCartItemUpdate = 
+      debounce(
+        AppConfig.debounceInterval, 
+        counter => this.onCartClicked(counter)
+      );
   }
   
   onCounterChanged = counter => {
-    console.tron.log('Item onCounterChanged', counter);
+    this.debounceCartItemUpdate(isString(counter) ? parseInt(counter, 10) : counter);
+  }
+  
+  onCartClicked = counter => {
+    const { updateCartItem, data: { product: { _id } }, userId } = this.props;
+    updateCartItem({
+      user_id: userId,
+      product_id: _id,
+      qty: counter,
+    })
   }
   
   render() {
@@ -57,4 +74,4 @@ Item.propTypes = {
   onPress: func.isRequired,
 }
 
-export default Item;
+export default compose(UPDATE_CART_ITEM)(Item);

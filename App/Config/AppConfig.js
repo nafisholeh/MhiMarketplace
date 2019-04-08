@@ -15,4 +15,5 @@ export default {
     EMPTY_CART: 'cart',
     CART: 'cart',
   },
+  debounceInterval: 2000,
 }

@@ -18,6 +18,13 @@ import AppConfig from 'Config/AppConfig';
 
 class Cart extends Component {
   
+  static navigationOptions = ({navigation}) => {
+    const {params = {}} = navigation.state
+    return {
+      title: 'Keranjang Belanja',
+    }
+  }
+  
   updateCart = (_id, qty) => {
     const { updateCartItem, userId } = this.props;
     updateCartItem({
@@ -52,54 +59,57 @@ class Cart extends Component {
     const { userId } = this.props;
     return (
       <View style={{flex:1}}>
-        <ScrollView>
-          <Query 
-            query={FETCH_CART}
-            variables={{ user_id: userId }}>
-            {({ loading, error, data, refetch }) => {
-              if (loading) {
-                return (<View></View>)
-              } else if (error) {
-                return (<View></View>)
-              } else if (data) {
-                const { cart } = data;
-                if (!cart) {
-                  return (
-                    <StatePage 
-                      title="Keranjang belanja kosong"
-                      subtitle="ayo mulai belanja"
-                      buttonTitle="Belanja Yuk"
-                      image={AppConfig.pageState.EMPTY_CART}
-                      onPress={this.startBuying}
-                    />
-                  )
-                }
-                const { products = [] } = cart;
+        <Query 
+          query={FETCH_CART}
+          fetchPolicy="network-only"
+          variables={{ user_id: userId }}>
+          {({ loading, error, data, refetch }) => {
+            if (loading) {
+              return (<View></View>)
+            } else if (error) {
+              return (<View></View>)
+            } else if (data) {
+              const { cart } = data;
+              if (!cart) {
                 return (
-                  <View style={{ minHeight: 100 }}>
-                    <OptimizedList
-                      itemWidth={Metrics.deviceWidth}
-                      itemHeight={100}
-                      data={products} 
-                      renderRow={this.renderCartItems}
-                    />
-                  </View>
+                  <StatePage 
+                    title="Keranjang belanja kosong"
+                    subtitle="ayo mulai belanja"
+                    buttonTitle="Belanja Yuk"
+                    image={AppConfig.pageState.EMPTY_CART}
+                    onPress={this.startBuying}
+                  />
                 )
               }
-            }}
-          </Query>
-        </ScrollView>
-        <TouchableOpacity
-          onPress={this.checkout}
-          style={{
-            height: 50, backgroundColor: 'gray',
-            alignItems: 'center', justifyContent: 'center'
+              const { products = [] } = cart;
+              return (
+                <React.Fragment>
+                  <ScrollView style={{flex:1, backgroundColor:'yellow'}}>
+                    <View style={{ minHeight: 100 }}>
+                      <OptimizedList
+                        itemWidth={Metrics.deviceWidth}
+                        itemHeight={100}
+                        data={products} 
+                        renderRow={this.renderCartItems}
+                      />
+                    </View>
+                  </ScrollView>
+                  <TouchableOpacity
+                    onPress={this.checkout}
+                    style={{
+                      height: 50, backgroundColor: 'gray',
+                      alignItems: 'center', justifyContent: 'center'
+                    }}
+                    >
+                    <Text style={{color: 'white'}}>
+                      Checkout
+                    </Text>
+                  </TouchableOpacity>
+                </React.Fragment>
+              )
+            }
           }}
-          >
-          <Text style={{color: 'white'}}>
-            Checkout
-          </Text>
-        </TouchableOpacity>
+        </Query>
       </View>
     )
   }

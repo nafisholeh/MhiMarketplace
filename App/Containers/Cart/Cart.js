@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { Query, compose } from 'react-apollo';
 import { string, func } from 'prop-types';
 import { createStructuredSelector } from 'reselect';
+import { withNavigation } from 'react-navigation';
 
 import Item from './Item';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
@@ -31,6 +32,11 @@ class Cart extends Component {
     navigation.navigate('Home');
   };
   
+  checkout = () => {
+    const { navigation } = this.props;
+    navigation.navigate('Checkout');
+  };
+  
   renderCartItems = (type, data) => {
     const { userId } = this.props;
     return (
@@ -46,39 +52,54 @@ class Cart extends Component {
     const { userId } = this.props;
     return (
       <View style={{flex:1}}>
-        <Query 
-          query={FETCH_CART}
-          variables={{ user_id: userId }}>
-          {({ loading, error, data, refetch }) => {
-            if (loading) {
-              return (<View></View>)
-            } else if (error) {
-              return (<View></View>)
-            } else if (data) {
-              const { cart } = data;
-              if (!cart) {
+        <ScrollView>
+          <Query 
+            query={FETCH_CART}
+            variables={{ user_id: userId }}>
+            {({ loading, error, data, refetch }) => {
+              if (loading) {
+                return (<View></View>)
+              } else if (error) {
+                return (<View></View>)
+              } else if (data) {
+                const { cart } = data;
+                if (!cart) {
+                  return (
+                    <StatePage 
+                      title="Keranjang belanja kosong"
+                      subtitle="ayo mulai belanja"
+                      buttonTitle="Belanja Yuk"
+                      image={AppConfig.pageState.EMPTY_CART}
+                      onPress={this.startBuying}
+                    />
+                  )
+                }
+                const { products = [] } = cart;
                 return (
-                  <StatePage 
-                    title="Keranjang belanja kosong"
-                    subtitle="ayo mulai belanja"
-                    buttonTitle="Belanja Yuk"
-                    image={AppConfig.pageState.EMPTY_CART}
-                    onPress={this.startBuying}
-                  />
+                  <View style={{ minHeight: 100 }}>
+                    <OptimizedList
+                      itemWidth={Metrics.deviceWidth}
+                      itemHeight={100}
+                      data={products} 
+                      renderRow={this.renderCartItems}
+                    />
+                  </View>
                 )
               }
-              const { products = [] } = cart;
-              return (
-                <OptimizedList
-                  itemWidth={Metrics.deviceWidth}
-                  itemHeight={100}
-                  data={products} 
-                  renderRow={this.renderCartItems}
-                />
-              )
-            }
+            }}
+          </Query>
+        </ScrollView>
+        <TouchableOpacity
+          onPress={this.checkout}
+          style={{
+            height: 50, backgroundColor: 'gray',
+            alignItems: 'center', justifyContent: 'center'
           }}
-        </Query>
+          >
+          <Text style={{color: 'white'}}>
+            Checkout
+          </Text>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -96,4 +117,4 @@ const mapStateToProps = createStructuredSelector({
 export default compose(
   connect(mapStateToProps, null),
   UPDATE_CART_ITEM
-)(Cart);
+)(withNavigation(Cart));

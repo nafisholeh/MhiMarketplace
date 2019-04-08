@@ -9,6 +9,7 @@ import Signup from '../Containers/Signup/Signup'
 import Home from '../Containers/Home/Home'
 import Detail from '../Containers/Product/Detail'
 import Cart from '../Containers/Cart/Cart'
+import Checkout from '../Containers/Checkout/Checkout'
 
 import styles from './Styles/NavigationStyles'
 
@@ -16,8 +17,9 @@ const HomeNav = createStackNavigator({
   Home: { screen: Home },
   ProductDetail: { screen: Detail },
   Cart: { screen: Cart },
+  Checkout: { screen: Checkout },
   Signin: { screen: Signin },
-  Signup: { screen: Signup },
+  Signup: { screen: Signup },  
 }, {
   initialRouteName: 'Home',
   navigationOptions: {

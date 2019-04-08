@@ -19,7 +19,6 @@ const HomeNav = createStackNavigator({
   Signin: { screen: Signin },
   Signup: { screen: Signup },
 }, {
-  headerMode: 'none',
   initialRouteName: 'Home',
   navigationOptions: {
     headerStyle: styles.header
@@ -44,7 +43,6 @@ const PrimaryTabNav = createBottomTabNavigator(
 // it actually styles it's parent navigator, i.e. PrimaryNav
 PrimaryTabNav.navigationOptions = ({ navigation }) => {
   return {
-    header: null,     // Hide the header from PrimaryNav stack, thus no stacked header should appeared
     gesturesEnabled: false
   }
 }

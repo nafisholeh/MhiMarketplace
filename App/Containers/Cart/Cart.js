@@ -84,7 +84,7 @@ class Cart extends Component {
               const { products = [] } = cart;
               return (
                 <React.Fragment>
-                  <ScrollView style={{flex:1, backgroundColor:'yellow'}}>
+                  <ScrollView style={{flex:1}}>
                     <View style={{ minHeight: 100 }}>
                       <OptimizedList
                         itemWidth={Metrics.deviceWidth}

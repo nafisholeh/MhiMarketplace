@@ -12,6 +12,7 @@ import { UPDATE_CART_ITEM } from 'GraphQL/Cart/Mutation';
 import { FETCH_SOME_PRODUCT } from 'GraphQL/Product/Query';
 import { OptimizedList, StatePage } from 'Components';
 import { getUserId } from 'Redux/SessionRedux';
+import CartActions from 'Redux/CartRedux';
 import { Metrics } from 'Themes';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import AppConfig from 'Config/AppConfig';
@@ -56,7 +57,7 @@ class Cart extends Component {
   };
 
   render() {
-    const { userId } = this.props;
+    const { userId, storeCart } = this.props;
     return (
       <View style={{flex:1}}>
         <Query 
@@ -82,6 +83,7 @@ class Cart extends Component {
                 )
               }
               const { products = [] } = cart;
+              storeCart(cart);
               return (
                 <React.Fragment>
                   <ScrollView style={{flex:1}}>
@@ -118,13 +120,18 @@ class Cart extends Component {
 Cart.propTypes = {
   userId: string,
   updateCartItem: func,
+  storeCart: func,
 }
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
 });
 
+const mapDispatchToProps = dispatch => ({
+  storeCart: cart => dispatch(CartActions.storeCart(cart)),
+});
+
 export default compose(
-  connect(mapStateToProps, null),
+  connect(mapStateToProps, mapDispatchToProps),
   UPDATE_CART_ITEM
 )(withNavigation(Cart));

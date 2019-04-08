@@ -71,7 +71,6 @@ Item.propTypes = {
     qty: number,
   }),
   userId: string.isRequired,
-  onPress: func.isRequired,
 }
 
 export default compose(UPDATE_CART_ITEM)(Item);

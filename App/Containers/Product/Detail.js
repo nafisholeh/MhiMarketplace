@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import { Alert, ScrollView, Text, Image, View, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
-import { object } from 'prop-types'
+import { object, arrayOf, string } from 'prop-types'
 import { Query, compose } from 'react-apollo';
 
 import { FETCH_PRODUCT_DETAIL } from 'GraphQL/Product/Query';
 import { UPDATE_CART_ITEM } from 'GraphQL/Cart/Mutation';
 import { getUser } from 'Redux/SessionRedux';
+import { getCartItemIds } from 'Redux/CartRedux';
 
 import { Images, Metrics } from 'Themes'
 import { OptimizedList } from 'Components'
@@ -54,7 +55,8 @@ class Detail extends Component {
   }
   
   render () {
-    const { navigation: { state: { params: { data: { _id } }}} } = this.props;
+    const { navigation: { state: { params: { data: { _id } }}}, cartItemIds } = this.props;
+    const isInsideCart = cartItemIds.indexOf(_id ) > -1;
     return (
       <View style={{flex: 1}}>
         <Query 
@@ -91,18 +93,23 @@ class Detail extends Component {
                     </View>
                     <Text style={{ marginBottom: 5 }}>Kadaluarsa: {getReadableDate(expired_date, 'DD-MM-YYYY', 'id', 'DD MMM YYYY')}</Text>
                     <Text style={{ marginBottom: 20 }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Cursus euismod quis viverra nibh cras. Bibendum ut tristique et egestas. Tristique senectus et netus et malesuada fames ac turpis. Enim ut sem viverra aliquet eget sit amet. Proin sagittis nisl rhoncus mattis rhoncus urna. Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed. Dictumst quisque sagittis purus sit amet volutpat consequat. Ut consequat semper viverra nam libero justo. In fermentum posuere urna nec tincidunt praesent semper feugiat nibh. At tellus at urna condimentum mattis pellentesque id nibh tortor. Sit amet nisl suscipit adipiscing bibendum est ultricies. Ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at augue. Congue nisi vitae suscipit tellus mauris a. Quis risus sed vulputate odio ut. Adipiscing vitae proin sagittis nisl rhoncus. Donec et odio pellentesque diam volutpat commodo sed egestas egestas. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Sapien pellentesque habitant morbi tristique senectus et.</Text>
+                    { isInsideCart &&
+                      <Text style={{ color: 'red', marginBottom: 20 }}>Telah masuk keranjang belanja</Text>
+                    }
                   </ScrollView>
-                  <TouchableOpacity
-                    onPress={() => this._onAddCart()}
-                    style={{
-                      height: 50, backgroundColor: 'gray',
-                      alignItems: 'center', justifyContent: 'center'
-                    }}
-                    >
-                    <Text style={{color: 'white'}}>
-                      Pesan Sekarang
-                    </Text>
-                  </TouchableOpacity>
+                  { !isInsideCart &&
+                    <TouchableOpacity
+                      onPress={() => this._onAddCart()}
+                      style={{
+                        height: 50, backgroundColor: 'gray',
+                        alignItems: 'center', justifyContent: 'center'
+                      }}
+                      >
+                      <Text style={{color: 'white'}}>
+                        Pesan Sekarang
+                      </Text>
+                    </TouchableOpacity>
+                  }
                 </View>
               )
             }
@@ -115,10 +122,12 @@ class Detail extends Component {
 
 Detail.propTypes = {
   user: object,
+  cartItemIds: arrayOf(string),
 }
 
 const mapStateToProps = createStructuredSelector({
-  user: getUser()
+  user: getUser(),
+  cartItemIds: getCartItemIds(),
 });
 
 export default compose(

@@ -3,9 +3,10 @@ import { Alert, ScrollView, Text, Image, View, TouchableOpacity } from 'react-na
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import { object } from 'prop-types'
-import { Query } from 'react-apollo'
+import { Query, compose } from 'react-apollo';
 
-import { FETCH_PRODUCT_DETAIL } from 'GraphQL/Product/Query'
+import { FETCH_PRODUCT_DETAIL } from 'GraphQL/Product/Query';
+import { UPDATE_CART_ITEM } from 'GraphQL/Cart/Mutation';
 import { getUser } from 'Redux/SessionRedux';
 
 import { Images, Metrics } from 'Themes'
@@ -27,8 +28,19 @@ class Detail extends Component {
         {cancelable: false},
       );
     } else {
+      this.updateCart();
       this.openCart();
     }
+  }
+  
+  updateCart = () => {
+    const { updateCartItem, user: { _id: userId } } = this.props;
+    const { navigation: { state: { params: { data: { _id: productId } }}} } = this.props;
+    updateCartItem({
+      user_id: userId,
+      product_id: productId,
+      qty: 1
+    });
   }
   
   openSignin = () => {
@@ -109,4 +121,7 @@ const mapStateToProps = createStructuredSelector({
   user: getUser()
 });
 
-export default connect(mapStateToProps, null)(Detail);
+export default compose(
+  connect(mapStateToProps, null),
+  UPDATE_CART_ITEM
+)(Detail);

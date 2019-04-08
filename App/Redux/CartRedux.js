@@ -10,7 +10,7 @@ import { store } from 'Containers/App';
 
 const { Types, Creators } = createActions({
   fetchCart: null,
-  updateCartItem: ['product_id', 'qty'],
+  storeCart: ['cart'],
 })
 
 export const CartTypes = Types
@@ -26,6 +26,16 @@ export const INITIAL_STATE = Immutable({
 
 export const cartSelectors = () => state => state.cart
 
+export const getCartItemIds = () =>
+  createSelector(
+    cartSelectors(),
+    state => {
+      const { cart } = state;
+      if (!cart) return [];
+      return cart.map(item => item.product._id);
+    }
+  )
+
 /* ------------- Reducers ------------- */
 
 export const fetchCart = (state) => {
@@ -36,19 +46,22 @@ export const fetchCart = (state) => {
     query: FETCH_CART,
     variables: { user_id: _id }
   })
-  .then(data => console.tron.log('fetchCart success', data))
-  .catch(err => console.tron.log('fetchCart error', err))
+  .then(data => {})
+  .catch(err => {})
   return state;
 }
 
-export const updateCartItem = (state, { product_id, qty }) => {
-  console.log('redux updateCartItem user', state, product_id, qty);
-  return state.merge({ cart: null });
+export const storeCart = (state, { cart }) => {
+  if (cart) {
+    const { products } = cart;
+    return state.merge({ cart: products });
+  }
+  return state.merge({ cart });
 }
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.FETCH_CART]: fetchCart,
-  [Types.UPDATE_CART_ITEM]: updateCartItem,
+  [Types.STORE_CART]: storeCart,
 })

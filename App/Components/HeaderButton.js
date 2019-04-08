@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { func, number, string, oneOf } from 'prop-types';
+import { func, number, string, oneOfType } from 'prop-types';
 
 import { Metrics } from 'Themes';
 
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 
 HeaderButton.propTypes = {
   onPress: func.isRequired,
-  icon: oneOf([ number, string ]).isRequired,
+  icon: oneOfType([ number, string ]).isRequired,
 };
 
 export default HeaderButton;

@@ -92,7 +92,7 @@ class Detail extends Component {
                       <Text style={{ marginBottom: 5 }}>Min pesan: {minimum_order} {unit}</Text>
                     </View>
                     <Text style={{ marginBottom: 5 }}>Kadaluarsa: {getReadableDate(expired_date, 'DD-MM-YYYY', 'id', 'DD MMM YYYY')}</Text>
-                    <Text style={{ marginBottom: 20 }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Cursus euismod quis viverra nibh cras. Bibendum ut tristique et egestas. Tristique senectus et netus et malesuada fames ac turpis. Enim ut sem viverra aliquet eget sit amet. Proin sagittis nisl rhoncus mattis rhoncus urna. Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed. Dictumst quisque sagittis purus sit amet volutpat consequat. Ut consequat semper viverra nam libero justo. In fermentum posuere urna nec tincidunt praesent semper feugiat nibh. At tellus at urna condimentum mattis pellentesque id nibh tortor. Sit amet nisl suscipit adipiscing bibendum est ultricies. Ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at augue. Congue nisi vitae suscipit tellus mauris a. Quis risus sed vulputate odio ut. Adipiscing vitae proin sagittis nisl rhoncus. Donec et odio pellentesque diam volutpat commodo sed egestas egestas. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Sapien pellentesque habitant morbi tristique senectus et.</Text>
+                    <Text style={{ marginBottom: 20 }}>{description}</Text>
                     { isInsideCart &&
                       <Text style={{ color: 'red', marginBottom: 20 }}>Telah masuk keranjang belanja</Text>
                     }

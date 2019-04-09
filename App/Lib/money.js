@@ -31,5 +31,5 @@ export function calcDiscount(price, discount) {
   if(price && discount) {
     return price - (price * ( discount / 100));
   }
-  return null;
+  return 0;
 }

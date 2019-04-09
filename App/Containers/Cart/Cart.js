@@ -13,9 +13,10 @@ import { FETCH_SOME_PRODUCT } from 'GraphQL/Product/Query';
 import { OptimizedList, StatePage } from 'Components';
 import { getUserId } from 'Redux/SessionRedux';
 import CartActions from 'Redux/CartRedux';
-import { Metrics } from 'Themes';
+import { Metrics, Colors } from 'Themes';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import AppConfig from 'Config/AppConfig';
+import { calcDiscount, parseToRupiah } from 'Lib';
 
 class Cart extends Component {
   
@@ -83,6 +84,12 @@ class Cart extends Component {
                 )
               }
               const { products = [] } = cart;
+              const totalPrice = products.reduce((total, n) => {
+                const prices = n.product.discount ? calcDiscount(n.product.price, n.product.discount) : n.product.price;
+                const temp = total + (prices * n.qty);
+                return temp;
+              }, 0)
+              
               storeCart(cart);
               return (
                 <React.Fragment>
@@ -96,17 +103,23 @@ class Cart extends Component {
                       />
                     </View>
                   </ScrollView>
-                  <TouchableOpacity
-                    onPress={this.checkout}
-                    style={{
-                      height: 50, backgroundColor: 'gray',
-                      alignItems: 'center', justifyContent: 'center'
-                    }}
-                    >
-                    <Text style={{color: 'white'}}>
-                      Checkout
-                    </Text>
-                  </TouchableOpacity>
+                  <View style={{ backgroundColor: Colors.white, borderTopWidth: 0.4, borderTopColor: Colors.brown_light }}>
+                    <View style={{ padding: 15 }}>
+                      <Text style={{ fontSize: 16 }}>Total</Text>
+                      <Text style={{ fontSize: 22 }}>{parseToRupiah(totalPrice)}</Text>
+                    </View>
+                    <TouchableOpacity
+                      onPress={this.checkout}
+                      style={{
+                        height: 50, backgroundColor: Colors.green_light,
+                        alignItems: 'center', justifyContent: 'center'
+                      }}
+                      >
+                      <Text style={{color: 'white'}}>
+                        Checkout
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 </React.Fragment>
               )
             }

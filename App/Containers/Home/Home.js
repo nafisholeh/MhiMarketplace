@@ -34,6 +34,9 @@ class Home extends Component {
   
   fetchInitCart = () => {
     const { storeCart, userId } = this.props;
+    if (!userId) {
+      return;
+    }
     ApolloClientProvider.client.query({
       query: FETCH_CART,
       variables: { user_id: userId }

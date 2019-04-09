@@ -70,23 +70,25 @@ class Detail extends Component {
             } else {
               const { product } = data;
               const { title, description, stock, unit, photo, price, discount, expired_date, minimum_order } = product;
+              const priceRupiah = parseToRupiah(price);
+              const discountRupiah = parseToRupiah(calcDiscount(price, discount));
               return (
                 <View style={styles.container}>
                   <ScrollView style={styles.scrollView}>
                     <Image source={{ uri: photo }} style={{ width: Metrics.deviceWidth, height: 200 }} />
 
                     <Text style={{ fontWeight: 'bold', marginBottom: 3, marginTop: 15, fontSize: 20 }}>{title}</Text>
-                    <View style={{ flexDirection: 'row', marginBottom: 5 }}>
-                      { discount &&
-                        <Text style={{ marginRight: 5, fontWeight: 'bold', textDecorationLine: 'line-through', textDecorationStyle: 'solid' }}>{parseToRupiah(price)}</Text>
-                      }
-                      { !discount &&
-                        <Text style={{ fontWeight: 'bold' }}>{parseToRupiah(price)}</Text>
-                      }
-                      { discount &&
-                        <Text style={{ fontWeight: 'bold', color: 'red', fontSize: 16 }}>{parseToRupiah(calcDiscount(price, discount))}</Text>
-                      }
-                    </View>
+                    { discount > 0 &&
+                      <View style={{ flexDirection: 'row', marginBottom: 5 }}>
+                        <Text style={{ marginRight: 5, fontWeight: 'bold', textDecorationLine: 'line-through', textDecorationStyle: 'solid' }}>{priceRupiah}</Text>
+                        <Text style={{ fontWeight: 'bold', color: 'red', fontSize: 16 }}>{discountRupiah}</Text>
+                      </View>
+                    }
+                    { discount === 0 &&
+                      <View style={{ marginBottom: 5 }}>
+                        <Text style={{ fontWeight: 'bold' }}>{priceRupiah}</Text>
+                      </View>
+                    }
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                       <Text style={{ marginBottom: 5 }}>Stok: {stock} {unit}</Text>
                       <Text style={{ marginBottom: 5 }}>Min pesan: {minimum_order} {unit}</Text>

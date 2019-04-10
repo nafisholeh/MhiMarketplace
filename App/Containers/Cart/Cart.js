@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { Query, compose } from 'react-apollo';
-import { string, func } from 'prop-types';
+import { string, func, number } from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import { withNavigation } from 'react-navigation';
 
@@ -12,7 +12,7 @@ import { UPDATE_CART_ITEM } from 'GraphQL/Cart/Mutation';
 import { FETCH_SOME_PRODUCT } from 'GraphQL/Product/Query';
 import { OptimizedList, StatePage } from 'Components';
 import { getUserId } from 'Redux/SessionRedux';
-import CartActions from 'Redux/CartRedux';
+import CartActions, { getCartTotalGrossPrice } from 'Redux/CartRedux';
 import { Metrics, Colors } from 'Themes';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import AppConfig from 'Config/AppConfig';
@@ -27,18 +27,14 @@ class Cart extends Component {
     }
   }
   
-  updateCart = (_id, qty) => {
-    const { updateCartItem, userId } = this.props;
-    updateCartItem({
-      user_id: userId,
-      product_id: _id,
-      qty
-    })
-  }
-  
   startBuying = () => {
     const { navigation } = this.props;
     navigation.navigate('Home');
+  };
+  
+  onOpenSignin = () => {
+    const { navigation } = this.props;
+    navigation.navigate('Signin');
   };
   
   checkout = () => {
@@ -58,12 +54,24 @@ class Cart extends Component {
   };
 
   render() {
-    const { userId, storeCart } = this.props;
+    const { userId, grossPriceTotal } = this.props;
+    if (!userId) {
+      return (
+        <View style={{flex:1}}>
+          <StatePage 
+            title="Anda belum terdaftar"
+            subtitle="silahkan daftar/masuk terlebih dahulu"
+            buttonTitle="Masuk"
+            image={AppConfig.pageState.EMPTY_CART}
+            onPress={this.onOpenSignin}
+          />
+        </View>
+      );
+    }
     return (
       <View style={{flex:1}}>
         <Query 
           query={FETCH_CART}
-          fetchPolicy="network-only"
           variables={{ user_id: userId }}>
           {({ loading, error, data, refetch }) => {
             if (loading) {
@@ -83,14 +91,6 @@ class Cart extends Component {
                   />
                 )
               }
-              const { products = [] } = cart;
-              const totalPrice = products.reduce((total, n) => {
-                const prices = n.product.discount ? calcDiscount(n.product.price, n.product.discount) : n.product.price;
-                const temp = total + (prices * n.qty);
-                return temp;
-              }, 0)
-              
-              storeCart(cart);
               return (
                 <React.Fragment>
                   <ScrollView style={{flex:1}}>
@@ -98,7 +98,7 @@ class Cart extends Component {
                       <OptimizedList
                         itemWidth={Metrics.deviceWidth}
                         itemHeight={100}
-                        data={products} 
+                        data={cart} 
                         renderRow={this.renderCartItems}
                       />
                     </View>
@@ -106,7 +106,7 @@ class Cart extends Component {
                   <View style={{ backgroundColor: Colors.white, borderTopWidth: 0.4, borderTopColor: Colors.brown_light }}>
                     <View style={{ padding: 15 }}>
                       <Text style={{ fontSize: 16 }}>Total</Text>
-                      <Text style={{ fontSize: 22 }}>{parseToRupiah(totalPrice)}</Text>
+                      <Text style={{ fontSize: 22, fontWeight: 'bold' }}>{parseToRupiah(grossPriceTotal)}</Text>
                     </View>
                     <TouchableOpacity
                       onPress={this.checkout}
@@ -132,16 +132,18 @@ class Cart extends Component {
 
 Cart.propTypes = {
   userId: string,
+  grossPriceTotal: number,
   updateCartItem: func,
-  storeCart: func,
+  updateCart: func,
 }
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
+  grossPriceTotal: getCartTotalGrossPrice(),
 });
 
 const mapDispatchToProps = dispatch => ({
-  storeCart: cart => dispatch(CartActions.storeCart(cart)),
+  updateCart: (product_id, qty) => dispatch(CartActions.updateCart(product_id, qty)),
 });
 
 export default compose(

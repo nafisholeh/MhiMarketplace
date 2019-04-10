@@ -42,7 +42,7 @@ class Home extends Component {
       variables: { user_id: userId }
     })
     .then(data => {
-      const { data: { cart}} = data;
+      const { data: { cart }} = data;
       storeCart(cart);
     })
     .catch(err => {})

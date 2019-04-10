@@ -6,6 +6,14 @@ import { store } from 'Containers/App';
 import CartActions from 'Redux/CartRedux';
 import { FETCH_CART } from './Query';
 
+export const DELETE_CART_ITEM = gql`
+  mutation deleteCartItem($user_id: String!, $product_id: String!) {
+    deleteItem(user_id: $user_id, product_id: $product_id) {
+      _id
+    }
+  }
+`
+
 export const UPDATE_CART_ITEM_SCHEMA = gql`
   mutation updateCartItem($user_id: String!, $product_id: String!, $qty: Int) {
     updateItem(user_id: $user_id, product_id: $product_id, qty: $qty) {

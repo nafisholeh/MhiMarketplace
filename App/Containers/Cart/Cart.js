@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import { Query, compose } from 'react-apollo';
+import { Query, Mutation, compose } from 'react-apollo';
 import { string, func, number } from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import { withNavigation } from 'react-navigation';
@@ -13,7 +13,7 @@ import { FETCH_SOME_PRODUCT } from 'GraphQL/Product/Query';
 import { OptimizedList, StatePage } from 'Components';
 import { getUserId } from 'Redux/SessionRedux';
 import CartActions, { getCartTotalGrossPrice } from 'Redux/CartRedux';
-import { Metrics, Colors } from 'Themes';
+import { Images, Metrics, Colors } from 'Themes';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import AppConfig from 'Config/AppConfig';
 import { calcDiscount, parseToRupiah } from 'Lib';
@@ -37,7 +37,7 @@ class Cart extends Component {
     navigation.navigate('Signin');
   };
   
-  checkout = () => {
+  startCheckout = () => {
     const { navigation } = this.props;
     navigation.navigate('Checkout');
   };
@@ -86,7 +86,18 @@ class Cart extends Component {
                     title="Keranjang belanja kosong"
                     subtitle="ayo mulai belanja"
                     buttonTitle="Belanja Yuk"
-                    image={AppConfig.pageState.EMPTY_CART}
+                    icon={AppConfig.pageState.EMPTY_CART}
+                    onPress={this.startBuying}
+                  />
+                )
+              }
+              if (cart && cart.length === 0) {
+                return (
+                  <StatePage 
+                    title="Keranjang belanja kosong"
+                    subtitle="ayo mulai belanja"
+                    buttonTitle="Belanja Yuk"
+                    icon={AppConfig.pageState.EMPTY_CART}
                     onPress={this.startBuying}
                   />
                 )
@@ -109,7 +120,7 @@ class Cart extends Component {
                       <Text style={{ fontSize: 22, fontWeight: 'bold' }}>{parseToRupiah(grossPriceTotal)}</Text>
                     </View>
                     <TouchableOpacity
-                      onPress={this.checkout}
+                      onPress={this.startCheckout}
                       style={{
                         height: 50, backgroundColor: Colors.green_light,
                         alignItems: 'center', justifyContent: 'center'

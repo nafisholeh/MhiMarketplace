@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, ScrollView, Image, Text, TouchableOpacity } from 'react-native';
-import { string, func, number } from 'prop-types';
+import { string, func, number, oneOfType } from 'prop-types';
 
 import { Colors, Images } from 'Themes';
 import { moderateScale } from 'Lib';
@@ -22,7 +22,6 @@ class StatePage extends Component {
       buttonTitle,
       icon = AppConfig.pageState.ERROR
     } = this.props;
-    console.tron.log('StatePage', icon, Images[icon])
     return (
       <ScrollView
         style={styles.container}
@@ -111,7 +110,7 @@ StatePage.propTypes = {
   title: string,
   subtitle: string,
   buttonTitle: string, 
-  icon: number,
+  icon: oneOfType([number, string]),
   onPress: func,
 }
 

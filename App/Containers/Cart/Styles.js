@@ -15,6 +15,7 @@ export default StyleSheet.create({
     marginRight: Metrics.doubleBaseMargin,
   },
   detail: {
+    flex: 1,
     flexDirection: 'column',
   },
   detailTitle: { },

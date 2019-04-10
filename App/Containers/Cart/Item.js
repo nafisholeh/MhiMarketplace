@@ -6,7 +6,7 @@ import { Mutation, compose } from 'react-apollo';
 import update from 'immutability-helper';
 
 import AppConfig from 'Config/AppConfig';
-import { parseToRupiah, isString } from 'Lib';
+import { parseToRupiah, isString, calcDiscount } from 'Lib';
 import { UpDownCounter } from 'Components';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { UPDATE_CART_ITEM, DELETE_CART_ITEM } from 'GraphQL/Cart/Mutation';
@@ -50,7 +50,7 @@ class Item extends Component {
   }
   
   render() {
-    const { data, data: { product: { _id, title, photo, price }, qty = 0 }, userId } = this.props
+    const { data, data: { product: { _id, title, photo, price, discount }, qty = 0 }, userId } = this.props
     if (!data) {
       return <View />
     }
@@ -63,7 +63,12 @@ class Item extends Component {
         />
         <View style={styles.detail}>
           <Text style={styles.detailTitle}>{title}</Text>
-          <Text style={styles.detailPrice}>{parseToRupiah(price)}</Text>
+          { discount > 0 &&
+            <Text style={styles.detailPrice}>{parseToRupiah(calcDiscount(price, discount))}</Text>
+          }
+          { discount === 0 &&
+            <Text style={styles.detailPrice}>{parseToRupiah(price)}</Text>
+          }
           <UpDownCounter
             initCounter={qty}
             onCounterChanged={this.onCounterChanged}
@@ -77,12 +82,6 @@ class Item extends Component {
           ignoreResults={false}
           errorPolicy='all'>
           { (deleteCartItem, {loading, error, data}) => {
-            console.tron.display({
-              name: "DELETE_CART_ITEM",
-              value: {
-                deleteCartItem, loading, error, data
-              }
-            })
             if (loading) {
               return (
                 <ActivityIndicator size="small" />

@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { number, shape } from 'prop-types';
+import { arrayOf, number, shape } from 'prop-types';
 import { withNavigation } from 'react-navigation';
 
-import { parseToRupiah } from 'Lib';
+import { parseToRupiah, calcDiscount } from 'Lib';
 import { Colors } from 'Themes';
-import { getCartTotalGrossPrice } from 'Redux/CartRedux';
 
 class Footer extends Component {
 
@@ -15,9 +12,20 @@ class Footer extends Component {
     const { navigation } = this.props;
     navigation.navigate('Checkout');
   };
+  
+  calcGrossTotal = () => {
+    const { data } = this.props;
+    return data.reduce(
+      (total, item) => 
+        total + (item.qty * calcDiscount(
+          item.product.price,
+          item.product.discount
+        ))
+    , 0); 
+  }
 
   render() {
-    const { grossPriceTotal } = this.props;
+    const grossPriceTotal = this.calcGrossTotal();
     return (
       <View style={{
           backgroundColor: Colors.white,
@@ -47,11 +55,15 @@ class Footer extends Component {
 }
 
 Footer.propTypes = {
-  grossPriceTotal: number,
+  data: arrayOf(
+    shape({
+      qty: number,
+      product: {
+        price: number,
+        discount: number,
+      }
+    })
+  ),
 };
 
-const mapStateToProps = createStructuredSelector({
-  grossPriceTotal: getCartTotalGrossPrice(),
-});
-
-export default connect(mapStateToProps, null)(withNavigation(Footer));
+export default withNavigation(Footer);

@@ -7,6 +7,7 @@ import { createStructuredSelector } from 'reselect';
 import { withNavigation } from 'react-navigation';
 
 import Item from './Item';
+import Footer from './Footer';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { UPDATE_CART_ITEM } from 'GraphQL/Cart/Mutation';
 import { FETCH_SOME_PRODUCT } from 'GraphQL/Product/Query';
@@ -35,11 +36,6 @@ class Cart extends Component {
   onOpenSignin = () => {
     const { navigation } = this.props;
     navigation.navigate('Signin');
-  };
-  
-  startCheckout = () => {
-    const { navigation } = this.props;
-    navigation.navigate('Checkout');
   };
   
   renderCartItems = (type, data) => {
@@ -115,23 +111,7 @@ class Cart extends Component {
                       />
                     </View>
                   </ScrollView>
-                  <View style={{ backgroundColor: Colors.white, borderTopWidth: 0.4, borderTopColor: Colors.brown_light }}>
-                    <View style={{ padding: 15 }}>
-                      <Text style={{ fontSize: 16 }}>Total</Text>
-                      <Text style={{ fontSize: 22, fontWeight: 'bold' }}>{parseToRupiah(grossPriceTotal)}</Text>
-                    </View>
-                    <TouchableOpacity
-                      onPress={this.startCheckout}
-                      style={{
-                        height: 50, backgroundColor: Colors.green_light,
-                        alignItems: 'center', justifyContent: 'center'
-                      }}
-                      >
-                      <Text style={{color: 'white'}}>
-                        Checkout
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
+                  <Footer data={cart} />
                 </React.Fragment>
               )
             }

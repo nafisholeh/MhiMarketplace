@@ -40,7 +40,7 @@ class Detail extends Component {
     updateCartItem({
       user_id: userId,
       product_id: productId,
-      qty: 1
+      qty: null
     });
   }
   

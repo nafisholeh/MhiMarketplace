@@ -14,6 +14,7 @@ const { Types, Creators } = createActions({
   fetchCart: null,
   storeCart: ['cart'],
   updateCart: ['product_id', 'qty'],
+  toggleSelectItem: ['product_id', 'status'],
 })
 
 export const CartTypes = Types
@@ -23,6 +24,7 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   cart: null,
+  selected: [],
 })
 
 /* ------------- Selectors ------------- */
@@ -53,6 +55,16 @@ export const getCartTotalGrossPrice = () =>
       return totalPrice;
     }
   )
+  
+export const getCartItemSelected = () => {
+  createSelector(
+    cartSelectors(),
+    state => {
+      const { selected } = state;
+      return selected;
+    }
+  )
+}
 
 /* ------------- Reducers ------------- */
 
@@ -89,10 +101,31 @@ export const updateCart = (state, { product_id, qty }) => {
   });
 }
 
+export const toggleSelectItem = (state, { product_id, status = true }) => {
+  const { selected } = state;
+  const isExist = selected.indexOf(product_id) > -1;
+  if (status && !isExist) {
+    return state.merge({
+      selected: [ ...selected, product_id ]
+    });
+  } 
+  if (!status && isExist){
+    const removedIndex = selected.indexOf(product_id);
+    return state.merge({
+      selected: [
+        ...state.selected.slice(0, removedIndex),
+        ...state.selected.slice(removedIndex + 1)
+      ]
+    });
+  }
+  return state;
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.FETCH_CART]: fetchCart,
   [Types.STORE_CART]: storeCart,
   [Types.UPDATE_CART]: updateCart,
+  [Types.TOGGLE_SELECT_ITEM]: toggleSelectItem,  
 })

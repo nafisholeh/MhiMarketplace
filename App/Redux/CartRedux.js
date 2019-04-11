@@ -13,7 +13,7 @@ import { calcDiscount } from 'Lib';
 const { Types, Creators } = createActions({
   fetchCart: null,
   storeCart: ['cart'],
-  updateCart: ['product_id', 'qty'],
+  updateCartQty: ['product_id', 'qty'],
   toggleSelectItem: ['product_id', 'status'],
 })
 
@@ -84,7 +84,7 @@ export const storeCart = (state, { cart }) => {
   return state.merge({ cart });
 }
 
-export const updateCart = (state, { product_id, qty }) => {
+export const updateCartQty = (state, { product_id, qty }) => {
   const cart = state.cart;
   const updateIndex = cart.findIndex(n => n.product._id === product_id);
   const newCart = update(
@@ -125,6 +125,6 @@ export const toggleSelectItem = (state, { product_id, status = true }) => {
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.FETCH_CART]: fetchCart,
   [Types.STORE_CART]: storeCart,
-  [Types.UPDATE_CART]: updateCart,
+  [Types.UPDATE_CART_QTY]: updateCartQty,
   [Types.TOGGLE_SELECT_ITEM]: toggleSelectItem,  
 })

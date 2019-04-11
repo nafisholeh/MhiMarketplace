@@ -36,12 +36,8 @@ class Item extends Component {
   }
   
   onCartClicked = counter => {
-    const { updateCartItem, data: { product: { _id } }, userId } = this.props;
-    updateCartItem({
-      user_id: userId,
-      product_id: _id,
-      qty: counter,
-    })
+    const { updateCartQty, data: { product: { _id: productId } } } = this.props;
+    updateCartQty(productId, counter);
   }
   
   onItemDeleted = (cache, { data }) => {
@@ -130,6 +126,7 @@ Item.propTypes = {
   }),
   userId: string.isRequired,
   toggleSelectItem: func,
+  updateCartQty: func,
   selected: arrayOf(string),
 }
 
@@ -140,6 +137,8 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = dispatch => ({
   toggleSelectItem: (product_id, status) =>
     dispatch(CartActions.toggleSelectItem(product_id, status)),
+  updateCartQty: (product_id, qty) =>
+    dispatch(CartActions.updateCartQty(product_id, qty)),
 });
 
 export default compose(

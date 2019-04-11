@@ -56,7 +56,7 @@ export const getCartTotalGrossPrice = () =>
     }
   )
   
-export const getCartItemSelected = () => {
+export const getCartItemSelected = () =>
   createSelector(
     cartSelectors(),
     state => {
@@ -64,7 +64,6 @@ export const getCartItemSelected = () => {
       return selected;
     }
   )
-}
 
 /* ------------- Reducers ------------- */
 

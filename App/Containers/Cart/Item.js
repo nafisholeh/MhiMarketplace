@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import { Text, Image, View, TouchableOpacity, ActivityIndicator, CheckBox } from 'react-native';
-import { shape, number, string, func } from 'prop-types';
+import { shape, number, string, func, arrayOf } from 'prop-types';
 import { debounce } from 'throttle-debounce';
 import { Mutation, compose } from 'react-apollo';
 import { connect } from 'react-redux';
 import update from 'immutability-helper';
+import { createStructuredSelector } from 'reselect';
 
 import AppConfig from 'Config/AppConfig';
 import { parseToRupiah, isString, calcDiscount } from 'Lib';
 import { UpDownCounter } from 'Components';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { UPDATE_CART_ITEM, DELETE_CART_ITEM } from 'GraphQL/Cart/Mutation';
-import CartActions from 'Redux/CartRedux';
+import CartActions, { getCartItemSelected } from 'Redux/CartRedux';
 import styles from './Styles';
 import { Images } from 'Themes';
 var _ = require('lodash');
@@ -19,14 +20,15 @@ var _ = require('lodash');
 class Item extends Component {
   constructor(props) {
     super(props);
+    const { selected, data: { product: { _id: productId }} } = props;
+    this.state = {
+      selected: selected.indexOf(productId) > -1,
+    };
     this.debounceCartItemUpdate = 
       debounce(
         AppConfig.debounceInterval, 
         counter => this.onCartClicked(counter)
       );
-    this.state = {
-      selected: false,
-    };
   }
   
   onCounterChanged = counter => {
@@ -128,7 +130,12 @@ Item.propTypes = {
   }),
   userId: string.isRequired,
   toggleSelectItem: func,
+  selected: arrayOf(string),
 }
+
+const mapStateToProps = createStructuredSelector({
+  selected: getCartItemSelected(),
+});
 
 const mapDispatchToProps = dispatch => ({
   toggleSelectItem: (product_id, status) =>
@@ -136,6 +143,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default compose(
-  connect(null, mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   UPDATE_CART_ITEM
 )(Item);

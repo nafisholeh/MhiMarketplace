@@ -10,6 +10,7 @@ export const FETCH_ADDRESS = gql`
       kecamatan
       kota
       provinsi
+      selected
     }
   }
 `

@@ -4,12 +4,13 @@ import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs'
 import AppConfig from 'Config/AppConfig'
 import { setTabBarHide } from 'Lib'
 
-import Signin from '../Containers/Signin/Signin'
-import Signup from '../Containers/Signup/Signup'
-import Home from '../Containers/Home/Home'
-import Detail from '../Containers/Product/Detail'
-import Cart from '../Containers/Cart/Cart'
-import Checkout from '../Containers/Checkout/Checkout'
+import Signin from 'Containers/Signin/Signin'
+import Signup from 'Containers/Signup/Signup'
+import Home from 'Containers/Home/Home'
+import Detail from 'Containers/Product/Detail'
+import Cart from 'Containers/Cart/Cart'
+import Checkout from 'Containers/Checkout/Checkout'
+import AddressList from 'Containers/Address/AddressList';
 
 import styles from './Styles/NavigationStyles'
 
@@ -18,6 +19,7 @@ const HomeNav = createStackNavigator({
   ProductDetail: { screen: Detail },
   Cart: { screen: Cart },
   Checkout: { screen: Checkout },
+  AddressList: { screen: AddressList },
   Signin: { screen: Signin },
   Signup: { screen: Signup },  
 }, {

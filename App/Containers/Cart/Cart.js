@@ -58,7 +58,7 @@ class Cart extends Component {
             title="Anda belum terdaftar"
             subtitle="silahkan daftar/masuk terlebih dahulu"
             buttonTitle="Masuk"
-            image={AppConfig.pageState.EMPTY_CART}
+            icon={AppConfig.pageState.EMPTY_CART}
             onPress={this.onOpenSignin}
           />
         </View>

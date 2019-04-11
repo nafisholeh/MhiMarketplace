@@ -7,13 +7,17 @@ export default {
     'ProductDetail',
     'Signin',
     'Signup',
-    'Cart'
+    'Cart',
+    'Checkout',
+    'AddressList'
   ],
   pageState: {
     ERROR: 'error',
     INFO: 'info',
-    EMPTY_CART: 'cart',
     CART: 'cart',
+    EMPTY_CART: 'cart',
+    LOCATION: 'location',
+    EMPTY_LOCATION: 'location',
   },
   debounceInterval: 2000,
 }

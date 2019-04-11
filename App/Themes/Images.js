@@ -1,9 +1,11 @@
-// leave off @2x/@3x
+const pathPrefix = 'Assets/Images/';
+
 const images = {
-  cart: require('Assets/Images/cart.png'),
-  minus: require('Assets/Images/minus.png'),
-  plus: require('Assets/Images/plus.png'),
-  delete: require('Assets/Images/delete.png'),
+  cart: require(pathPrefix+'cart.png'),
+  minus: require(pathPrefix+'minus.png'),
+  plus: require(pathPrefix+'plus.png'),
+  delete: require(pathPrefix+'delete.png'),
+  location: require(pathPrefix+'location.png'),
 }
 
 export default images

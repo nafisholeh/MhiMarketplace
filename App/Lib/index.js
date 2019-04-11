@@ -5,9 +5,14 @@ import { getReadableDate } from './Date';
 import { setTabBarHide } from './Navigation';
 import { moderateScale } from './Responsive';
 import { isString } from './DataType';
+import {
+  getReadableAddress,
+  getReadableSubdistrict,
+  getReadableCityState
+} from './Address';
 
 export { 
   parseToRupiah, calcDiscount, isEmailValid, isEmailError, 
   getGraphQLError, getReadableDate, setTabBarHide, moderateScale,
-  isString
+  isString, getReadableAddress, getReadableSubdistrict, getReadableCityState
 };

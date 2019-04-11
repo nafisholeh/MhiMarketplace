@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { Query } from 'react-apollo';
+import { string } from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import { OptimizedList, StatePage } from 'Components';
+import Item from './Item';
 import { FETCH_ADDRESS } from 'GraphQL/Address/Query';
 import Config from 'Config/AppConfig';
 import { Images, Metrics } from 'Themes';
@@ -23,6 +25,12 @@ class AddressList extends Component {
     
   };
   
+  renderAddressItems = (type, data) => {
+    return (
+      <Item data={data} />
+    );
+  };
+  
   render() {
     const { userId } = this.props;
     return (
@@ -38,7 +46,6 @@ class AddressList extends Component {
             } else if (data) {
               const { address } = data;
               if (!address || (address && address.length === 0)) {
-                console.tron.log('AddressList/render/empty', address, Config.pageState.EMPTY_LOCATION);
                 return (
                   <StatePage 
                     title="Alamat pengiriman kosong"
@@ -49,7 +56,6 @@ class AddressList extends Component {
                   />
                 )
               }
-              console.tron.log('AddressList/render/exist', address, Config.pageState.EMPTY_LOCATION);
               return (
                 <ScrollView style={{flex:1}}>
                   <View style={{ minHeight: 100 }}>
@@ -69,6 +75,10 @@ class AddressList extends Component {
     )
   }
 }
+
+AddressList.propTypes = {
+  userId: string,
+};
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),

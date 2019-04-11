@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, Image, View, TouchableOpacity } from 'react-native';
-import { shape, number, string, func } from 'prop-types';
+import { shape, number, string, func, arrayOf } from 'prop-types';
 import { compose } from 'react-apollo';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -10,6 +10,7 @@ import { parseToRupiah, calcDiscount } from 'Lib';
 import { Images } from 'Themes';
 import styles from './Styles';
 import { getUserId } from 'Redux/SessionRedux';
+import { getCartItemIds } from 'Redux/CartRedux';
 import { UPDATE_CART_ITEM } from 'GraphQL/Cart/Mutation';
 
 class Item extends Component {
@@ -29,11 +30,12 @@ class Item extends Component {
   }
   
   render() {
-    const { data } = this.props
+    const { data, cartItemIds } = this.props
     if (!data) {
       return <View />
     }
-    const  { title, price, discount, photo } = data
+    const  { _id: productId, title, price, discount, photo } = data
+    const isInsideCart = cartItemIds.indexOf(productId) > -1;
     return (
       <TouchableOpacity 
         onPress={this.onItemClicked}
@@ -52,9 +54,11 @@ class Item extends Component {
             </Text>
             <Text style={{}}>{parseToRupiah(calcDiscount(price, discount))}</Text>
           </View>
-          <TouchableOpacity style={styles.product__item_cart} onPress={this.onCartClicked}>
-            <Image source={Images.cart} style={styles.itemImage} />
-          </TouchableOpacity>
+          { !isInsideCart &&
+            <TouchableOpacity style={styles.product__item_cart} onPress={this.onCartClicked}>
+              <Image source={Images.cart} style={styles.itemImage} />
+            </TouchableOpacity>
+          }
         </View>
       </TouchableOpacity>
     )
@@ -71,10 +75,12 @@ Item.propTypes = {
   }),
   updateCartItem: func,
   userId: string,
+  cartItemIds: arrayOf(string),
 }
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
+  cartItemIds: getCartItemIds(),
 })
 
 export default compose(

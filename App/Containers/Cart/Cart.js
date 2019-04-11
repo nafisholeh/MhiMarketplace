@@ -13,7 +13,7 @@ import { UPDATE_CART_ITEM } from 'GraphQL/Cart/Mutation';
 import { FETCH_SOME_PRODUCT } from 'GraphQL/Product/Query';
 import { OptimizedList, StatePage } from 'Components';
 import { getUserId } from 'Redux/SessionRedux';
-import CartActions, { getCartTotalGrossPrice } from 'Redux/CartRedux';
+import { getCartTotalGrossPrice } from 'Redux/CartRedux';
 import { Images, Metrics, Colors } from 'Themes';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import AppConfig from 'Config/AppConfig';
@@ -126,7 +126,6 @@ Cart.propTypes = {
   userId: string,
   grossPriceTotal: number,
   updateCartItem: func,
-  updateCart: func,
 }
 
 const mapStateToProps = createStructuredSelector({
@@ -134,11 +133,7 @@ const mapStateToProps = createStructuredSelector({
   grossPriceTotal: getCartTotalGrossPrice(),
 });
 
-const mapDispatchToProps = dispatch => ({
-  updateCart: (product_id, qty) => dispatch(CartActions.updateCart(product_id, qty)),
-});
-
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(mapStateToProps, null),
   UPDATE_CART_ITEM
 )(withNavigation(Cart));

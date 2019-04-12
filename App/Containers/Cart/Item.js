@@ -41,10 +41,11 @@ class Item extends Component {
   }
   
   onItemDeleted = (cache, { data }) => {
-    const { userId, data: { product: { _id: productId }} } = this.props;
+    const { deleteCartItem, userId, data: { product: { _id: productId }} } = this.props;
     const { cart } = cache.readQuery({ query: FETCH_CART, variables: { user_id: userId } });
     if (!cart) return null;
     const deletedIndex = cart.findIndex(n => n.product._id === productId);
+    deleteCartItem(productId);
     cache.writeQuery({
       query: FETCH_CART,
       variables: { user_id: userId },
@@ -56,11 +57,6 @@ class Item extends Component {
     const { toggleSelectItem, data: { product: { _id } } } = this.props;
     toggleSelectItem(_id, state);
     this.setState({ selected: state });
-  }
-  
-  onSuccessDeleted = data => {
-    const { deleteCartItem, data: { product : { _id: productId} } } = this.props;
-    deleteCartItem(productId);
   }
   
   render() {
@@ -97,7 +93,6 @@ class Item extends Component {
           mutation={DELETE_CART_ITEM}
           variables={{ user_id: userId, product_id: _id }}
           update={this.onItemDeleted}
-          onCompleted={this.onSuccessDeleted}
           onError={(error) => {}}
           ignoreResults={false}
           errorPolicy='all'>

@@ -15,6 +15,7 @@ class Footer extends Component {
   
   calcGrossTotal = () => {
     const { data } = this.props;
+    if (!data) return 0;
     return data.reduce(
       (total, item) => 
         total + (item.qty * calcDiscount(

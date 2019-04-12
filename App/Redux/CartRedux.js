@@ -127,7 +127,7 @@ export const deleteCartItem = (state, { product_id }) => {
   return state.merge({ 
     cart: [
       ...cart.slice(0, updateIndex),
-      ...cart.slice(updateItem + 1)
+      ...cart.slice(updateIndex + 1)
     ]
   });
 }

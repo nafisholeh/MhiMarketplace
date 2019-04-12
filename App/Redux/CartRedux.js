@@ -1,7 +1,7 @@
 import { createReducer, createActions } from 'reduxsauce';
 import Immutable from 'seamless-immutable';
 import { createSelector } from 'reselect';
-import { update } from 'immutability-helper';
+import update from 'immutability-helper';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
@@ -88,16 +88,8 @@ export const storeCart = (state, { cart }) => {
 export const updateCartQty = (state, { product_id, qty }) => {
   const cart = state.cart;
   const updateIndex = cart.findIndex(n => n.product._id === product_id);
-  const newCart = update(
-    cart, 
-    {  
-      [updateIndex]: {
-        $merge: { qty: qty }
-      }
-    }
-  );
-  return state.merge({ 
-    cart: update( cart, newCart ) 
+  return state.merge({
+    cart: update(cart, { [updateIndex]: { qty: { $set: qty } } })
   });
 }
 

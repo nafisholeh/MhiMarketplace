@@ -13,6 +13,7 @@ import { UpDownCounter } from 'Components';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { UPDATE_CART_ITEM, DELETE_CART_ITEM } from 'GraphQL/Cart/Mutation';
 import CartActions, { getCartItemSelected } from 'Redux/CartRedux';
+import { getUserId } from 'Redux/SessionRedux';
 import styles from './Styles';
 import { Images } from 'Themes';
 var _ = require('lodash');
@@ -27,17 +28,26 @@ class Item extends Component {
     this.debounceCartItemUpdate = 
       debounce(
         AppConfig.debounceInterval, 
-        counter => this.onCartClicked(counter)
+        counter => this.onCounterChanged(counter)
       );
   }
   
-  onCounterChanged = counter => {
-    this.debounceCartItemUpdate(isString(counter) ? parseInt(counter, 10) : counter);
+  onDebounceCounterChanged = counter => {
+    this.debounceCartItemUpdate(
+      isString(counter) ?
+        parseInt(counter, 10) :
+        counter
+    );
   }
   
-  onCartClicked = counter => {
-    const { updateCartQty, data: { product: { _id: productId } } } = this.props;
+  onCounterChanged = counter => {
+    const { userId, updateCartItem, updateCartQty, data: { product: { _id: productId } } } = this.props;
     updateCartQty(productId, counter);
+    updateCartItem({
+      user_id: userId,
+      product_id: productId,
+      qty: counter,
+    });
   }
   
   onItemDeleted = (cache, { data }) => {
@@ -86,7 +96,7 @@ class Item extends Component {
           }
           <UpDownCounter
             initCounter={qty}
-            onCounterChanged={this.onCounterChanged}
+            onCounterChanged={this.onDebounceCounterChanged}
           />
         </View>
         <Mutation
@@ -134,6 +144,7 @@ Item.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   selected: getCartItemSelected(),
+  userId: getUserId(),
 });
 
 const mapDispatchToProps = dispatch => ({

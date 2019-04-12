@@ -50,6 +50,7 @@ export const UPDATE_CART_ITEM = graphql(UPDATE_CART_ITEM_SCHEMA, {
             })
             if (updateIndex === -1) {
               const { updateItem } = data;
+              store.dispatch(CartActions.storeCart(updateItem));
               cache.writeQuery({
                 query: FETCH_CART,
                 variables: { user_id },

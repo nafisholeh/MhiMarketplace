@@ -15,6 +15,7 @@ const { Types, Creators } = createActions({
   storeCart: ['cart'],
   updateCartQty: ['product_id', 'qty'],
   toggleSelectItem: ['product_id', 'status'],
+  deleteCartItem: ['product_id'],
 })
 
 export const CartTypes = Types
@@ -120,6 +121,17 @@ export const toggleSelectItem = (state, { product_id, status = true }) => {
   return state;
 }
 
+export const deleteCartItem = (state, { product_id }) => {
+  const cart = state.cart;
+  const updateIndex = cart.findIndex(n => n.product._id === product_id);
+  return state.merge({ 
+    cart: [
+      ...cart.slice(0, updateIndex),
+      ...cart.slice(updateItem + 1)
+    ]
+  });
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -127,4 +139,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.STORE_CART]: storeCart,
   [Types.UPDATE_CART_QTY]: updateCartQty,
   [Types.TOGGLE_SELECT_ITEM]: toggleSelectItem,  
+  [Types.DELETE_CART_ITEM]: deleteCartItem,
 })

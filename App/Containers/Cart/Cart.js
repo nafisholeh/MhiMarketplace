@@ -68,7 +68,6 @@ class Cart extends Component {
       <View style={{flex:1}}>
         <Query 
           query={FETCH_CART}
-          fetchPolicy="network-only"
           variables={{ user_id: userId }}>
           {({ loading, error, data, refetch }) => {
             if (loading) {

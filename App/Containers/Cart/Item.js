@@ -58,6 +58,11 @@ class Item extends Component {
     this.setState({ selected: state });
   }
   
+  onSuccessDeleted = data => {
+    const { deleteCartItem, data: { product : { _id: productId} } } = this.props;
+    deleteCartItem(productId);
+  }
+  
   render() {
     const { data, data: { product: { _id, title, photo, price, discount }, qty = 0 }, userId } = this.props
     const { selected } = this.state;
@@ -92,6 +97,7 @@ class Item extends Component {
           mutation={DELETE_CART_ITEM}
           variables={{ user_id: userId, product_id: _id }}
           update={this.onItemDeleted}
+          onCompleted={this.onSuccessDeleted}
           onError={(error) => {}}
           ignoreResults={false}
           errorPolicy='all'>
@@ -127,6 +133,7 @@ Item.propTypes = {
   userId: string.isRequired,
   toggleSelectItem: func,
   updateCartQty: func,
+  deleteCartItem: func,
   selected: arrayOf(string),
 }
 
@@ -139,6 +146,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(CartActions.toggleSelectItem(product_id, status)),
   updateCartQty: (product_id, qty) =>
     dispatch(CartActions.updateCartQty(product_id, qty)),
+  deleteCartItem: product_id =>
+    dispatch(CartActions.deleteCartItem(product_id)),
 });
 
 export default compose(

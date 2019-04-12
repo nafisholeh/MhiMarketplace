@@ -40,22 +40,28 @@ class Item extends Component {
       <TouchableOpacity 
         onPress={this.onItemClicked}
         style={styles.product__item}
-        >
+      >
         <View style={styles.product__item_content}>
           <Image source={{uri: photo }} style={{width:60, height:60}}/>
           <View style={styles.product__item_detail}>
             <Text style={{fontWeight:'bold'}}>{title}</Text>
             <Text style={
                 discount ? 
-                  {textDecorationLine: 'line-through', textDecorationStyle: 'solid'} 
+                  {
+                    textDecorationLine: 'line-through', 
+                    textDecorationStyle: 'solid'
+                  } 
                   : {}
             }>
               {parseToRupiah(price)}
             </Text>
-            <Text style={{}}>{parseToRupiah(calcDiscount(price, discount))}</Text>
+            <Text>{parseToRupiah(calcDiscount(price, discount))}</Text>
           </View>
           { !isInsideCart &&
-            <TouchableOpacity style={styles.product__item_cart} onPress={this.onCartClicked}>
+            <TouchableOpacity
+              style={styles.product__item_cart}
+              onPress={this.onCartClicked}
+            >
               <Image source={Images.cart} style={styles.itemImage} />
             </TouchableOpacity>
           }

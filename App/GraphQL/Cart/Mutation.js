@@ -36,11 +36,27 @@ export const UPDATE_CART_ITEM = graphql(UPDATE_CART_ITEM_SCHEMA, {
     updateCartItem: ({ user_id, product_id, qty }) =>
       mutate({
         variables: { user_id, product_id, qty },
+        ignoreResults: false,
+        errorPolicy: 'all',
         update: ( cache, { data } ) => {
           try {
             const { cart } = cache.readQuery({ query: FETCH_CART, variables: { user_id } });
-            if (!cart) return null;
             const updateIndex = cart.findIndex(n => n.product._id === product_id);
+            console.tron.display({
+              name: 'UPDATE_CART_ITEM start',
+              value: {
+                cache, data, cart, updateIndex
+              }
+            })
+            if (updateIndex === -1) {
+              const { updateItem } = data;
+              cache.writeQuery({
+                query: FETCH_CART,
+                variables: { user_id },
+                data: { cart: updateItem }
+              });
+              return;
+            }
             const newCart = update(
               cart, 
               {  
@@ -49,6 +65,12 @@ export const UPDATE_CART_ITEM = graphql(UPDATE_CART_ITEM_SCHEMA, {
                 }
               }
             );
+            console.tron.display({
+              name: 'UPDATE_CART_ITEM',
+              value: {
+                cart, updateIndex, newCart, product_id
+              }
+            })
             store.dispatch(CartActions.storeCart(newCart));
             cache.writeQuery({                                                          // ubah kuantitas item keranjang belanja di client cache
               query: FETCH_CART,                                                    // trigger UI Query dari GET_CART_ITEMS utk re-render

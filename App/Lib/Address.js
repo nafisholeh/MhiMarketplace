@@ -12,8 +12,7 @@ export const getReadableSubdistrict = data => {
 };
 
 export const getReadableCityState = data => {
-  const { kota, provinsi } = data;
+  const { kota, provinsi, kodepos } = data;
   return `${kota ? `Kota ${kota}` : ``}${
-    provinsi ? `, ${provinsi}` : ``
-  }`;
+    provinsi ? `, ${provinsi}` : ``}${kodepos ? kodepos : ``}`;
 };

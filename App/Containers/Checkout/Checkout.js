@@ -3,6 +3,7 @@ import { View, Text } from 'react-native';
 
 import AddressCheckout from 'Containers/Address/AddressCheckout';
 import CheckoutList from './CheckoutList';
+import DeliveryOptions from './DeliveryOptions';
 
 class Checkout extends Component {
   
@@ -18,6 +19,7 @@ class Checkout extends Component {
       <View style={{flex:1}}>
         <AddressCheckout />
         <CheckoutList />
+        <DeliveryOptions />
       </View>
     )
   }

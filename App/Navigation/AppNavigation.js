@@ -27,7 +27,7 @@ const HomeNav = createStackNavigator({
   Signup: { screen: Signup },  
   Setup: { screen: Setup },
 }, {
-  initialRouteName: 'Setup',
+  initialRouteName: 'Checkout',
   navigationOptions: {
     headerStyle: styles.header
   }

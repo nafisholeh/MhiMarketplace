@@ -28,14 +28,6 @@ class Cart extends Component {
     }
   }
   
-  componentDidMount() {
-    const { userId } = this.props;
-    const { cart } = ApolloClientProvider.client.cache.readQuery({
-      query: FETCH_CART, variables: { user_id: userId }
-    })
-    console.tron.log('Cart didMount', cart);
-  }
-  
   startBuying = () => {
     const { navigation } = this.props;
     navigation.navigate('Home');

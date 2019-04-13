@@ -91,6 +91,16 @@ export const getCartItemSelected = () =>
     }
   )
 
+export const isCheckoutValid = () =>
+  createSelector(
+    cartSelectors(),
+    state => {
+      const { selected } = state;
+      if (!Array.isArray(selected)) return false;
+      return selected.length > 0;
+    }
+  )
+
 /* ------------- Reducers ------------- */
 
 export const onStartFetchingCart = state => {

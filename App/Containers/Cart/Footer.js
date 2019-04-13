@@ -11,11 +11,16 @@ import { parseToRupiah, calcDiscount } from 'Lib';
 import { Colors } from 'Themes';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { SYNC_CART } from 'GraphQL/Cart/Mutation';
-import { getCartItems, getCartTotalGrossPrice } from 'Redux/CartRedux';
+import {
+  getCartItems,
+  getCartTotalGrossPrice,
+  getCartItemSelected,
+  isCheckoutValid
+} from 'Redux/CartRedux';
 import { getUserId } from 'Redux/SessionRedux';
 
 class Footer extends Component {
-
+  
   startCheckout = () => {
     const { navigation } = this.props;
     navigation.navigate('Checkout');
@@ -51,8 +56,7 @@ class Footer extends Component {
   }
 
   render() {
-    const { grossTotal } = this.props;
-    console.tron.log('Footer/render', grossTotal, this.props)
+    const { grossTotal, isCheckoutValid } = this.props;
     return (
       <View style={{
           backgroundColor: Colors.white,
@@ -75,10 +79,12 @@ class Footer extends Component {
             return (
               <TouchableOpacity
                 onPress={() => this.onStartSyncCart(syncCartItem)}
-                disabled={loading}
+                disabled={loading || !isCheckoutValid}
                 style={{
-                  height: 50, backgroundColor: Colors.green_light,
-                  alignItems: 'center', justifyContent: 'center'
+                  height: 50,
+                  backgroundColor: isCheckoutValid ? Colors.green_light : Colors.brown_light,
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
                 >
                 {loading &&
@@ -125,12 +131,14 @@ Footer.propTypes = {
   ),
   userId: string,
   grossTotal: number,
+  isCheckoutValid: bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
   cartItems: getCartItems(),
   grossTotal: getCartTotalGrossPrice(),
+  isCheckoutValid: isCheckoutValid(),
 });
 
 export default connect(mapStateToProps, null)(withNavigation(Footer));

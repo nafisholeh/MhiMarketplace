@@ -3,6 +3,7 @@ import { View, Picker, Text } from 'react-native';
 import { Query } from 'react-apollo';
 
 import { FETCH_DELIVERIES } from 'GraphQL/Delivery/Query';
+import { Metrics } from 'Themes';
 
 class DeliveryOptions extends Component {
   
@@ -28,8 +29,7 @@ class DeliveryOptions extends Component {
             else if (error) return (<View />);
             const { deliveries } = data;
             return (
-              <View>
-                <Text>Pilih Jadwal Pengiriman:</Text>
+              <View style={{ marginHorizontal: Metrics.baseMargin }}>
                 <Picker
                   selectedValue={selected}
                   style={{height: 50, width: 250}}

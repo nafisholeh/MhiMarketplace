@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 import { store } from 'Containers/App';
-import { FETCH_ADDRESS } from './Query';
+import { FETCH_ADDRESS, FETCH_SELECTED_ADDRESS } from './Query';
 
 export const ADD_ADDRESS = gql`
   mutation addAddress($user_id: String!, $data: AddressInput) {
@@ -65,8 +65,14 @@ export const cacheSelectAddress = ( cache, { data }, addressId ) => {
       });
     cache.writeQuery({
       query: FETCH_ADDRESS,
-      variables: { userId },
+      variables: { user_id: userId },
       data: { address: newAddresses }
+    });
+    const selectedAddress = newAddresses.find(n => n.selected);
+    cache.writeQuery({
+      query: FETCH_SELECTED_ADDRESS,
+      variables: { user_id: userId },
+      data: { selectedAddress: selectedAddress }
     });
   } catch(err) {
     return null;

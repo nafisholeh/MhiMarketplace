@@ -11,7 +11,6 @@ import { FETCH_ADDRESS } from 'GraphQL/Address/Query';
 import Config from 'Config/AppConfig';
 import { Images, Metrics } from 'Themes';
 import { getUserId } from 'Redux/SessionRedux';
-import {  } from 'Components';
 
 class AddressList extends Component {
   

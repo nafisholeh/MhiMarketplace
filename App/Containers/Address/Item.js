@@ -17,7 +17,12 @@ import { getUserId } from 'Redux/SessionRedux';
 
 class AddressItem extends Component {
   render() {
-    const { data: address, data: { _id, selected }, userId } = this.props;
+    const {
+      data: address,
+      data: { _id, selected },
+      userId,
+      isDisabled
+    } = this.props;
     return (
       <Mutation
         mutation={SELECT_ADDRESS}
@@ -39,6 +44,7 @@ class AddressItem extends Component {
                 borderBottomWidth: 0.5,
               }}
               onPress={() => selectAddress()}
+              disabled={isDisabled}
             >
               <View style={{
                   flexDirection: 'column',
@@ -74,6 +80,11 @@ AddressItem.propTypes = {
     selected: bool,
   }),
   userId: string,
+  isDisabled: bool,
+};
+
+AddressItem.defaultProps = {
+  isDisabled: false,
 };
 
 const mapStateToProps = createStructuredSelector({

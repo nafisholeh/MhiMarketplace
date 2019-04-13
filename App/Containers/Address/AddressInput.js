@@ -13,6 +13,14 @@ import styles from './Styles';
 import { getUserId } from 'Redux/SessionRedux';
 
 class AddressInput extends Component {
+  
+  static navigationOptions = ({navigation}) => {
+    const {params = {}} = navigation.state
+    return {
+      title: 'Alamat Baru'
+    }
+  }
+  
   constructor(props) {
     super(props);
     this.state = {

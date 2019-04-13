@@ -8,6 +8,7 @@ import { BarIndicator } from 'react-native-indicators';
 import { Colors } from 'Themes';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
+import { FETCH_ADDRESS } from 'GraphQL/Address/Query';
 import { getUserId } from 'Redux/SessionRedux';
 import CartActions, { isFetchingCart } from 'Redux/CartRedux';
 

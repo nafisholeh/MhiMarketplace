@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 
 import AddressCheckout from 'Containers/Address/AddressCheckout';
+import CheckoutList from './CheckoutList';
 
 class Checkout extends Component {
   
@@ -16,6 +17,7 @@ class Checkout extends Component {
     return (
       <View style={{flex:1}}>
         <AddressCheckout />
+        <CheckoutList />
       </View>
     )
   }

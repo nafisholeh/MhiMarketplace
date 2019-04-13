@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Image, FlatList } from 'react-native';
 import { Query } from 'react-apollo';
 import { string } from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-import { OptimizedList, StatePage } from 'Components';
+import { StatePage, ToolbarButton } from 'Components';
 import Item from './Item';
 import { FETCH_ADDRESS } from 'GraphQL/Address/Query';
 import Config from 'Config/AppConfig';
 import { Images, Metrics } from 'Themes';
 import { getUserId } from 'Redux/SessionRedux';
+import {  } from 'Components';
 
 class AddressList extends Component {
   
@@ -18,6 +19,7 @@ class AddressList extends Component {
     const {params = {}} = navigation.state
     return {
       title: 'Alamat Anda',
+      headerRight: (<ToolbarButton navigation={navigation} />),
     }
   }
   
@@ -25,9 +27,9 @@ class AddressList extends Component {
     
   };
   
-  renderAddressItems = (type, data) => {
+  renderAddressItems = ({item, index}) => {
     return (
-      <Item data={data} />
+      <Item data={item} />
     );
   };
   
@@ -58,14 +60,11 @@ class AddressList extends Component {
               }
               return (
                 <ScrollView style={{flex:1}}>
-                  <View style={{ minHeight: 100 }}>
-                    <OptimizedList
-                      itemWidth={Metrics.deviceWidth}
-                      itemHeight={100}
-                      data={address} 
-                      renderRow={this.renderAddressItems}
-                    />
-                  </View>
+                  <FlatList
+                    keyExtractor={(item, id) => item._id.toString()}
+                    data={address} 
+                    renderItem={this.renderAddressItems}
+                  />
                 </ScrollView>
               )
             }

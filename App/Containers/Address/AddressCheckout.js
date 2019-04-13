@@ -8,7 +8,7 @@ import { createStructuredSelector } from 'reselect';
 
 import Item from './Item';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
-import { Metrics } from 'Themes';
+import { Metrics, Colors } from 'Themes';
 import { FETCH_SELECTED_ADDRESS } from 'GraphQL/Address/Query';
 import { getUserId } from 'Redux/SessionRedux';
 
@@ -46,6 +46,11 @@ class AddressCheckout extends Component {
                   isDisabled
                 />
               )}
+              {!selectedAddress && (
+                <Text style={{ textAlign: 'center' }}>
+                  Silahkan pilih alamat pengiriman terlebih dahulu
+                </Text>
+              )}
             </TouchableOpacity>
           );
         }}
@@ -60,8 +65,13 @@ AddressCheckout.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    height: 140,
+    height: 130,
+    margin: Metrics.smallMargin,
     padding: Metrics.baseMargin,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: Colors.brown_light,
+    borderWidth: 0.5,
   }
 });
 

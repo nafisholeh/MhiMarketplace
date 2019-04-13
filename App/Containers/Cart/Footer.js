@@ -27,11 +27,11 @@ class Footer extends Component {
   };
   
   onStartSyncCart = syncCartItem => {
-    const { userId, cartItems } = this.props;
+    const { userId, cartItems, selectedCartItems } = this.props;
     const cartItemUpload = cartItems.map(n => ({
       product_id: n.product._id,
       qty: n.qty,
-      selected: n.selected
+      selected: selectedCartItems.indexOf(n.product._id) > -1,
     }));
     syncCartItem({
       variables: {
@@ -132,6 +132,7 @@ Footer.propTypes = {
   userId: string,
   grossTotal: number,
   isCheckoutValid: bool,
+  selectedCartItems: arrayOf(string),
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -139,6 +140,7 @@ const mapStateToProps = createStructuredSelector({
   cartItems: getCartItems(),
   grossTotal: getCartTotalGrossPrice(),
   isCheckoutValid: isCheckoutValid(),
+  selectedCartItems: getCartItemSelected(),
 });
 
 export default connect(mapStateToProps, null)(withNavigation(Footer));

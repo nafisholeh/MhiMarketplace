@@ -87,7 +87,7 @@ export const getCartItemSelected = () =>
     cartSelectors(),
     state => {
       const { selected } = state;
-      return selected;
+      return selected || [];
     }
   )
 

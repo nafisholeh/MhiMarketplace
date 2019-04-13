@@ -7,10 +7,12 @@ import { DotIndicator } from 'react-native-indicators';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
+import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { parseToRupiah, calcDiscount } from 'Lib';
 import { Colors } from 'Themes';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { SYNC_CART } from 'GraphQL/Cart/Mutation';
+import { ADD_CHECKOUT } from 'GraphQL/Checkout/Mutation';
 import {
   getCartItems,
   getCartTotalGrossPrice,
@@ -20,10 +22,39 @@ import {
 import { getUserId } from 'Redux/SessionRedux';
 
 class Footer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isInitiatingCheckout: false,
+      isInitiateCheckoutError: null,
+    };
+  }
   
-  startCheckout = () => {
+  onOpenCheckoutPage = () => {
     const { navigation } = this.props;
     navigation.navigate('Checkout');
+  }
+  
+  initiateCheckout = () => {
+    const { userId } = this.props;
+    this.setState({
+      isInitiatingCheckout: true,
+      isInitiateCheckoutError: null,
+    });
+    ApolloClientProvider.client.mutate({
+      mutation: ADD_CHECKOUT,
+      variables: { user_id: userId }
+    })
+    .then(res => {
+      this.setState({ isInitiatingCheckout: false });
+      this.onOpenCheckoutPage();
+    })
+    .catch(err => {
+      this.setState({
+        isInitiatingCheckout: false,
+        isInitiateCheckoutError: true,
+      });
+    });
   };
   
   onStartSyncCart = syncCartItem => {
@@ -57,6 +88,7 @@ class Footer extends Component {
 
   render() {
     const { grossTotal, isCheckoutValid } = this.props;
+    const { isInitiatingCheckout, isInitiateCheckoutError } = this.state;
     return (
       <View style={{
           backgroundColor: Colors.white,
@@ -72,14 +104,17 @@ class Footer extends Component {
         <Mutation
           mutation={SYNC_CART}
           update={this.onSyncCartOnCache}
-          onCompleted={this.startCheckout}
+          onCompleted={this.initiateCheckout}
           ignoreResults={false}
           errorPolicy='all'>
           { (syncCartItem, {loading, error, data}) => {
             return (
               <TouchableOpacity
                 onPress={() => this.onStartSyncCart(syncCartItem)}
-                disabled={loading || !isCheckoutValid}
+                disabled={
+                  loading ||
+                  isInitiatingCheckout ||
+                  !isCheckoutValid}
                 style={{
                   height: 50,
                   backgroundColor: isCheckoutValid ? Colors.green_light : Colors.brown_light,
@@ -87,7 +122,7 @@ class Footer extends Component {
                   justifyContent: 'center',
                 }}
                 >
-                {loading &&
+                {(loading || isInitiateCheckoutError) &&
                   <DotIndicator
                     count={4}
                     size={7}
@@ -95,7 +130,7 @@ class Footer extends Component {
                     animationDuration={800}
                   />
                 }
-                {!loading &&
+                {(!loading && !isInitiateCheckoutError) &&
                   <Text style={{color: 'white'}}>
                     Checkout
                   </Text>

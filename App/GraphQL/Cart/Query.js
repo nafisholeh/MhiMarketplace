@@ -16,3 +16,20 @@ export const FETCH_CART = gql`
     }
   }
 `
+
+export const FETCH_SELECTED_CART = gql`
+  query fetchSelectedCart($user_id: ID!) {
+    selectedCart(user_id: $user_id) {
+      _id
+      product {
+        _id
+        title
+        photo
+        price
+        discount
+      }
+      qty
+      selected
+    }
+  }
+`

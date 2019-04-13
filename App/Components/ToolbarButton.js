@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { TouchableOpacity, Image, StyleSheet } from 'react-native';
 
-import { Images } from 'Themes';
+import { Images, Metrics } from 'Themes';
 
 class ToolbarButton extends Component {
   render() {
-    const { navigation } = this.props;
+    const { navigation, onPress } = this.props;
     return (
       <TouchableOpacity 
-        onPress={() => navigation.navigate('AddressInput')}>
+        onPress={onPress}
+        style={styles.container}>
         <Image source={Images.add} style={styles.image} />
       </TouchableOpacity>
     )
@@ -16,6 +17,9 @@ class ToolbarButton extends Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: Metrics.baseMargin, 
+  },
   image: {
     width: 25,
     height: 25,

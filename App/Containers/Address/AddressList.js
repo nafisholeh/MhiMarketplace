@@ -19,12 +19,17 @@ class AddressList extends Component {
     const {params = {}} = navigation.state
     return {
       title: 'Alamat Anda',
-      headerRight: (<ToolbarButton navigation={navigation} />),
+      headerRight: (
+        <ToolbarButton
+          onPress={() => navigation.navigate('AddressInput')} 
+        />
+      ),
     }
   }
   
   startAddingAddress = () => {
-    
+    const { navigation } = this.props;
+    navigation.navigate('AddressInput');
   };
   
   renderAddressItems = ({item, index}) => {
@@ -58,6 +63,7 @@ class AddressList extends Component {
                   />
                 )
               }
+              console.tron.log('AddressList/render', address)
               return (
                 <ScrollView style={{flex:1}}>
                   <FlatList

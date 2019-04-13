@@ -9,7 +9,8 @@ export default {
     'Signup',
     'Cart',
     'Checkout',
-    'AddressList'
+    'AddressList',
+    'AddressInput'
   ],
   pageState: {
     ERROR: 'error',
@@ -19,5 +20,5 @@ export default {
     LOCATION: 'location',
     EMPTY_LOCATION: 'location',
   },
-  debounceInterval: 2000,
+  debounceInterval: 1000,
 }

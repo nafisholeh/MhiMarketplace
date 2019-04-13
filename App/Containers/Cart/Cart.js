@@ -28,6 +28,14 @@ class Cart extends Component {
     }
   }
   
+  componentDidMount() {
+    const { userId } = this.props;
+    const { cart } = ApolloClientProvider.client.cache.readQuery({
+      query: FETCH_CART, variables: { user_id: userId }
+    })
+    console.tron.log('Cart didMount', cart);
+  }
+  
   startBuying = () => {
     const { navigation } = this.props;
     navigation.navigate('Home');
@@ -67,53 +75,51 @@ class Cart extends Component {
     }
     return (
       <View style={{flex:1}}>
-        <Query 
-          query={FETCH_CART}
-          variables={{ user_id: userId }}>
-          {({ loading, error, data, refetch }) => {
-            if (loading) {
-              return (<View></View>)
-            } else if (error) {
-              return (<View></View>)
-            } else if (data) {
-              const { cart } = data;
-              if (!cart) {
-                return (
-                  <StatePage 
-                    title="Keranjang belanja kosong"
-                    subtitle="ayo mulai belanja"
-                    buttonTitle="Belanja Yuk"
-                    icon={AppConfig.pageState.EMPTY_CART}
-                    onPress={this.startBuying}
-                  />
-                )
-              }
-              if (cart && cart.length === 0) {
-                return (
-                  <StatePage 
-                    title="Keranjang belanja kosong"
-                    subtitle="ayo mulai belanja"
-                    buttonTitle="Belanja Yuk"
-                    icon={AppConfig.pageState.EMPTY_CART}
-                    onPress={this.startBuying}
-                  />
-                )
-              }
-              return (
-                <React.Fragment>
-                  <ScrollView style={{flex:1}}>
-                    <FlatList
-                      keyExtractor={(item, id) => item._id.toString()}
-                      data={cart} 
-                      renderItem={this.renderCartItems}
+        <ScrollView style={{flex:1}}>
+          <Query 
+            query={FETCH_CART}
+            variables={{ user_id: userId }}>
+            {({ loading, error, data, refetch }) => {
+              if (loading) {
+                return (<View></View>)
+              } else if (error) {
+                return (<View></View>)
+              } else if (data) {
+                const { cart } = data;
+                if (!cart) {
+                  return (
+                    <StatePage 
+                      title="Keranjang belanja kosong"
+                      subtitle="ayo mulai belanja"
+                      buttonTitle="Belanja Yuk"
+                      icon={AppConfig.pageState.EMPTY_CART}
+                      onPress={this.startBuying}
                     />
-                  </ScrollView>
-                  <Footer data={cart} />
-                </React.Fragment>
-              )
-            }
-          }}
-        </Query>
+                  )
+                }
+                if (cart && cart.length === 0) {
+                  return (
+                    <StatePage 
+                      title="Keranjang belanja kosong"
+                      subtitle="ayo mulai belanja"
+                      buttonTitle="Belanja Yuk"
+                      icon={AppConfig.pageState.EMPTY_CART}
+                      onPress={this.startBuying}
+                    />
+                  )
+                }
+                return (
+                  <FlatList
+                    keyExtractor={(item, id) => item._id.toString()}
+                    data={cart} 
+                    renderItem={this.renderCartItems}
+                  />
+                )
+              }
+            }}
+          </Query>
+        </ScrollView>
+        <Footer />
       </View>
     )
   }

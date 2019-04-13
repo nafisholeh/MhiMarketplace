@@ -11,7 +11,7 @@ import { parseToRupiah, calcDiscount } from 'Lib';
 import { Colors } from 'Themes';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { SYNC_CART } from 'GraphQL/Cart/Mutation';
-import { getCartItems } from 'Redux/CartRedux';
+import { getCartItems, getCartTotalGrossPrice } from 'Redux/CartRedux';
 import { getUserId } from 'Redux/SessionRedux';
 
 class Footer extends Component {
@@ -49,21 +49,10 @@ class Footer extends Component {
       data: { cart }
     });
   }
-  
-  calcGrossTotal = () => {
-    const { data } = this.props;
-    if (!data) return 0;
-    return data.reduce(
-      (total, item) => 
-        total + (item.qty * calcDiscount(
-          item.product.price,
-          item.product.discount
-        ))
-    , 0); 
-  }
 
   render() {
-    const grossPriceTotal = this.calcGrossTotal();
+    const { grossTotal } = this.props;
+    console.tron.log('Footer/render', grossTotal, this.props)
     return (
       <View style={{
           backgroundColor: Colors.white,
@@ -73,7 +62,7 @@ class Footer extends Component {
         <View style={{ padding: 15 }}>
           <Text style={{ fontSize: 16 }}>Total</Text>
           <Text style={{ fontSize: 22, fontWeight: 'bold' }}>
-            {parseToRupiah(grossPriceTotal)}
+            {parseToRupiah(grossTotal)}
           </Text>
         </View>
         <Mutation
@@ -135,11 +124,13 @@ Footer.propTypes = {
     })
   ),
   userId: string,
+  grossTotal: number,
 };
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
   cartItems: getCartItems(),
+  grossTotal: getCartTotalGrossPrice(),
 });
 
 export default connect(mapStateToProps, null)(withNavigation(Footer));

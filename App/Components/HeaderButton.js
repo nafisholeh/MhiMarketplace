@@ -8,11 +8,9 @@ class HeaderButton extends Component {
   render() {
     const { onPress, icon } = this.props;
     return (
-      <React.Fragment>
-        <TouchableOpacity onPress={onPress} style={styles.container}>
-          <Image source={icon} style={styles.icon} />
-        </TouchableOpacity>
-      </React.Fragment>
+      <TouchableOpacity onPress={onPress} style={styles.container}>
+        <Image source={icon} style={styles.icon} />
+      </TouchableOpacity>
     )
   }
 }

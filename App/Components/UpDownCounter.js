@@ -17,7 +17,7 @@ class UpDownCounter extends Component {
     this.debounceCounterChanges = 
       debounce(
         AppConfig.debounceInterval, 
-        counter => this.props.onCounterChanged(counter)
+        counter => this.props.onCounterChanged(parseInt(counter, 10))
       );
   }
   
@@ -55,9 +55,11 @@ class UpDownCounter extends Component {
   overwriteCounter = number => {
     this.setState({
       counter: number
-    }, () => {
-      this.callbackCounterChange();
     });
+  }
+  
+  onBlurOverwriteCounter = () => {
+    this.callbackCounterChange();
   }
   
   onFinishedOverwrite = (e) => {
@@ -80,6 +82,7 @@ class UpDownCounter extends Component {
         <TextInput
           underlineColorAndroid='rgba(0,0,0,0)'
           onChangeText={this.overwriteCounter}
+          onBlur={this.onBlurOverwriteCounter}
           onEndEditing={this.onFinishedOverwrite}
           value={counter.toString()}
           selectTextOnFocus

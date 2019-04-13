@@ -161,13 +161,18 @@ export const toggleSelectItem = (state, { product_id, status = true }) => {
 }
 
 export const deleteCartItem = (state, { product_id }) => {
-  const cart = state.cart;
+  const { cart, selected } = state;
   const updateIndex = cart.findIndex(n => n.product._id === product_id);
+  const removedSelectedIndex = selected.indexOf(product_id);
   return state.merge({ 
     cart: [
       ...cart.slice(0, updateIndex),
       ...cart.slice(updateIndex + 1)
-    ]
+    ],
+    selected: removedSelectedIndex > -1 ? [
+      ...selected.slice(0, removedSelectedIndex),
+      ...selected.slice(removedSelectedIndex + 1)
+    ] : selected
   });
 }
 

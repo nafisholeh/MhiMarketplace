@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Text, Image, View, TouchableOpacity } from 'react-native';
+import { Text, Image, View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { shape, number, string, func, arrayOf } from 'prop-types';
-import { compose } from 'react-apollo';
+import { compose, Mutation } from 'react-apollo';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { withNavigation } from 'react-navigation';
@@ -11,7 +11,7 @@ import { Images } from 'Themes';
 import styles from './Styles';
 import { getUserId } from 'Redux/SessionRedux';
 import { getCartItemIds } from 'Redux/CartRedux';
-import { UPDATE_CART_ITEM } from 'GraphQL/Cart/Mutation';
+import { UPDATE_CART_ITEM, UPDATE_CART_ITEM_SCHEMA, cacheUpdateCartItem } from 'GraphQL/Cart/Mutation';
 
 class Item extends Component {
   
@@ -20,17 +20,8 @@ class Item extends Component {
     navigation.navigate('ProductDetail', { data });
   }
   
-  onCartClicked = () => {
-    const { updateCartItem, data: { _id }, userId } = this.props;
-    updateCartItem({
-      user_id: userId,
-      product_id: _id,
-      qty: null,
-    })
-  }
-  
   render() {
-    const { data, cartItemIds } = this.props
+    const { data, cartItemIds, userId } = this.props
     if (!data) {
       return <View />
     }
@@ -58,12 +49,31 @@ class Item extends Component {
             <Text>{parseToRupiah(calcDiscount(price, discount))}</Text>
           </View>
           { !isInsideCart &&
-            <TouchableOpacity
-              style={styles.product__item_cart}
-              onPress={this.onCartClicked}
-            >
-              <Image source={Images.cart} style={styles.itemImage} />
-            </TouchableOpacity>
+            <Mutation
+              mutation={UPDATE_CART_ITEM_SCHEMA}
+              variables={{ user_id: userId, product_id: productId, qty: null }}
+              update={(cache, data) => cacheUpdateCartItem(cache, data, productId)}
+              onError={(error) => {}}
+              ignoreResults={false}
+              errorPolicy='all'>
+              { (updateCartItem, {loading, error, data}) => {
+                if (data) return (<View/>);
+                return (
+                  <TouchableOpacity
+                    style={styles.product__item_cart}
+                    onPress={() => updateCartItem()}
+                  >
+                    {loading && (<ActivityIndicator size="small" />)}
+                    {!loading && (
+                      <Image
+                        source={error ? Images.syncFailed : Images.cart}
+                        style={styles.itemImage}
+                      />
+                    )}
+                  </TouchableOpacity>
+                );
+              }}
+            </Mutation>
           }
         </View>
       </TouchableOpacity>

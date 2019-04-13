@@ -48,6 +48,42 @@ export const UPDATE_CART_ITEM_SCHEMA = gql`
   }
 `
 
+export const cacheUpdateCartItem = ( cache, { data }, productId ) => {
+  try {
+    console.tron.log('cacheUpdateCartItem', cache, data, );
+    const { session: { user: { _id: user_id } }} = store.getState();
+    const { cart } = cache.readQuery({ query: FETCH_CART, variables: { user_id } });
+    const updateIndex = cart.findIndex(n => n.product._id === productId);
+    if (updateIndex === -1) {
+      const { updateItem } = data;
+      store.dispatch(CartActions.storeCart(updateItem));
+      cache.writeQuery({
+        query: FETCH_CART,
+        variables: { user_id },
+        data: { cart: updateItem }
+      });
+      console.tron.log('cacheUpdateCartItem/addCart', updateItem);
+      return;
+    }
+    const updatedCart = update(
+      cart, 
+      {  
+        [updateIndex]: {
+          $merge: { qty: qty }
+        }
+      }
+    );
+    cache.writeQuery({                                                          // ubah kuantitas item keranjang belanja di client cache
+      query: FETCH_CART,                                                    // trigger UI Query dari GET_CART_ITEMS utk re-render
+      variables: { user_id },
+      data: { cart: updatedCart }
+    });
+    console.tron.log('cacheUpdateCartItem/updateCart', updatedCart);
+  } catch(err) {
+    return null;
+  }
+};
+
 // mutation props utk handle sinkronisasi dan mutasi ubah kuantitas item di keranjang belanja
 export const UPDATE_CART_ITEM = graphql(UPDATE_CART_ITEM_SCHEMA, {
   props: ({ ownProps, mutate }) => ({

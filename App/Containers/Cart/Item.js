@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { Text, Image, View, TouchableOpacity, ActivityIndicator, CheckBox } from 'react-native';
 import { shape, number, string, func, arrayOf } from 'prop-types';
-import { debounce } from 'throttle-debounce';
 import { Mutation, compose } from 'react-apollo';
 import { connect } from 'react-redux';
 import update from 'immutability-helper';
 import { createStructuredSelector } from 'reselect';
 
-import AppConfig from 'Config/AppConfig';
 import { parseToRupiah, isString, calcDiscount } from 'Lib';
 import { UpDownCounter } from 'Components';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
@@ -25,19 +23,6 @@ class Item extends Component {
     this.state = {
       selected: selected.indexOf(productId) > -1,
     };
-    this.debounceCartItemUpdate = 
-      debounce(
-        AppConfig.debounceInterval, 
-        counter => this.onCounterChanged(counter)
-      );
-  }
-  
-  onDebounceCounterChanged = counter => {
-    this.debounceCartItemUpdate(
-      isString(counter) ?
-        parseInt(counter, 10) :
-        counter
-    );
   }
   
   onCounterChanged = counter => {
@@ -96,7 +81,7 @@ class Item extends Component {
           }
           <UpDownCounter
             initCounter={qty}
-            onCounterChanged={this.onDebounceCounterChanged}
+            onCounterChanged={this.onCounterChanged}
           />
         </View>
         <Mutation

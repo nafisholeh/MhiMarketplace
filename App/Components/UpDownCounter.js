@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Image, TextInput, StyleSheet } from 'react-native';
 import { number, func } from 'prop-types';
+import { debounce } from 'throttle-debounce';
 
+import AppConfig from 'Config/AppConfig';
 import { Images } from 'Themes';
 
 const minAllowed = 0;
@@ -12,6 +14,11 @@ class UpDownCounter extends Component {
     this.state = {
       counter: minAllowed,
     };
+    this.debounceCounterChanges = 
+      debounce(
+        AppConfig.debounceInterval, 
+        counter => this.props.onCounterChanged(counter)
+      );
   }
   
   componentDidMount() {
@@ -24,10 +31,9 @@ class UpDownCounter extends Component {
     this.setState({ counter: initCounter });
   }
   
-  callbackCounterChange = () => {
-    const { onCounterChanged } = this.props;
+  callbackCounterChange = () => {  
     const { counter } = this.state;
-    onCounterChanged(counter);
+    this.debounceCounterChanges(counter);
   }
   
   descreaseCounter = () => {

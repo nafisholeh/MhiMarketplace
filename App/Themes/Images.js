@@ -8,6 +8,7 @@ const images = {
   location: require(pathPrefix+'location.png'),
   add: require(pathPrefix+'add.png'),
   syncFailed: require(pathPrefix+'sync_failed.png'),
+  back: require(pathPrefix+'left_arrow.png'),
 }
 
 export default images

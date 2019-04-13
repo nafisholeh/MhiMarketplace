@@ -17,6 +17,13 @@ class Setup extends Component {
     this.setupCart();
   }
   
+  componentDidUpdate(prevProps) {
+    if(prevProps.isFetchingCart && !this.props.isFetchingCart) {
+      const { navigation } = this.props;
+      navigation.navigate('Home');
+    }
+  }
+  
   setupCart = () => {
     this.fetchCart()
     .then(res => {

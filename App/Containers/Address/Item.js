@@ -5,6 +5,7 @@ import { Mutation } from 'react-apollo';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
+import ApolloClientProvider from 'Services/ApolloClientProvider';
 import {
   getReadableAddress,
   getReadableSubdistrict,
@@ -13,9 +14,24 @@ import {
 import AppConfig from 'Config/AppConfig';
 import { Metrics, Images } from 'Themes';
 import { SELECT_ADDRESS, cacheSelectAddress } from 'GraphQL/Address/Mutation';
+import { FETCH_SELECTED_ADDRESS } from 'GraphQL/Address/Query';
 import { getUserId } from 'Redux/SessionRedux';
 
 class AddressItem extends Component {
+  
+  syncSelectedAddressOnAll = selectAddress => {
+    // let selected address on checkout page got updated quickly
+    const { data: selectedAddress, userId } = this.props;
+    ApolloClientProvider.client.cache.writeQuery({
+      query: FETCH_SELECTED_ADDRESS,
+      variables: { user_id: userId },
+      data: { selectedAddress }
+    });
+    
+    // sync selected address on server and local
+    selectAddress();  
+  }
+  
   render() {
     const {
       data: address,
@@ -43,7 +59,7 @@ class AddressItem extends Component {
                 borderBottomColor: 'gray',
                 borderBottomWidth: 0.5,
               }}
-              onPress={() => selectAddress()}
+              onPress={() => this.syncSelectedAddressOnAll(selectAddress)}
               disabled={isDisabled}
             >
               <View style={{

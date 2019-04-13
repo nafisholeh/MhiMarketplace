@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Query, Mutation, compose } from 'react-apollo';
 import { string, func, number } from 'prop-types';
@@ -38,11 +38,12 @@ class Cart extends Component {
     navigation.navigate('Signin');
   };
   
-  renderCartItems = (type, data) => {
+  renderCartItems = ({ item, index }) => {
     const { userId } = this.props;
     return (
       <Item 
-        data={data}
+        key={item._id}
+        data={item}
         userId={userId}
         navigation={this.props.navigation}
       />
@@ -101,14 +102,11 @@ class Cart extends Component {
               return (
                 <React.Fragment>
                   <ScrollView style={{flex:1}}>
-                    <View style={{ minHeight: 100 }}>
-                      <OptimizedList
-                        itemWidth={Metrics.deviceWidth}
-                        itemHeight={100}
-                        data={cart} 
-                        renderRow={this.renderCartItems}
-                      />
-                    </View>
+                    <FlatList
+                      keyExtractor={(item, id) => item._id.toString()}
+                      data={cart} 
+                      renderItem={this.renderCartItems}
+                    />
                   </ScrollView>
                   <Footer data={cart} />
                 </React.Fragment>

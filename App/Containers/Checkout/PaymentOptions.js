@@ -34,7 +34,13 @@ class PaymentOptions extends Component {
   render() {
     const { cod, transfer } = this.state;
     return (
-      <View style={{ marginHorizontal: Metrics.baseMargin, marginTop: Metrics.smallMargin }}>
+      <View
+        style={{
+          marginHorizontal: Metrics.baseMargin,
+          marginTop: Metrics.smallMargin,
+          marginBottom: Metrics.baseMargin,
+        }}
+      >
         <View 
           style={{
             flexDirection: 'row',

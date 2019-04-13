@@ -6,6 +6,7 @@ import AddressCheckout from 'Containers/Address/AddressCheckout';
 import CheckoutList from './CheckoutList';
 import DeliveryOptions from './DeliveryOptions';
 import PaymentOptions from './PaymentOptions';
+import PaymentDetails from './PaymentDetails';
 import { Metrics } from 'Themes';
 
 class Checkout extends Component {
@@ -29,6 +30,7 @@ class Checkout extends Component {
           <DeliveryOptions />
           <CheckoutTitle title="Pembayaran" />
           <PaymentOptions />
+          <PaymentDetails />
         </ScrollView>
       </View>
     )

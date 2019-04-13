@@ -11,6 +11,9 @@ import { calcDiscount } from 'Lib';
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
+  onStartFetchingCart: null,
+  onSuccessFetchingCart: null,
+  onErrorFetchingCart: ['error'],
   fetchCart: null,
   storeCart: ['cart'],
   updateCartQty: ['product_id', 'qty'],
@@ -24,6 +27,9 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
+  isFetching: false,
+  isSuccess: null,
+  errorInfo: null,
   cart: null,
   selected: [],
 })
@@ -31,6 +37,15 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const cartSelectors = () => state => state.cart
+
+export const isFetchingCart = () =>
+  createSelector(cartSelectors(), state => state.isFetching)
+
+export const isFetchingCartSuccess = () =>
+  createSelector(cartSelectors(), state => !state.isFetching && state.isSuccess)
+
+export const isFetchingCartError = () =>
+  createSelector(cartSelectors(), state => !state.isFetching && state.error)
 
 export const getCartItems = () =>
   createSelector(
@@ -77,6 +92,18 @@ export const getCartItemSelected = () =>
   )
 
 /* ------------- Reducers ------------- */
+
+export const onStartFetchingCart = state => {
+  return state.merge({ isFetching: true, isSuccess: null, errorInfo: null });
+}
+
+export const onSuccessFetchingCart = state => {
+  return state.merge({ isFetching: false, isSuccess: true, errorInfo: null });
+}
+
+export const onErrorFetchingCart = (state, { error }) => {
+  return state.merge({ isFetching: false, isSuccess: true, errorInfo: error });
+}
 
 export const fetchCart = (state) => {
   const { session: { user } } = store.getState();
@@ -137,6 +164,9 @@ export const deleteCartItem = (state, { product_id }) => {
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
+  [Types.ON_START_FETCHING_CART]: onStartFetchingCart,
+  [Types.ON_SUCCESS_FETCHING_CART]: onSuccessFetchingCart,
+  [Types.ON_ERROR_FETCHING_CART]: onErrorFetchingCart,
   [Types.FETCH_CART]: fetchCart,
   [Types.STORE_CART]: storeCart,
   [Types.UPDATE_CART_QTY]: updateCartQty,

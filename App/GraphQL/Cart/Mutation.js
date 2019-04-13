@@ -6,6 +6,23 @@ import { store } from 'Containers/App';
 import CartActions from 'Redux/CartRedux';
 import { FETCH_CART } from './Query';
 
+export const SYNC_CART = gql`
+  mutation syncCartItem($user_id: String!, $cart_item: [SyncCartItem]) {
+    syncCart(user_id: $user_id, cart_item: $cart_item) {
+      _id
+      product {
+        _id
+        title
+        photo
+        price
+        discount
+      }
+      qty
+      selected
+    }
+  }
+`
+
 export const DELETE_CART_ITEM = gql`
   mutation deleteCartItem($user_id: String!, $product_id: String!) {
     deleteItem(user_id: $user_id, product_id: $product_id) {
@@ -26,6 +43,7 @@ export const UPDATE_CART_ITEM_SCHEMA = gql`
         discount
       }
       qty
+      selected
     }
   }
 `
@@ -42,12 +60,6 @@ export const UPDATE_CART_ITEM = graphql(UPDATE_CART_ITEM_SCHEMA, {
           try {
             const { cart } = cache.readQuery({ query: FETCH_CART, variables: { user_id } });
             const updateIndex = cart.findIndex(n => n.product._id === product_id);
-            console.tron.display({
-              name: 'UPDATE_CART_ITEM start',
-              value: {
-                cache, data, cart, updateIndex
-              }
-            })
             if (updateIndex === -1) {
               const { updateItem } = data;
               store.dispatch(CartActions.storeCart(updateItem));
@@ -66,13 +78,6 @@ export const UPDATE_CART_ITEM = graphql(UPDATE_CART_ITEM_SCHEMA, {
                 }
               }
             );
-            console.tron.display({
-              name: 'UPDATE_CART_ITEM',
-              value: {
-                cart, updateIndex, newCart, product_id
-              }
-            })
-            store.dispatch(CartActions.storeCart(newCart));
             cache.writeQuery({                                                          // ubah kuantitas item keranjang belanja di client cache
               query: FETCH_CART,                                                    // trigger UI Query dari GET_CART_ITEMS utk re-render
               variables: { user_id },

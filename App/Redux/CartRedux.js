@@ -32,6 +32,16 @@ export const INITIAL_STATE = Immutable({
 
 export const cartSelectors = () => state => state.cart
 
+export const getCartItems = () =>
+  createSelector(
+    cartSelectors(),
+    state => {
+      const { cart } = state;
+      if (!cart) return [];
+      return cart;
+    }
+  )
+
 export const getCartItemIds = () =>
   createSelector(
     cartSelectors(),

@@ -12,6 +12,7 @@ export const FETCH_CART = gql`
         discount
       }
       qty
+      selected
     }
   }
 `

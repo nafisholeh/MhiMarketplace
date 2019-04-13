@@ -121,19 +121,15 @@ class Detail extends Component {
                     ignoreResults={false}
                     errorPolicy='all'>
                     { (updateCartItem, {loading, error, data}) => {
-                      if (data) {
-                        return (
-                          <Text style={{ color: 'red', marginBottom: 20 }}>
-                            Telah masuk keranjang belanja
-                          </Text>
-                        );
-                      }
+                      const isAdded = isInsideCart || data;
                       return (
                         <TouchableOpacity
-                          onPress={() => this.onAddToCart(updateCartItem, isInsideCart)}
+                          onPress={() => this.onAddToCart(updateCartItem, isAdded)}
                           style={{
-                            height: 50, backgroundColor: !isInsideCart ? Colors.green_light : Colors.brown_dark,
-                            alignItems: 'center', justifyContent: 'center' 
+                            height: 50,
+                            backgroundColor: isAdded ? Colors.brown_dark : Colors.green_light,
+                            alignItems: 'center',
+                            justifyContent: 'center' 
                           }}
                           >
                           {loading && (
@@ -146,7 +142,7 @@ class Detail extends Component {
                           )}
                           {!loading && (
                             <Text style={{color: 'white'}}>
-                              {isInsideCart ? 'Lihat di Keranjang' : 'Pesan Sekarang'}
+                              {isAdded ? 'Lihat di Keranjang' : 'Pesan Sekarang'}
                             </Text>
                           )}
                         </TouchableOpacity>

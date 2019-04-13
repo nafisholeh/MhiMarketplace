@@ -81,9 +81,16 @@ class Detail extends Component {
               const discountRupiah = parseToRupiah(calcDiscount(price, discount));
               return (
                 <View style={styles.container}>
-                  <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                    
-                  </View>
+                  <TouchableOpacity
+                    onPress={() => navigation.goBack()}
+                    style={{ 
+                      width: 40, height: 40, borderRadius: 20, 
+                      backgroundColor: Colors.brown_light,
+                      justifyContent: 'center', alignItems: 'center',
+                      marginLeft: 10, marginTop: 10
+                    }}>
+                    <Image source={Images.back} style={{ width: 25, height: 25, tintColor: 'white' }} />
+                  </TouchableOpacity>
                   <ScrollView style={styles.scrollView}>
                     <Image source={{ uri: photo }} style={{ width: Metrics.deviceWidth, height: 200 }} />
 

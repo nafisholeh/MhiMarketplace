@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { Metrics, ApplicationStyles } from '../../Themes/'
+import { Metrics, Colors, ApplicationStyles } from '../../Themes/'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
@@ -8,6 +8,8 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: Metrics.doubleBaseMargin,
+    borderBottomWidth: 0.4,
+    borderBottomColor: Colors.brown_light
   },
   image: {
     width: 60,
@@ -18,8 +20,4 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
-  detailTitle: { },
-  detailPrice: {
-    marginBottom: Metrics.baseMargin,
-  }
 })

@@ -27,16 +27,16 @@ class Item extends Component {
         <View style={styles.detail}>
           <Text style={styles.detailTitle}>{title}</Text>
           { discount > 0 &&
-            <Text style={styles.detailPrice}>
+            <Text>
               {parseToRupiah(calcDiscount(price, discount))}
             </Text>
           }
           { discount === 0 &&
-            <Text style={styles.detailPrice}>
+            <Text>
               {parseToRupiah(price)}
             </Text>
           }
-          <Text>
+          <Text style={{ alignSelf: 'flex-end' }}>
             {qty} {unit}
           </Text>
         </View>

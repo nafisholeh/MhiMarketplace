@@ -36,3 +36,39 @@ export const cacheAddAddress = ( cache, { data }, dataInput ) => {
     return null;
   }
 };
+
+export const SELECT_ADDRESS = gql`
+  mutation selectAddress($user_id: String!, $_id: String!) {
+    selectAddress(user_id: $user_id, _id: $_id) {
+      _id
+      user_id 
+    }
+  } 
+`
+
+export const cacheSelectAddress = ( cache, { data }, addressId ) => {
+  try {
+    const { session: { user: { _id: userId } }} = store.getState();
+    const { address } = cache.readQuery({
+      query: FETCH_ADDRESS,
+      variables: { user_id: userId } 
+    });
+    const newAddresses = 
+      address.map(item => {
+          if (item.selected && item._id !== addressId) {
+            return Object.assign({}, item, { selected: false })
+          }
+          if (item._id === addressId) {
+            return Object.assign({}, item, { selected: true })
+          }
+          return item
+      });
+    cache.writeQuery({
+      query: FETCH_ADDRESS,
+      variables: { userId },
+      data: { address: newAddresses }
+    });
+  } catch(err) {
+    return null;
+  }
+};

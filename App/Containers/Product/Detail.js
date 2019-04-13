@@ -3,10 +3,11 @@ import { Alert, ScrollView, Text, Image, View, TouchableOpacity } from 'react-na
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import { object, arrayOf, string } from 'prop-types'
-import { Query, compose } from 'react-apollo';
+import { Query, Mutation, compose } from 'react-apollo';
+import { DotIndicator } from 'react-native-indicators';
 
 import { FETCH_PRODUCT_DETAIL } from 'GraphQL/Product/Query';
-import { UPDATE_CART_ITEM } from 'GraphQL/Cart/Mutation';
+import { UPDATE_CART_ITEM, UPDATE_CART_ITEM_SCHEMA, cacheUpdateCartItem } from 'GraphQL/Cart/Mutation';
 import { getUser } from 'Redux/SessionRedux';
 import { getCartItemIds } from 'Redux/CartRedux';
 
@@ -17,7 +18,7 @@ import styles from './Styles'
 
 class Detail extends Component {
   
-  _onAddCart = () => {
+  onAddToCart = updateCartItem => {
     const { user, navigation } = this.props;
     if (!user) {
       Alert.alert(
@@ -29,19 +30,8 @@ class Detail extends Component {
         {cancelable: false},
       );
     } else {
-      this.updateCart();
-      this.openCart();
+      updateCartItem();
     }
-  }
-  
-  updateCart = () => {
-    const { updateCartItem, user: { _id: userId } } = this.props;
-    const { navigation: { state: { params: { data: { _id: productId } }}} } = this.props;
-    updateCartItem({
-      user_id: userId,
-      product_id: productId,
-      qty: null
-    });
   }
   
   openSignin = () => {
@@ -49,18 +39,17 @@ class Detail extends Component {
     navigation.navigate('Signin');
   }
   
-  openCart = () => {
-    const { navigation } = this.props;
-    navigation.navigate('Cart');
-  }
-  
   render () {
-    const { navigation: { state: { params: { data: { _id } }}}, cartItemIds } = this.props;
-    const isInsideCart = cartItemIds.indexOf(_id ) > -1;
+    const { 
+      navigation: { state: { params: { data: { _id: productId } }}},
+      cartItemIds,
+      user: { _id: userId }
+    } = this.props;
+    const isInsideCart = cartItemIds.indexOf(productId ) > -1;
     return (
       <View style={{flex: 1}}>
         <Query 
-          variables={{ _id: _id }}
+          variables={{ _id: productId }}
           query={FETCH_PRODUCT_DETAIL}>
           {({ loading, error, data, refetch }) => {
             if(loading) {
@@ -100,17 +89,46 @@ class Detail extends Component {
                     }
                   </ScrollView>
                   { !isInsideCart &&
-                    <TouchableOpacity
-                      onPress={() => this._onAddCart()}
-                      style={{
-                        height: 50, backgroundColor: 'gray',
-                        alignItems: 'center', justifyContent: 'center'
+                    <Mutation
+                      mutation={UPDATE_CART_ITEM_SCHEMA}
+                      variables={{ user_id: userId, product_id: productId, qty: null }}
+                      update={(cache, data) => cacheUpdateCartItem(cache, data, productId)}
+                      onError={(error) => {}}
+                      ignoreResults={false}
+                      errorPolicy='all'>
+                      { (updateCartItem, {loading, error, data}) => {
+                        if (data) {
+                          return (
+                            <Text style={{ color: 'red', marginBottom: 20 }}>
+                              Telah masuk keranjang belanja
+                            </Text>
+                          );
+                        }
+                        return (
+                          <TouchableOpacity
+                            onPress={() => this.onAddToCart(updateCartItem)}
+                            style={{
+                              height: 50, backgroundColor: 'gray',
+                              alignItems: 'center', justifyContent: 'center'
+                            }}
+                            >
+                            {loading && (
+                              <DotIndicator
+                                count={4}
+                                size={7}
+                                color='white'
+                                animationDuration={800}
+                              />
+                            )}
+                            {!loading && (
+                              <Text style={{color: 'white'}}>
+                                Pesan Sekarang
+                              </Text>
+                            )}
+                          </TouchableOpacity>
+                        );
                       }}
-                      >
-                      <Text style={{color: 'white'}}>
-                        Pesan Sekarang
-                      </Text>
-                    </TouchableOpacity>
+                    </Mutation>
                   }
                 </View>
               )

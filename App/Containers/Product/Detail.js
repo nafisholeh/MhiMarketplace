@@ -11,14 +11,27 @@ import { UPDATE_CART_ITEM, UPDATE_CART_ITEM_SCHEMA, cacheUpdateCartItem } from '
 import { getUser } from 'Redux/SessionRedux';
 import { getCartItemIds } from 'Redux/CartRedux';
 
-import { Images, Metrics } from 'Themes'
-import { OptimizedList } from 'Components'
+import { Images, Metrics, Colors } from 'Themes'
+import { OptimizedList, HeaderButton } from 'Components'
 import { parseToRupiah, calcDiscount, getReadableDate } from 'Lib'
 import styles from './Styles'
 
 class Detail extends Component {
   
-  onAddToCart = updateCartItem => {
+  static navigationOptions = ({navigation}) => {
+    const {params = {}} = navigation.state
+    return {
+      header: <View></View>,
+      headerRight: (
+        <HeaderButton
+          onPress={() => navigation.navigate('Cart')}
+          icon={Images.cart}
+        />
+      ),
+    }
+  }
+  
+  onAddToCart = (updateCartItem, isInsideCart) => {
     const { user, navigation } = this.props;
     if (!user) {
       Alert.alert(
@@ -30,7 +43,11 @@ class Detail extends Component {
         {cancelable: false},
       );
     } else {
-      updateCartItem();
+      if (isInsideCart) {
+        navigation.navigate('Cart');
+      } else {
+        updateCartItem();
+      }
     }
   }
   
@@ -43,7 +60,8 @@ class Detail extends Component {
     const { 
       navigation: { state: { params: { data: { _id: productId } }}},
       cartItemIds,
-      user: { _id: userId }
+      user: { _id: userId },
+      navigation
     } = this.props;
     const isInsideCart = cartItemIds.indexOf(productId ) > -1;
     return (
@@ -63,6 +81,9 @@ class Detail extends Component {
               const discountRupiah = parseToRupiah(calcDiscount(price, discount));
               return (
                 <View style={styles.container}>
+                  <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                    
+                  </View>
                   <ScrollView style={styles.scrollView}>
                     <Image source={{ uri: photo }} style={{ width: Metrics.deviceWidth, height: 200 }} />
 
@@ -84,52 +105,47 @@ class Detail extends Component {
                     </View>
                     <Text style={{ marginBottom: 5 }}>Kadaluarsa: {getReadableDate(expired_date, 'DD-MM-YYYY', 'id', 'DD MMM YYYY')}</Text>
                     <Text style={{ marginBottom: 20 }}>{description}</Text>
-                    { isInsideCart &&
-                      <Text style={{ color: 'red', marginBottom: 20 }}>Telah masuk keranjang belanja</Text>
-                    }
                   </ScrollView>
-                  { !isInsideCart &&
-                    <Mutation
-                      mutation={UPDATE_CART_ITEM_SCHEMA}
-                      variables={{ user_id: userId, product_id: productId, qty: null }}
-                      update={(cache, data) => cacheUpdateCartItem(cache, data, productId)}
-                      onError={(error) => {}}
-                      ignoreResults={false}
-                      errorPolicy='all'>
-                      { (updateCartItem, {loading, error, data}) => {
-                        if (data) {
-                          return (
-                            <Text style={{ color: 'red', marginBottom: 20 }}>
-                              Telah masuk keranjang belanja
-                            </Text>
-                          );
-                        }
+                  <Mutation
+                    mutation={UPDATE_CART_ITEM_SCHEMA}
+                    variables={{ user_id: userId, product_id: productId, qty: null }}
+                    update={(cache, data) => cacheUpdateCartItem(cache, data, productId)}
+                    onError={(error) => {}}
+                    ignoreResults={false}
+                    errorPolicy='all'>
+                    { (updateCartItem, {loading, error, data}) => {
+                      if (data) {
                         return (
-                          <TouchableOpacity
-                            onPress={() => this.onAddToCart(updateCartItem)}
-                            style={{
-                              height: 50, backgroundColor: 'gray',
-                              alignItems: 'center', justifyContent: 'center'
-                            }}
-                            >
-                            {loading && (
-                              <DotIndicator
-                                count={4}
-                                size={7}
-                                color='white'
-                                animationDuration={800}
-                              />
-                            )}
-                            {!loading && (
-                              <Text style={{color: 'white'}}>
-                                Pesan Sekarang
-                              </Text>
-                            )}
-                          </TouchableOpacity>
+                          <Text style={{ color: 'red', marginBottom: 20 }}>
+                            Telah masuk keranjang belanja
+                          </Text>
                         );
-                      }}
-                    </Mutation>
-                  }
+                      }
+                      return (
+                        <TouchableOpacity
+                          onPress={() => this.onAddToCart(updateCartItem, isInsideCart)}
+                          style={{
+                            height: 50, backgroundColor: !isInsideCart ? Colors.green_light : Colors.brown_dark,
+                            alignItems: 'center', justifyContent: 'center' 
+                          }}
+                          >
+                          {loading && (
+                            <DotIndicator
+                              count={4}
+                              size={7}
+                              color='white'
+                              animationDuration={800}
+                            />
+                          )}
+                          {!loading && (
+                            <Text style={{color: 'white'}}>
+                              {isInsideCart ? 'Lihat di Keranjang' : 'Pesan Sekarang'}
+                            </Text>
+                          )}
+                        </TouchableOpacity>
+                      );
+                    }}
+                  </Mutation>
                 </View>
               )
             }

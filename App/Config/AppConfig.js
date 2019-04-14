@@ -21,4 +21,5 @@ export default {
     EMPTY_LOCATION: 'location',
   },
   debounceInterval: 1000,
+  defaulCourierCost: 25000,
 }

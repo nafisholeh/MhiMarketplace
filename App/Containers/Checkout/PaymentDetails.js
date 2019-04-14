@@ -9,8 +9,10 @@ import styles from './Styles';
 import { parseToRupiah, calcDiscount } from 'Lib';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
+import { FETCH_COURIER_COST } from 'GraphQL/CourierCost/Query';
 import { getUserId } from 'Redux/SessionRedux';
 import { getCartItemSelected } from 'Redux/CartRedux';
+import AppConfig from 'Config/AppConfig';
 
 class PaymentDetails extends Component {
   
@@ -18,13 +20,14 @@ class PaymentDetails extends Component {
     super(props);
     this.state = {
       totalDiscount: 0,
-      courierCost: 0,
+      courierCost: AppConfig.defaulCourierCost,
       totalCost: 0,
     };
   }
   
   componentDidMount() {
     this.setupData();
+    this.setupCourierCost();
   }
   
   getDiscount = data => {
@@ -34,7 +37,23 @@ class PaymentDetails extends Component {
       return total + calcDiscount(price, discount);
     }, 0);
     return total;
-  }
+  };
+  
+  setupCourierCost = async data => {
+    try {
+      const { courierCosts = [] } = ApolloClientProvider.client.cache.readQuery({
+        query: FETCH_COURIER_COST
+      });
+      this.setState({ courierCost: courierCosts[0].cost });
+    } catch (error) {
+      const result = await ApolloClientProvider.client.query({
+        query: FETCH_COURIER_COST
+      });
+      if (!result) return;
+      const { courierCosts = [] } = result;
+      this.setState({ courierCost: courierCosts[0].cost })
+    }
+  };
   
   setupData = () => {
     const { userId, selectedCartItems } = this.props;
@@ -42,12 +61,15 @@ class PaymentDetails extends Component {
     if (selectedCartItems.length > 0) {
       selectedCarts = selectedCartItems;
     } else {
-      const { cart } = ApolloClientProvider.client.cache.readQuery({
-        query: FETCH_CART,
-        variables: { user_id: userId }
-      });
-      if (!cart) return;
-      selectedCarts = cart.filter(n => n.product.selected);
+      try {
+        const data = ApolloClientProvider.client.cache.readQuery({
+          query: FETCH_CART,
+          variables: { user_id: userId }
+        });
+        if (!data) return;
+        const {cart = []} = data;
+        selectedCarts = cart.filter(n => n.product.selected);
+      } catch(error) {}
     }
     this.setState({
       totalDiscount: this.getDiscount(selectedCarts),
@@ -67,16 +89,16 @@ class PaymentDetails extends Component {
       >
         <View style={styles.paymentDetail}>
           <Text>Total diskon</Text>
-          <Text>{parseToRupiah(totalDiscount)}</Text>
+          <Text>{parseToRupiah(totalDiscount) || '-'}</Text>
         </View>
         <View style={styles.paymentDetail}>
           <Text>Harga Kurir</Text>
-          <Text>{parseToRupiah(courierCost)}</Text>
+          <Text>{parseToRupiah(courierCost) || '-'}</Text>
         </View>
         <View style={{ marginHorizontal: Metrics.baseMargin }}>
           <Text>Total yang harus dibayarkan</Text>
           <Text style={{ fontSize: 22, fontWeight: 'bold', textAlign: 'right' }}>
-            {parseToRupiah(totalCost)}
+            {parseToRupiah(totalCost) || '-'}
           </Text>
         </View>
       </View>

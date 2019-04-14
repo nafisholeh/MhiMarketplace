@@ -9,13 +9,22 @@ import { Colors } from 'Themes';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { FETCH_ADDRESS } from 'GraphQL/Address/Query';
+import { FETCH_COURIER_COST } from 'GraphQL/CourierCost/Query';
 import { getUserId } from 'Redux/SessionRedux';
 import CartActions, { isFetchingCart } from 'Redux/CartRedux';
 
 class Setup extends Component {
   
+  constructor(props) {
+    super(props);
+    this.state = {
+      isFetchingCourierCost: false,
+    };
+  }
+  
   componentDidMount() {
-    this.setupCart();
+    this.prefecthCart();
+    this.prefecthCourierCost();
   }
   
   componentDidUpdate(prevProps) {
@@ -25,17 +34,7 @@ class Setup extends Component {
     }
   }
   
-  setupCart = () => {
-    this.fetchCart()
-    .then(res => {
-      console.tron.log('componentDidMount/result', res)  
-    })
-    .catch(err => {
-      console.tron.log('componentDidMount/err', err)  
-    })
-  }
-  
-  fetchCart = async () => {
+  prefecthCart = async () => {
     const { 
       userId: user_id,
       onStartFetchingCart,
@@ -61,13 +60,35 @@ class Setup extends Component {
         reject(err);
       }
     });
-  }
+  };
+  
+  prefecthCourierCost = async () => {
+    this.setState({ isFetchingCourierCost: true });
+    return new Promise((resolve, reject) => {
+      try {
+        ApolloClientProvider.client.query({
+          query: FETCH_COURIER_COST
+        })
+        .then(data => {
+          this.setState({ isFetchingCourierCost: false });
+          resolve(true);
+        }).catch(err => {
+          this.setState({ isFetchingCourierCost: false });
+          reject(err);
+        })
+      } catch(err) {
+        this.setState({ isFetchingCourierCost: false });
+        reject(err);
+      }
+    });
+  };
   
   render() {
     const { isFetchingCart } = this.props;
+    const { isFetchingCourierCost } = this.state;
     return (
       <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
-        {isFetchingCart && (
+        {isFetchingCart && isFetchingCourierCost && (
           <BarIndicator
             color={Colors.green_dark}
             count={5}

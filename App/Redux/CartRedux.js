@@ -87,6 +87,7 @@ export const getCartItemSelected = () =>
     cartSelectors(),
     state => {
       const { cart, selected } = state;
+      if (!cart) return [];
       return cart.filter(m => selected.some(n => m.product._id)) || [];
     }
   )

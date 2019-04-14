@@ -3,7 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Query, Mutation } from 'react-apollo';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { string } from 'prop-types';
+import { string, number, shape } from 'prop-types';
 
 import CheckoutTitle from './CheckoutTitle';
 import AddressCheckout from 'Containers/Address/AddressCheckout';
@@ -15,7 +15,7 @@ import { Metrics, Colors } from 'Themes';
 import { FINISH_CHECKOUT } from 'GraphQL/Checkout/Mutation';
 import { FETCH_CHECKOUT_ITEMS } from 'GraphQL/Checkout/Query';
 import { getUserId } from 'Redux/SessionRedux';
-import { getPaymentOptSelected, getCheckoutId } from 'Redux/CheckoutRedux';
+import { getPaymentOptSelected, getCheckoutId, getPaymentDetails } from 'Redux/CheckoutRedux';
 
 class Checkout extends Component {
   
@@ -27,21 +27,30 @@ class Checkout extends Component {
   }
   
   onFinishCheckout = finishCheckout => {
-    const { paymentOptSelected } = this.props;
+    const { 
+      paymentOptSelected,
+      paymentDetails: {
+        gross = 0,
+        discount = 0,
+        courier = 0,
+        total = 0
+      },
+      checkoutId
+    } = this.props;
     finishCheckout({
       variables: {
-        _id,
+        _id: checkoutId,
         payment_option: paymentOptSelected,
-        gross_price,
-        total_discount,
-        courier_cost,
-        total_cost
+        gross_price: gross,
+        total_discount: discount,
+        courier_cost: courier,
+        total_cost: total
       }
     });
   };
   
   onFinishCheckoutComplete = () => {
-    
+    console.tron.log('onFinishCheckoutComplete')
   };
   
   render() {
@@ -102,12 +111,19 @@ Checkout.propTypes = {
   paymentOptSelected: string,
   userId: string,
   checkoutId: string,
+  paymentDetails: shape({
+    gross: number,
+    discount: number,
+    courier: number,
+    total: number
+  }),
 };
 
 const mapStateToProps = createStructuredSelector({
   paymentOptSelected: getPaymentOptSelected(),
   userId: getUserId(),
   checkoutId: getCheckoutId(),
+  paymentDetails: getPaymentDetails(),
 });
 
 export default connect(mapStateToProps, null)(Checkout);

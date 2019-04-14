@@ -19,6 +19,7 @@ class PaymentDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      grossPrice: 0,
       totalDiscount: 0,
       courierCost: AppConfig.defaulCourierCost,
       totalCost: 0,
@@ -30,22 +31,45 @@ class PaymentDetails extends Component {
     this.setupCourierCost();
   }
   
+  setupData = () => {
+    const { data } = this.props;
+    this.setState({
+      grossPrice: this.getGrossPrice(data),
+      totalDiscount: this.getDiscount(data),
+    }, () => {
+      const { totalDiscount, courierCost } = this.state;
+      this.setState({
+        totalCost: this.getTotalCost(data, courierCost)
+      })
+    });
+  };
+  
+  getGrossPrice = data => {
+    if (!Array.isArray(data)) return 0;
+    const total = data.reduce((total, value) => {
+      const { product: { price = 0, discount = 0}, qty = 0 } = value;
+      return total + (price * qty);
+    }, 0);
+    return total;
+  }
+  
   getDiscount = data => {
     if (!Array.isArray(data)) return 0;
     const total = data.reduce((total, value) => {
-      const { product: { price = 0, discount = 0} } = value;
-      return total + calcDiscount(price, discount);
+      const { product: { price = 0, discount = 0}, qty = 0 } = value;
+      return total + (calcDiscount(price, discount) * qty);
     }, 0);
     return total;
   };
   
-  getTotalCost = data => {
+  getTotalCost = (data, courier = 0) => {
     if (!Array.isArray(data)) return 0;
     const total = data.reduce((total, value) => {
       const { product: { price = 0, discount = 0}, qty = 0 } = value;
       return total + ((price - calcDiscount(price, discount)) * qty);
     }, 0);
-    return total;
+    const allTotal = total + courier
+    return allTotal;
   }
   
   setupCourierCost = async data => {
@@ -60,34 +84,20 @@ class PaymentDetails extends Component {
       });
       if (!result) return;
       const { courierCosts = [] } = result;
-      this.setState({ courierCost: courierCosts[0].cost })
+      this.setState({ 
+        courierCost: courierCosts[0].cost,
+      }, () => {
+        const { totalDiscount, courierCost } = this.state;
+        const { data } = this.props;
+        this.setState({
+          totalCost: this.getTotalCost(data, courierCost)
+        })
+      });
     }
-  };
-  
-  setupData = () => {
-    const { userId, selectedCartItems } = this.props;
-    let selectedCarts = [];
-    if (selectedCartItems.length > 0) {
-      selectedCarts = selectedCartItems;
-    } else {
-      try {
-        const data = ApolloClientProvider.client.cache.readQuery({
-          query: FETCH_CART,
-          variables: { user_id: userId }
-        });
-        if (!data) return;
-        const {cart = []} = data;
-        selectedCarts = cart.filter(n => n.product.selected);
-      } catch(error) {}
-    }
-    this.setState({
-      totalDiscount: this.getDiscount(selectedCarts),
-      totalCost: this.getTotalCost(selectedCarts),
-    });
   };
   
   render() {
-    const { totalDiscount, courierCost, totalCost } = this.state;
+    const { totalDiscount, courierCost, totalCost, grossPrice } = this.state;
     return (
       <View
         style={{
@@ -97,6 +107,10 @@ class PaymentDetails extends Component {
           paddingTop: Metrics.doubleBaseMargin,
         }}
       >
+        <View style={styles.paymentDetail}>
+          <Text>Harga Awal</Text>
+          <Text>{parseToRupiah(grossPrice) || '-'}</Text>
+        </View>
         <View style={styles.paymentDetail}>
           <Text>Anda menghemat</Text>
           <Text
@@ -130,7 +144,7 @@ class PaymentDetails extends Component {
 
 PaymentDetails.propTypes = {
   userId: string,
-  selectedCartItems: arrayOf(
+  data: arrayOf(
     shape({
       product: {
         _id: string,
@@ -146,7 +160,6 @@ PaymentDetails.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
-  selectedCartItems: getCartItemSelected(),
 });
 
 export default connect(mapStateToProps, null)(PaymentDetails);

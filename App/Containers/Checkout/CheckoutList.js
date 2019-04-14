@@ -18,25 +18,14 @@ class CheckoutList extends Component {
   };
   
   render() {
-    const { userId } = this.props;
+    const { data } = this.props;
     return (
       <View style={{flex: 1}}>
-        <Query 
-          query={FETCH_CHECKOUT_ITEMS}
-          variables={{ user_id: userId }}>
-          {({ loading, error, data, refetch }) => {
-            if (loading) return (<View />);
-            else if (error) return (<View />);
-            const { checkout } = data;
-            return (
-              <FlatList
-                keyExtractor={(item, id) => item._id.toString()}
-                data={checkout} 
-                renderItem={this.renderCheckoutItems}
-              />
-            );
-          }}
-        </Query>
+        <FlatList
+          keyExtractor={(item, id) => item._id.toString()}
+          data={data} 
+          renderItem={this.renderCheckoutItems}
+        />
       </View>
     )
   }

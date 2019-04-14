@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { string, arrayOf, shape, number } from 'prop-types';
+import { string, arrayOf, shape, number, func } from 'prop-types';
 
 import { Colors, Metrics } from 'Themes';
 import styles from './Styles';
@@ -12,6 +12,7 @@ import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { FETCH_COURIER_COST } from 'GraphQL/CourierCost/Query';
 import { getUserId } from 'Redux/SessionRedux';
 import { getCartItemSelected } from 'Redux/CartRedux';
+import CheckoutActions from 'Redux/CheckoutRedux';
 import AppConfig from 'Config/AppConfig';
 
 class PaymentDetails extends Component {
@@ -31,6 +32,12 @@ class PaymentDetails extends Component {
     this.setupCourierCost();
   }
   
+  updateRedux = () => {
+    const { updatePaymentDetails } = this.props;
+    const { grossPrice, totalDiscount, totalCost, courierCost } = this.state;
+    updatePaymentDetails(grossPrice, totalDiscount, courierCost, totalCost);
+  }
+  
   setupData = () => {
     const { data } = this.props;
     this.setState({
@@ -40,7 +47,9 @@ class PaymentDetails extends Component {
       const { totalDiscount, courierCost } = this.state;
       this.setState({
         totalCost: this.getTotalCost(data, courierCost)
-      })
+      }, () => {
+        this.updateRedux();
+      });
     });
   };
   
@@ -91,6 +100,8 @@ class PaymentDetails extends Component {
         const { data } = this.props;
         this.setState({
           totalCost: this.getTotalCost(data, courierCost)
+        }, () => {
+          this.updateRedux();
         })
       });
     }
@@ -156,10 +167,16 @@ PaymentDetails.propTypes = {
       qty: number,
     })
   ),
+  updatePaymentDetails: func,
 };
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
 });
 
-export default connect(mapStateToProps, null)(PaymentDetails);
+const mapDispatchToProps = dispatch => ({
+  updatePaymentDetails: (gross, discount, courier, total) => 
+    dispatch(CheckoutActions.updatePaymentDetails(gross, discount, courier, total))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PaymentDetails);

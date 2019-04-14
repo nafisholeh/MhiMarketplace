@@ -16,7 +16,7 @@ import { ADD_CHECKOUT } from 'GraphQL/Checkout/Mutation';
 import {
   getCartItems,
   getCartTotalGrossPrice,
-  getCartItemSelected,
+  getCartItemIdSelected,
   isCheckoutValid
 } from 'Redux/CartRedux';
 import { getUserId } from 'Redux/SessionRedux';
@@ -175,7 +175,7 @@ const mapStateToProps = createStructuredSelector({
   cartItems: getCartItems(),
   grossTotal: getCartTotalGrossPrice(),
   isCheckoutValid: isCheckoutValid(),
-  selectedCartItems: getCartItemSelected(),
+  selectedCartItems: getCartItemIdSelected(),
 });
 
 export default connect(mapStateToProps, null)(withNavigation(Footer));

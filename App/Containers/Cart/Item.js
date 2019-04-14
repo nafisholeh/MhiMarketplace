@@ -11,7 +11,7 @@ import { UpDownCounter } from 'Components';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { cacheSelectCartItem } from 'GraphQL/Cart/Mutation';
 import { UPDATE_CART_ITEM, DELETE_CART_ITEM } from 'GraphQL/Cart/Mutation';
-import CartActions, { getCartItemSelected } from 'Redux/CartRedux';
+import CartActions, { getCartItemIdSelected } from 'Redux/CartRedux';
 import { getUserId } from 'Redux/SessionRedux';
 import styles from './Styles';
 import { Images } from 'Themes';
@@ -130,7 +130,7 @@ Item.propTypes = {
 }
 
 const mapStateToProps = createStructuredSelector({
-  selected: getCartItemSelected(),
+  selected: getCartItemIdSelected(),
   userId: getUserId(),
 });
 

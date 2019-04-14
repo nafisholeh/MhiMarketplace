@@ -86,6 +86,15 @@ export const getCartItemSelected = () =>
   createSelector(
     cartSelectors(),
     state => {
+      const { cart, selected } = state;
+      return cart.filter(m => selected.some(n => m.product._id)) || [];
+    }
+  )
+  
+export const getCartItemIdSelected = () =>
+  createSelector(
+    cartSelectors(),
+    state => {
       const { selected } = state;
       return selected || [];
     }

@@ -5,6 +5,7 @@ import update from 'immutability-helper';
 import { store } from 'Containers/App';
 import CartActions from 'Redux/CartRedux';
 import { FETCH_CART } from './Query';
+import ApolloClientProvider from 'Services/ApolloClientProvider';
 
 export const SYNC_CART = gql`
   mutation syncCartItem($user_id: String!, $cart_item: [SyncCartItem]) {
@@ -82,6 +83,27 @@ export const cacheUpdateCartItem = ( cache, { data }, productId ) => {
   } catch(err) {
     return null;
   }
+};
+
+export const cacheSelectCartItem = (productId, isSelected) => {
+  const { session: { user: { _id: user_id } }} = store.getState();
+  const { cart } = ApolloClientProvider.client.cache.readQuery({
+    query: FETCH_CART,
+    variables: { user_id }
+  });
+  const updateIndex = cart.findIndex(n => n.product._id === productId);
+  ApolloClientProvider.client.cache.writeQuery({
+    query: FETCH_CART,
+    variables: { user_id },
+    data: { cart: update(
+      cart, 
+      {
+        [updateIndex]: {
+          $merge: { selected: isSelected }
+        }
+      }
+    )}
+  });
 };
 
 // mutation props utk handle sinkronisasi dan mutasi ubah kuantitas item di keranjang belanja

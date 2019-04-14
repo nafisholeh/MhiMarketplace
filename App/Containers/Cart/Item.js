@@ -9,6 +9,7 @@ import { createStructuredSelector } from 'reselect';
 import { parseToRupiah, isString, calcDiscount } from 'Lib';
 import { UpDownCounter } from 'Components';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
+import { cacheSelectCartItem } from 'GraphQL/Cart/Mutation';
 import { UPDATE_CART_ITEM, DELETE_CART_ITEM } from 'GraphQL/Cart/Mutation';
 import CartActions, { getCartItemSelected } from 'Redux/CartRedux';
 import { getUserId } from 'Redux/SessionRedux';
@@ -51,6 +52,7 @@ class Item extends Component {
   toggleSelect = state => {
     const { toggleSelectItem, data: { product: { _id } } } = this.props;
     toggleSelectItem(_id, state);
+    cacheSelectCartItem(_id, state);
     this.setState({ selected: state });
   }
   

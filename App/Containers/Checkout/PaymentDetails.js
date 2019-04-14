@@ -98,18 +98,18 @@ class PaymentDetails extends Component {
         }}
       >
         <View style={styles.paymentDetail}>
-          <Text>Total diskon</Text>
+          <Text>Anda menghemat</Text>
           <Text
             style={{
-              color: Colors.red
+              color: Colors.green_light
             }}
           >
-            {parseToRupiah(totalDiscount) || '-'}
+            {`- ${parseToRupiah(totalDiscount)}` || '-'}
           </Text>
         </View>
         <View style={styles.paymentDetail}>
           <Text>Harga Kurir</Text>
-          <Text>{parseToRupiah(courierCost) || '-'}</Text>
+          <Text>{`+ ${parseToRupiah(courierCost)}` || '-'}</Text>
         </View>
         <View style={{ marginHorizontal: Metrics.baseMargin }}>
           <Text>Total yang harus dibayarkan</Text>
@@ -117,7 +117,7 @@ class PaymentDetails extends Component {
               fontSize: 22,
               fontWeight: 'bold',
               textAlign: 'right',
-              color: Colors.green_light
+              color: Colors.red
             }}
           >
             {parseToRupiah(totalCost) || '-'}

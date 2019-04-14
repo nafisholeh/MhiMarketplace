@@ -3,6 +3,8 @@ import { StyleSheet, TouchableOpacity } from 'react-native'
 import { View } from 'react-native-animatable'
 import PropTypes from 'prop-types'
 
+import { Colors } from 'Themes';
+
 const DEFAULT_SIZE_MULTIPLIER = 0.7
 const DEFAULT_OUTER_BORDER_WIDTH_MULTIPLIER = 0.2
 
@@ -59,8 +61,8 @@ RadioButton.propTypes = {
 
 RadioButton.defaultProps = {
   size: 16,
-  innerColor: 'dodgerblue',
-  outerColor: 'dodgerblue',
+  innerColor: Colors.red,
+  outerColor: Colors.red,
   isSelected: false,
   onPress: () => null
 }

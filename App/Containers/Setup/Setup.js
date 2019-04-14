@@ -10,6 +10,7 @@ import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { FETCH_ADDRESS } from 'GraphQL/Address/Query';
 import { FETCH_COURIER_COST } from 'GraphQL/CourierCost/Query';
+import { FETCH_PAYMENT_OPTION } from 'GraphQL/paymentOptions/Query';
 import { getUserId } from 'Redux/SessionRedux';
 import CartActions, { isFetchingCart } from 'Redux/CartRedux';
 
@@ -19,20 +20,31 @@ class Setup extends Component {
     super(props);
     this.state = {
       isFetchingCourierCost: false,
+      isCourierCostFinish: false,
+      isFetchingPayment: false,
+      isPaymentFinish: false,
     };
   }
   
   componentDidMount() {
     this.prefecthCart();
     this.prefecthCourierCost();
+    this.prefecthPaymentOption();
   }
   
   componentDidUpdate(prevProps) {
-    if(prevProps.isFetchingCart && !this.props.isFetchingCart) {
-      const { navigation } = this.props;
-      navigation.navigate('Home');
+    if(!prevProps.isFetchingCartSuccess && this.props.isFetchingCartSuccess) {
+      this.checkIfDone();
     }
   }
+  
+  checkIfDone = () => {
+    const { navigation, isFetchingCartSuccess } = this.props;
+    const { isCourierCostFinish, isPaymentFinish } = this.state;
+    if (isCourierCostFinish && isFetchingCartSuccess && isPaymentFinish) {
+      navigation.navigate('Home');
+    }
+  };
   
   prefecthCart = async () => {
     const { 
@@ -63,32 +75,53 @@ class Setup extends Component {
   };
   
   prefecthCourierCost = async () => {
-    this.setState({ isFetchingCourierCost: true });
-    return new Promise((resolve, reject) => {
-      try {
-        ApolloClientProvider.client.query({
-          query: FETCH_COURIER_COST
-        })
-        .then(data => {
-          this.setState({ isFetchingCourierCost: false });
-          resolve(true);
-        }).catch(err => {
-          this.setState({ isFetchingCourierCost: false });
-          reject(err);
-        })
-      } catch(err) {
-        this.setState({ isFetchingCourierCost: false });
-        reject(err);
-      }
+    this.setState({
+      isFetchingCourierCost: true,
+      isCourierCostFinish: false,
+    });
+    ApolloClientProvider.client.query({
+      query: FETCH_COURIER_COST
+    })
+    .then(data => {
+      this.setState({
+        isFetchingCourierCost: false,
+        isCourierCostFinish: true,
+      });
+    }).catch(err => {
+      this.setState({
+        isFetchingCourierCost: false,
+        isCourierCostFinish: true,
+      });
+    })
+  };
+  
+  prefecthPaymentOption = async () => {
+    this.setState({
+      isFetchingPayment: true,
+      isPaymentFinish: false,
+    });
+    ApolloClientProvider.client.query({
+      query: FETCH_COURIER_COST
+    })
+    .then(data => {
+      this.setState({
+        isFetchingPayment: false,
+        isPaymentFinish: true,
+      });
+    }).catch(err => {
+      this.setState({
+        isFetchingPayment: false,
+        isPaymentFinish: true,
+      });
     });
   };
   
   render() {
     const { isFetchingCart } = this.props;
-    const { isFetchingCourierCost } = this.state;
+    const { isFetchingCourierCost, isFetchingPayment } = this.state;
     return (
       <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
-        {isFetchingCart && isFetchingCourierCost && (
+        {(isFetchingCart || isFetchingCourierCost || isFetchingPayment) && (
           <BarIndicator
             color={Colors.green_dark}
             count={5}
@@ -103,6 +136,7 @@ class Setup extends Component {
 Setup.propTypes = {
   userId: string,
   isFetchingCart: bool,
+  isFetchingCartSuccess: bool,
   onStartFetchingCart: func,
   onSuccessFetchingCart: func,
   onErrorFetchingCart: func,
@@ -111,6 +145,7 @@ Setup.propTypes = {
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
   isFetchingCart: isFetchingCart(),
+  isFetchingCartSuccess: isFetchingCartSuccess(),
 });
 
 const mapDispatchToProps = dispatch => ({

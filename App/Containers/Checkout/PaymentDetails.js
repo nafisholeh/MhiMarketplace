@@ -39,6 +39,15 @@ class PaymentDetails extends Component {
     return total;
   };
   
+  getTotalCost = data => {
+    if (!Array.isArray(data)) return 0;
+    const total = data.reduce((total, value) => {
+      const { product: { price = 0, discount = 0}, qty = 0 } = value;
+      return total + ((price - calcDiscount(price, discount)) * qty);
+    }, 0);
+    return total;
+  }
+  
   setupCourierCost = async data => {
     try {
       const { courierCosts = [] } = ApolloClientProvider.client.cache.readQuery({
@@ -73,6 +82,7 @@ class PaymentDetails extends Component {
     }
     this.setState({
       totalDiscount: this.getDiscount(selectedCarts),
+      totalCost: this.getTotalCost(selectedCarts),
     });
   };
   
@@ -89,7 +99,13 @@ class PaymentDetails extends Component {
       >
         <View style={styles.paymentDetail}>
           <Text>Total diskon</Text>
-          <Text>{parseToRupiah(totalDiscount) || '-'}</Text>
+          <Text
+            style={{
+              color: Colors.red
+            }}
+          >
+            {parseToRupiah(totalDiscount) || '-'}
+          </Text>
         </View>
         <View style={styles.paymentDetail}>
           <Text>Harga Kurir</Text>
@@ -97,7 +113,13 @@ class PaymentDetails extends Component {
         </View>
         <View style={{ marginHorizontal: Metrics.baseMargin }}>
           <Text>Total yang harus dibayarkan</Text>
-          <Text style={{ fontSize: 22, fontWeight: 'bold', textAlign: 'right' }}>
+          <Text style={{
+              fontSize: 22,
+              fontWeight: 'bold',
+              textAlign: 'right',
+              color: Colors.green_light
+            }}
+          >
             {parseToRupiah(totalCost) || '-'}
           </Text>
         </View>

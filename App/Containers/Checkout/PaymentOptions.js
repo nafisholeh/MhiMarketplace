@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { View, Text, CheckBox, FlatList, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+import { func } from 'prop-types';
 
 import { FETCH_PAYMENT_OPTION } from 'GraphQL/PaymentOption/Query';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { Metrics } from 'Themes';
 import { RadioButton } from 'Components';
+import CheckoutActions from 'Redux/CheckoutRedux';
 
 class PaymentOptions extends Component {
   constructor(props) {
@@ -20,13 +23,18 @@ class PaymentOptions extends Component {
   }
   
   setupData = async () => {
+    const { selectPayment } = this.props;
     try {
       const { paymentOptions = [] } = ApolloClientProvider.client.cache.readQuery({
         query: FETCH_PAYMENT_OPTION
       });
       this.setState({ payments: paymentOptions });
       if (paymentOptions.length > 0) {
-        this.setState({ paymentSelected: paymentOptions[0]._id })
+        this.setState({
+          paymentSelected: paymentOptions[0]._id
+        }, () => {
+          selectPayment(this.state.paymentSelected);
+        })
       }
     } catch (error) {
       const { data: { paymentOptions = [] } } = await ApolloClientProvider.client.query({
@@ -34,7 +42,11 @@ class PaymentOptions extends Component {
       });
       this.setState({ payments: paymentOptions });
       if (paymentOptions.length > 0) {
-        this.setState({ paymentSelected: paymentOptions[0]._id })
+        this.setState({
+          paymentSelected: paymentOptions[0]._id
+        }, () => {
+          selectPayment(this.state.paymentSelected);
+        })
       }
     }
   };
@@ -104,4 +116,12 @@ class PaymentOptions extends Component {
   }
 }
 
-export default PaymentOptions;
+PaymentOptions.propTypes = {
+  selectPayment: func,
+};
+
+const mapDispatchToProps = dispatch => ({
+  selectPayment: paymentSelected => dispatch(CheckoutActions.selectPayment(paymentSelected))
+});
+
+export default connect(null, mapDispatchToProps)(PaymentOptions);

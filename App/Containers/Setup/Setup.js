@@ -10,9 +10,9 @@ import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { FETCH_ADDRESS } from 'GraphQL/Address/Query';
 import { FETCH_COURIER_COST } from 'GraphQL/CourierCost/Query';
-import { FETCH_PAYMENT_OPTION } from 'GraphQL/paymentOptions/Query';
+import { FETCH_PAYMENT_OPTION } from 'GraphQL/PaymentOption/Query';
 import { getUserId } from 'Redux/SessionRedux';
-import CartActions, { isFetchingCart } from 'Redux/CartRedux';
+import CartActions, { isFetchingCart, isFetchingCartSuccess } from 'Redux/CartRedux';
 
 class Setup extends Component {
   

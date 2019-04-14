@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { arrayOf, number, shape, string, bool } from 'prop-types';
+import { arrayOf, number, shape, string, bool, func } from 'prop-types';
 import { withNavigation } from 'react-navigation';
 import { Mutation } from 'react-apollo';
 import { DotIndicator } from 'react-native-indicators';
@@ -19,6 +19,7 @@ import {
   getCartItemIdSelected,
   isCheckoutValid
 } from 'Redux/CartRedux';
+import CheckoutActions from 'Redux/CheckoutRedux';
 import { getUserId } from 'Redux/SessionRedux';
 
 class Footer extends Component {
@@ -46,6 +47,9 @@ class Footer extends Component {
       variables: { user_id: userId }
     })
     .then(res => {
+      const { data: { addCheckout: { _id:checkoutId = 0 }}} = res;
+      const { storeCheckoutId } = this.props;
+      storeCheckoutId(checkoutId);
       this.setState({ isInitiatingCheckout: false });
       this.onOpenCheckoutPage();
     })
@@ -168,6 +172,7 @@ Footer.propTypes = {
   grossTotal: number,
   isCheckoutValid: bool,
   selectedCartItems: arrayOf(string),
+  storeCheckoutId: func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -178,4 +183,8 @@ const mapStateToProps = createStructuredSelector({
   selectedCartItems: getCartItemIdSelected(),
 });
 
-export default connect(mapStateToProps, null)(withNavigation(Footer));
+const mapDispatchToProps = dispatch => ({
+  storeCheckoutId: checkoutId => dispatch(CheckoutActions.storeCheckoutId(checkoutId)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(Footer));

@@ -23,6 +23,7 @@ class Checkout extends Component {
     const {params = {}} = navigation.state
     return {
       title: 'Rekap Pesanan',
+      headerLeft: null,
     }
   }
   

@@ -15,6 +15,7 @@ class Slip extends Component {
     const {params = {}} = navigation.state
     return {
       title: 'Slip Pembayaran',
+      headerLeft: null,
     }
   }
 

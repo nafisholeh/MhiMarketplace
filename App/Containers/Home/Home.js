@@ -19,6 +19,7 @@ class Home extends Component {
     const {params = {}} = navigation.state
     return {
       title: 'MHI.id',
+      headerLeft: null,
       headerRight: (
         <HeaderButton
           onPress={() => navigation.navigate('Cart')}

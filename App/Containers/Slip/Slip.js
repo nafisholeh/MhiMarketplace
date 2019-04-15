@@ -64,7 +64,7 @@ class Slip extends Component {
                         fontWeight: 'bold',
                         color: Colors.green_light
                       }}>
-                      {total_cost}
+                      {total_cost || ''}
                     </Text>
                   </View>
                   <Text>
@@ -77,7 +77,7 @@ class Slip extends Component {
                       textAlign: 'right',
                       color: Colors.red
                     }}>
-                    {parseToRupiah(total_cost)}
+                    {parseToRupiah(total_cost) || ''}
                   </Text>
                 </View>
                 <View style={{ marginBottom: Metrics.section }}>

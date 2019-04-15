@@ -10,6 +10,7 @@ const images = {
   syncFailed: require(pathPrefix+'sync_failed.png'),
   back: require(pathPrefix+'left_arrow.png'),
   mhi: require(pathPrefix+'logo_mhi.png'),
+  check: require(pathPrefix+'check.png'),
 }
 
 export default images

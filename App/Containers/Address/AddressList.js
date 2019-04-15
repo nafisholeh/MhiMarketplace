@@ -20,6 +20,7 @@ class AddressList extends Component {
       title: 'Alamat Anda',
       headerRight: (
         <ToolbarButton
+          icon={Images.add}
           onPress={() => navigation.navigate('AddressInput')} 
         />
       ),

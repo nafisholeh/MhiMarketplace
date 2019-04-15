@@ -10,7 +10,8 @@ export default {
     'Cart',
     'Checkout',
     'AddressList',
-    'AddressInput'
+    'AddressInput',
+    'Slip'
   ],
   pageState: {
     ERROR: 'error',

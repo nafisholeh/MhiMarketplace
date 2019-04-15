@@ -7,6 +7,7 @@ import { createStructuredSelector } from 'reselect';
 import HTMLView from 'react-native-htmlview';
 
 import { Metrics, Images, Colors } from 'Themes';
+import { ToolbarButton } from 'Components';
 import { FETCH_CHECKOUT_SUMMARY } from 'GraphQL/Checkout/Query';
 import { getCheckoutId } from 'Redux/CheckoutRedux';
 import { parseToRupiah } from 'Lib';
@@ -18,6 +19,12 @@ class Slip extends Component {
     return {
       title: 'Slip Pembayaran',
       headerLeft: null,
+      headerRight: (
+        <ToolbarButton
+          icon={Images.check}
+          onPress={() => navigation.navigate('Home')} 
+        />
+      ),
       headerStyle: { elevation: 0 }
     }
   }

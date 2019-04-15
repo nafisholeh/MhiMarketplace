@@ -4,6 +4,7 @@ import { Query, Mutation } from 'react-apollo';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { string, number, shape } from 'prop-types';
+import { DotIndicator } from 'react-native-indicators';
 
 import CheckoutTitle from './CheckoutTitle';
 import AddressCheckout from 'Containers/Address/AddressCheckout';
@@ -99,7 +100,17 @@ class Checkout extends Component {
                   justifyContent: 'center',
                 }}
               >
-                <Text style={{ color: 'white' }}>Bayar Sekarang</Text>
+                {loading &&
+                  <DotIndicator
+                    count={4}
+                    size={7}
+                    color='white'
+                    animationDuration={800}
+                  />
+                }
+                {!loading &&
+                  <Text style={{ color: 'white' }}>Bayar Sekarang</Text>
+                }
               </TouchableOpacity>
             );
           }}

@@ -122,16 +122,18 @@ class PaymentDetails extends Component {
           <Text>Harga Awal</Text>
           <Text>{parseToRupiah(grossPrice) || '-'}</Text>
         </View>
-        <View style={styles.paymentDetail}>
-          <Text>Anda menghemat</Text>
-          <Text
-            style={{
-              color: Colors.green_light
-            }}
-          >
-            {`- ${parseToRupiah(totalDiscount)}` || '-'}
-          </Text>
-        </View>
+        {totalDiscount ? (
+          <View style={styles.paymentDetail}>
+            <Text>Anda menghemat</Text>
+            <Text
+              style={{
+                color: Colors.green_light
+              }}
+            >
+              {`- ${parseToRupiah(totalDiscount)}` || '-'}
+            </Text>
+          </View>) : null
+        }
         <View style={styles.paymentDetail}>
           <Text>Harga Kurir</Text>
           <Text>{`+ ${parseToRupiah(courierCost)}` || '-'}</Text>

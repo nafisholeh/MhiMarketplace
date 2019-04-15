@@ -70,13 +70,14 @@ export const getCartItemIds = () =>
 export const getCartTotalGrossPrice = () =>
   createSelector(
     cartSelectors(),
-    state => {
-      const { cart } = state;
-      if (!cart) return [];
-      const totalPrice = cart.reduce((total, n) => {
-        const prices = n.product.discount ? calcDiscount(n.product.price, n.product.discount) : n.product.price;
-        const temp = total + (prices * n.qty);
-        return temp;
+    getCartItemSelected(),
+    (state, selected) => {
+      if (selected.length === 0) return 0;
+      const totalPrice = selected.reduce((total, n) => {
+        const prices = n.product.discount ? 
+          calcDiscount(n.product.price, n.product.discount) : 
+          n.product.price;
+        return total + (prices * n.qty);
       }, 0);
       return totalPrice;
     }

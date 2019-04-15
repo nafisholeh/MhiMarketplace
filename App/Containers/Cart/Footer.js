@@ -9,7 +9,7 @@ import { createStructuredSelector } from 'reselect';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { parseToRupiah, calcDiscount } from 'Lib';
-import { Colors } from 'Themes';
+import { Colors, Metrics } from 'Themes';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { SYNC_CART } from 'GraphQL/Cart/Mutation';
 import { ADD_CHECKOUT } from 'GraphQL/Checkout/Mutation';
@@ -101,9 +101,23 @@ class Footer extends Component {
         }}>
         <View style={{ padding: 15 }}>
           <Text style={{ fontSize: 16 }}>Total</Text>
-          <Text style={{ fontSize: 22, fontWeight: 'bold' }}>
-            {parseToRupiah(grossTotal)}
-          </Text>
+          {grossTotal ? (
+            <Text style={{ fontSize: 22, fontWeight: 'bold' }}>
+              {parseToRupiah(grossTotal) || '0'}
+            </Text>
+          ) : null}
+          {!grossTotal &&
+            <Text
+              style={{
+                fontSize: 16,
+                fontStyle: 'italic',
+                color: Colors.red,
+                marginTop: Metrics.smallMargin
+              }}
+            >
+              (Tidak ada yg dipilih)
+            </Text>
+          }
         </View>
         <Mutation
           mutation={SYNC_CART}

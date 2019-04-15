@@ -98,7 +98,7 @@ class Checkout extends Component {
                   justifyContent: 'center',
                 }}
               >
-                <Text style={{ color: 'white' }}>Selesai</Text>
+                <Text style={{ color: 'white' }}>Bayar Sekarang</Text>
               </TouchableOpacity>
             );
           }}

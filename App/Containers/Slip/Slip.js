@@ -65,7 +65,9 @@ class Slip extends Component {
                   </Text>
                 </View>
                 <View style={{ marginBottom: Metrics.section }}>
-                  <Text>Cara membayar:</Text>
+                  <Text style={{ marginBottom: Metrics.baseMargin }}>
+                    Cara membayar:
+                  </Text>
                   <HTMLView
                     value={how_to_pay}
                   />

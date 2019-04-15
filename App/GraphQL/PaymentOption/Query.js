@@ -6,6 +6,7 @@ export const FETCH_PAYMENT_OPTION = gql`
       _id
       type
       detail
+      how_to_pay
     }
   }
 `

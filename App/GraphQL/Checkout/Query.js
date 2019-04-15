@@ -31,6 +31,7 @@ export const FETCH_CHECKOUT_SUMMARY = gql`
       payment_option {
         type
         detail
+        how_to_pay
       }
       products {
         _id

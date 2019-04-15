@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, Image, FlatList } from 'react-native';
+import { View, Text, ScrollView, Image, FlatList, WebView } from 'react-native';
 import { Query } from 'react-apollo';
 import { string } from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import HTMLView from 'react-native-htmlview';
 
-import { Metrics, Images } from 'Themes';
+import { Metrics, Images, Colors } from 'Themes';
 import { FETCH_CHECKOUT_SUMMARY } from 'GraphQL/Checkout/Query';
 import { getCheckoutId } from 'Redux/CheckoutRedux';
 
@@ -16,6 +17,7 @@ class Slip extends Component {
     return {
       title: 'Slip Pembayaran',
       headerLeft: null,
+      headerStyle: { elevation: 0 }
     }
   }
   
@@ -45,18 +47,34 @@ class Slip extends Component {
             else if (error) return (<View />);
             const { checkoutSummary } = data;
             if (!checkoutSummary) return (<View />);
-            const { products } = checkoutSummary;
+            const { products, total_cost, payment_option: { how_to_pay } } = checkoutSummary;
             return (
-              <ScrollView style={{flex: 1}}>
-                <Image source={Images.mhi} style={{ height: 40, width: 40 }} />
-                <View>
-                  <Text style={{marginVertical: Metrics.baseMargin}}>
-                    Yang dipesan:
+              <ScrollView style={{flex: 1, paddingHorizontal: Metrics.baseMargin }}>
+                <View style={{ marginVertical: Metrics.section }}>
+                  <Text>
+                    Yang harus dibayar:
                   </Text>
-                  <FlatList
-                    data={products}
-                    renderItem={this.renderItem}
+                  <Text
+                    style={{
+                      fontSize: 22,
+                      fontWeight: 'bold',
+                      textAlign: 'right',
+                      color: Colors.red
+                    }}>
+                    {total_cost}
+                  </Text>
+                </View>
+                <View style={{ marginBottom: Metrics.section }}>
+                  <Text>Cara membayar:</Text>
+                  <HTMLView
+                    value={how_to_pay}
                   />
+                </View>
+                <View style={{ alignItems: 'center', marginBottom: Metrics.section }}>
+                  <Image source={Images.mhi} style={{ height: 90, width: 110, marginBottom: Metrics.baseMargin }} />
+                  <Text style={{ flexShrink: 1 }}>
+                    Diproduksi dan diawasi oleh MHI
+                  </Text>
                 </View>
               </ScrollView>
             );

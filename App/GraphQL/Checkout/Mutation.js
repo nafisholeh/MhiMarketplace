@@ -27,6 +27,7 @@ export const FINISH_CHECKOUT = gql`
       payment_option {
         type
         detail
+        how_to_pay
       }
       gross_price
       total_discount

@@ -55,11 +55,13 @@ class Slip extends Component {
             else if (error) return (<View />);
             const { checkoutSummary } = data;
             if (!checkoutSummary) return (<View />);
-            const { products, total_cost, payment_option: { how_to_pay } } = checkoutSummary;
+            const { products, total_cost, payment_option } = checkoutSummary;
+            const { how_to_pay = '' } = payment_option;
             return (
-              <ScrollView style={{flex: 1, paddingHorizontal: Metrics.baseMargin }}>
+              <ScrollView style={{ flex: 1, paddingHorizontal: Metrics.baseMargin }}>
                 <View style={{ marginVertical: Metrics.section }}>
-                  <View style={{
+                  <View 
+                    style={{
                       flexDirection: 'row',
                       justifyContent: 'space-between',
                       marginBottom: Metrics.baseMargin

@@ -9,6 +9,7 @@ import HTMLView from 'react-native-htmlview';
 import { Metrics, Images, Colors } from 'Themes';
 import { FETCH_CHECKOUT_SUMMARY } from 'GraphQL/Checkout/Query';
 import { getCheckoutId } from 'Redux/CheckoutRedux';
+import { parseToRupiah } from 'Lib';
 
 class Slip extends Component {
   
@@ -51,6 +52,21 @@ class Slip extends Component {
             return (
               <ScrollView style={{flex: 1, paddingHorizontal: Metrics.baseMargin }}>
                 <View style={{ marginVertical: Metrics.section }}>
+                  <View style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      marginBottom: Metrics.baseMargin
+                    }}
+                  >
+                    <Text>Nomor Transaksi:</Text>
+                    <Text
+                      style={{
+                        fontWeight: 'bold',
+                        color: Colors.green_light
+                      }}>
+                      {total_cost}
+                    </Text>
+                  </View>
                   <Text>
                     Yang harus dibayar:
                   </Text>
@@ -61,7 +77,7 @@ class Slip extends Component {
                       textAlign: 'right',
                       color: Colors.red
                     }}>
-                    {total_cost}
+                    {parseToRupiah(total_cost)}
                   </Text>
                 </View>
                 <View style={{ marginBottom: Metrics.section }}>

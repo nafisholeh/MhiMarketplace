@@ -8,7 +8,6 @@ import { Colors, Metrics } from 'Themes';
 import styles from './Styles';
 import { parseToRupiah, calcDiscount } from 'Lib';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
-import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { FETCH_COURIER_COST } from 'GraphQL/CourierCost/Query';
 import { getUserId } from 'Redux/SessionRedux';
 import { getCartItemSelected } from 'Redux/CartRedux';

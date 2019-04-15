@@ -11,6 +11,7 @@ const images = {
   back: require(pathPrefix+'left_arrow.png'),
   mhi: require(pathPrefix+'logo_mhi.png'),
   check: require(pathPrefix+'check.png'),
+  cashier: require(pathPrefix+'cashier.png'),
 }
 
 export default images

@@ -38,6 +38,11 @@ class Cart extends Component {
     navigation.navigate('Signin');
   };
   
+  openCheckout = () => {
+    const { navigation } = this.props;
+    navigation.navigate('Checkout');
+  }
+  
   renderCartItems = ({ item, index }) => {
     const { userId } = this.props;
     return (
@@ -78,7 +83,7 @@ class Cart extends Component {
                 return (<View></View>)
               } else if (data) {
                 const { cart } = data;
-                if (!cart) {
+                if (cart && cart.length === 0) {
                   return (
                     <StatePage 
                       title="Keranjang belanja kosong"
@@ -89,14 +94,15 @@ class Cart extends Component {
                     />
                   )
                 }
-                if (cart && cart.length === 0) {
+                const { checked_out } = cart[0];
+                if (checked_out) {
                   return (
                     <StatePage 
-                      title="Keranjang belanja kosong"
-                      subtitle="ayo mulai belanja"
-                      buttonTitle="Belanja Yuk"
-                      icon={AppConfig.pageState.EMPTY_CART}
-                      onPress={this.startBuying}
+                      title="Pesanan sebelumnya belum selesai"
+                      subtitle="Silahkan selesaikan terlebih dahulu"
+                      buttonTitle="Selesaikan Yuk"
+                      icon={AppConfig.pageState.NEED_CHECKOUT}
+                      onPress={this.openCheckout}
                     />
                   )
                 }

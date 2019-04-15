@@ -13,6 +13,7 @@ export const FETCH_CART = gql`
       }
       qty
       selected
+      checked_out
     }
   }
 `
@@ -30,6 +31,7 @@ export const FETCH_SELECTED_CART = gql`
       }
       qty
       selected
+      checked_out
     }
   }
 `

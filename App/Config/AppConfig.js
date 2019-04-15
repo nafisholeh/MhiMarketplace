@@ -21,6 +21,7 @@ export default {
     EMPTY_CART: 'cart',
     LOCATION: 'location',
     EMPTY_LOCATION: 'location',
+    NEED_CHECKOUT: 'cashier',
   },
   debounceInterval: 1000,
   defaulCourierCost: 25000,

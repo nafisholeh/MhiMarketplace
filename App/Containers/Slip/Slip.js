@@ -80,13 +80,18 @@ class Slip extends Component {
                     {parseToRupiah(total_cost) || ''}
                   </Text>
                 </View>
-                <View style={{ marginBottom: Metrics.section }}>
+                <View style={{ marginBottom: Metrics.doubleSection }}>
                   <Text style={{ marginBottom: Metrics.baseMargin }}>
                     Cara membayar:
                   </Text>
-                  <HTMLView
-                    value={how_to_pay}
-                  />
+                  { how_to_pay ? (
+                      <HTMLView
+                        value={how_to_pay}
+                      />
+                    ) : (
+                      <Text>Belum ada info cara pembayaran. Silahkan hubungi MHI untuk mengetahui lebih lanjut.</Text>
+                    )
+                  }
                 </View>
                 <View style={{ alignItems: 'center', marginBottom: Metrics.section }}>
                   <Image source={Images.mhi} style={{ height: 90, width: 110, marginBottom: Metrics.baseMargin }} />

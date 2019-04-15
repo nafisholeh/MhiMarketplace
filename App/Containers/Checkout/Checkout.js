@@ -50,7 +50,8 @@ class Checkout extends Component {
   };
   
   onFinishCheckoutComplete = () => {
-    console.tron.log('onFinishCheckoutComplete')
+    const { navigation } = this.props;
+    navigation.navigate('Slip');
   };
   
   render() {

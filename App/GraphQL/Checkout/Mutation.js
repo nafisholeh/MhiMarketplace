@@ -24,7 +24,10 @@ export const FINISH_CHECKOUT = gql`
       _id
       user_id
       time
-      payment_option
+      payment_option {
+        type
+        detail
+      }
       gross_price
       total_discount
       courier_cost

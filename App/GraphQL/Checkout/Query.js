@@ -17,3 +17,34 @@ export const FETCH_CHECKOUT_ITEMS = gql`
     }
   }
 `
+
+export const FETCH_CHECKOUT_SUMMARY = gql`
+  query fetchCheckoutSummary($_id:String!) {
+    checkoutSummary(_id:$_id) {
+      _id
+      user_id
+      time
+      gross_price
+      total_discount
+      courier_cost
+      total_cost
+      payment_option {
+        type
+        detail
+      }
+      products {
+        _id
+        product {
+          _id
+          title
+          photo
+          price
+          discount
+          unit
+        }
+        qty
+        selected
+      }
+    }
+  }
+`

@@ -13,6 +13,7 @@ import Cart from 'Containers/Cart/Cart'
 import Checkout from 'Containers/Checkout/Checkout'
 import AddressList from 'Containers/Address/AddressList';
 import AddressInput from 'Containers/Address/AddressInput';
+import Slip from 'Containers/Slip/Slip';
 
 import styles from './Styles/NavigationStyles'
 
@@ -26,6 +27,7 @@ const HomeNav = createStackNavigator({
   Signin: { screen: Signin },
   Signup: { screen: Signup },  
   Setup: { screen: Setup },
+  Slip: { screen: Slip },
 }, {
   initialRouteName: 'Setup',
   navigationOptions: {

@@ -16,6 +16,13 @@ import CartActions, { isFetchingCart, isFetchingCartSuccess } from 'Redux/CartRe
 
 class Setup extends Component {
   
+  static navigationOptions = ({navigation}) => {
+    const {params = {}} = navigation.state
+    return {
+      header: null,
+    }
+  }
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -82,16 +89,12 @@ class Setup extends Component {
     ApolloClientProvider.client.query({
       query: FETCH_COURIER_COST
     })
-    .then(data => {
+    .finally(() => {
       this.setState({
         isFetchingCourierCost: false,
         isCourierCostFinish: true,
       });
-    }).catch(err => {
-      this.setState({
-        isFetchingCourierCost: false,
-        isCourierCostFinish: true,
-      });
+      this.checkIfDone();
     })
   };
   
@@ -103,17 +106,13 @@ class Setup extends Component {
     ApolloClientProvider.client.query({
       query: FETCH_COURIER_COST
     })
-    .then(data => {
+    .finally(() => {
       this.setState({
         isFetchingPayment: false,
         isPaymentFinish: true,
       });
-    }).catch(err => {
-      this.setState({
-        isFetchingPayment: false,
-        isPaymentFinish: true,
-      });
-    });
+      this.checkIfDone();
+    })
   };
   
   render() {

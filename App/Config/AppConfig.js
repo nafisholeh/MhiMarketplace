@@ -11,7 +11,8 @@ export default {
     'Checkout',
     'AddressList',
     'AddressInput',
-    'Slip'
+    'Slip',
+    'Setup'
   ],
   pageState: {
     ERROR: 'error',

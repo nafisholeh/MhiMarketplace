@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, Image, FlatList } from 'react-native';
 import { Query } from 'react-apollo';
 import { string } from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-import { Metrics } from 'Themes';
+import { Metrics, Images } from 'Themes';
 import { FETCH_CHECKOUT_SUMMARY } from 'GraphQL/Checkout/Query';
 import { getCheckoutId } from 'Redux/CheckoutRedux';
 
@@ -18,6 +18,20 @@ class Slip extends Component {
       headerLeft: null,
     }
   }
+  
+  renderItem = ({ item, index }) => {
+    const { product: { _id, title, unit }, qty } = item;
+    return (
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text>
+          {item.product.title}
+        </Text>
+        <Text>
+          {qty ? qty : ''} {unit ? unit : ''}
+        </Text>
+      </View>
+    );
+  };
 
   render() {
     const { checkoutId } = this.props;
@@ -29,21 +43,20 @@ class Slip extends Component {
           {({ loading, error, data, refetch }) => {
             if (loading) return (<View />);
             else if (error) return (<View />);
-            console.tron.log('Slip', data)
             const { checkoutSummary } = data;
             if (!checkoutSummary) return (<View />);
+            const { products } = checkoutSummary;
             return (
               <ScrollView style={{flex: 1}}>
+                <Image source={Images.mhi} style={{ height: 40, width: 40 }} />
                 <View>
                   <Text style={{marginVertical: Metrics.baseMargin}}>
                     Yang dipesan:
                   </Text>
-                  {checkoutSummary.products.map(item => {
-                    const { product: { title, unit }, qty } = item;
-                    return (
-                      <Text>{item.product.title} {qty || ''} {unit || ''}</Text>
-                    )}
-                  )}
+                  <FlatList
+                    data={products}
+                    renderItem={this.renderItem}
+                  />
                 </View>
               </ScrollView>
             );

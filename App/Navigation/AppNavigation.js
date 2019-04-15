@@ -29,7 +29,7 @@ const HomeNav = createStackNavigator({
   Setup: { screen: Setup },
   Slip: { screen: Slip },
 }, {
-  initialRouteName: 'Setup',
+  initialRouteName: 'Slip',
   navigationOptions: {
     headerStyle: styles.header
   }

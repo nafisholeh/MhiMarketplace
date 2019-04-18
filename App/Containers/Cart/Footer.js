@@ -44,7 +44,11 @@ class Footer extends Component {
     });
     ApolloClientProvider.client.mutate({
       mutation: ADD_CHECKOUT,
-      variables: { user_id: userId }
+      variables: { user_id: userId },
+      refetchQueries: [{
+        query: FETCH_CART,
+        variables: { user_id: userId },
+      }],
     })
     .then(res => {
       const { data: { addCheckout: { _id:checkoutId = 0 }}} = res;
@@ -82,7 +86,6 @@ class Footer extends Component {
       query: FETCH_CART,
       variables: { user_id: userId } 
     });
-    console.tron.log('onSyncCartOnCache/cart', cart, userId)
     cache.writeQuery({
       query: FETCH_CART,
       variables: { user_id: userId },

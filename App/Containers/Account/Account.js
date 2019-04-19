@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { shape, string, func } from 'prop-types';
 
+import { Colors } from 'Themes';
 import SessionActions, { getUser } from 'Redux/SessionRedux';
 
 class Account extends Component {
@@ -13,14 +14,18 @@ class Account extends Component {
   };
   
   render() {
-    const { user: { email = '', name = '' } } = this.props;
+    const { user } = this.props;
+    const { email = '', name = '' } = user || {};
     return (
       <View>
         <Text>{email}</Text>
         <Text>{name}</Text>
         <TouchableOpacity
+          style={{ width: 150, height: 50, backgroundColor: Colors.green_light }}
           onPress={this.signout}
-        />
+        >
+          <Text>Keluar</Text>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -32,13 +37,6 @@ Account.propTypes = {
     name: string,
   }),
   reset: func,
-};
-
-Account.defaultProps = {
-  user: {
-    email: '',
-    name: '',
-  }
 };
 
 const mapStateToProps = createStructuredSelector({

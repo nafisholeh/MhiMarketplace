@@ -18,6 +18,7 @@ import AddressList from 'Containers/Address/AddressList';
 import AddressInput from 'Containers/Address/AddressInput';
 import Slip from 'Containers/Slip/Slip';
 import Account from 'Containers/Account/Account';
+import StockOpnameNavigation from './StockOpnameNavigation';
 
 import styles from './Styles/NavigationStyles'
 
@@ -74,6 +75,7 @@ CartNav.navigationOptions = (data) => customNavOptions(data, Images.cart)
 
 const AccountNav = createStackNavigator({
   Account: { screen: Account },
+  StockOpnameNavigation: { screen: StockOpnameNavigation },
 }, {
   initialRouteName: 'Account',
   navigationOptions: {

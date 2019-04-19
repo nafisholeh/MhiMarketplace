@@ -58,4 +58,4 @@ StockOpnameNavigation.navigationOptions = ({ navigation }) => {
   }
 }
 
-export default createAppContainer(StockOpnameNavigation);
+export default StockOpnameNavigation;

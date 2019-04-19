@@ -1,6 +1,9 @@
+import React, { Component } from 'react';
+import { Image } from 'react-native';
 import { createAppContainer, createStackNavigator } from 'react-navigation'
 import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs'
 
+import { Images, Colors } from 'Themes';
 import AppConfig from 'Config/AppConfig'
 import { setTabBarHide } from 'Lib'
 
@@ -16,6 +19,26 @@ import AddressInput from 'Containers/Address/AddressInput';
 import Slip from 'Containers/Slip/Slip';
 
 import styles from './Styles/NavigationStyles'
+
+const customNavOptions = ({ navigation }, icon) => {
+  return {
+    tabBarVisible: setTabBarHide(navigation, AppConfig.hiddenTabScreen),
+    tabBarIcon: ({ focused, tintColor }) => (
+      <Image
+        source={icon}
+        resizeMode='contain'
+        style={{ height: 16, width: 16 }}
+      />
+    ),
+    tabBarOptions: {
+      activeTintColor: Colors.green_light,
+      inactiveTintColor: Colors.brown_light,
+      activeBackgroundColor: Colors.white,
+      inactiveBackgroundColor: Colors.white,
+      style: { borderTopWidth: 0, borderColor: Colors.white },
+    },
+  }
+}
 
 const HomeNav = createStackNavigator({
   Home: { screen: Home },
@@ -35,15 +58,23 @@ const HomeNav = createStackNavigator({
   }
 })
 
-HomeNav.navigationOptions = ({ navigation }) => {
-  return {
-    tabBarVisible: setTabBarHide(navigation, AppConfig.hiddenTabScreen)
+HomeNav.navigationOptions = (data) => customNavOptions(data, Images.home)
+
+const CartNav = createStackNavigator({
+  Cart: { screen: Cart },
+}, {
+  initialRouteName: 'Cart',
+  navigationOptions: {
+    headerStyle: styles.header
   }
-}
+})
+
+CartNav.navigationOptions = (data) => customNavOptions(data, Images.cart)
 
 const PrimaryTabNav = createBottomTabNavigator(
   {
     Home: { screen: HomeNav },
+    Cart: { screen: CartNav },
   },
   {
     initialRouteName: 'Home'

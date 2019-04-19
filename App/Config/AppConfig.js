@@ -22,6 +22,7 @@ export default {
     LOCATION: 'location',
     EMPTY_LOCATION: 'location',
     NEED_CHECKOUT: 'cashier',
+    NO_ACCOUNT: 'needLogin',
   },
   debounceInterval: 1000,
   defaulCourierCost: 25000,

@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     marginBottom: moderateScale(42),
     height: moderateScale(188),
 	  width: moderateScale(161),
+    tintColor: Colors.brown_light,
   },
   title: {
     marginBottom: moderateScale(13),

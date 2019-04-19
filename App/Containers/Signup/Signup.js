@@ -8,6 +8,14 @@ import { isEmailError, getGraphQLError } from 'Lib';
 import styles from './Styles'
     
 export default class Signup extends Component {
+  
+  static navigationOptions = ({navigation}) => {
+    const {params = {}} = navigation.state
+    return {
+      header: null,
+    }
+  }
+
   state = {
     name: null,
     error_name: null,

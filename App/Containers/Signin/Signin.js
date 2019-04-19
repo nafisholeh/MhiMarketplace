@@ -11,6 +11,14 @@ import { isEmailError, getGraphQLError } from 'Lib';
 import styles from './Styles'
     
 class Signin extends Component {
+  
+  static navigationOptions = ({navigation}) => {
+    const {params = {}} = navigation.state
+    return {
+      header: null,
+    }
+  }
+
   state = {
     email: null,
     error_email: null,

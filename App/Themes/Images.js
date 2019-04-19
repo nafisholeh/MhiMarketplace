@@ -13,6 +13,7 @@ const images = {
   check: require(pathPrefix+'check.png'),
   cashier: require(pathPrefix+'cashier.png'),
   home: require(pathPrefix+'home.png'),
+  user: require(pathPrefix+'user.png'),
 }
 
 export default images

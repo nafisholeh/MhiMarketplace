@@ -5,6 +5,7 @@ import { createSelector } from 'reselect'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
+  reset: null,
   storeSession: ['user'],  
 })
 
@@ -40,11 +41,14 @@ export const getUserId = () =>
 
 /* ------------- Reducers ------------- */
 
+export const reset = state => INITIAL_STATE
+
 // store user session related data
 export const storeSession = (state, { user }) => state.merge({ user })
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
+  [Types.RESET]: reset,
   [Types.STORE_SESSION]: storeSession
 })

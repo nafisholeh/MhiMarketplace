@@ -17,6 +17,7 @@ import Checkout from 'Containers/Checkout/Checkout'
 import AddressList from 'Containers/Address/AddressList';
 import AddressInput from 'Containers/Address/AddressInput';
 import Slip from 'Containers/Slip/Slip';
+import Account from 'Containers/Account/Account';
 
 import styles from './Styles/NavigationStyles'
 
@@ -71,10 +72,22 @@ const CartNav = createStackNavigator({
 
 CartNav.navigationOptions = (data) => customNavOptions(data, Images.cart)
 
+const AccountNav = createStackNavigator({
+  Account: { screen: Account },
+}, {
+  initialRouteName: 'Account',
+  navigationOptions: {
+    headerStyle: styles.header
+  }
+})
+
+AccountNav.navigationOptions = (data) => customNavOptions(data, Images.user)
+
 const PrimaryTabNav = createBottomTabNavigator(
   {
     Home: { screen: HomeNav },
     Cart: { screen: CartNav },
+    Account: { screen: AccountNav },
   },
   {
     initialRouteName: 'Home'

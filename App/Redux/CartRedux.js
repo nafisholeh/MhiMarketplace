@@ -47,6 +47,19 @@ export const isFetchingCartSuccess = () =>
 
 export const isFetchingCartError = () =>
   createSelector(cartSelectors(), state => !state.isFetching && state.error)
+  
+export const isCartFilled = () =>
+  createSelector(
+    cartSelectors(),
+    state => {
+      const { cart } = state;
+      if (!cart) return false;
+      if (Array.isArray(cart)) {
+        if (cart.length > 0) return true;
+      }
+      return false;
+    }
+  )
 
 export const getCartItems = () =>
   createSelector(
@@ -104,6 +117,15 @@ export const getCartItemIdSelected = () =>
     state => {
       const { selected } = state;
       return selected || [];
+    }
+  )
+
+export const isAnyCartItemSelected = () =>
+  createSelector(
+    cartSelectors(),
+    state => {
+      const { selected = [] } = state;
+      return selected.length > 0;
     }
   )
 

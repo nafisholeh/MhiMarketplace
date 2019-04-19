@@ -73,7 +73,10 @@ class Cart extends Component {
     }
     return (
       <View style={{flex:1}}>
-        <ScrollView style={{flex:1}}>
+        <ScrollView
+          style={{flex:1}}
+          contentContainerStyle={{ flex: 1 }}
+        >
           <Query 
             query={FETCH_CART}
             variables={{ user_id: userId }}>

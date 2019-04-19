@@ -18,7 +18,9 @@ import CartActions, {
   getCartTotalGrossPrice,
   getCartItemIdSelected,
   isCheckoutValid,
-  resetCart
+  resetCart,
+  isCartFilled,
+  isAnyCartItemSelected
 } from 'Redux/CartRedux';
 import CheckoutActions from 'Redux/CheckoutRedux';
 import { getUserId } from 'Redux/SessionRedux';
@@ -82,34 +84,23 @@ class Footer extends Component {
   }
 
   render() {
-    const { grossTotal, isCheckoutValid } = this.props;
+    const { grossTotal, isCheckoutValid, isCartFilled, isAnyCartItemSelected } = this.props;
     const { isInitiatingCheckout, isInitiateCheckoutError } = this.state;
+    if (!isCartFilled) return (<View/>);
     return (
       <View style={{
           backgroundColor: Colors.white,
           borderTopWidth: 0.4,
           borderTopColor: Colors.brown_light
         }}>
-        <View style={{ padding: 15 }}>
-          <Text style={{ fontSize: 16 }}>Total</Text>
-          {grossTotal ? (
+        {isAnyCartItemSelected &&
+          <View style={{ padding: 15 }}>
+            <Text style={{ fontSize: 16 }}>Total</Text>
             <Text style={{ fontSize: 22, fontWeight: 'bold' }}>
               {parseToRupiah(grossTotal) || '0'}
             </Text>
-          ) : null}
-          {!grossTotal &&
-            <Text
-              style={{
-                fontSize: 16,
-                fontStyle: 'italic',
-                color: Colors.red,
-                marginTop: Metrics.smallMargin
-              }}
-            >
-              (Tidak ada yg dipilih)
-            </Text>
-          }
-        </View>
+          </View>
+        }
         <Mutation
           mutation={SYNC_CART}
           update={cacheSetCart}
@@ -179,6 +170,8 @@ Footer.propTypes = {
   selectedCartItems: arrayOf(string),
   storeCheckoutId: func,
   resetCart: func,
+  isCartFilled: bool,
+  isAnyCartItemSelected: bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -187,6 +180,8 @@ const mapStateToProps = createStructuredSelector({
   grossTotal: getCartTotalGrossPrice(),
   isCheckoutValid: isCheckoutValid(),
   selectedCartItems: getCartItemIdSelected(),
+  isCartFilled: isCartFilled(),
+  isAnyCartItemSelected: isAnyCartItemSelected(),
 });
 
 const mapDispatchToProps = dispatch => ({

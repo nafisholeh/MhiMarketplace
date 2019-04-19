@@ -47,6 +47,7 @@ export const UPDATE_CART_ITEM_SCHEMA = gql`
       qty
       selected
       checked_out
+      checked_out_id
     }
   }
 `
@@ -54,7 +55,9 @@ export const UPDATE_CART_ITEM_SCHEMA = gql`
 export const cacheUpdateCartItem = ( cache, { data }, productId ) => {
   try {
     const { session: { user: { _id: user_id } }} = store.getState();
-    const { cart = [] } = cache.readQuery({ query: FETCH_CART, variables: { user_id } });
+    const { cart = [] } = cache.readQuery({
+      query: FETCH_CART, variables: { user_id }
+    });
     const updateIndex = cart.findIndex(n => n.product._id === productId);
     if (updateIndex === -1) {
       const { updateItem } = data;

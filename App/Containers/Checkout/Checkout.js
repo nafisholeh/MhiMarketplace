@@ -13,6 +13,7 @@ import DeliveryOptions from './DeliveryOptions';
 import PaymentOptions from './PaymentOptions';
 import PaymentDetails from './PaymentDetails';
 import { Metrics, Colors } from 'Themes';
+import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { FINISH_CHECKOUT } from 'GraphQL/Checkout/Mutation';
 import { FETCH_CHECKOUT_ITEMS } from 'GraphQL/Checkout/Query';
 import { getUserId } from 'Redux/SessionRedux';
@@ -88,7 +89,14 @@ class Checkout extends Component {
           mutation={FINISH_CHECKOUT}
           onCompleted={this.onFinishCheckoutComplete}
           ignoreResults={false}
-          errorPolicy='all'>
+          errorPolicy='all'
+          refetchQueries={
+            mutationResult => [{
+              query: FETCH_CART,
+              variables: { user_id: userId }
+            }]
+          }
+        >
           { (finishCheckout, {loading, error, data}) => {
             return (
               <TouchableOpacity

@@ -13,6 +13,7 @@ export const reducers = combineReducers({
   session: require('./SessionRedux').reducer,
   cart: require('./CartRedux').reducer,
   checkout: require('./CheckoutRedux').reducer,
+  product: require('./ProductRedux').reducer,
 })
 
 export default () => {

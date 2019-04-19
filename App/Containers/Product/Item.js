@@ -12,6 +12,7 @@ import styles from './Styles';
 import { getUserId, isAdmin } from 'Redux/SessionRedux';
 import { getCartItemIds } from 'Redux/CartRedux';
 import { UPDATE_CART_ITEM, UPDATE_CART_ITEM_SCHEMA, cacheUpdateCartItem } from 'GraphQL/Cart/Mutation';
+import ProductActions from 'Redux/ProductRedux';
 
 class Item extends Component {
   
@@ -21,7 +22,8 @@ class Item extends Component {
   }
   
   onEdit = () => {
-    const { navigation } = this.props;
+    const { navigation, storeEditedProduct, data: { _id: productId } } = this.props;
+    storeEditedProduct(productId);
     navigation.navigate('ProductEdit')
   }
   
@@ -109,15 +111,20 @@ Item.propTypes = {
   userId: string,
   cartItemIds: arrayOf(string),
   isAdmin: bool,
+  storeEditedProduct: func,
 }
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
   cartItemIds: getCartItemIds(),
   isAdmin: isAdmin(),
-})
+});
+
+const mapDispatchToProps = dispatch => ({
+  storeEditedProduct: editedProduct => dispatch(ProductActions.storeEditedProduct(editedProduct)),
+});
 
 export default compose(
-  connect(mapStateToProps, null), 
+  connect(mapStateToProps, mapDispatchToProps), 
   UPDATE_CART_ITEM
 )(withNavigation(Item));

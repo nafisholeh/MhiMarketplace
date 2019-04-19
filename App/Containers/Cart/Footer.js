@@ -38,7 +38,7 @@ class Footer extends Component {
   }
   
   initiateCheckout = () => {
-    const { userId } = this.props;
+    const { userId, storeCheckoutId, resetCart } = this.props;
     this.setState({
       isInitiatingCheckout: true,
       isInitiateCheckoutError: null,
@@ -53,7 +53,6 @@ class Footer extends Component {
     })
     .then(res => {
       const { data: { addCheckout: { _id:checkoutId = 0 }}} = res;
-      const { storeCheckoutId, resetCart } = this.props;
       storeCheckoutId(checkoutId);
       resetCart();
       this.setState({ isInitiatingCheckout: false });

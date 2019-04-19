@@ -26,4 +26,5 @@ export default {
   },
   debounceInterval: 1000,
   defaulCourierCost: 25000,
+  warningMandatory: 'Wajib diisi',
 }

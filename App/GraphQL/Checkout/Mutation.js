@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
-export const ADD_CHECKOUT = gql`
-  mutation addCheckout($user_id: String!) {
-    addCheckout(user_id: $user_id) {
+export const START_CHECKOUT = gql`
+  mutation startCheckout($user_id: String!) {
+    startCheckout(user_id: $user_id) {
       _id
       user_id
       time

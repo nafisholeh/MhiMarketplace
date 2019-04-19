@@ -12,7 +12,7 @@ import { parseToRupiah, calcDiscount } from 'Lib';
 import { Colors, Metrics } from 'Themes';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { SYNC_CART, cacheSetCart } from 'GraphQL/Cart/Mutation';
-import { ADD_CHECKOUT } from 'GraphQL/Checkout/Mutation';
+import { START_CHECKOUT } from 'GraphQL/Checkout/Mutation';
 import CartActions, {
   getCartItems,
   getCartTotalGrossPrice,
@@ -46,7 +46,7 @@ class Footer extends Component {
       isInitiateCheckoutError: null,
     });
     ApolloClientProvider.client.mutate({
-      mutation: ADD_CHECKOUT,
+      mutation: START_CHECKOUT,
       variables: { user_id: userId },
       refetchQueries: [{
         query: FETCH_CART,
@@ -54,7 +54,7 @@ class Footer extends Component {
       }],
     })
     .then(res => {
-      const { data: { addCheckout: { _id:checkoutId = 0 }}} = res;
+      const { data: { startCheckout: { _id:checkoutId = 0 }}} = res;
       storeCheckoutId(checkoutId);
       resetCart();
       this.setState({ isInitiatingCheckout: false });

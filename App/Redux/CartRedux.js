@@ -11,6 +11,7 @@ import { calcDiscount } from 'Lib';
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
+  resetCart: null,
   onStartFetchingCart: null,
   onSuccessFetchingCart: null,
   onErrorFetchingCart: ['error'],
@@ -114,6 +115,8 @@ export const isCheckoutValid = () =>
 
 /* ------------- Reducers ------------- */
 
+export const resetCart = state => INITIAL_STATE
+
 export const onStartFetchingCart = state => {
   return state.merge({ isFetching: true, isSuccess: null, errorInfo: null });
 }
@@ -190,6 +193,7 @@ export const deleteCartItem = (state, { product_id }) => {
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
+  [Types.RESET_CART]: resetCart,
   [Types.ON_START_FETCHING_CART]: onStartFetchingCart,
   [Types.ON_SUCCESS_FETCHING_CART]: onSuccessFetchingCart,
   [Types.ON_ERROR_FETCHING_CART]: onErrorFetchingCart,

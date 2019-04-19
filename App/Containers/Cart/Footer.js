@@ -11,13 +11,14 @@ import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { parseToRupiah, calcDiscount } from 'Lib';
 import { Colors, Metrics } from 'Themes';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
-import { SYNC_CART } from 'GraphQL/Cart/Mutation';
+import { SYNC_CART, cacheSetCart } from 'GraphQL/Cart/Mutation';
 import { ADD_CHECKOUT } from 'GraphQL/Checkout/Mutation';
-import {
+import CartActions, {
   getCartItems,
   getCartTotalGrossPrice,
   getCartItemIdSelected,
-  isCheckoutValid
+  isCheckoutValid,
+  resetCart
 } from 'Redux/CartRedux';
 import CheckoutActions from 'Redux/CheckoutRedux';
 import { getUserId } from 'Redux/SessionRedux';
@@ -47,13 +48,14 @@ class Footer extends Component {
       variables: { user_id: userId },
       refetchQueries: [{
         query: FETCH_CART,
-        variables: { user_id: userId },
+        variables: { user_id: userId }
       }],
     })
     .then(res => {
       const { data: { addCheckout: { _id:checkoutId = 0 }}} = res;
-      const { storeCheckoutId } = this.props;
+      const { storeCheckoutId, resetCart } = this.props;
       storeCheckoutId(checkoutId);
+      resetCart();
       this.setState({ isInitiatingCheckout: false });
       this.onOpenCheckoutPage();
     })
@@ -78,19 +80,6 @@ class Footer extends Component {
         cart_item: cartItemUpload
       }
     })
-  }
-  
-  onSyncCartOnCache = (cache, { data }) => {
-    const { userId } = this.props;
-    const { cart } = cache.readQuery({
-      query: FETCH_CART,
-      variables: { user_id: userId } 
-    });
-    cache.writeQuery({
-      query: FETCH_CART,
-      variables: { user_id: userId },
-      data: { cart }
-    });
   }
 
   render() {
@@ -124,7 +113,7 @@ class Footer extends Component {
         </View>
         <Mutation
           mutation={SYNC_CART}
-          update={this.onSyncCartOnCache}
+          update={cacheSetCart}
           onCompleted={this.initiateCheckout}
           ignoreResults={false}
           errorPolicy='all'>
@@ -190,6 +179,7 @@ Footer.propTypes = {
   isCheckoutValid: bool,
   selectedCartItems: arrayOf(string),
   storeCheckoutId: func,
+  resetCart: func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -202,6 +192,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
   storeCheckoutId: checkoutId => dispatch(CheckoutActions.storeCheckoutId(checkoutId)),
+  resetCart: () => dispatch(CartActions.resetCart()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(Footer));

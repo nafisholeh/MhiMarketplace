@@ -53,15 +53,11 @@ export const UPDATE_CART_ITEM_SCHEMA = gql`
 
 export const cacheUpdateCartItem = ( cache, { data }, productId ) => {
   try {
-    console.tron.log('cacheUpdateCartItem', cache, data);
     const { session: { user: { _id: user_id } }} = store.getState();
     const { cart = [] } = cache.readQuery({ query: FETCH_CART, variables: { user_id } });
-    console.tron.log('cacheUpdateCartItem/cart/user_id', cart, user_id);
     const updateIndex = cart.findIndex(n => n.product._id === productId);
-    console.tron.log('cacheUpdateCartItem/update_index', updateIndex);
     if (updateIndex === -1) {
       const { updateItem } = data;
-      console.tron.log('cacheUpdateCartItem/addCart', updateItem);
       store.dispatch(CartActions.storeCart(updateItem));
       cache.writeQuery({
         query: FETCH_CART,
@@ -83,10 +79,22 @@ export const cacheUpdateCartItem = ( cache, { data }, productId ) => {
       variables: { user_id },
       data: { cart: updatedCart }
     });
-    console.tron.log('cacheUpdateCartItem/updateCart', updatedCart);
   } catch(err) {
     return null;
   }
+};
+
+export const cacheSetCart = (cache, { data }) => {
+  const { session: { user: { _id: user_id } }} = store.getState();
+  const { cart } = cache.readQuery({
+    query: FETCH_CART,
+    variables: { user_id } 
+  });
+  cache.writeQuery({
+    query: FETCH_CART,
+    variables: { user_id },
+    data: { cart }
+  });
 };
 
 export const cacheSelectCartItem = (productId, isSelected) => {

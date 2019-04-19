@@ -14,6 +14,7 @@ export const FETCH_CART = gql`
       qty
       selected
       checked_out
+      checked_out_id
     }
   }
 `

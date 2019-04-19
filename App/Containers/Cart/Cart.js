@@ -14,6 +14,7 @@ import { FETCH_SOME_PRODUCT } from 'GraphQL/Product/Query';
 import { OptimizedList, StatePage } from 'Components';
 import { getUserId } from 'Redux/SessionRedux';
 import { getCartTotalGrossPrice } from 'Redux/CartRedux';
+import CheckoutActions from 'Redux/CheckoutRedux';
 import { Images, Metrics, Colors } from 'Themes';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import AppConfig from 'Config/AppConfig';
@@ -56,7 +57,7 @@ class Cart extends Component {
   };
 
   render() {
-    const { userId, grossPriceTotal } = this.props;
+    const { userId, grossPriceTotal, storeCheckoutId } = this.props;
     if (!userId) {
       return (
         <View style={{flex:1}}>
@@ -94,8 +95,9 @@ class Cart extends Component {
                     />
                   )
                 }
-                const { checked_out } = cart[0];
+                const { checked_out, checked_out_id } = cart[0];
                 if (checked_out) {
+                  storeCheckoutId(checked_out_id);
                   return (
                     <StatePage 
                       title="Pesanan sebelumnya belum selesai"
@@ -127,6 +129,7 @@ Cart.propTypes = {
   userId: string,
   grossPriceTotal: number,
   updateCartItem: func,
+  storeCheckoutId: func,
 }
 
 const mapStateToProps = createStructuredSelector({
@@ -134,7 +137,11 @@ const mapStateToProps = createStructuredSelector({
   grossPriceTotal: getCartTotalGrossPrice(),
 });
 
+const mapDispatchToProps = dispatch => ({
+  storeCheckoutId: checkoutId => dispatch(CheckoutActions.storeCheckoutId(checkoutId)),
+});
+
 export default compose(
-  connect(mapStateToProps, null),
+  connect(mapStateToProps, mapDispatchToProps),
   UPDATE_CART_ITEM
 )(withNavigation(Cart));

@@ -64,7 +64,11 @@ export const getCartItemIds = () =>
     state => {
       const { cart } = state;
       if (!cart) return [];
-      return cart.map(item => item.product._id);
+      return cart.map(item => {
+        const { product } = item;
+        if (!product) return '0';
+        return product._id;
+      });
     }
   )
   

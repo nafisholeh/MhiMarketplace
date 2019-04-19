@@ -22,7 +22,6 @@ class StatePage extends Component {
       buttonTitle,
       icon = AppConfig.pageState.ERROR
     } = this.props;
-    console.tron.log('StatePage/render', this.props)
     return (
       <ScrollView
         style={styles.container}
@@ -58,13 +57,12 @@ class StatePage extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    flex: 1,
   },
   content: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: moderateScale(52),
   },
   image: {
     marginBottom: moderateScale(42),

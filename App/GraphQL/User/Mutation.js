@@ -6,6 +6,7 @@ export const SIGNIN = gql`
       _id
       email
       name
+      user_type
     }
   }
 `
@@ -16,6 +17,7 @@ export const SIGNUP = gql`
       _id
       email
       name
+      user_type
     }
   }
 `

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, Image, View, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { shape, number, string, func, arrayOf } from 'prop-types';
+import { shape, number, string, func, arrayOf, bool } from 'prop-types';
 import { compose, Mutation } from 'react-apollo';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -9,7 +9,7 @@ import { withNavigation } from 'react-navigation';
 import { parseToRupiah, calcDiscount } from 'Lib';
 import { Images } from 'Themes';
 import styles from './Styles';
-import { getUserId } from 'Redux/SessionRedux';
+import { getUserId, isAdmin } from 'Redux/SessionRedux';
 import { getCartItemIds } from 'Redux/CartRedux';
 import { UPDATE_CART_ITEM, UPDATE_CART_ITEM_SCHEMA, cacheUpdateCartItem } from 'GraphQL/Cart/Mutation';
 
@@ -20,8 +20,13 @@ class Item extends Component {
     navigation.navigate('ProductDetail', { data });
   }
   
+  onEdit = () => {
+    const { navigation } = this.props;
+    navigation.navigate('ProductEdit')
+  }
+  
   render() {
-    const { data, cartItemIds, userId } = this.props
+    const { data, cartItemIds, userId, isAdmin } = this.props
     if (!data) {
       return <View />
     }
@@ -48,7 +53,18 @@ class Item extends Component {
             </Text>
             <Text>{parseToRupiah(calcDiscount(price, discount))}</Text>
           </View>
-          { !isInsideCart &&
+          { isAdmin &&
+            <TouchableOpacity
+              style={styles.product__item_cart}
+              onPress={this.onEdit}
+            >
+              <Image
+                source={Images.edit}
+                style={styles.itemImage}
+              />
+            </TouchableOpacity>
+          }
+          { !isInsideCart && !isAdmin &&
             <Mutation
               mutation={UPDATE_CART_ITEM_SCHEMA}
               variables={{ user_id: userId, product_id: productId, qty: null }}
@@ -92,11 +108,13 @@ Item.propTypes = {
   updateCartItem: func,
   userId: string,
   cartItemIds: arrayOf(string),
+  isAdmin: bool,
 }
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
   cartItemIds: getCartItemIds(),
+  isAdmin: isAdmin(),
 })
 
 export default compose(

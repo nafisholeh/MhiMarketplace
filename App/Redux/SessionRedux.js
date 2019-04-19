@@ -38,6 +38,30 @@ export const getUserId = () =>
       return _id ? _id : null;
     }
   )
+  
+export const isAdmin = () =>
+  createSelector(
+    sessionSelectors(),
+    state => {
+      const { user } = state;
+      if (!user) return false;
+      const { user_type } = user;
+      if (user_type && user_type !== 'user') return true;
+      return false;
+    }
+  )
+  
+export const isStokOpname = () =>
+  createSelector(
+    sessionSelectors(),
+    state => {
+      const { user } = state;
+      if (!user) return false;
+      const { user_type } = user;
+      if (user_type && user_type === 'stok opname') return true;
+      return false;
+    }
+  )
 
 /* ------------- Reducers ------------- */
 

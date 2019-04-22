@@ -22,7 +22,7 @@ export const INITIAL_STATE = Immutable({
 export const productSelectors = () => state => state.product
 
 export const getEditedProduct = () =>
-  createSelector(productSelectors(), state => state.editedProduct)
+  createSelector(productSelectors(), state => state.editedProduct || '0')
 
 /* ------------- Reducers ------------- */
 

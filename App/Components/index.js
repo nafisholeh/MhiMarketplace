@@ -4,8 +4,12 @@ import UpDownCounter from './UpDownCounter';
 import HeaderButton from './HeaderButton';
 import ToolbarButton from './ToolbarButton';
 import RadioButton from './RadioButton';
+import LoadingPage from './LoadingPage';
+import LoadingSection from './LoadingSection';
+import Touchable from './TouchableOpacity';
+import QueryEffectPage from './QueryEffectPage';
 
 export {
   OptimizedList, StatePage, UpDownCounter, HeaderButton, ToolbarButton,
-  RadioButton
+  RadioButton, LoadingPage, LoadingSection, Touchable, QueryEffectPage
 }

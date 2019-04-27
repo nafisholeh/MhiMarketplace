@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import { bool, string, func, shape } from 'prop-types';
+import { bool, string, func, shape, oneOfType } from 'prop-types';
 
 import LoadingPage from './LoadingPage';
 import StatePage from './StatePage';
@@ -55,7 +55,7 @@ QueryEffectPage.propTypes = {
     title: string,
     subtitle: string,
   }),
-  state: shape({}),
+  state: oneOfType(shape({}), bool),
   stateData: shape({
     type: string,
     title: string,

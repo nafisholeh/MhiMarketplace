@@ -109,15 +109,17 @@ class Edit extends Component {
       data: {
         title: (title || null),
         description: (description || null),
-        stock: (stock || null),
+        stock: (parseFloat(stock) || null),
         unit: (unit || null),
-        price: (price || null),
-        discount: (discount || null),
+        price: (parseFloat(price) || null),
+        discount: (parseFloat(discount) || null),
         expired_date: (expired_date || null),
-        minimum_order: (minimum_order || null),
+        minimum_order: (parseFloat(minimum_order) || null),
       }
     };
-    editProduct(dataSubmit);
+    editProduct({
+      variables: dataSubmit
+    });
   };
   
   onUploadCompleted = () => {

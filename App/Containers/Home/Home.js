@@ -22,7 +22,7 @@ class Home extends Component {
       headerLeft: null,
       headerRight: (
         <HeaderButton
-          onPress={() => navigation.navigate(isStokOpname ? 'AddressInput' : 'Cart')}
+          onPress={() => navigation.navigate(isStokOpname ? 'ProductAdd' : 'Cart')}
           icon={isStokOpname ? Images.plus : Images.cart}
         />
       ),

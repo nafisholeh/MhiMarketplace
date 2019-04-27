@@ -14,6 +14,7 @@ import { FETCH_PRODUCT_DETAIL } from 'GraphQL/Product/Query';
 import { ADD_PRODUCT, EDIT_PRODUCT } from 'GraphQL/Product/Mutation';
 import { getEditedProduct } from 'Redux/ProductRedux';
 import { LoadingPage, StatePage, QueryEffectPage } from 'Components';
+import { InAppNotification } from 'Lib';
 
 class Form extends Component {
   
@@ -136,6 +137,10 @@ class Form extends Component {
     });
   };
   
+  onUploadError = error => {
+    InAppNotification.error();
+  };
+  
   onUploadCompleted = () => {
     const { navigation } = this.props;
     navigation.navigate('Home');
@@ -179,10 +184,12 @@ class Form extends Component {
         <Mutation
           mutation={isEdit ? EDIT_PRODUCT : ADD_PRODUCT}
           onCompleted={this.onUploadCompleted}
+          onError={this.onUploadError}
           // update={(cache, data) => cacheAddAddress(cache, data, this.state)}
           ignoreResults={false}
           errorPolicy='all'>
           { (mutate, {loading, error, data}) => {
+            console.tron.log('Form/render', loading, error, data);
             return (
               <React.Fragment>
                 <ScrollView

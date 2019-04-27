@@ -10,9 +10,11 @@ import {
   getReadableSubdistrict,
   getReadableCityState
 } from './Address';
+import { InAppNotification } from './InAppNotification';
 
 export { 
   parseToRupiah, calcDiscount, isEmailValid, isEmailError, 
   getGraphQLError, getReadableDate, setTabBarHide, moderateScale,
-  isString, getReadableAddress, getReadableSubdistrict, getReadableCityState
+  isString, getReadableAddress, getReadableSubdistrict, getReadableCityState,
+  InAppNotification
 };

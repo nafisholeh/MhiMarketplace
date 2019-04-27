@@ -12,6 +12,7 @@ import Signup from 'Containers/Signup/Signup'
 import Setup from 'Containers/Setup/Setup'
 import Home from 'Containers/Home/Home'
 import Detail from 'Containers/Product/Detail'
+import ProductAdd from 'Containers/Product/Add';
 import ProductEdit from 'Containers/Product/Edit'; 
 import Cart from 'Containers/Cart/Cart'
 import Checkout from 'Containers/Checkout/Checkout'
@@ -45,6 +46,7 @@ const customNavOptions = ({ navigation }, icon) => {
 const HomeNav = createStackNavigator({
   Home: { screen: Home },
   ProductDetail: { screen: Detail },
+  ProductAdd: { screen: ProductAdd },
   ProductEdit: { screen: ProductEdit },
   Cart: { screen: Cart },
   Checkout: { screen: Checkout },

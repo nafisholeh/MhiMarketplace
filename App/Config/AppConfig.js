@@ -13,7 +13,8 @@ export default {
     'AddressInput',
     'Slip',
     'Setup',
-    'ProductEdit'
+    'ProductEdit',
+    'ProductAdd',
   ],
   pageState: {
     ERROR: 'error',

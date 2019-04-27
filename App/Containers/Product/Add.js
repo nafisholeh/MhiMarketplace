@@ -3,20 +3,20 @@ import { View, ScrollView, TouchableOpacity, Text } from 'react-native';
 
 import Form from './Form';
 
-class Edit extends Component {
+class Add extends Component {
   
   static navigationOptions = ({navigation}) => {
     const { params = {} } = navigation.state
     return {
-      title: 'Ubah produk'
+      title: 'Produk Baru'
     }
   }
 
   render() {
     return (
-      <Form isEdit />
+      <Form isEdit={false} />
     );
   }
 }
 
-export default Edit;
+export default Add;

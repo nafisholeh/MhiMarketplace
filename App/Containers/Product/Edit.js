@@ -24,6 +24,7 @@ class Edit extends Component {
   }
 
   state = {
+    _id: '',
     title: '',
     description: '',
     stock: '',
@@ -60,6 +61,7 @@ class Edit extends Component {
       const { data: productData } = data;
       const { 
         product: { 
+          _id = null,
           title = '',
           description = '',
           stock = '',
@@ -72,6 +74,7 @@ class Edit extends Component {
         }
       } = productData || {};
       this.setState({
+        _id,
         title,
         description,
         stock: stock.toString(),
@@ -104,9 +107,10 @@ class Edit extends Component {
   
   submitEdit = editProduct => {
     if (!this.isValid()) return;
-    const { title, description, stock, unit, price, discount, expired_date, minimum_order } = this.state;
+    const { _id, title, description, stock, unit, price, discount, expired_date, minimum_order } = this.state;
     const dataSubmit = {
       data: {
+        _id,
         title: (title || null),
         description: (description || null),
         stock: (parseFloat(stock) || null),

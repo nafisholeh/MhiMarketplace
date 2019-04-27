@@ -12,7 +12,8 @@ export default {
     'AddressList',
     'AddressInput',
     'Slip',
-    'Setup'
+    'Setup',
+    'ProductEdit'
   ],
   pageState: {
     ERROR: 'error',

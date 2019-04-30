@@ -23,7 +23,7 @@ import { FETCH_PRODUCT_DETAIL } from 'GraphQL/Product/Query';
 import { ADD_PRODUCT, EDIT_PRODUCT } from 'GraphQL/Product/Mutation';
 import { getEditedProduct } from 'Redux/ProductRedux';
 import { LoadingPage, StatePage, QueryEffectPage } from 'Components';
-import { InAppNotification, getReadableDate } from 'Lib';
+import { InAppNotification, getReadableDate, parseToRupiah } from 'Lib';
 
 class Form extends Component {
   
@@ -41,6 +41,7 @@ class Form extends Component {
     stock: '',
     unit: '',
     price: '',
+    price_parsed: '',
     discount: '',
     expired_date: '',
     minimum_order: '',
@@ -93,6 +94,7 @@ class Form extends Component {
         stock: stock.toString(),
         unit,
         price: price.toString(),
+        price_parsed: parseToRupiah(price, ' '),
         discount: discount.toString(),
         expired_date,
         minimum_order: minimum_order.toString(),
@@ -179,6 +181,7 @@ class Form extends Component {
       stock,
       unit,
       price,
+      price_parsed,
       discount,
       expired_date,
       minimum_order,
@@ -270,9 +273,13 @@ class Form extends Component {
                   <TextField
                     ref={ref => this._price = ref}
                     label="Harga per unit"
-                    value={price}
+                    value={price_parsed}
+                    prefix="Rp"
                     error={error_price}
-                    onChangeText={(text) => this.setState({ price: text })}
+                    onChangeText={(text) => this.setState({
+                      price: text,
+                      price_parsed: parseToRupiah(text, ' ') || '-',
+                    })}
                     returnKeyType="next"
                     onSubmitEditing={() => this._discount.focus()}
                   />

@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import { Alert, ScrollView, Text, Image, View, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
-import { object, arrayOf, string } from 'prop-types'
+import { object, arrayOf, string, bool } from 'prop-types'
 import { Query, Mutation, compose } from 'react-apollo';
 import { DotIndicator } from 'react-native-indicators';
 
 import { FETCH_PRODUCT_DETAIL } from 'GraphQL/Product/Query';
 import { UPDATE_CART_ITEM, UPDATE_CART_ITEM_SCHEMA, cacheUpdateCartItem } from 'GraphQL/Cart/Mutation';
-import { getUser } from 'Redux/SessionRedux';
+import { getUser, isAdmin } from 'Redux/SessionRedux';
 import { getCartItemIds } from 'Redux/CartRedux';
 
 import { Images, Metrics, Colors } from 'Themes'
@@ -61,7 +61,8 @@ class Detail extends Component {
       navigation: { state: { params: { data: { _id: productId } }}},
       cartItemIds,
       user: { _id: userId },
-      navigation
+      navigation,
+      isAdmin,
     } = this.props;
     const isInsideCart = cartItemIds.indexOf(productId ) > -1;
     return (
@@ -113,42 +114,44 @@ class Detail extends Component {
                     <Text style={{ marginBottom: 5 }}>Kadaluarsa: {getReadableDate(expired_date, 'DD-MM-YYYY', 'id', 'DD MMM YYYY')}</Text>
                     <Text style={{ marginBottom: 20 }}>{description}</Text>
                   </ScrollView>
-                  <Mutation
-                    mutation={UPDATE_CART_ITEM_SCHEMA}
-                    variables={{ user_id: userId, product_id: productId, qty: null }}
-                    update={(cache, data) => cacheUpdateCartItem(cache, data, productId)}
-                    onError={(error) => {}}
-                    ignoreResults={false}
-                    errorPolicy='all'>
-                    { (updateCartItem, {loading, error, data}) => {
-                      const isAdded = isInsideCart || data;
-                      return (
-                        <TouchableOpacity
-                          onPress={() => this.onAddToCart(updateCartItem, isAdded)}
-                          style={{
-                            height: 50,
-                            backgroundColor: isAdded ? Colors.brown_dark : Colors.green_light,
-                            alignItems: 'center',
-                            justifyContent: 'center' 
-                          }}
-                          >
-                          {loading && (
-                            <DotIndicator
-                              count={4}
-                              size={7}
-                              color='white'
-                              animationDuration={800}
-                            />
-                          )}
-                          {!loading && (
-                            <Text style={{color: 'white'}}>
-                              {isAdded ? 'Lihat di Keranjang' : 'Pesan Sekarang'}
-                            </Text>
-                          )}
-                        </TouchableOpacity>
-                      );
-                    }}
-                  </Mutation>
+                  {!isAdmin &&
+                    <Mutation
+                      mutation={UPDATE_CART_ITEM_SCHEMA}
+                      variables={{ user_id: userId, product_id: productId, qty: null }}
+                      update={(cache, data) => cacheUpdateCartItem(cache, data, productId)}
+                      onError={(error) => {}}
+                      ignoreResults={false}
+                      errorPolicy='all'>
+                      { (updateCartItem, {loading, error, data}) => {
+                        const isAdded = isInsideCart || data;
+                        return (
+                          <TouchableOpacity
+                            onPress={() => this.onAddToCart(updateCartItem, isAdded)}
+                            style={{
+                              height: 50,
+                              backgroundColor: isAdded ? Colors.brown_dark : Colors.green_light,
+                              alignItems: 'center',
+                              justifyContent: 'center' 
+                            }}
+                            >
+                            {loading && (
+                              <DotIndicator
+                                count={4}
+                                size={7}
+                                color='white'
+                                animationDuration={800}
+                              />
+                            )}
+                            {!loading && (
+                              <Text style={{color: 'white'}}>
+                                {isAdded ? 'Lihat di Keranjang' : 'Pesan Sekarang'}
+                              </Text>
+                            )}
+                          </TouchableOpacity>
+                        );
+                      }}
+                    </Mutation>
+                  }
                 </View>
               )
             }
@@ -162,11 +165,13 @@ class Detail extends Component {
 Detail.propTypes = {
   user: object,
   cartItemIds: arrayOf(string),
+  isAdmin: bool,
 }
 
 const mapStateToProps = createStructuredSelector({
   user: getUser(),
   cartItemIds: getCartItemIds(),
+  isAdmin: isAdmin(),
 });
 
 export default compose(

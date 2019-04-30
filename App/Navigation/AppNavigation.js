@@ -11,6 +11,8 @@ import Signin from 'Containers/Signin/Signin'
 import Signup from 'Containers/Signup/Signup'
 import Setup from 'Containers/Setup/Setup'
 import Home from 'Containers/Home/Home'
+import HomeKeuangan from 'Containers/Home/HomeKeuangan'
+import HomeUser from 'Containers/Home/HomeUser'
 import Detail from 'Containers/Product/Detail'
 import ProductAdd from 'Containers/Product/Add';
 import ProductEdit from 'Containers/Product/Edit'; 
@@ -45,6 +47,8 @@ const customNavOptions = ({ navigation }, icon) => {
 
 const HomeNav = createStackNavigator({
   Home: { screen: Home },
+  HomeKeuangan: { screen: HomeKeuangan },
+  HomeUser: { screen: HomeUser },
   ProductDetail: { screen: Detail },
   ProductAdd: { screen: ProductAdd },
   ProductEdit: { screen: ProductEdit },

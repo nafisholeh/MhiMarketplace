@@ -252,6 +252,7 @@ class Form extends Component {
                   <TextField
                     ref={ref => this._description = ref}
                     label="Deskripsi"
+                    multiline={true}
                     value={description}
                     error={error_description}
                     onChangeText={(text) => this.setState({ description: text })}

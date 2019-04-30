@@ -8,6 +8,8 @@ import Config from 'Config/AppConfig';
 import { StatePage } from 'Components';
 import { Colors, Metrics } from 'Themes';
 import SessionActions, { getUser } from 'Redux/SessionRedux';
+import CartActions from 'Redux/CartRedux';
+import CheckoutActions from 'Redux/CheckoutRedux';
 
 class Account extends Component {
   
@@ -19,8 +21,10 @@ class Account extends Component {
   }
   
   signout = () => {
-    const { reset: clearSession } = this.props;
+    const { reset: clearSession, resetCart, resetCheckout } = this.props;
     clearSession();
+    resetCart();
+    resetCheckout();
   };
   
   signin = () => {
@@ -68,6 +72,8 @@ Account.propTypes = {
     name: string,
   }),
   reset: func,
+  resetCart: func,
+  resetCheckout: func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -76,6 +82,8 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
   reset: () => dispatch(SessionActions.reset()),
+  resetCart: () => dispatch(CartActions.resetCart()),
+  resetCheckout: () => dispatch(CheckoutActions.resetCheckout()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account);

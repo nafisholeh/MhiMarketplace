@@ -5,6 +5,7 @@ import { createSelector } from 'reselect';
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
+  resetCheckout: null,
   selectPayment: ['paymentSelected'],
   storeCheckoutId: ['checkoutId'],
   updatePaymentDetails: ['gross', 'discount', 'courier', 'total'],
@@ -43,6 +44,8 @@ export const getPaymentDetails = () =>
   }))
 
 /* ------------- Reducers ------------- */
+
+export const resetCheckout = (state) => INITIAL_STATE
 
 export const selectPayment = (state, { paymentSelected }) =>
   state.merge({ paymentSelected })

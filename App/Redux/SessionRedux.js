@@ -62,6 +62,18 @@ export const isStokOpname = () =>
       return false;
     }
   )
+  
+export const isKeuangan = () =>
+  createSelector(
+    sessionSelectors(),
+    state => {
+      const { user } = state;
+      if (!user) return false;
+      const { user_type } = user;
+      if (user_type && user_type === 'keuangan') return true;
+      return false;
+    }
+  )
 
 /* ------------- Reducers ------------- */
 

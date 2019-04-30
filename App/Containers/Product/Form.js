@@ -159,6 +159,19 @@ class Form extends Component {
     navigation.navigate('Home');
   };
   
+  onChangeDiscount = (text) => {
+    const discountInt = parseInt(text, 10);
+    let result = '';
+    if (discountInt >= 0 && discountInt <= 100) {
+      result = `${discountInt}`;
+    } else if (discountInt > 100) {
+      result = `100`;
+    } else if (discountInt <= 0) {
+      result = `0`;
+    }
+    this.setState({ discount: result });
+  };
+  
   selectKadaluarsa = async () => {
     try {
       const {action, year, month, day} = await DatePickerAndroid.open({
@@ -296,11 +309,11 @@ class Form extends Component {
                     value={discount}
                     suffix={
                       price && discount ?
-                        `- ${parseToRupiah((price * discount * 0.01))}` :
+                        `- ${parseToRupiah((price * discount * 0.01)) || ''}` :
                         ''
                     }
                     error={error_discount}
-                    onChangeText={(text) => this.setState({ discount: text })}
+                    onChangeText={this.onChangeDiscount}
                     returnKeyType="next"
                   />
                   <TouchableOpacity

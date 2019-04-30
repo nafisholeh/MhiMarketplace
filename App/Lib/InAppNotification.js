@@ -2,6 +2,8 @@ type AlertType = 'info' | 'warn' | 'error' | 'success'
 
 const errorTitleDefault = 'Terjadi kesalahan';
 const errorBodyDefault = 'Maaf, terjadi kesalahan saat menghubungi server, silahkan coba lagi';
+const errorDefTitleDefault = 'Terjadi kesalahan';
+const errorDefBodyDefault = 'Maaf, terjadi kesalahan pada aplikasi';
 
 export type DropdownType = {
   alertWithType: (type: AlertType, title: string, message: string) => void
@@ -43,6 +45,15 @@ export class InAppNotification {
       'error',
       title || errorTitleDefault,
       body || errorBodyDefault
+    );
+  }
+  
+  static errorLocal(title: string, message: string) {
+    if(!this.dropDown) return;
+    this.dropDown.alertWithType(
+      'error',
+      title || errorDefTitleDefault,
+      message || errorDefBodyDefault
     );
   }
 }

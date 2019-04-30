@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { View, ScrollView, TouchableOpacity, Text } from 'react-native';
+import { DatePickerAndroid, View, ScrollView, TouchableOpacity, Text } from 'react-native';
 import { bool, string } from 'prop-types';
 import { TextField } from 'react-native-material-textfield';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { withNavigation } from 'react-navigation';
+import DatePicker from 'react-native-datepicker';
+import moment from 'moment';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { Mutation } from 'react-apollo';
@@ -14,7 +16,7 @@ import { FETCH_PRODUCT_DETAIL } from 'GraphQL/Product/Query';
 import { ADD_PRODUCT, EDIT_PRODUCT } from 'GraphQL/Product/Mutation';
 import { getEditedProduct } from 'Redux/ProductRedux';
 import { LoadingPage, StatePage, QueryEffectPage } from 'Components';
-import { InAppNotification } from 'Lib';
+import { InAppNotification, getReadableDate } from 'Lib';
 
 class Form extends Component {
   
@@ -145,6 +147,23 @@ class Form extends Component {
     const { navigation } = this.props;
     navigation.navigate('Home');
   };
+  
+  selectKadaluarsa = async () => {
+    try {
+      const {action, year, month, day} = await DatePickerAndroid.open({
+        date: new Date(),
+        minDate: new Date(),
+        mode: 'calendar'
+      });
+      if (action !== DatePickerAndroid.dismissedAction) {
+        const days = day < 10 ? `0${day}` : day;
+        const months = month < 10 ? `0${month}` : month;
+        this.setState({ expired_date: `${days}-${months}-${year}` });
+      }
+    } catch ({code, message}) {
+      InAppNotification.errorLocal(null, message);
+    }
+  }
 
   render() {
     const {
@@ -253,17 +272,20 @@ class Form extends Component {
                     error={error_discount}
                     onChangeText={(text) => this.setState({ discount: text })}
                     returnKeyType="next"
-                    onSubmitEditing={() => this._expired_date.focus()}
                   />
-                  <TextField
-                    ref={ref => this._expired_date = ref}
-                    label="Tanggal Kadaluarsa"
-                    value={expired_date}
-                    error={error_expired_date}
-                    onChangeText={(text) => this.setState({ expired_date: text })}
-                    returnKeyType="next"
-                    onSubmitEditing={() => this._minimum_order.focus()}
-                  />
+                  <TouchableOpacity
+                    onPress={this.selectKadaluarsa}>
+                    <TextField
+                      label="Tanggal Kadaluarsa"
+                      value={
+                        expired_date ?
+                          getReadableDate(expired_date, 'DD-MM-YYYY', 'id', 'DD MMM YYYY') :
+                          ''
+                      }
+                      error={error_expired_date}
+                      editable={false}
+                    />
+                  </TouchableOpacity>
                   <TextField
                     ref={ref => this._minimum_order = ref}
                     label="Minimal pemesanan"

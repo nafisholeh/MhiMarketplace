@@ -14,16 +14,15 @@ import { createStructuredSelector } from 'reselect';
 import { withNavigation } from 'react-navigation';
 import moment from 'moment';
 import RNPickerSelect from 'react-native-picker-select';
+import { DotIndicator } from 'react-native-indicators';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { Mutation } from 'react-apollo';
 import { Colors, Metrics } from 'Themes';
 import Config from 'Config/AppConfig';
-import { FETCH_CART } from 'GraphQL/Cart/Query';
-import { FETCH_PRODUCT_DETAIL } from 'GraphQL/Product/Query';
+import { FETCH_PRODUCT_DETAIL, FETCH_PRODUCT_LIST } from 'GraphQL/Product/Query';
 import { ADD_PRODUCT, EDIT_PRODUCT } from 'GraphQL/Product/Mutation';
 import { getEditedProduct } from 'Redux/ProductRedux';
-import { getUserId } from 'Redux/SessionRedux';
 import { LoadingPage, StatePage, QueryEffectPage } from 'Components';
 import { InAppNotification, getReadableDate, parseToRupiah } from 'Lib';
 
@@ -213,7 +212,7 @@ class Form extends Component {
       fetching_error,
       data_invalid,
     } = this.state;
-    const { isEdit, userId } = this.props;
+    const { isEdit } = this.props;
     if (isEdit && !fetching_complete) {
       return (
         <QueryEffectPage
@@ -230,10 +229,8 @@ class Form extends Component {
           onCompleted={this.onUploadCompleted}
           onError={this.onUploadError}
           refetchQueries={[{
-            query: FETCH_CART,
-            variables: { user_id: userId }
+            query: FETCH_PRODUCT_LIST
           }]}
-          // update={(cache, data) => cacheAddAddress(cache, data, this.state)}
           ignoreResults={false}
           errorPolicy='all'>
           { (mutate, {loading, error, data}) => {
@@ -351,9 +348,19 @@ class Form extends Component {
                     alignItems: 'center'
                   }}
                 >
-                  <Text style={{ color: 'white' }}>
-                    Selesai
-                  </Text>
+                  {loading &&
+                    <DotIndicator
+                      count={4}
+                      size={7}
+                      color='white'
+                      animationDuration={800}
+                    />
+                  }
+                  {!loading &&
+                    <Text style={{ color: 'white' }}>
+                      Selesai
+                    </Text>
+                  }
                 </TouchableOpacity>
               </React.Fragment>
             )
@@ -367,12 +374,10 @@ class Form extends Component {
 Form.propTypes = {
   isEdit: bool,
   editedProductId: string,
-  userId: string,
 };
 
 const mapStateToProps = createStructuredSelector({
   editedProductId: getEditedProduct(),
-  userId: getUserId(),
 })
 
 export default connect(mapStateToProps, null)(withNavigation(Form));

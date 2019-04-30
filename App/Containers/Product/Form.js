@@ -284,7 +284,7 @@ class Form extends Component {
                     suffix={unit ? `/${unit}` : ''}
                     error={error_price}
                     onChangeText={(text) => this.setState({
-                      price: text,
+                      price: text.replace(/\D+/g, ''),
                       price_parsed: parseToRupiah(text, ' ') || '-',
                     })}
                     returnKeyType="next"
@@ -294,6 +294,11 @@ class Form extends Component {
                     ref={ref => this._discount = ref}
                     label="Diskon"
                     value={discount}
+                    suffix={
+                      price && discount ?
+                        `- ${parseToRupiah((price * discount * 0.01))}` :
+                        ''
+                    }
                     error={error_discount}
                     onChangeText={(text) => this.setState({ discount: text })}
                     returnKeyType="next"

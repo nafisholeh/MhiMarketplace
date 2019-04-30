@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
-import { DatePickerAndroid, View, ScrollView, TouchableOpacity, Text } from 'react-native';
+import {
+  DatePickerAndroid,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Text,
+  Picker
+} from 'react-native';
 import { bool, string } from 'prop-types';
 import { TextField } from 'react-native-material-textfield';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { withNavigation } from 'react-navigation';
 import moment from 'moment';
+import RNPickerSelect from 'react-native-picker-select';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { Mutation } from 'react-apollo';
@@ -240,19 +248,23 @@ class Form extends Component {
                         error={error_stock}
                         onChangeText={(text) => this.setState({ stock: text })}
                         returnKeyType="next"
-                        onSubmitEditing={() => this._unit.focus()}
                       />
                     </View>
                     <View style={{flex:1}}>
-                      <TextField
-                        ref={ref => this._unit = ref}
-                        label="Unit"
-                        value={unit}
-                        error={error_unit}
-                        onChangeText={(text) => this.setState({ unit: text })}
-                        returnKeyType="next"
-                        onSubmitEditing={() => this._price.focus()}
-                      />
+                      <RNPickerSelect
+                        placeholder={{
+                          label: 'Pilih Unit',
+                          value: null,
+                        }}
+                        items={[{label: 'kg', value: 'kg'}, {label: 'gram', value: 'gram'}]}
+                        onValueChange={(val, i) => this.setState({ unit: val})}
+                        value={unit}>
+                        <TextField
+                          label="Unit"
+                          value={unit}
+                          error={error_unit}
+                        />
+                      </RNPickerSelect>
                     </View>
                   </View>
                   <TextField
@@ -289,6 +301,7 @@ class Form extends Component {
                     ref={ref => this._minimum_order = ref}
                     label="Minimal pemesanan"
                     value={minimum_order}
+                    suffix={unit}
                     error={error_minimum_order}
                     onChangeText={(text) => this.setState({ minimum_order: text })}
                     returnKeyType="go"

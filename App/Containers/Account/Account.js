@@ -20,11 +20,11 @@ class Account extends Component {
     }
   }
   
-  signout = () => {
+  signout = async () => {
     const { reset: clearSession, resetCart, resetCheckout } = this.props;
-    clearSession();
-    resetCart();
-    resetCheckout();
+    await clearSession();
+    await resetCart();
+    await resetCheckout();
   };
   
   signin = () => {

@@ -34,6 +34,7 @@ class Setup extends Component {
   }
   
   componentDidMount() {
+    this.checkIfDone();
     this.prefecthCart();
     this.prefecthCourierCost();
     this.prefecthPaymentOption();

@@ -61,7 +61,7 @@ class Signin extends Component {
       const { signin } = response;
       if (signin) {
         await storeSession(signin);
-        navigation.navigate("Setup");
+        navigation.push("Setup");
       }
     })
     .catch(error => {

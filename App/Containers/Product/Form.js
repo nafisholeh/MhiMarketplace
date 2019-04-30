@@ -5,7 +5,6 @@ import { TextField } from 'react-native-material-textfield';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { withNavigation } from 'react-navigation';
-import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';

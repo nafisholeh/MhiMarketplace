@@ -315,6 +315,7 @@ class Form extends Component {
                       price_parsed: parseToRupiah(text, ' ') || '-',
                     })}
                     returnKeyType="next"
+                    keyboardType="numeric"
                     onSubmitEditing={() => this._discount.focus()}
                   />
                   <TextField
@@ -329,6 +330,7 @@ class Form extends Component {
                     error={error_discount}
                     onChangeText={this.onChangeDiscount}
                     returnKeyType="next"
+                    keyboardType="numeric"
                   />
                   <TouchableOpacity
                     onPress={this.selectKadaluarsa}>
@@ -351,6 +353,7 @@ class Form extends Component {
                     error={error_minimum_order}
                     onChangeText={(text) => this.setState({ minimum_order: text })}
                     returnKeyType="go"
+                    keyboardType="numeric"
                     onSubmitEditing={() => this.submit(mutate)}
                   />
                 </ScrollView>

@@ -19,9 +19,11 @@ import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { Mutation } from 'react-apollo';
 import { Colors, Metrics } from 'Themes';
 import Config from 'Config/AppConfig';
+import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { FETCH_PRODUCT_DETAIL } from 'GraphQL/Product/Query';
 import { ADD_PRODUCT, EDIT_PRODUCT } from 'GraphQL/Product/Mutation';
 import { getEditedProduct } from 'Redux/ProductRedux';
+import { getUserId } from 'Redux/SessionRedux';
 import { LoadingPage, StatePage, QueryEffectPage } from 'Components';
 import { InAppNotification, getReadableDate, parseToRupiah } from 'Lib';
 
@@ -198,7 +200,7 @@ class Form extends Component {
       fetching_error,
       data_invalid,
     } = this.state;
-    const { isEdit } = this.props;
+    const { isEdit, userId } = this.props;
     if (isEdit && !fetching_complete) {
       return (
         <QueryEffectPage
@@ -214,6 +216,10 @@ class Form extends Component {
           mutation={isEdit ? EDIT_PRODUCT : ADD_PRODUCT}
           onCompleted={this.onUploadCompleted}
           onError={this.onUploadError}
+          refetchQueries={[{
+            query: FETCH_CART,
+            variables: { user_id: userId }
+          }]}
           // update={(cache, data) => cacheAddAddress(cache, data, this.state)}
           ignoreResults={false}
           errorPolicy='all'>
@@ -275,6 +281,7 @@ class Form extends Component {
                     label="Harga per unit"
                     value={price_parsed}
                     prefix="Rp"
+                    suffix={unit ? `/${unit}` : ''}
                     error={error_price}
                     onChangeText={(text) => this.setState({
                       price: text,
@@ -342,10 +349,12 @@ class Form extends Component {
 Form.propTypes = {
   isEdit: bool,
   editedProductId: string,
+  userId: string,
 };
 
 const mapStateToProps = createStructuredSelector({
   editedProductId: getEditedProduct(),
+  userId: getUserId(),
 })
 
 export default connect(mapStateToProps, null)(withNavigation(Form));

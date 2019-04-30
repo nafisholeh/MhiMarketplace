@@ -158,6 +158,21 @@ class Form extends Component {
     navigation.navigate('Home');
   };
   
+  onChangeStok = (text) => {
+    if (!text) {
+      this.setState({ stock: null });
+      return;
+    }
+    const stokInt = parseInt(text, 10);
+    let result = '';
+    if (stokInt <= 0) {
+      result = `1`;
+    } else if(stokInt > 0) {
+      result = `${stokInt}`;
+    }
+    this.setState({ stock: result });
+  }
+  
   onChangeDiscount = (text) => {
     const discountInt = parseInt(text, 10);
     let result = '';
@@ -266,8 +281,9 @@ class Form extends Component {
                         label="Stok"
                         value={stock}
                         error={error_stock}
-                        onChangeText={(text) => this.setState({ stock: text })}
+                        onChangeText={this.onChangeStok}
                         returnKeyType="next"
+                        keyboardType="numeric"
                       />
                     </View>
                     <View style={{flex:1}}>

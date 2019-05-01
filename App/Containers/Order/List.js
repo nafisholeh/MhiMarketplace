@@ -11,7 +11,7 @@ import {
   PAID_OFF_CHECKOUT_LIST,
 } from 'GraphQL/Order/Query';
 import { Images, Metrics } from 'Themes';
-import { OptimizedList } from 'Components';
+import { OptimizedList, LoadingSection } from 'Components';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import styles from './Styles';
 
@@ -43,7 +43,9 @@ class List extends Component {
       <View style={styles.container}>
         <Query query={queryTitle}>
           {({ loading, error, data, refetch }) => {
-            if(error) {
+            if (loading) {
+              return (<LoadingSection />);
+            } else if (error) {
               return (<View></View>)
             } else if(data) {
               const dataParsed = data[responseTitle] || [];

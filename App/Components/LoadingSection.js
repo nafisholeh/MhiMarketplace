@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { Platform, StyleSheet, View, Image, Text } from 'react-native'
-import PropTypes from 'prop-types'
+import { Platform, StyleSheet, View, TouchableOpacity, Text } from 'react-native'
+import { string, number, oneOfType } from 'prop-types'
 import { Colors } from 'Themes'
-import { Touchable } from './TouchableOpacity'
 import { moderateScale } from 'Lib'
 import { BarIndicator } from 'react-native-indicators'
 var _ = require('lodash')
@@ -10,8 +9,9 @@ var _ = require('lodash')
 export default class LoadingSection extends Component {
 
   render() {
+    const { title, style } = this.props;
     return (
-      <View style={[ styles.container, this.props.style]}>
+      <View style={[ styles.container, style]}>
         <BarIndicator
           color={Colors.green_accent}
           count={5}
@@ -20,7 +20,7 @@ export default class LoadingSection extends Component {
         />
         <Text
           style={styles.title}>
-          {this.props.title}
+          {title || "Sedang menyiapkan data"}
         </Text>
       </View>
     )
@@ -49,9 +49,6 @@ const styles = StyleSheet.create({
 })
 
 LoadingSection.propTypes = {
-
-}
-
-LoadingSection.defaultProps = {
-
+  title: string,
+  style: oneOfType([ number, string ]),
 }

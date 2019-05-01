@@ -20,6 +20,10 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     minHeight: 100,
-    // minWidth: 100,
-  }
+  },
+  list__title: {
+    fontSize: 16,
+    marginLeft: 15,
+    marginTop: 15,
+  },
 })

@@ -6,7 +6,7 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    minHeight: 120,
+    minHeight: 90,
   },
   item__container: {
     width: 160, 

@@ -29,6 +29,16 @@ class Home extends Component {
     this.passNavigationProps();
   }
   
+  componentDidUpdate(prevProps) {
+    const { isKeuangan, isStokOpname } = this.props;
+    if (prevProps.isKeuangan !== isKeuangan) {
+      this.passNavigationProps();
+    }
+    if (prevProps.isStokOpname !== isStokOpname) {
+      this.passNavigationProps();
+    }
+  }
+  
   passNavigationProps = () => {
     const { navigation: { setParams }, isKeuangan, isStokOpname } = this.props;
     setParams({ isKeuangan, isStokOpname });

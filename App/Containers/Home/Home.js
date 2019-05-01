@@ -12,7 +12,7 @@ import HomeUser from './HomeUser';
 
 class Home extends Component {  
   static navigationOptions = ({navigation}) => {
-    const {params: { isKeuangan } = {}} = navigation.state
+    const {params: { isStokOpname, isKeuangan } = {}} = navigation.state
     return {
       title: 'MHI.id',
       headerLeft: null,
@@ -30,8 +30,8 @@ class Home extends Component {
   }
   
   passNavigationProps = () => {
-    const { navigation: { setParams }, isKeuangan } = this.props;
-    setParams({ isKeuangan });
+    const { navigation: { setParams }, isKeuangan, isStokOpname } = this.props;
+    setParams({ isKeuangan, isStokOpname });
   };
 
   render() {

@@ -22,6 +22,7 @@ import AddressList from 'Containers/Address/AddressList';
 import AddressInput from 'Containers/Address/AddressInput';
 import Slip from 'Containers/Slip/Slip';
 import Account from 'Containers/Account/Account';
+import OrderDetail from 'Containers/Order/Detail';
 
 import styles from './Styles/NavigationStyles'
 
@@ -60,6 +61,7 @@ const HomeNav = createStackNavigator({
   Signup: { screen: Signup },  
   Setup: { screen: Setup },
   Slip: { screen: Slip },
+  OrderDetail: { screen: OrderDetail },
 }, {
   initialRouteName: 'Setup',
   navigationOptions: {

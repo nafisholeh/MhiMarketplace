@@ -9,6 +9,7 @@ const { Types, Creators } = createActions({
   selectPayment: ['paymentSelected'],
   storeCheckoutId: ['checkoutId'],
   updatePaymentDetails: ['gross', 'discount', 'courier', 'total'],
+  storeOpenedOrder: ['checkoutId', 'name'], 
 })
 
 export const CheckoutTypes = Types
@@ -19,6 +20,7 @@ export default Creators
 export const INITIAL_STATE = Immutable({
   paymentSelected: null,
   checkoutId: null,
+  checkoutName: null,
   gross: 0,
   discount: 0,
   courier: 0,
@@ -34,6 +36,9 @@ export const getPaymentOptSelected = () =>
   
 export const getCheckoutId = () =>
   createSelector(checkoutSelectors(), state => state.checkoutId)
+
+export const getCheckoutName = () =>
+  createSelector(checkoutSelectors(), state => state.checkoutName || '')
 
 export const getPaymentDetails = () =>
   createSelector(checkoutSelectors(), state => ({
@@ -57,11 +62,17 @@ export const updatePaymentDetails = (state, { gross, discount, courier, total })
   state.merge({
     gross, discount, courier, total
   })
+  
+export const storeOpenedOrder = (state, { checkoutId, name }) =>
+  state.merge({
+    checkoutId, checkoutName: name
+  })
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.SELECT_PAYMENT]: selectPayment,
   [Types.STORE_CHECKOUT_ID]: storeCheckoutId,
-  [Types.UPDATE_PAYMENT_DETAILS]: updatePaymentDetails
+  [Types.UPDATE_PAYMENT_DETAILS]: updatePaymentDetails,
+  [Types.STORE_OPENED_ORDER]: storeOpenedOrder,
 })

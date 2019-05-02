@@ -15,6 +15,7 @@ export default {
     'Setup',
     'ProductEdit',
     'ProductAdd',
+    'OrderDetail'
   ],
   pageState: {
     ERROR: 'error',

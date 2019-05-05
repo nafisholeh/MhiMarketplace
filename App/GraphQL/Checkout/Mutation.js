@@ -5,7 +5,7 @@ export const START_CHECKOUT = gql`
     startCheckout(user_id: $user_id) {
       _id
       user_id
-      time
+      time_start
       gross_price
       total_discount
       courier_cost
@@ -23,7 +23,8 @@ export const FINISH_CHECKOUT = gql`
     finishCheckout(_id:$_id, payment_option:$payment_option, gross_price:$gross_price, total_discount:$total_discount, courier_cost:$courier_cost, total_cost:$total_cost) {
       _id
       user_id
-      time
+      time_start
+      time_finish
       payment_option {
         type
         detail

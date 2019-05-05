@@ -23,7 +23,8 @@ export const FETCH_CHECKOUT_SUMMARY = gql`
     checkoutSummary(_id:$_id) {
       _id
       user_id
-      time
+      transaction_id
+      time_start
       gross_price
       total_discount
       courier_cost

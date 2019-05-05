@@ -55,7 +55,7 @@ class Slip extends Component {
             else if (error) return (<View />);
             const { checkoutSummary } = data;
             if (!checkoutSummary) return (<View />);
-            const { products, total_cost, payment_option } = checkoutSummary;
+            const { products, transaction_id, total_cost, payment_option } = checkoutSummary;
             const { how_to_pay = '' } = payment_option;
             return (
               <ScrollView style={{ flex: 1, paddingHorizontal: Metrics.baseMargin }}>
@@ -73,7 +73,7 @@ class Slip extends Component {
                         fontWeight: 'bold',
                         color: Colors.green_light
                       }}>
-                      {total_cost || ''}
+                      {transaction_id || ''}
                     </Text>
                   </View>
                   <Text>

@@ -5,7 +5,7 @@ import { createSelector } from 'reselect'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  reset: null,
+  resetOneSignal: null,
   storeNotifId: ['oneSignalUserId'],
 })
 
@@ -30,7 +30,7 @@ export const getOneSignalToken = () =>
 
 /* ------------- Reducers ------------- */
 
-export const reset = state => INITIAL_STATE
+export const resetOneSignal = state => INITIAL_STATE
 
 export const storeNotifId = (state, { oneSignalUserId }) =>
   state.merge({ oneSignalUserId })
@@ -38,6 +38,6 @@ export const storeNotifId = (state, { oneSignalUserId }) =>
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.RESET]: reset,
+  [Types.RESET_ONE_SIGNAL]: resetOneSignal,
   [Types.STORE_NOTIF_ID]: storeNotifId,
 })

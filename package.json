@@ -52,6 +52,7 @@
     "react-native-htmlview": "^0.13.0",
     "react-native-indicators": "^0.13.0",
     "react-native-material-textfield": "^0.12.0",
+    "react-native-onesignal": "^3.2.12",
     "react-native-picker-select": "^6.1.0",
     "react-navigation": "3.0.0",
     "react-navigation-redux-helpers": "^2.0.6",

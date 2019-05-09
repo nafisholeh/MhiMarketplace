@@ -2,6 +2,7 @@
 
 export default {
   // font scaling override - RN default is on
+  oneSignalKey: "63d5eb55-3ba8-4489-bfba-ce4d74c3bd40",
   allowTextFontScaling: true,
   hiddenTabScreen: [
     'ProductDetail',

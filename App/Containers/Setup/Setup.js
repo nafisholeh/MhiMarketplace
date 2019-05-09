@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { bool, string, func } from 'prop-types';
 import { BarIndicator } from 'react-native-indicators';
+import OneSignal from 'react-native-onesignal';
 
 import { Colors } from 'Themes';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
@@ -11,7 +12,8 @@ import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { FETCH_ADDRESS } from 'GraphQL/Address/Query';
 import { FETCH_COURIER_COST } from 'GraphQL/CourierCost/Query';
 import { FETCH_PAYMENT_OPTION } from 'GraphQL/PaymentOption/Query';
-import { getUserId } from 'Redux/SessionRedux';
+import { ADD_ONE_SIGNAL_TOKEN } from 'GraphQL/OneSignal/Mutation';
+import SessionActions, { getUserId } from 'Redux/SessionRedux';
 import CartActions, { isFetchingCart, isFetchingCartSuccess } from 'Redux/CartRedux';
 
 class Setup extends Component {
@@ -30,7 +32,15 @@ class Setup extends Component {
       isCourierCostFinish: false,
       isFetchingPayment: false,
       isPaymentFinish: false,
+      isUploadingToken: false,
+      isTokenFinish: false,
     };
+    OneSignal.addEventListener('ids', this.onOneSignalIdsReceived);
+    // OneSignal.configure();
+  }
+  
+  componentWillUnmount() {
+    OneSignal.removeEventListener('ids', this.onOneSignalIdsReceived);
   }
   
   componentDidMount() {
@@ -46,13 +56,46 @@ class Setup extends Component {
     }
   }
   
+  onOneSignalIdsReceived = device => {
+    const { userId: token } = device || {};
+    const { storeNotifId } = this.props;
+    storeNotifId(token);
+    this.preUploadToken(token);
+  }
+  
   checkIfDone = () => {
     const { navigation, isFetchingCartSuccess } = this.props;
-    const { isCourierCostFinish, isPaymentFinish } = this.state;
-    if (isCourierCostFinish && isFetchingCartSuccess && isPaymentFinish) {
+    const { isCourierCostFinish, isPaymentFinish, isTokenFinish } = this.state;
+    if (
+      isCourierCostFinish && isFetchingCartSuccess && 
+      isPaymentFinish && isTokenFinish
+    ) {
       navigation.navigate('Home');
     }
   };
+  
+  preUploadToken = async token => {
+    const { userId } = this.props;
+    if (!userId) {
+      this.setState({ isTokenFinish: true });
+      return;
+    }
+    this.setState({
+      isUploadingToken: true,
+      isTokenFinish: false,
+    });
+    ApolloClientProvider.client.mutate({
+      mutation: ADD_ONE_SIGNAL_TOKEN,
+      variables: { user_id: userId, token },
+    })
+    .finally(() => {
+      this.setState({
+        isUploadingToken: false,
+        isTokenFinish: true,
+      });
+      this.checkIfDone();
+    })
+  }
   
   prefecthCart = async () => {
     const { 
@@ -118,10 +161,13 @@ class Setup extends Component {
   
   render() {
     const { isFetchingCart } = this.props;
-    const { isFetchingCourierCost, isFetchingPayment } = this.state;
+    const { isFetchingCourierCost, isFetchingPayment, isUploadingToken } = this.state;
     return (
       <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
-        {(isFetchingCart || isFetchingCourierCost || isFetchingPayment) && (
+        {(
+          isFetchingCart || isFetchingCourierCost ||
+          isFetchingPayment || isUploadingToken
+        ) && (
           <BarIndicator
             color={Colors.green_dark}
             count={5}
@@ -140,6 +186,7 @@ Setup.propTypes = {
   onStartFetchingCart: func,
   onSuccessFetchingCart: func,
   onErrorFetchingCart: func,
+  storeNotifId: func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -152,6 +199,7 @@ const mapDispatchToProps = dispatch => ({
   onStartFetchingCart: () => dispatch(CartActions.onStartFetchingCart()),
   onSuccessFetchingCart: () => dispatch(CartActions.onSuccessFetchingCart()),
   onErrorFetchingCart: error => dispatch(CartActions.onErrorFetchingCart(error)),
+  storeNotifId: oneSignalUserId => dispatch(SessionActions.storeNotifId(oneSignalUserId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Setup);

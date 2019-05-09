@@ -7,6 +7,7 @@ import { createSelector } from 'reselect'
 const { Types, Creators } = createActions({
   reset: null,
   storeSession: ['user'],  
+  storeNotifId: ['oneSignalUserId'],
 })
 
 export const SessionTypes = Types
@@ -16,6 +17,7 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   user: undefined,
+  oneSignalUserId: undefined,
 })
 
 /* ------------- Selectors ------------- */
@@ -82,9 +84,13 @@ export const reset = state => INITIAL_STATE
 // store user session related data
 export const storeSession = (state, { user }) => state.merge({ user })
 
+export const storeNotifId = (state, { oneSignalUserId }) =>
+  state.merge({ oneSignalUserId })
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.RESET]: reset,
-  [Types.STORE_SESSION]: storeSession
+  [Types.STORE_SESSION]: storeSession,
+  [Types.STORE_NOTIF_ID]: storeNotifId,
 })

@@ -35,14 +35,12 @@ class App extends Component {
     OneSignal.init(AppConfig.oneSignalKey);
     OneSignal.addEventListener('received', this.onReceived);
     OneSignal.addEventListener('opened', this.onOpened);
-    OneSignal.addEventListener('ids', this.onIds);
     OneSignal.configure();
   }
   
   componentWillUnmount() {
     OneSignal.removeEventListener('received', this.onReceived);
     OneSignal.removeEventListener('opened', this.onOpened);
-    OneSignal.removeEventListener('ids', this.onIds);
   }
   
   onReceived(notification) {
@@ -54,10 +52,6 @@ class App extends Component {
     console.tron.log('Data: ', openResult.notification.payload.additionalData);
     console.tron.log('isActive: ', openResult.notification.isAppInFocus);
     console.tron.log('openResult: ', openResult);
-  }
-
-  onIds(device) {
-    console.tron.log('Device info: ', device);
   }
   
   render () {

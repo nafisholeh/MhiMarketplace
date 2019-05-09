@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import { func } from 'prop-types';
+import { func, string } from 'prop-types';
+import { createStructuredSelector } from 'reselect';
 import { TextField } from 'react-native-material-textfield';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { SIGNIN } from 'GraphQL/User/Mutation';
+import { ADD_ONE_SIGNAL_TOKEN } from 'GraphQL/OneSignal/Mutation';
 import SessionActions from 'Redux/SessionRedux';
-import { isEmailError, getGraphQLError } from 'Lib';
+import { getOneSignalToken } from 'Redux/OneSignalRedux';
+import { isEmailError, getGraphQLError, InAppNotification } from 'Lib';
 import styles from './Styles'
     
 class Signin extends Component {
@@ -48,30 +51,37 @@ class Signin extends Component {
     }
   }
   
-  onSignin = () => {
+  onSignin = async () => {
     const { email, password } = this.state;
     const { storeSession } = this.props;
-    ApolloClientProvider.client.mutate({
-      mutation: SIGNIN,
-      variables: { email, password },
-    })
-    .then(async data => {
-      const { navigation } = this.props;
-      const { data: response } = data;
-      const { signin } = response;
+    try {
+      const { navigation, oneSignalToken } = this.props;
+      const signinResult = await ApolloClientProvider.client.mutate({
+        mutation: SIGNIN,
+        variables: { email, password },
+      });
+      const { data: { signin } } = signinResult;
+      const { _id: userId } = signin;
+      
+      const tokenResult = await ApolloClientProvider.client.mutate({
+        mutation: ADD_ONE_SIGNAL_TOKEN,
+        variables: { user_id: userId , token: oneSignalToken },
+      });
+      
       if (signin) {
         await storeSession(signin);
         navigation.push("Setup");
       }
-    })
-    .catch(error => {
+    } catch (err) {
       const message = getGraphQLError(error);
       if (message.toLowerCase().indexOf("email") >= 0) {
         this.setState({ error_email: message });
       } else if (message.toLowerCase().indexOf("password") >= 0) {
         this.setState({ error_password: message });
+      } else {
+        InAppNotification.error();
       }
-    });
+    }
   }
   
   render () {
@@ -118,10 +128,15 @@ class Signin extends Component {
 
 Signin.propTypes = {
   storeSession: func,
+  oneSignalToken: string,
 };
+
+const mapStateToProps = createStructuredSelector({
+  oneSignalToken: getOneSignalToken(),
+});
 
 const mapDispatchToProps = (dispatch) => ({
   storeSession: (user) => dispatch(SessionActions.storeSession(user)),
 });
 
-export default connect(null, mapDispatchToProps)(Signin);
+export default connect(mapStateToProps, mapDispatchToProps)(Signin);

@@ -14,7 +14,7 @@ import { FETCH_COURIER_COST } from 'GraphQL/CourierCost/Query';
 import { FETCH_PAYMENT_OPTION } from 'GraphQL/PaymentOption/Query';
 import { ADD_ONE_SIGNAL_TOKEN } from 'GraphQL/OneSignal/Mutation';
 import { getUserId } from 'Redux/SessionRedux';
-import OneSignalActions from 'Redux/OneSignalRedux';
+import OneSignalActions, { getOneSignalToken } from 'Redux/OneSignalRedux';
 import CartActions, { isFetchingCart, isFetchingCartSuccess } from 'Redux/CartRedux';
 
 class Setup extends Component {
@@ -36,15 +36,10 @@ class Setup extends Component {
       isUploadingToken: false,
       isTokenFinish: false,
     };
-    OneSignal.addEventListener('ids', this.onOneSignalIdsReceived);
-    OneSignal.configure();
-  }
-  
-  componentWillUnmount() {
-    OneSignal.removeEventListener('ids', this.onOneSignalIdsReceived);
   }
   
   componentDidMount() {
+    this.preUploadToken();
     this.checkIfDone();
     this.prefecthCart();
     this.prefecthCourierCost();
@@ -55,13 +50,6 @@ class Setup extends Component {
     if(!prevProps.isFetchingCartSuccess && this.props.isFetchingCartSuccess) {
       this.checkIfDone();
     }
-  }
-  
-  onOneSignalIdsReceived = device => {
-    const { userId: token } = device || {};
-    const { storeNotifId } = this.props;
-    storeNotifId(token);
-    this.preUploadToken(token);
   }
   
   checkIfDone = () => {
@@ -75,8 +63,8 @@ class Setup extends Component {
     }
   };
   
-  preUploadToken = async token => {
-    const { userId } = this.props;
+  preUploadToken = () => {
+    const { userId, oneSignalToken } = this.props;
     if (!userId) {
       this.setState({ isTokenFinish: true });
       return;
@@ -87,7 +75,7 @@ class Setup extends Component {
     });
     ApolloClientProvider.client.mutate({
       mutation: ADD_ONE_SIGNAL_TOKEN,
-      variables: { user_id: userId, token },
+      variables: { user_id: userId, token: oneSignalToken },
     })
     .finally(() => {
       this.setState({
@@ -190,6 +178,7 @@ class Setup extends Component {
 
 Setup.propTypes = {
   userId: string,
+  oneSignalToken: string,
   isFetchingCart: bool,
   isFetchingCartSuccess: bool,
   onStartFetchingCart: func,
@@ -200,6 +189,7 @@ Setup.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
+  oneSignalToken: getOneSignalToken(),
   isFetchingCart: isFetchingCart(),
   isFetchingCartSuccess: isFetchingCartSuccess(),
 });

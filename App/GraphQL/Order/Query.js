@@ -7,7 +7,7 @@ export const INITIAL_CHECKOUT_LIST = gql`
       user_id {
         name
       }
-      time
+      time_start
       total_cost
       products {
         _id
@@ -24,7 +24,8 @@ export const COMPLETED_CHECKOUT_LIST = gql`
       user_id {
         name
       }
-      time
+      time_start
+      time_finish
       total_cost
       products {
         _id
@@ -41,7 +42,8 @@ export const PAID_OFF_CHECKOUT_LIST = gql`
       user_id {
         name
       }
-      time
+      time_start
+      time_finish
       total_cost
       products {
         _id

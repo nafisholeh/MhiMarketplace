@@ -72,7 +72,7 @@ class Signin extends Component {
         await storeSession(signin);
         navigation.push("Setup");
       }
-    } catch (err) {
+    } catch (error) {
       const message = getGraphQLError(error);
       if (message.toLowerCase().indexOf("email") >= 0) {
         this.setState({ error_email: message });

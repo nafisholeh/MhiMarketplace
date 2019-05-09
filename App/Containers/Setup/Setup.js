@@ -13,7 +13,8 @@ import { FETCH_ADDRESS } from 'GraphQL/Address/Query';
 import { FETCH_COURIER_COST } from 'GraphQL/CourierCost/Query';
 import { FETCH_PAYMENT_OPTION } from 'GraphQL/PaymentOption/Query';
 import { ADD_ONE_SIGNAL_TOKEN } from 'GraphQL/OneSignal/Mutation';
-import SessionActions, { getUserId } from 'Redux/SessionRedux';
+import { getUserId } from 'Redux/SessionRedux';
+import OneSignalActions from 'Redux/OneSignalRedux';
 import CartActions, { isFetchingCart, isFetchingCartSuccess } from 'Redux/CartRedux';
 
 class Setup extends Component {
@@ -36,7 +37,7 @@ class Setup extends Component {
       isTokenFinish: false,
     };
     OneSignal.addEventListener('ids', this.onOneSignalIdsReceived);
-    // OneSignal.configure();
+    OneSignal.configure();
   }
   
   componentWillUnmount() {
@@ -104,6 +105,11 @@ class Setup extends Component {
       onSuccessFetchingCart,
       onErrorFetchingCart
     } = this.props;
+    if (!user_id) {
+      onSuccessFetchingCart();
+      this.checkIfDone();
+      return;
+    }
     onStartFetchingCart();
     return new Promise((resolve, reject) => {
       try {
@@ -113,13 +119,16 @@ class Setup extends Component {
         })
         .then(data => {
           onSuccessFetchingCart();
+          this.checkIfDone();
           resolve(true);
         }).catch(err => {
           onErrorFetchingCart(err);
+          this.checkIfDone();
           reject(err);
         })
       } catch(err) {
         onErrorFetchingCart(err);
+        this.checkIfDone();
         reject(err);
       }
     });
@@ -199,7 +208,7 @@ const mapDispatchToProps = dispatch => ({
   onStartFetchingCart: () => dispatch(CartActions.onStartFetchingCart()),
   onSuccessFetchingCart: () => dispatch(CartActions.onSuccessFetchingCart()),
   onErrorFetchingCart: error => dispatch(CartActions.onErrorFetchingCart(error)),
-  storeNotifId: oneSignalUserId => dispatch(SessionActions.storeNotifId(oneSignalUserId)),
+  storeNotifId: oneSignalUserId => dispatch(OneSignalActions.storeNotifId(oneSignalUserId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Setup);

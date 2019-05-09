@@ -9,10 +9,8 @@ import OneSignal from 'react-native-onesignal';
 import DebugConfig from '../Config/DebugConfig'
 import RootContainer from './RootContainer'
 import createStore from '../Redux'
-import OneSignalActions from '../Redux/OneSignalRedux'
 import ApolloClientProvider from 'Services/ApolloClientProvider'
 import { InAppNotification } from 'Lib';
-import AppConfig from "Config/AppConfig";
 
 // create our store
 export const store = createStore()
@@ -32,18 +30,14 @@ class App extends Component {
     YellowBox.ignoreWarnings(
         ['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader'
       ]);
-
     OneSignal.init(AppConfig.oneSignalKey);
     OneSignal.addEventListener('received', this.onReceived);
     OneSignal.addEventListener('opened', this.onOpened);
-    OneSignal.addEventListener('ids', this.onOneSignalIdsReceived);
-    OneSignal.configure();
   }
   
   componentWillUnmount() {
     OneSignal.removeEventListener('received', this.onReceived);
     OneSignal.removeEventListener('opened', this.onOpened);
-    OneSignal.removeEventListener('ids', this.onOneSignalIdsReceived);
   }
   
   onReceived(notification) {
@@ -51,14 +45,7 @@ class App extends Component {
   }
 
   onOpened(openResult) {
-    // console.tron.log('Message: ', openResult.notification.payload.body);
-    // console.tron.log('Data: ', openResult.notification.payload.additionalData);
-    // console.tron.log('isActive: ', openResult.notification.isAppInFocus);
-    // console.tron.log('openResult: ', openResult);
-  }
-  
-  onOneSignalIdsReceived = device => {
-    store.dispatch(OneSignalActions.storeNotifId(device));
+    // console.tron.log('Message: ', openResult);
   }
   
   render () {

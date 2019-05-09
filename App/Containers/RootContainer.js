@@ -3,12 +3,16 @@ import { View, StatusBar } from 'react-native'
 import { connect } from 'react-redux'
 import { bool } from 'prop-types'
 import { createStructuredSelector } from 'reselect'
+import OneSignal from 'react-native-onesignal';
 
 import ReduxNavigation from '../Navigation/ReduxNavigation'
 import StartupActions from '../Redux/StartupRedux'
 import ReduxPersist from '../Config/ReduxPersist'
 import styles from './Styles/RootContainerStyles'
 import { isRehydrated } from 'Redux/StartupRedux'
+import { store } from 'Containers/App';
+import OneSignalActions from '../Redux/OneSignalRedux';
+import AppConfig from "Config/AppConfig";
 
 class RootContainer extends Component {
   componentDidMount () {
@@ -16,6 +20,25 @@ class RootContainer extends Component {
     if (!ReduxPersist.active) {
       this.props.startup()
     }
+  }
+  
+  componentDidUpdate(prevProps) {
+    const { isRehydrated } = this.props;
+    if (prevProps.isRehydrated !== isRehydrated) {
+      if (isRehydrated) {
+        OneSignal.addEventListener('ids', this.onOneSignalIdsReceived);
+        OneSignal.configure();
+      }
+    }
+  }
+  
+  componentWillUnmount() {
+    OneSignal.removeEventListener('ids', this.onOneSignalIdsReceived);
+  }
+  
+  onOneSignalIdsReceived = device => {
+    const { userId } = device;
+    store.dispatch(OneSignalActions.storeNotifId(userId));
   }
 
   render () {

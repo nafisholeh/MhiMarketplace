@@ -11,6 +11,7 @@ import RootContainer from './RootContainer'
 import createStore from '../Redux'
 import ApolloClientProvider from 'Services/ApolloClientProvider'
 import { InAppNotification } from 'Lib';
+import AppConfig from "Config/AppConfig";
 
 // create our store
 export const store = createStore()

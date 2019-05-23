@@ -249,7 +249,6 @@ class Form extends Component {
           ignoreResults={false}
           errorPolicy='all'>
           { (mutate, {loading, error, data}) => {
-            console.tron.log('Form/render', loading, error, data);
             return (
               <React.Fragment>
                 <ScrollView

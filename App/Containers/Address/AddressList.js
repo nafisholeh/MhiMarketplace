@@ -63,7 +63,6 @@ class AddressList extends Component {
                   />
                 )
               }
-              console.tron.log('AddressList/render', address)
               return (
                 <ScrollView style={{flex:1}}>
                   <FlatList

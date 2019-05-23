@@ -62,7 +62,6 @@ export default class Signup extends Component {
       variables: { email, password, name },
     })
     .then(data => {
-      console.tron.log('signup success', data);
       const { data: response } = data;
       const { signup: { email } } = response;
       const { navigation } = this.props;

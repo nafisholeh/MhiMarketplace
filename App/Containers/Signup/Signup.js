@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, TextInput, TouchableOpacity } from 'react-native'
 import { TextField } from 'react-native-material-textfield';
+import { DotIndicator } from 'react-native-indicators';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { SIGNUP } from 'GraphQL/User/Mutation';
@@ -25,6 +26,7 @@ export default class Signup extends Component {
     error_password: null,
     password_repeat: null,
     error_password_repeat: null,
+    loading: false,
   };
   
   onStartSignup = async () => {
@@ -57,6 +59,7 @@ export default class Signup extends Component {
   
   onSignup = () => {
     const { name, email, password } = this.state;
+    this.setState({ loading: true });
     ApolloClientProvider.client.mutate({
       mutation: SIGNUP,
       variables: { email, password, name },
@@ -65,9 +68,11 @@ export default class Signup extends Component {
       const { data: response } = data;
       const { signup: { email } } = response;
       const { navigation } = this.props;
+      this.setState({ loading: false });
       navigation.navigate("Signin", { email });
     })
     .catch(error => {
+      this.setState({ loading: false });
       const message = getGraphQLError(error);
       if (message.toLowerCase().indexOf("email") >= 0) {
         this.setState({ error_email: message });
@@ -76,7 +81,17 @@ export default class Signup extends Component {
   }
   
   render () {
-    const { name, error_name, email, error_email, password, error_password, password_repeat, error_password_repeat } = this.state;
+    const {
+      name,
+      error_name,
+      email,
+      error_email,
+      password,
+      error_password,
+      password_repeat,
+      error_password_repeat,
+      loading,
+    } = this.state;
     return (
       <View style={styles.container}>
       
@@ -124,7 +139,15 @@ export default class Signup extends Component {
         <TouchableOpacity
           onPress={this.onStartSignup}
           style={styles.button}>
-          <Text style={styles.buttonTitle}>Daftar</Text>
+          {loading &&
+            <DotIndicator
+              count={4}
+              size={7}
+              color='white'
+              animationDuration={800}
+            />
+          }
+          {!loading && <Text style={styles.buttonTitle}>Daftar</Text>}
         </TouchableOpacity>
         
       </View>

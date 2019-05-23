@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { func, string } from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import { TextField } from 'react-native-material-textfield';
+import { DotIndicator } from 'react-native-indicators';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { SIGNIN } from 'GraphQL/User/Mutation';
@@ -27,6 +28,7 @@ class Signin extends Component {
     error_email: null,
     password: null,
     error_password: null,
+    loading: false,
   };
   
   openSignup = () => {
@@ -56,6 +58,7 @@ class Signin extends Component {
     const { storeSession } = this.props;
     try {
       const { navigation, oneSignalToken } = this.props;
+      this.setState({ loading: true });
       const signinResult = await ApolloClientProvider.client.mutate({
         mutation: SIGNIN,
         variables: { email, password },
@@ -70,9 +73,11 @@ class Signin extends Component {
       
       if (signin) {
         await storeSession(signin);
+        this.setState({ loading: false });
         navigation.push("Setup");
       }
     } catch (error) {
+      this.setState({ loading: false });
       const message = getGraphQLError(error);
       if (message.toLowerCase().indexOf("email") >= 0) {
         this.setState({ error_email: message });
@@ -85,7 +90,7 @@ class Signin extends Component {
   }
   
   render () {
-    const { email, error_email, password, error_password } = this.state;
+    const { email, error_email, password, error_password, loading } = this.state;
     const { navigation: { state: { params }} } = this.props;
     const { email: initialEmail = null } = params || {};
     return (
@@ -114,7 +119,15 @@ class Signin extends Component {
         <TouchableOpacity
           onPress={this.onStartSignin}
           style={styles.button}>
-          <Text style={styles.buttonTitle}>Signin</Text>
+          {loading &&
+            <DotIndicator
+              count={4}
+              size={7}
+              color='white'
+              animationDuration={800}
+            />
+          }
+          {!loading && <Text style={styles.buttonTitle}>Signin</Text>}
         </TouchableOpacity>
         
         <Text onPress={this.openSignup}>

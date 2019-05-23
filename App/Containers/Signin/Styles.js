@@ -9,6 +9,7 @@ export default StyleSheet.create({
     paddingRight: Metrics.baseMargin,
   },
   button: {
+    height: 50,
     marginTop: Metrics.doubleBaseMargin,
     backgroundColor: Colors.green_light,
     paddingVertical: Metrics.marginVertical,

@@ -108,11 +108,11 @@ class Detail extends Component {
                     />
                   );
                 }
-                const { checkoutSummary: { total_cost } = {} } = data || {};
+                const { checkoutSummary: { total_cost, transaction_id } = {} } = data || {};
                 return (
                   <Fragment>
                     <ScrollView>
-                      <Text>No. Transaksi: (TBD)</Text>
+                      <Text>No. Transaksi: {transaction_id}</Text>
                       <Text>Nama pemesan: {checkoutName}</Text>
                       <Text>Yang harus dibayar:</Text>
                       <Text>{total_cost}</Text>

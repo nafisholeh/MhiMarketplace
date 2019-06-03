@@ -16,7 +16,7 @@ class Item extends Component {
   };
 
   render() {
-    const { data: { _id: orderId, user_id, time, total_cost, products } } = this.props;
+    const { data: { transaction_id: orderId, user_id, time, total_cost, products } } = this.props;
     const { name } = user_id || {};
     return (
       <TouchableOpacity
@@ -34,6 +34,7 @@ class Item extends Component {
 Item.propTypes = {
   data: shape({
     _id: string,
+    transaction_id: string,
     user_id: shape({
       name: string,
     }),

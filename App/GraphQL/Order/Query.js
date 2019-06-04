@@ -14,6 +14,7 @@ export const INITIAL_CHECKOUT_LIST = gql`
         _id
         qty
       }
+      paid_off
     }
   }
 `
@@ -33,6 +34,7 @@ export const COMPLETED_CHECKOUT_LIST = gql`
         _id
         qty
       }
+      paid_off
     }
   }
 `
@@ -52,6 +54,7 @@ export const PAID_OFF_CHECKOUT_LIST = gql`
         _id
         qty
       }
+      paid_off
     }
   }
 `

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { string, number, shape, arrayOf, func } from 'prop-types';
+import { string, number, shape, arrayOf, func, bool } from 'prop-types';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 
@@ -9,9 +9,9 @@ import CheckoutActions from 'Redux/CheckoutRedux';
 
 class Item extends Component {
   onOpenOrderDetail = async () => {
-    const { navigation, storeOpenedOrder, data: { _id: orderId, user_id } } = this.props;
+    const { navigation, storeOpenedOrder, data: { _id: orderId, user_id, paid_off } } = this.props;
     const { name } = user_id || {};
-    await storeOpenedOrder(orderId, name);
+    await storeOpenedOrder(orderId, name, paid_off);
     navigation.navigate('OrderDetail');
   };
 
@@ -44,12 +44,13 @@ Item.propTypes = {
       _id: string,
       qty: number,
     })),
+    paid_off: bool,
   }),
   storeOpenedOrder: func,
 };
 
 const mapDispatchToProps = dispatch => ({
-  storeOpenedOrder: (checkoutId, name) => dispatch(CheckoutActions.storeOpenedOrder(checkoutId, name)),
+  storeOpenedOrder: (checkoutId, name, paid_off) => dispatch(CheckoutActions.storeOpenedOrder(checkoutId, name, paid_off)),
 });
 
 export default connect(null, mapDispatchToProps)(withNavigation(Item));

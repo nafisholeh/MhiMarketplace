@@ -1,7 +1,10 @@
-import ApolloClient from 'apollo-boost'
+import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { NavigationActions } from 'react-navigation'
-var _ = require('lodash')
+import { HttpLink } from 'apollo-link-http';
+import { onError } from 'apollo-link-error';
+import { ApolloLink } from 'apollo-link';
+import { NavigationActions } from 'react-navigation';
+var _ = require('lodash');
 
 const cache = new InMemoryCache();
 
@@ -9,12 +12,23 @@ class ApolloClientProvider {
 
   constructor() {
     this.client = new ApolloClient({
-      // uri: 'http://app-dev.metodehayati.id:4000/graphql',
-      uri: 'http://app-dev.metodehayati.id:4001/graphql',
-      // uri: 'http://192.168.0.80:4001/graphql',
-      cache,
-      onError: this._onError,
-    })
+      link: ApolloLink.from([
+        onError(({ graphQLErrors, networkError }) => {
+          if (graphQLErrors)
+            graphQLErrors.map(({ message, locations, path }) =>
+              console.log(
+                `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+              ),
+            );
+          if (networkError) console.log(`[Network error]: ${networkError}`);
+        }),
+        new HttpLink({
+          uri: 'http://app-dev.metodehayati.id:4001/graphql',
+          credentials: 'same-origin'
+        })
+      ]),
+      cache: new InMemoryCache()
+    });
   }
 
   _onError = (errorObj) => {

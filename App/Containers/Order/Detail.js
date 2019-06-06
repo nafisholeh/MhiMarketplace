@@ -7,7 +7,6 @@ import { Query, Mutation } from 'react-apollo';
 import { TextField } from 'react-native-material-textfield';
 import { DotIndicator } from 'react-native-indicators';
 
-import { InAppNotification } from 'Lib';
 import Config from 'Config/AppConfig';
 import { parseToRupiah } from 'Lib';
 import { QueryEffectPage } from 'Components';
@@ -59,10 +58,6 @@ class Detail extends Component {
     const { navigation } = this.props;
     navigation.goBack();
   };
-  
-  onSubmitError = () => {
-    InAppNotification.error();
-  };
 
   render() {
     const {
@@ -81,7 +76,6 @@ class Detail extends Component {
       <Mutation
         mutation={CONFIRM_ORDER}
         onCompleted={this.onSubmitComplete}
-        onError={this.onSubmitError}
         refetchQueries={[ {query: PAID_OFF_CHECKOUT_LIST}, {query: COMPLETED_CHECKOUT_LIST}]}
         awaitRefetchQueries={true}
         ignoreResults={false}

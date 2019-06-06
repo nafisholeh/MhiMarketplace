@@ -149,10 +149,6 @@ class Form extends Component {
     });
   };
   
-  onUploadError = error => {
-    InAppNotification.error();
-  };
-  
   onUploadCompleted = () => {
     const { navigation } = this.props;
     navigation.navigate('Home');
@@ -242,7 +238,6 @@ class Form extends Component {
         <Mutation
           mutation={isEdit ? EDIT_PRODUCT : ADD_PRODUCT}
           onCompleted={this.onUploadCompleted}
-          onError={this.onUploadError}
           refetchQueries={[{
             query: FETCH_PRODUCT_LIST
           }]}

@@ -4,7 +4,8 @@ import { HttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import { NavigationActions } from 'react-navigation';
-var _ = require('lodash');
+
+import { InAppNotification } from 'Lib';
 
 const cache = new InMemoryCache();
 
@@ -14,13 +15,11 @@ class ApolloClientProvider {
     this.client = new ApolloClient({
       link: ApolloLink.from([
         onError(({ graphQLErrors, networkError }) => {
-          if (graphQLErrors)
-            graphQLErrors.map(({ message, locations, path }) =>
-              console.log(
-                `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-              ),
-            );
-          if (networkError) console.log(`[Network error]: ${networkError}`);
+          if (graphQLErrors) {
+            InAppNotification.error('Maaf, terjadi kesalahan', 'Terjadi kesalahan teknis, silahkan kontak pengembang');
+          } else if (networkError) {
+            InAppNotification.error('Maaf, terjadi kesalahan', 'Silahkan coba lagi atau tunggu beberapa saat');
+          }
         }),
         new HttpLink({
           uri: 'http://app-dev.metodehayati.id:4001/graphql',
@@ -30,16 +29,6 @@ class ApolloClientProvider {
       cache: new InMemoryCache()
     });
   }
-
-  _onError = (errorObj) => {
-    this._onHandleUnauthorized(errorObj)
-  }
-
-  // handle jika ada error sebab unauthorized
-  _onHandleUnauthorized(error) {
-    if(_.isNil(error)) return
-  }
-
 }
 
 export default new ApolloClientProvider()

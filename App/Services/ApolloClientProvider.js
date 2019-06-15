@@ -7,11 +7,12 @@ import { createUploadLink } from 'apollo-upload-client';
 import { NavigationActions } from 'react-navigation';
 
 import { InAppNotification } from 'Lib';
+import AppConfig from '../Config/AppConfig';
 
 const cache = new InMemoryCache();
 
 const options = {
-  uri: 'http://app-dev.metodehayati.id:4001/graphql'
+  uri: AppConfig.uri,
 };
 
 const httpLink = ApolloLink.from([
@@ -23,7 +24,7 @@ const httpLink = ApolloLink.from([
     }
   }),
   new HttpLink({
-    uri: 'http://app-dev.metodehayati.id:4001/graphql',
+    uri: AppConfig.uri,
     credentials: 'same-origin'
   })
 ]);

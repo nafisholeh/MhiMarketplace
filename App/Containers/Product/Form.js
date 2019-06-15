@@ -15,6 +15,7 @@ import { withNavigation } from 'react-navigation';
 import moment from 'moment';
 import RNPickerSelect from 'react-native-picker-select';
 import { DotIndicator } from 'react-native-indicators';
+import { ReactNativeFile } from 'apollo-upload-client';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { Mutation } from 'react-apollo';
@@ -23,7 +24,7 @@ import Config from 'Config/AppConfig';
 import { FETCH_PRODUCT_DETAIL, FETCH_PRODUCT_LIST } from 'GraphQL/Product/Query';
 import { ADD_PRODUCT, EDIT_PRODUCT } from 'GraphQL/Product/Mutation';
 import { getEditedProduct } from 'Redux/ProductRedux';
-import { LoadingPage, StatePage, QueryEffectPage } from 'Components';
+import { LoadingPage, StatePage, QueryEffectPage, ImagePicker, ImageRobust } from 'Components';
 import { InAppNotification, getReadableDate, parseToRupiah } from 'Lib';
 
 class Form extends Component {
@@ -46,6 +47,7 @@ class Form extends Component {
     discount: '',
     expired_date: '',
     minimum_order: '',
+    photos: null,
     error_title: null,
     error_description: null,
     error_stock: null,
@@ -128,7 +130,7 @@ class Form extends Component {
       this.setState({ data_invalid: true });
       return;
     }
-    const { _id, title, description, stock, unit, price, discount, expired_date, minimum_order } = this.state;
+    const { _id, title, description, photos, stock, unit, price, discount, expired_date, minimum_order } = this.state;
     const dataSubmit = {
       title: (title || null),
       description: (description || null),
@@ -139,13 +141,22 @@ class Form extends Component {
       expired_date: (expired_date || null),
       minimum_order: (parseFloat(minimum_order) || null),
     };
+    const images = new ReactNativeFile({
+      uri: photos[0][0],
+      name: 'a.jpg',
+      type: 'image/jpeg'
+    });
     const id = {
       _id
     };
     mutate({
       variables: {
-        data: isEdit ? {...dataSubmit, ...id} : dataSubmit
-      } 
+        data: isEdit ? {...dataSubmit, ...id} : dataSubmit,
+        images,
+      },
+      context: {
+        hasUpload: true, // activate Upload link
+      }
     });
   };
   
@@ -198,6 +209,10 @@ class Form extends Component {
       InAppNotification.errorLocal(null, message);
     }
   }
+  
+  onPhotoPicked = item => {
+    this.setState({ photos: item });
+  }
 
   render() {
     const {
@@ -210,6 +225,7 @@ class Form extends Component {
       discount,
       expired_date,
       minimum_order,
+      photos,
       error_title,
       error_description,
       error_stock,
@@ -233,6 +249,7 @@ class Form extends Component {
         />
       );
     }
+    console.tron.log('Form/render', photos)
     return (
       <View style={{flex:1}}>
         <Mutation
@@ -339,6 +356,13 @@ class Form extends Component {
                       editable={false}
                     />
                   </TouchableOpacity>
+                  <ImagePicker
+                    onChange={this.onPhotoPicked}
+                    data={photos}
+                    titleBottomSheet='Pilih Foto'
+                    isMultiplePick={true}
+                    isShowCancelButton={false}
+                  />
                   <TextField
                     ref={ref => this._minimum_order = ref}
                     label="Minimal pemesanan"

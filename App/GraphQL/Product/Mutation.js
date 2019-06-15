@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const ADD_PRODUCT = gql`
-  mutation addProduct($data: ProductData!) {
-    addProduct(data: $data) {
+  mutation addProduct($data: ProductData!, $images: Upload) {
+    addProduct(data: $data, images: $images) {
       _id
       title
       description
@@ -18,8 +18,8 @@ export const ADD_PRODUCT = gql`
 `
 
 export const EDIT_PRODUCT = gql`
-  mutation editProduct($data: ProductData!) {
-    editProduct(data: $data) {
+  mutation editProduct($data: ProductData!, $images: Upload) {
+    editProduct(data: $data, images: $images) {
       _id
       title
       description

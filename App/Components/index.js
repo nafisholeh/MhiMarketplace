@@ -8,8 +8,11 @@ import LoadingPage from './LoadingPage';
 import LoadingSection from './LoadingSection';
 import Touchable from './TouchableOpacity';
 import QueryEffectPage from './QueryEffectPage';
+import ImagePicker from './Image/ImagePicker';
+import ImageRobust from './Image/ImageRobust';
 
 export {
   OptimizedList, StatePage, UpDownCounter, HeaderButton, ToolbarButton,
-  RadioButton, LoadingPage, LoadingSection, Touchable, QueryEffectPage
+  RadioButton, LoadingPage, LoadingSection, Touchable, QueryEffectPage,
+  ImagePicker, ImageRobust
 }

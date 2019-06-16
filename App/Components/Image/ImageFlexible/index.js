@@ -65,7 +65,6 @@ export default class ImageFlexible extends PureComponent {
   }
 
   render () {
-    console.tron.log('ImageFlexible/render', this.state, this.props);
     const { source } = this.state;
     const { style, onPress } = this.props;
     let loading = this._getLoadingComponent()

@@ -16,6 +16,7 @@ class ImagePicker extends PureComponent {
     super(props)
     this.state = {
       image: this.props.data ? this.props.data : [],
+      imageRaw: [],
     }
   }
 
@@ -137,24 +138,36 @@ class ImagePicker extends PureComponent {
   // ganti dengan image yang hasil dicrop
   _replaceImages = (image) => {
     let outputImages = []
+    let rawOutputImages = []
     outputImages.push(this._getImagePath(image))
-    this.setState({ image: outputImages }, () => {
-      this.props.onChange(this.state.image)
+    rawOutputImages.push(image)
+    this.setState({ image: outputImages, imageRaw: rawOutputImages }, () => {
+      this.props.onChange(this.state.imageRaw, this.state.image)
     })
   }
 
   // simpan image ke state
   _saveImages = (images) => {
     let newImages = []
-    if(_.isArray(images)) images.map((item) => newImages.push(this._getImagePath(item)))
-    else newImages.push(this._getImagePath(images))
+    let rawNewImages = []
+    if(_.isArray(images)) {
+      images.map((item) => newImages.push(this._getImagePath(item)))
+      rawNewImages.concat(images);
+    }
+    else {
+      newImages.push(this._getImagePath(images))
+      rawNewImages.push(images);
+    }
     
     let outputImages = this.props.isMultiplePick ?
                           [...this.state.image, newImages] :
                           newImages
-    this.setState({ image: outputImages }, () => {
+    let rawOutputImages = this.props.isMultiplePick ?
+                          [...this.state.imageRaw, rawNewImages] :
+                          rawNewImages
+    this.setState({ image: outputImages, imageRaw: rawOutputImages }, () => {
       if(this.props.isCropping) this._onOpenCropImage()
-      if(!this.props.isCropping) this.props.onChange(this.state.image)
+      if(!this.props.isCropping) this.props.onChange(this.state.imageRaw, this.state.image)
     })
   }
 
@@ -166,9 +179,13 @@ class ImagePicker extends PureComponent {
   }
 
   // tereksekusi ketika image ada yg terhapus, sebab fitur hapus pada ImageGrid
-  _onDataChange = (image) => {
-    this.setState({ image: image })
-    this.props.onChange(image)
+  _onDeleteImage = index => {
+    this.setState({
+      image: this.state.image.splice(index, 1),
+      imageRaw: this.state.imageRaw.splice(index, 1),
+    }, () => {
+      this.props.onChange(this.state.imageRaw, this.state.image)
+    })
   }
 
   // mulai mengambil image
@@ -179,7 +196,6 @@ class ImagePicker extends PureComponent {
 
   // render image gallery untuk multiple image
   _renderGallery = () => {
-    console.tron.log('ImagePicker/_renderGallery')
     if(!this.props.isCustomComponent) {
       if(this.props.isMultiplePick) {
         return (
@@ -187,7 +203,7 @@ class ImagePicker extends PureComponent {
             { this.props.isShowGallery &&
               <ImageGrid
                 data={this.state.image}
-                onDataChange={this._onDataChange}
+                onDeleteImage={this._onDeleteImage}
                 styleContainer={{flex:1}}
               />
             }
@@ -231,7 +247,6 @@ class ImagePicker extends PureComponent {
   }
 
   render () {
-    console.tron.log('ImagePicker/render', this.state, this.props);
     return (
       <View style={this.props.styleContainer}>
         { this.props.title &&

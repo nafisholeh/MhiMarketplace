@@ -26,6 +26,7 @@ import { ADD_PRODUCT, EDIT_PRODUCT } from 'GraphQL/Product/Mutation';
 import { getEditedProduct } from 'Redux/ProductRedux';
 import { LoadingPage, StatePage, QueryEffectPage, ImagePicker, ImageRobust } from 'Components';
 import { InAppNotification, getReadableDate, parseToRupiah } from 'Lib';
+import { getUserId } from 'Redux/SessionRedux';
 
 class Form extends Component {
   
@@ -124,7 +125,7 @@ class Form extends Component {
   };
   
   submit = mutate => {
-    const { isEdit } = this.props;
+    const { isEdit, userId } = this.props;
     this.setState({ data_invalid: false });
     if (!this.isValid()) {
       this.setState({ data_invalid: true });
@@ -141,11 +142,13 @@ class Form extends Component {
       expired_date: (expired_date || null),
       minimum_order: (parseFloat(minimum_order) || null),
     };
-    const images = new ReactNativeFile({
-      uri: photos[0][0],
-      name: 'a.jpg',
-      type: 'image/jpeg'
-    });
+    const images = photos.map((item, index) => 
+      new ReactNativeFile({
+        uri: item.path,
+        name: `${moment().format('YYYY-MM-DD HH:mm:ss')}_${index}_${userId}`,
+        type: item.mime
+      })
+    );
     const id = {
       _id
     };
@@ -210,8 +213,14 @@ class Form extends Component {
     }
   }
   
-  onPhotoPicked = item => {
-    this.setState({ photos: item });
+  onPhotoPicked = (raw, paths) => {
+    const photos = paths.map((item, i) => {
+      return {
+        mime: raw[i][0].mime,
+        path: item[0],
+      };
+    })
+    this.setState({ photos });
   }
 
   render() {
@@ -249,7 +258,6 @@ class Form extends Component {
         />
       );
     }
-    console.tron.log('Form/render', photos)
     return (
       <View style={{flex:1}}>
         <Mutation
@@ -412,10 +420,12 @@ class Form extends Component {
 Form.propTypes = {
   isEdit: bool,
   editedProductId: string,
+  userId: string,
 };
 
 const mapStateToProps = createStructuredSelector({
   editedProductId: getEditedProduct(),
+  userId: getUserId(),
 })
 
 export default connect(mapStateToProps, null)(withNavigation(Form));

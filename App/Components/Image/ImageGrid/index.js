@@ -140,7 +140,7 @@ class ImageGrid extends PureComponent {
       dataFullScreen.splice(index, 1);
       return deletedItem;
     });
-    this.props.onDataChange(deleted)
+    this.props.onDeleteImage(index)
     this.setState({
       dataFullScreen: deleted,
       dataSelected: this._addPropsToData(deleted),
@@ -184,7 +184,6 @@ class ImageGrid extends PureComponent {
   }
 
   render () {
-    console.tron.log('ImageGrid/render', this.state, this.props);
     const { dataFullScreen, dataSelected, dataGrid, selectMode, isShowFullImage, currentImageIndex } = this.state;
     return (
       <View style={[ styles.mainContainer, this.props.styleContainer ]}>
@@ -235,7 +234,7 @@ ImageGrid.propTypes = {
   remoteDefaultUrl: PropTypes.string,
   remoteBaseUrl: PropTypes.string,
   navigator: PropTypes.oneOfType([ PropTypes.object, PropTypes.func ]),
-  onDataChange: PropTypes.func,        // memberitahu parent jika ada image yg terhapus
+  onDeleteImage: PropTypes.func,        // memberitahu parent jika ada image yg terhapus
   isEditable: PropTypes.bool,
   styleContainer: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
   styleGrid: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),

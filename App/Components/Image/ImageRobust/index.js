@@ -51,27 +51,22 @@ class ImageRobust extends PureComponent {
   }
 
   _onStartFetching() {
-    console.tron.log('ImageRobust/_onStartFetching')
     this.setState({ fetching: true, finished: false })
   }
 
   _onFetchingProgress(e) {
-    console.tron.log('ImageRobust/_onFetchingProgress', e.nativeEvent.loaded, e.nativeEvent.total)
     this.setState({ loaded: e.nativeEvent.loaded, total: e.nativeEvent.total })
   }
 
   _onFinishFetching() {
-    console.tron.log('ImageRobust/_onFinishFetching')
     this.setState({ fetching: false, finished: true })
   }
 
   _onErrorFetching() {
-    console.tron.log('ImageRobust/_onErrorFetching')
     this._showDefaultImage()
   }
 
   render () {
-    console.tron.log('ImageRobust/render', this.state, this.props);
     const { source } = this.state;
     const { width, height, borderRadius, styleContainer, style } = this.props;
     return (

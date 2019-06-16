@@ -145,7 +145,7 @@ class Form extends Component {
     const images = photos.map((item, index) => 
       new ReactNativeFile({
         uri: item.path,
-        name: `${moment().format('YYYY-MM-DD HH:mm:ss')}_${index}_${userId}`,
+        name: `${moment().format('YYYYMMDDHHmmss')}_${index}_${userId}`,
         type: item.mime
       })
     );

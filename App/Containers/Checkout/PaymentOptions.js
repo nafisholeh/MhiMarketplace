@@ -105,12 +105,13 @@ class PaymentOptions extends Component {
           marginTop: Metrics.baseMargin
         }}
       >
-        <FlatList
+        <Text>Bayar di Tempat (COD)</Text>
+        {/* <FlatList
           data={payments}
           extraData={paymentSelected}
           keyExtractor={(item, id) => item._id.toString()}
           renderItem={this.renderPaymentItems}
-        />
+        /> */}
       </View>
     );
   }

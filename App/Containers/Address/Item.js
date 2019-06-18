@@ -57,7 +57,7 @@ class AddressItem extends Component {
                 minHeight: 100,
                 padding: Metrics.baseMargin,
                 borderBottomColor: 'gray',
-                borderBottomWidth: 0.5,
+                borderBottomWidth: isDisabled ? 0 : 0.5,
               }}
               onPress={() => this.syncSelectedAddressOnAll(selectAddress)}
               disabled={isDisabled}

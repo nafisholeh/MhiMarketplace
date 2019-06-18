@@ -65,13 +65,8 @@ AddressCheckout.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    height: 130,
-    margin: Metrics.smallMargin,
-    padding: Metrics.baseMargin,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderColor: Colors.brown_light,
-    borderWidth: 0.5,
+    borderBottomColor: Colors.brown_light,
+    borderBottomWidth: 0.5,
   }
 });
 

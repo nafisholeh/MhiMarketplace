@@ -12,7 +12,7 @@ import { parseToRupiah, calcDiscount } from 'Lib';
 import { Colors, Metrics } from 'Themes';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { SYNC_CART, cacheSetCart } from 'GraphQL/Cart/Mutation';
-import { START_CHECKOUT } from 'GraphQL/Checkout/Mutation';
+import { START_CHECKOUT } from 'GraphQL/Order/Mutation';
 import CartActions, {
   getCartItems,
   getCartTotalGrossPrice,

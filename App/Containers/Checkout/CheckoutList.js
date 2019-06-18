@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
-import { FETCH_CHECKOUT_ITEMS } from 'GraphQL/Checkout/Query';
+import { FETCH_CHECKOUT_ITEMS } from 'GraphQL/Order/Query';
 import { getUserId } from 'Redux/SessionRedux';
 import Item from './Item';
 

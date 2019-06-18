@@ -14,8 +14,8 @@ import PaymentOptions from './PaymentOptions';
 import PaymentDetails from './PaymentDetails';
 import { Metrics, Colors } from 'Themes';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
-import { FINISH_CHECKOUT } from 'GraphQL/Checkout/Mutation';
-import { FETCH_CHECKOUT_ITEMS } from 'GraphQL/Checkout/Query';
+import { FINISH_CHECKOUT } from 'GraphQL/Order/Mutation';
+import { FETCH_CHECKOUT_ITEMS } from 'GraphQL/Order/Query';
 import { getUserId } from 'Redux/SessionRedux';
 import { getPaymentOptSelected, getCheckoutId, getPaymentDetails } from 'Redux/CheckoutRedux';
 

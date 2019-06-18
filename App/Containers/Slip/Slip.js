@@ -8,7 +8,7 @@ import HTMLView from 'react-native-htmlview';
 
 import { Metrics, Images, Colors } from 'Themes';
 import { ToolbarButton } from 'Components';
-import { FETCH_CHECKOUT_SUMMARY } from 'GraphQL/Checkout/Query';
+import { FETCH_CHECKOUT_SUMMARY } from 'GraphQL/Order/Query';
 import { getCheckoutId } from 'Redux/CheckoutRedux';
 import { parseToRupiah } from 'Lib';
 

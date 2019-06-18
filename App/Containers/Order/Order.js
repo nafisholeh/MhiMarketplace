@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import { Metrics, Images } from 'Themes';
-import { FETCH_CHECKOUT_SUMMARY } from 'GraphQL/Checkout/Query';
+import { FETCH_CHECKOUT_SUMMARY } from 'GraphQL/Order/Query';
 import { getCheckoutId } from 'Redux/CheckoutRedux';
 
 class Order extends Component {

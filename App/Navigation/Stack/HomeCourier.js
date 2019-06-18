@@ -9,7 +9,7 @@ import styles from '../Styles/NavigationStyles'
 import Signin from 'Containers/Signin/Signin'
 import Signup from 'Containers/Signup/Signup'
 import Setup from 'Containers/Setup/Setup'
-import Home from 'Containers/Home/Home'
+import HomeCourier from 'Containers/HomeCourier'
 import HomeKeuangan from 'Containers/Home/HomeKeuangan'
 import HomeUser from 'Containers/Home/HomeUser'
 import Detail from 'Containers/Product/Detail'
@@ -24,7 +24,7 @@ import Account from 'Containers/Account/Account';
 import OrderDetail from 'Containers/Order/Detail';
 
 const HomeCourierNav = createStackNavigator({
-  Home: { screen: Home },
+  Home: { screen: HomeCourier },
   HomeKeuangan: { screen: HomeKeuangan },
   HomeUser: { screen: HomeUser },
   ProductDetail: { screen: Detail },

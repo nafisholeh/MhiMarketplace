@@ -5,13 +5,15 @@ import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 import ConsumerNavigation from './ConsumerNavigation';
 import CourierNavigation from './CourierNavigation';
 
+import { isKurir } from 'Redux/SessionRedux';
+
 const PrimarySwitchNavigator = createSwitchNavigator(
   {
     ConsumerNav: { screen: ConsumerNavigation },
     CourierNav: { screen: CourierNavigation },
   },
   {
-    initialRouteName: 'ConsumerNav',
+    initialRouteName: isKurir() ? 'CourierNav' : 'ConsumerNav',
   }
 )
 

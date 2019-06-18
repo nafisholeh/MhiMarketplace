@@ -28,7 +28,7 @@ export function parseToRupiah(angka, prefixTerm) {
 */
 export function calcDiscount(price, discount) {
   if(price && discount) {
-    return price - (price * ( discount / 100));
+    return price * ( discount / 100);
   }
   return 0;
 }

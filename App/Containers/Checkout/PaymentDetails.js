@@ -56,7 +56,7 @@ class PaymentDetails extends Component {
     if (!Array.isArray(data)) return 0;
     const total = data.reduce((total, value) => {
       const { product: { price = 0, discount = 0}, qty = 0 } = value;
-      return total + (price * qty);
+      return total + (price - calcDiscount(price, discount) * qty);
     }, 0);
     return total;
   }
@@ -65,19 +65,15 @@ class PaymentDetails extends Component {
     if (!Array.isArray(data)) return 0;
     const total = data.reduce((total, value) => {
       const { product: { price = 0, discount = 0}, qty = 0 } = value;
-      return total + (calcDiscount(price, discount) * qty);
+      return total + calcDiscount(price, discount) * qty;
     }, 0);
     return total;
   };
   
   getTotalCost = (data, courier = 0) => {
     if (!Array.isArray(data)) return 0;
-    const total = data.reduce((total, value) => {
-      const { product: { price = 0, discount = 0}, qty = 0 } = value;
-      return total + ((price - calcDiscount(price, discount)) * qty);
-    }, 0);
-    const allTotal = total + courier
-    return allTotal;
+    const total = this.getGrossPrice(data);
+    return total + courier;
   }
   
   setupCourierCost = async data => {
@@ -121,29 +117,29 @@ class PaymentDetails extends Component {
           <Text>Harga Awal</Text>
           <Text>{parseToRupiah(grossPrice) || '-'}</Text>
         </View>
+        <View style={styles.paymentDetail}>
+          <Text>Harga Kurir</Text>
+          <Text>{`+ ${parseToRupiah(courierCost)}` || '-'}</Text>
+        </View>
         {totalDiscount ? (
           <View style={styles.paymentDetail}>
             <Text>Anda menghemat</Text>
             <Text
               style={{
-                color: Colors.green_light
+                color: Colors.red
               }}
             >
-              {`- ${parseToRupiah(totalDiscount)}` || '-'}
+              {`${parseToRupiah(totalDiscount)}` || '-'}
             </Text>
           </View>) : null
         }
-        <View style={styles.paymentDetail}>
-          <Text>Harga Kurir</Text>
-          <Text>{`+ ${parseToRupiah(courierCost)}` || '-'}</Text>
-        </View>
         <View style={{ marginHorizontal: Metrics.baseMargin }}>
           <Text>Total yang harus dibayarkan</Text>
           <Text style={{
               fontSize: 22,
               fontWeight: 'bold',
               textAlign: 'right',
-              color: Colors.red
+              color: Colors.green_light
             }}
           >
             {parseToRupiah(totalCost) || '-'}

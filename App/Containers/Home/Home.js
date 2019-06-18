@@ -14,7 +14,7 @@ class Home extends Component {
   static navigationOptions = ({navigation}) => {
     const {params: { isStokOpname, isKeuangan } = {}} = navigation.state
     return {
-      title: 'MHI.id',
+      title: 'MH.id',
       headerLeft: null,
       headerRight: isKeuangan ? null : (
         <HeaderButton

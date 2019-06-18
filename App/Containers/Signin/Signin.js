@@ -9,7 +9,7 @@ import { DotIndicator } from 'react-native-indicators';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { SIGNIN } from 'GraphQL/User/Mutation';
 import { ADD_ONE_SIGNAL_TOKEN } from 'GraphQL/OneSignal/Mutation';
-import SessionActions from 'Redux/SessionRedux';
+import SessionActions, { getSignupEmail } from 'Redux/SessionRedux';
 import { getOneSignalToken } from 'Redux/OneSignalRedux';
 import { isEmailError, getGraphQLError, InAppNotification } from 'Lib';
 import styles from './Styles'
@@ -30,6 +30,24 @@ class Signin extends Component {
     error_password: null,
     loading: false,
   };
+  
+  componentDidMount() {
+    this.useSignupEmail();
+  }
+
+  componentDidUpdate(prevProps) {
+    if(prevProps.signupEmail !== this.props.signupEmail) {
+      this.useSignupEmail();
+    }
+  }
+  
+  useSignupEmail = () => {
+    const { signupEmail, storeSignupEmail } = this.props;
+    if (!signupEmail) return;
+    
+    this.setState({ email: signupEmail });
+    storeSignupEmail(null);
+  }
   
   openSignup = () => {
     const { navigation } = this.props;
@@ -55,7 +73,8 @@ class Signin extends Component {
   
   onSignin = async () => {
     const { email, password } = this.state;
-    const { storeSession } = this.props;
+    const { storeSession, storeSignupEmail } = this.props;
+    storeSignupEmail(null);
     try {
       const { navigation, oneSignalToken } = this.props;
       this.setState({ loading: true });
@@ -91,14 +110,12 @@ class Signin extends Component {
   
   render () {
     const { email, error_email, password, error_password, loading } = this.state;
-    const { navigation: { state: { params }} } = this.props;
-    const { email: initialEmail = null } = params || {};
     return (
       <View style={styles.container}>
 
         <TextField
           label="Email"
-          value={(!email && initialEmail) || email || ''}
+          value={email || ''}
           error={error_email || isEmailError(email)}
           onChangeText={(text) => this.setState({ email: text })}
           returnKeyType="next"
@@ -141,15 +158,19 @@ class Signin extends Component {
 
 Signin.propTypes = {
   storeSession: func,
+  storeSignupEmail: func,
   oneSignalToken: string,
+  signupEmail: string,
 };
 
 const mapStateToProps = createStructuredSelector({
   oneSignalToken: getOneSignalToken(),
+  signupEmail: getSignupEmail(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  storeSession: (user) => dispatch(SessionActions.storeSession(user)),
+  storeSession: user => dispatch(SessionActions.storeSession(user)),
+  storeSignupEmail: email => dispatch(SessionActions.storeSignupEmail(email)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Signin);

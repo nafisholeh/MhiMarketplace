@@ -7,6 +7,7 @@ import { createSelector } from 'reselect'
 const { Types, Creators } = createActions({
   reset: null,
   storeSession: ['user'],
+  storeSignupEmail: ['email'],
 })
 
 export const SessionTypes = Types
@@ -16,6 +17,7 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   user: undefined,
+  signupEmail: null,
 })
 
 /* ------------- Selectors ------------- */
@@ -75,6 +77,12 @@ export const isKeuangan = () =>
     }
   )
 
+export const getSignupEmail = () => 
+  createSelector(
+    sessionSelectors(),
+    state => state.signupEmail
+  )
+
 /* ------------- Reducers ------------- */
 
 export const reset = state => INITIAL_STATE
@@ -82,9 +90,12 @@ export const reset = state => INITIAL_STATE
 // store user session related data
 export const storeSession = (state, { user }) => state.merge({ user })
 
+export const storeSignupEmail = (state, { email }) => state.merge({ signupEmail: email })
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.RESET]: reset,
   [Types.STORE_SESSION]: storeSession,
+  [Types.STORE_SIGNUP_EMAIL]: storeSignupEmail,
 })

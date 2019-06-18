@@ -2,13 +2,16 @@ import React, { Component } from 'react'
 import { View, Text, TextInput, TouchableOpacity } from 'react-native'
 import { TextField } from 'react-native-material-textfield';
 import { DotIndicator } from 'react-native-indicators';
+import { func } from 'prop-types';
+import { connect } from 'react-redux';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
+import SessionActions from 'Redux/SessionRedux';
 import { SIGNUP } from 'GraphQL/User/Mutation';
 import { isEmailError, getGraphQLError } from 'Lib';
 import styles from './Styles'
     
-export default class Signup extends Component {
+class Signup extends Component {
   
   static navigationOptions = ({navigation}) => {
     const {params = {}} = navigation.state
@@ -67,9 +70,10 @@ export default class Signup extends Component {
     .then(data => {
       const { data: response } = data;
       const { signup: { email } } = response;
-      const { navigation } = this.props;
+      const { navigation, storeSignupEmail } = this.props;
       this.setState({ loading: false });
-      navigation.navigate("Signin", { email });
+      storeSignupEmail(email);
+      navigation.navigate("Signin");
     })
     .catch(error => {
       this.setState({ loading: false });
@@ -154,3 +158,13 @@ export default class Signup extends Component {
     )
   }
 }
+
+Signup.propTypes = {
+  storeSignupEmail: func,
+};
+
+const mapDispatchToProps = dispatch => ({
+  storeSignupEmail: email => dispatch(SessionActions.storeSignupEmail(email)),
+});
+
+export default connect(null, mapDispatchToProps)(Signup);

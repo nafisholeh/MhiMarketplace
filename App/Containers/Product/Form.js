@@ -311,7 +311,7 @@ class Form extends Component {
                           label: 'Pilih Unit',
                           value: null,
                         }}
-                        items={[{label: 'kg', value: 'kg'}, {label: 'gram', value: 'gram'}]}
+                        items={[{label: 'kg', value: 'kg'}, {label: 'gram', value: 'gram'}, {label: 'pcs', value: 'pcs'}]}
                         onValueChange={(val, i) => this.setState({ unit: val})}
                         value={unit}>
                         <TextField

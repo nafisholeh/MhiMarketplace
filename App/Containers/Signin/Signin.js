@@ -83,7 +83,7 @@ class Signin extends Component {
         variables: { email, password },
       });
       const { data: { signin } } = signinResult;
-      const { _id: userId } = signin;
+      const { _id: userId, user_type } = signin;
       
       const tokenResult = await ApolloClientProvider.client.mutate({
         mutation: ADD_ONE_SIGNAL_TOKEN,
@@ -93,7 +93,8 @@ class Signin extends Component {
       if (signin) {
         await storeSession(signin);
         this.setState({ loading: false });
-        navigation.push("Setup");
+        if (user_type === 'kurir') navigation.navigate("CourierNav");
+        else navigation.navigate("ConsumerNav");
       }
     } catch (error) {
       this.setState({ loading: false });

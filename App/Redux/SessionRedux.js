@@ -76,6 +76,18 @@ export const isKeuangan = () =>
       return false;
     }
   )
+  
+export const isKurir = () =>
+  createSelector(
+    sessionSelectors(),
+    state => {
+      const { user } = state;
+      if (!user) return false;
+      const { user_type } = user;
+      if (user_type && user_type === 'kurir') return true;
+      return false;
+    }
+  )
 
 export const getSignupEmail = () => 
   createSelector(

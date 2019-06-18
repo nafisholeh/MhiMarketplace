@@ -83,7 +83,6 @@ export const FETCH_CHECKOUT_SUMMARY = gql`
       _id
       user_id
       transaction_id
-      time_start
       gross_price
       total_discount
       courier_cost

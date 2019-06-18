@@ -3,7 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Query, Mutation } from 'react-apollo';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { string, number, shape } from 'prop-types';
+import { string, number, shape, arrayOf } from 'prop-types';
 import { DotIndicator } from 'react-native-indicators';
 
 import CheckoutTitle from './CheckoutTitle';
@@ -17,7 +17,12 @@ import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { FINISH_CHECKOUT } from 'GraphQL/Order/Mutation';
 import { FETCH_CHECKOUT_ITEMS } from 'GraphQL/Order/Query';
 import { getUserId } from 'Redux/SessionRedux';
-import { getPaymentOptSelected, getCheckoutId, getPaymentDetails } from 'Redux/CheckoutRedux';
+import {
+  getPaymentOptSelected,
+  getCheckoutId,
+  getPaymentDetails,
+  getChosenShipment
+} from 'Redux/CheckoutRedux';
 
 class Checkout extends Component {
   
@@ -38,7 +43,8 @@ class Checkout extends Component {
         courier = 0,
         total = 0
       },
-      checkoutId
+      checkoutId,
+      shippingDate,
     } = this.props;
     finishCheckout({
       variables: {
@@ -47,7 +53,8 @@ class Checkout extends Component {
         gross_price: gross,
         total_discount: discount,
         courier_cost: courier,
-        total_cost: total
+        total_cost: total,
+        requested_shipping_date: shippingDate,
       }
     });
   };
@@ -58,7 +65,7 @@ class Checkout extends Component {
   };
   
   render() {
-    const { userId, checkoutId } = this.props;
+    const { userId, checkoutId, shippingDate } = this.props;
     return (
       <View style={{flex:1}}>
         <ScrollView style={{ flex: 1, marginBottom: Metrics.doubleBaseMargin }}>
@@ -136,8 +143,13 @@ Checkout.propTypes = {
     gross: number,
     discount: number,
     courier: number,
-    total: number
+    total: number,
   }),
+  shippingDate: arrayOf(shape({
+    date: string,
+    time_start: string,
+    time_end: string,
+  })),
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -145,6 +157,7 @@ const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
   checkoutId: getCheckoutId(),
   paymentDetails: getPaymentDetails(),
+  shippingDate: getChosenShipment(),
 });
 
 export default connect(mapStateToProps, null)(Checkout);

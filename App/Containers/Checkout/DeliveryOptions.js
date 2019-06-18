@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { View, Picker, Text } from 'react-native';
 import { Query } from 'react-apollo';
+import { func } from 'prop-types';
+import { connect } from 'react-redux';
 import { CalendarList, LocaleConfig } from 'react-native-calendars';
 import moment from 'moment';
 
 import { FETCH_DELIVERIES } from 'GraphQL/Delivery/Query';
 import { Metrics, Colors } from 'Themes';
+import CheckoutActions from 'Redux/CheckoutRedux';
 
 LocaleConfig.locales['fr'] = {
   monthNames: ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','Nopember','Desember'],
@@ -20,7 +23,6 @@ const DATE_FORMAT = 'YYYY-MM-DD';
 const TODAY = moment().format(DATE_FORMAT);
 
 class DeliveryOptions extends Component {
-  
   constructor(props) {
     super(props);
     this.state = {
@@ -29,11 +31,23 @@ class DeliveryOptions extends Component {
     }
   }
   
+  componentDidMount() {
+    const { storeShipmentDate } = this.props;
+    const data = {
+      [TODAY]: { selected: true }
+    };
+    storeShipmentDate(data);
+    this.setState({ markedDates: data });
+  }
+  
   onValueChange = (itemValue, itemIndex) => {
+    const { storeShipmentTime } = this.props;
+    storeShipmentTime(itemValue);
     this.setState({selected: itemValue})
   };
   
   onDaySelect = day => {
+    const { storeShipmentDate } = this.props;
     const { markedDates } = this.state;
     const selectedDay = moment(day.dateString).format(DATE_FORMAT);
       
@@ -43,11 +57,25 @@ class DeliveryOptions extends Component {
     }
     
     const updatedMarkedDates = {...markedDates, ...{ [selectedDay]: { selected } } };
+    storeShipmentDate(updatedMarkedDates);
     this.setState({ markedDates: updatedMarkedDates });
   };
   
+  fetchTimeSuccess = data => {
+    const { storeShipmentTime } = this.props;
+    const { deliveries = [] } = data || {};
+    if (deliveries.length) {
+      const { time_start, time_end } = deliveries[0];
+      if (time_start && time_end) {
+        storeShipmentTime(`${time_start},${time_end}`);
+      }
+    }
+    console.tron.log('fetchTimeSuccess', data);
+  }
+  
   render() {
     const { selected, markedDates } = this.state;
+    const { storeShipmentTime } = this.props;
     return (
       <View style={{ borderBottomWidth: 0.4, borderBottomColor: Colors.brown_light }}>
         <CalendarList
@@ -58,7 +86,8 @@ class DeliveryOptions extends Component {
           markedDates={markedDates}
         />
         <Query 
-          query={FETCH_DELIVERIES}>
+          query={FETCH_DELIVERIES}
+          onCompleted={this.fetchTimeSuccess}>
           {({ loading, error, data, refetch }) => {
             if (loading) return (<View />);
             else if (error) return (<View />);
@@ -75,7 +104,7 @@ class DeliveryOptions extends Component {
                     <Picker.Item
                       key={item._id}
                       label={`${item.time_start} - ${item.time_end}`}
-                      value={item._id}
+                      value={`${item.time_start},${item.time_end}`}
                     />
                   ))}
                 </Picker>
@@ -88,4 +117,14 @@ class DeliveryOptions extends Component {
   }
 }
 
-export default DeliveryOptions;
+DeliveryOptions.propTypes = {
+  storeShipmentDate: func,
+  storeShipmentTime: func,
+}
+
+const mapDispatchToProps = dispatch => ({
+  storeShipmentDate: shipment_date => dispatch(CheckoutActions.storeShipmentDate(shipment_date)),
+  storeShipmentTime: shipment_time => dispatch(CheckoutActions.storeShipmentTime(shipment_time))
+});
+
+export default connect(null, mapDispatchToProps)(DeliveryOptions);

@@ -34,7 +34,7 @@ class AddressCheckout extends Component {
         query={FETCH_SELECTED_ADDRESS}
         variables={{ user_id: userId }}>
         {({ loading, error, data, refetch }) => {
-          const { selectedAddress } = data;
+          const { selectedAddress = {} } = data || {};
           return (
             <TouchableOpacity 
               onPress={this.onOpenList} 

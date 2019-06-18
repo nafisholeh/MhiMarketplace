@@ -10,6 +10,8 @@ const { Types, Creators } = createActions({
   storeCheckoutId: ['checkoutId'],
   updatePaymentDetails: ['gross', 'discount', 'courier', 'total'],
   storeOpenedOrder: ['checkoutId', 'name', 'paid_off'], 
+  storeShipmentDate: ['shipment_date'],
+  storeShipmentTime: ['shipment_time']
 })
 
 export const CheckoutTypes = Types
@@ -25,7 +27,9 @@ export const INITIAL_STATE = Immutable({
   gross: 0,
   discount: 0,
   courier: 0,
-  total: 0
+  total: 0,
+  shipment_date: null,
+  shipment_time: null
 })
 
 /* ------------- Selectors ------------- */
@@ -52,6 +56,21 @@ export const getPaymentDetails = () =>
     total: state.total, 
   }))
 
+export const getChosenShipment = () =>
+  createSelector(checkoutSelectors(), state => {
+    const { shipment_date, shipment_time } = state;
+    if (!shipment_date || !shipment_time) return;
+    const [ time_start, time_end ] = shipment_time.split(',');
+    let shipmentDate = [];
+    for (const key of Object.keys(shipment_date)) {
+      shipmentDate.push({
+        date: key,
+        time_start,
+        time_end,
+      });
+    }
+    return shipmentDate;
+  })
 /* ------------- Reducers ------------- */
 
 export const resetCheckout = (state) => INITIAL_STATE
@@ -72,6 +91,12 @@ export const storeOpenedOrder = (state, { checkoutId, name, paid_off }) =>
     checkoutId, checkoutName: name, checkoutConfirmed: paid_off  
   })
 
+export const storeShipmentDate = (state, { shipment_date }) =>
+  state.merge({ shipment_date })
+
+export const storeShipmentTime = (state, { shipment_time }) =>
+  state.merge({ shipment_time })
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -79,4 +104,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.STORE_CHECKOUT_ID]: storeCheckoutId,
   [Types.UPDATE_PAYMENT_DETAILS]: updatePaymentDetails,
   [Types.STORE_OPENED_ORDER]: storeOpenedOrder,
+  [Types.STORE_SHIPMENT_DATE]: storeShipmentDate,
+  [Types.STORE_SHIPMENT_TIME]: storeShipmentTime,
 })

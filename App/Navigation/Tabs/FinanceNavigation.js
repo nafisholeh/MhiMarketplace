@@ -3,18 +3,16 @@ import { Image } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 
-import styles from './Styles/NavigationStyles'
-import { tabNavOptions } from './TabOptions';
+import styles from '../Styles/NavigationStyles'
+import { tabNavOptions } from './Options';
 
-import AccountNav from './Stack/Account';
-import CartNav from './Stack/Cart';
-import HomeConsumerNav from './Stack/HomeConsumer';
+import AccountNav from '../Stack/Account';
+import HomeNav from '../Stack/HomeFinance';
 import Setup from 'Containers/Setup/Setup';
 
 const ConsumerNavigation = createBottomTabNavigator(
   {
-    Home: { screen: HomeConsumerNav },
-    Cart: { screen: CartNav },
+    Home: { screen: HomeNav },
     Account: { screen: AccountNav },
   },
   {

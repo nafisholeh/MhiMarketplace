@@ -1,6 +1,6 @@
 export default {
-  // uri: 'http://app-dev.metodehayati.id:4001/graphql',
-  uri: 'http://192.168.1.3:4001/graphql',
+  uri: 'http://app-dev.metodehayati.id:4001/graphql',
+  // uri: 'http://192.168.1.2:4001/graphql',
   oneSignalKey: "63d5eb55-3ba8-4489-bfba-ce4d74c3bd40",
   allowTextFontScaling: true,
   hiddenTabScreen: [

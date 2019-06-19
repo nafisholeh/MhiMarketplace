@@ -3,14 +3,12 @@ import { Image } from 'react-native';
 import { createStackNavigator } from 'react-navigation'
 
 import { Images } from 'Themes';
-import { tabNavOptions } from '../TabOptions';
+import { tabNavOptions } from '../Tabs/Options';
 import styles from '../Styles/NavigationStyles'
 
 import Signin from 'Containers/Signin/Signin'
 import Signup from 'Containers/Signup/Signup'
-import HomeCourier from 'Containers/HomeCourier'
-import HomeKeuangan from 'Containers/Home/HomeKeuangan'
-import HomeUser from 'Containers/Home/HomeUser'
+import Home from 'Containers/HomeCourier'
 import Detail from 'Containers/Product/Detail'
 import ProductAdd from 'Containers/Product/Add';
 import ProductEdit from 'Containers/Product/Edit'; 
@@ -22,10 +20,8 @@ import Slip from 'Containers/Slip/Slip';
 import Account from 'Containers/Account/Account';
 import OrderDetail from 'Containers/Order/Detail';
 
-const HomeCourierNav = createStackNavigator({
-  Home: { screen: HomeCourier },
-  HomeKeuangan: { screen: HomeKeuangan },
-  HomeUser: { screen: HomeUser },
+const HomeNav = createStackNavigator({
+  Home: { screen: Home },
   ProductDetail: { screen: Detail },
   ProductAdd: { screen: ProductAdd },
   ProductEdit: { screen: ProductEdit },
@@ -44,6 +40,6 @@ const HomeCourierNav = createStackNavigator({
   }
 })
 
-HomeCourierNav.navigationOptions = (data) => tabNavOptions(data, Images.home)
+HomeNav.navigationOptions = (data) => tabNavOptions(data, Images.home)
 
-export default HomeCourierNav;
+export default HomeNav;

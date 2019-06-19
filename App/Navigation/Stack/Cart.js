@@ -3,7 +3,7 @@ import { Image } from 'react-native';
 import { createStackNavigator } from 'react-navigation'
 
 import { Images } from 'Themes';
-import { tabNavOptions } from '../TabOptions';
+import { tabNavOptions } from '../Tabs/Options';
 import styles from '../Styles/NavigationStyles'
 
 import Cart from 'Containers/Cart/Cart';

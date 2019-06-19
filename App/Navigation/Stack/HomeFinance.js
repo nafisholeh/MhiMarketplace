@@ -8,7 +8,7 @@ import styles from '../Styles/NavigationStyles'
 
 import Signin from 'Containers/Signin/Signin'
 import Signup from 'Containers/Signup/Signup'
-import Home from 'Containers/HomeConsumer'
+import Home from 'Containers/HomeFinance'
 import Detail from 'Containers/Product/Detail'
 import ProductAdd from 'Containers/Product/Add';
 import ProductEdit from 'Containers/Product/Edit'; 

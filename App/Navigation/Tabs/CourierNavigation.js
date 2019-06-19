@@ -3,18 +3,18 @@ import { Image } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 
-import styles from './Styles/NavigationStyles'
-import { tabNavOptions } from './TabOptions';
+import styles from '../Styles/NavigationStyles'
+import { tabNavOptions } from './Options';
 
-import AccountNav from './Stack/Account';
-import CartNav from './Stack/Cart';
-import HomeCourierNav from './Stack/HomeCourier';
-import ShoppingCourier from './Stack/ShoppingCourier';
+import AccountNav from '../Stack/Account';
+import CartNav from '../Stack/Cart';
+import HomeNav from '../Stack/HomeCourier';
+import ShoppingCourier from '../Stack/ShoppingCourier';
 import Setup from 'Containers/Setup/Setup';
 
 const CourierNavigation = createBottomTabNavigator(
   {
-    Home: { screen: HomeCourierNav },
+    Home: { screen: HomeNav },
     Shopping: { screen: ShoppingCourier },
     Cart: { screen: CartNav },
     Account: { screen: AccountNav },

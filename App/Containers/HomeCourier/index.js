@@ -7,7 +7,7 @@ import { withNavigation } from 'react-navigation';
 
 import MyOrder from './MyOrder';
 
-class HomeCourier extends Component {
+class Home extends Component {
   static navigationOptions = ({navigation}) => {
     const {params = {}} = navigation.state
     return {
@@ -30,7 +30,7 @@ class HomeCourier extends Component {
   }
 }
 
-HomeCourier.propTypes = {
+Home.propTypes = {
   
 };
 
@@ -38,4 +38,4 @@ const mapStateToProps = createStructuredSelector({
   
 });
 
-export default connect(mapStateToProps, null)(withNavigation(HomeCourier));
+export default connect(mapStateToProps, null)(withNavigation(Home));

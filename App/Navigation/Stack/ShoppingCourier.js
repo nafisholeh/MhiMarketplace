@@ -3,15 +3,12 @@ import { Image } from 'react-native';
 import { createStackNavigator } from 'react-navigation'
 
 import { Images } from 'Themes';
-import { tabNavOptions } from '../TabOptions';
+import { tabNavOptions } from '../Tabs/Options';
 import styles from '../Styles/NavigationStyles'
 
 import Signin from 'Containers/Signin/Signin'
 import Signup from 'Containers/Signup/Signup'
-import Setup from 'Containers/Setup/Setup'
-import Home from 'Containers/Home/Home'
-import HomeKeuangan from 'Containers/Home/HomeKeuangan'
-import HomeUser from 'Containers/Home/HomeUser'
+import Home from 'Containers/HomeConsumer'
 import Detail from 'Containers/Product/Detail'
 import ProductAdd from 'Containers/Product/Add';
 import ProductEdit from 'Containers/Product/Edit'; 
@@ -25,8 +22,6 @@ import OrderDetail from 'Containers/Order/Detail';
 
 const Navigation = createStackNavigator({
   Home: { screen: Home },
-  HomeKeuangan: { screen: HomeKeuangan },
-  HomeUser: { screen: HomeUser },
   ProductDetail: { screen: Detail },
   ProductAdd: { screen: ProductAdd },
   ProductEdit: { screen: ProductEdit },
@@ -36,11 +31,10 @@ const Navigation = createStackNavigator({
   AddressInput: { screen: AddressInput },
   Signin: { screen: Signin },
   Signup: { screen: Signup },  
-  Setup: { screen: Setup },
   Slip: { screen: Slip },
   OrderDetail: { screen: OrderDetail },
 }, {
-  initialRouteName: 'Setup',
+  initialRouteName: 'Home',
   navigationOptions: {
     headerStyle: styles.header
   }

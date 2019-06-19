@@ -14,7 +14,21 @@ import { getUserId, isStokOpname } from 'Redux/SessionRedux';
 import { Images, Metrics } from 'Themes';
 import styles from './Styles';
     
-class HomeUser extends Component {
+class Home extends Component {
+  static navigationOptions = ({navigation}) => {
+    const {params} = navigation.state
+    return {
+      title: 'MH.id',
+      headerLeft: null,
+      headerRight: (
+        <HeaderButton
+          onPress={() => navigation.navigate('Cart')}
+          icon={Images.cart}
+        />
+      ),
+    }
+  }
+
   componentDidMount() {
     this.fetchInitCart();
   }
@@ -44,7 +58,7 @@ class HomeUser extends Component {
   }
 }
 
-HomeUser.propTypes = {
+Home.propTypes = {
   userId: string,
   storeCart: func,
   isStokOpname: bool,
@@ -59,4 +73,4 @@ const mapDispatchToProps = (dispatch) => ({
   storeCart: cart => dispatch(CartActions.storeCart(cart)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(HomeUser));
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(Home));

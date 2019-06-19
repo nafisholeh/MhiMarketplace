@@ -8,7 +8,7 @@ import { withNavigation } from 'react-navigation';
 import styles from './Styles';
 import List from 'Containers/Order/List';
 
-class HomeKeuangan extends Component {
+class Home extends Component {
   render() {
     return (
       <ScrollView>
@@ -23,7 +23,7 @@ class HomeKeuangan extends Component {
   }
 }
 
-HomeKeuangan.propTypes = {
+Home.propTypes = {
   
 };
 
@@ -31,4 +31,4 @@ const mapStateToProps = createStructuredSelector({
   
 });
 
-export default connect(mapStateToProps, null)(withNavigation(HomeKeuangan));
+export default connect(mapStateToProps, null)(withNavigation(Home));

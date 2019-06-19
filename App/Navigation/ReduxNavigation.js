@@ -14,6 +14,18 @@ createReactNavigationReduxMiddleware(
 
 const ReduxAppNavigator = reduxifyNavigator(AppNavigation, 'root')
 
+const getActiveScreenName = (obj, screenName) => {
+  const { index, routes } = obj || {};
+  if (index === undefined || !routes) {
+    const { routeName } = obj || {};
+    if (!routeName) return false;
+    if (routeName === screenName) return true;
+    else return false;
+  }
+  const result = getActiveScreenName(routes[index], screenName);
+  return result;
+};
+
 class ReduxNavigation extends React.Component {
   componentDidMount () {
     if (Platform.OS === 'ios') return
@@ -24,7 +36,7 @@ class ReduxNavigation extends React.Component {
       const { index: activeRouteIndex, routes: activeRoute } = activeParent;
       const { routeName } = activeRoute[activeRouteIndex];
       // change to whatever is your first screen, otherwise unpredictable results may occur
-      if (routeName === 'CourierNavigation' || routeName === 'ConsumerNavigation') {
+      if (getActiveScreenName(nav, 'CourierNavigation') || getActiveScreenName(nav, 'ConsumerNavigation')) {
         return false
       }
       // if (shouldCloseApp(nav)) return false

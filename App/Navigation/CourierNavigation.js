@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Image } from 'react-native';
+import { createStackNavigator } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 
 import styles from './Styles/NavigationStyles'
@@ -9,6 +10,7 @@ import AccountNav from './Stack/Account';
 import CartNav from './Stack/Cart';
 import HomeCourierNav from './Stack/HomeCourier';
 import ShoppingCourier from './Stack/ShoppingCourier';
+import Setup from 'Containers/Setup/Setup';
 
 const CourierNavigation = createBottomTabNavigator(
   {
@@ -30,4 +32,15 @@ CourierNavigation.navigationOptions = ({ navigation }) => {
   }
 }
 
-export default CourierNavigation;
+const ParentNavigator = createStackNavigator(
+  {
+    Setup: { screen: Setup },
+    CourierNavigation: { screen: CourierNavigation },
+  }, {
+    initialRouteName: 'Setup',
+    header: null,
+    headerMode: 'none'
+  }
+)
+
+export default ParentNavigator;

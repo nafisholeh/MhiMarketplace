@@ -8,6 +8,14 @@ import { withNavigation } from 'react-navigation';
 import MyOrder from './MyOrder';
 
 class HomeCourier extends Component {
+  static navigationOptions = ({navigation}) => {
+    const {params = {}} = navigation.state
+    return {
+      title: 'MH.id',
+      headerLeft: null,
+    }
+  }
+
   openMyOrder = () => {
     const { navigation } = this.props;
     if (navigation) navigation.navigate('');

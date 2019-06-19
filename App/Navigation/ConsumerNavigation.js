@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Image } from 'react-native';
+import { createStackNavigator } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 
 import styles from './Styles/NavigationStyles'
@@ -8,6 +9,7 @@ import { tabNavOptions } from './TabOptions';
 import AccountNav from './Stack/Account';
 import CartNav from './Stack/Cart';
 import HomeConsumerNav from './Stack/HomeConsumer';
+import Setup from 'Containers/Setup/Setup';
 
 const ConsumerNavigation = createBottomTabNavigator(
   {
@@ -28,4 +30,15 @@ ConsumerNavigation.navigationOptions = ({ navigation }) => {
   }
 }
 
-export default ConsumerNavigation;
+const ParentNavigator = createStackNavigator(
+  {
+    Setup: { screen: Setup },
+    ConsumerNavigation: { screen: ConsumerNavigation },
+  }, {
+    initialRouteName: 'Setup',
+    header: null,
+    headerMode: 'none'
+  }
+)
+
+export default ParentNavigator;

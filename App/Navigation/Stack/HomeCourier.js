@@ -8,7 +8,6 @@ import styles from '../Styles/NavigationStyles'
 
 import Signin from 'Containers/Signin/Signin'
 import Signup from 'Containers/Signup/Signup'
-import Setup from 'Containers/Setup/Setup'
 import HomeCourier from 'Containers/HomeCourier'
 import HomeKeuangan from 'Containers/Home/HomeKeuangan'
 import HomeUser from 'Containers/Home/HomeUser'
@@ -36,11 +35,10 @@ const HomeCourierNav = createStackNavigator({
   AddressInput: { screen: AddressInput },
   Signin: { screen: Signin },
   Signup: { screen: Signup },  
-  Setup: { screen: Setup },
   Slip: { screen: Slip },
   OrderDetail: { screen: OrderDetail },
 }, {
-  initialRouteName: 'Setup',
+  initialRouteName: 'Home',
   navigationOptions: {
     headerStyle: styles.header
   }

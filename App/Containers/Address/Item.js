@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
-import { string, shape, bool } from 'prop-types';
+import { string, shape, bool, func } from 'prop-types';
 import { Mutation } from 'react-apollo';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -16,18 +16,20 @@ import { Metrics, Images } from 'Themes';
 import { SELECT_ADDRESS, cacheSelectAddress } from 'GraphQL/Address/Mutation';
 import { FETCH_SELECTED_ADDRESS } from 'GraphQL/Address/Query';
 import { getUserId } from 'Redux/SessionRedux';
+import CheckoutActions from 'Redux/CheckoutRedux';
 
 class AddressItem extends Component {
   
   syncSelectedAddressOnAll = selectAddress => {
     // let selected address on checkout page got updated quickly
-    const { data: selectedAddress, userId } = this.props;
+    const { data: selectedAddress, data: { _id } = {}, userId, selectShipmentAddress } = this.props;
+    selectShipmentAddress(_id);
+    
     ApolloClientProvider.client.cache.writeQuery({
       query: FETCH_SELECTED_ADDRESS,
       variables: { user_id: userId },
       data: { selectedAddress }
     });
-    
     // sync selected address on server and local
     selectAddress();  
   }
@@ -97,6 +99,7 @@ AddressItem.propTypes = {
   }),
   userId: string,
   isDisabled: bool,
+  selectShipmentAddress: func,
 };
 
 AddressItem.defaultProps = {
@@ -107,4 +110,8 @@ const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
 });
 
-export default connect(mapStateToProps, null)(AddressItem);
+const mapDispatchToProps = dispatch => ({
+  selectShipmentAddress: shipment_address => dispatch(CheckoutActions.selectShipmentAddress(shipment_address)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddressItem);

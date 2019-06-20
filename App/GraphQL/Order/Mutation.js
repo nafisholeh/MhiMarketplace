@@ -18,8 +18,8 @@ export const START_CHECKOUT = gql`
 `
 
 export const FINISH_CHECKOUT = gql`
-  mutation finishCheckout($_id: String!, $payment_option: String!, $gross_price: Int!, $total_discount: Int!, $courier_cost: Int!, $total_cost: Int!, $requested_shipping_date: [ShippingDateInput]!) {
-    finishCheckout(_id:$_id, payment_option:$payment_option, gross_price:$gross_price, total_discount:$total_discount, courier_cost:$courier_cost, total_cost:$total_cost, requested_shipping_date:$requested_shipping_date) {
+  mutation finishCheckout($_id: String!, $payment_option: String!, $gross_price: Int!, $total_discount: Int!, $courier_cost: Int!, $total_cost: Int!, $requested_shipping_date: [ShippingDateInput]!, $shipping_address: String) {
+    finishCheckout(_id:$_id, payment_option:$payment_option, gross_price:$gross_price, total_discount:$total_discount, courier_cost:$courier_cost, total_cost:$total_cost, requested_shipping_date:$requested_shipping_date, shipping_address:$shipping_address) {
       _id
       user_id
       payment_option {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import { string } from 'prop-types';
+import { string, func } from 'prop-types';
 import { Query } from 'react-apollo';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -11,6 +11,7 @@ import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { Metrics, Colors } from 'Themes';
 import { FETCH_SELECTED_ADDRESS } from 'GraphQL/Address/Query';
 import { getUserId } from 'Redux/SessionRedux';
+import CheckoutActions from 'Redux/CheckoutRedux';
 
 class AddressCheckout extends Component {
   
@@ -26,12 +27,20 @@ class AddressCheckout extends Component {
     navigation.navigate('AddressList');
   };
   
+  onFetchComplete = data => {
+    const { selectedAddress: { _id } = {} } = data || {};
+    const { selectShipmentAddress } = this.props;
+    selectShipmentAddress(_id);
+    console.tron.log('AddressCheckout/onFetchComplete', _id)
+  }
+  
   render() {
     const { address } = this.state;
     const { userId } = this.props;
     return (
       <Query 
         query={FETCH_SELECTED_ADDRESS}
+        onCompleted={this.onFetchComplete}
         variables={{ user_id: userId }}>
         {({ loading, error, data, refetch }) => {
           const { selectedAddress = {} } = data || {};
@@ -61,6 +70,7 @@ class AddressCheckout extends Component {
 
 AddressCheckout.propTypes = {
   userId: string,
+  selectShipmentAddress: func,
 };
 
 const styles = StyleSheet.create({
@@ -74,4 +84,8 @@ const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
 });
 
-export default connect(mapStateToProps, null)(withNavigation(AddressCheckout));
+const mapDispatchToProps = dispatch => ({
+  selectShipmentAddress: shipment_address => dispatch(CheckoutActions.selectShipmentAddress(shipment_address)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(AddressCheckout));

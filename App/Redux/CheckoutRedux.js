@@ -11,7 +11,8 @@ const { Types, Creators } = createActions({
   updatePaymentDetails: ['gross', 'discount', 'courier', 'total'],
   storeOpenedOrder: ['checkoutId', 'name', 'paid_off'], 
   storeShipmentDate: ['shipment_date'],
-  storeShipmentTime: ['shipment_time']
+  storeShipmentTime: ['shipment_time'],
+  selectShipmentAddress: ['shipment_address'],
 })
 
 export const CheckoutTypes = Types
@@ -29,7 +30,8 @@ export const INITIAL_STATE = Immutable({
   courier: 0,
   total: 0,
   shipment_date: null,
-  shipment_time: null
+  shipment_time: null,
+  shipment_address: null,
 })
 
 /* ------------- Selectors ------------- */
@@ -71,6 +73,13 @@ export const getChosenShipment = () =>
     }
     return shipmentDate;
   })
+  
+export const getSelectedShipmentAddress = () => 
+  createSelector(checkoutSelectors(), state => {
+    const { shipment_address } = state;
+    return shipment_address;
+  })
+
 /* ------------- Reducers ------------- */
 
 export const resetCheckout = (state) => INITIAL_STATE
@@ -96,6 +105,9 @@ export const storeShipmentDate = (state, { shipment_date }) =>
 
 export const storeShipmentTime = (state, { shipment_time }) =>
   state.merge({ shipment_time })
+  
+export const selectShipmentAddress = (state, { shipment_address }) =>
+  state.merge({ shipment_address })
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -106,4 +118,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.STORE_OPENED_ORDER]: storeOpenedOrder,
   [Types.STORE_SHIPMENT_DATE]: storeShipmentDate,
   [Types.STORE_SHIPMENT_TIME]: storeShipmentTime,
+  [Types.SELECT_SHIPMENT_ADDRESS]: selectShipmentAddress,
 })

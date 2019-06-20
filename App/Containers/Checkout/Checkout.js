@@ -21,7 +21,8 @@ import {
   getPaymentOptSelected,
   getCheckoutId,
   getPaymentDetails,
-  getChosenShipment
+  getChosenShipment,
+  getSelectedShipmentAddress
 } from 'Redux/CheckoutRedux';
 
 class Checkout extends Component {
@@ -45,6 +46,7 @@ class Checkout extends Component {
       },
       checkoutId,
       shippingDate,
+      shipmentAddress,
     } = this.props;
     finishCheckout({
       variables: {
@@ -55,6 +57,7 @@ class Checkout extends Component {
         courier_cost: courier,
         total_cost: total,
         requested_shipping_date: shippingDate,
+        shipping_address: shipmentAddress,
       }
     });
   };
@@ -150,6 +153,7 @@ Checkout.propTypes = {
     time_start: string,
     time_end: string,
   })),
+  shipmentAddress: string,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -158,6 +162,7 @@ const mapStateToProps = createStructuredSelector({
   checkoutId: getCheckoutId(),
   paymentDetails: getPaymentDetails(),
   shippingDate: getChosenShipment(),
+  shipmentAddress: getSelectedShipmentAddress(),
 });
 
 export default connect(mapStateToProps, null)(Checkout);

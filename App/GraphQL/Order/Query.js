@@ -77,47 +77,42 @@ export const FETCH_CHECKOUT_ITEMS = gql`
   }
 `
 
-export const FETCH_READY_TO_PROCESS_LIST = gql`
-query fetchReadyToProcessOrders {
-  readyToProcessOrders {
-    _id
-    shipping_address {
-      alamat
-      rtrw
-      kelurahan
-      kecamatan
-      kota
-      provinsi
-      kodepos
-    }
-    products {
+export const FETCH_ORDER_DETAIL = gql`
+  query fetchOrderDetail($_id:String!) {
+    orderDetail(_id:$_id) {
       _id
-      product {
-        unit
+      user_id {
+        _id
+        email
+        name
+        user_type
       }
-      qty
-      selected
-    }
-    requested_shipping_date {
-      _id
-      date
-      time_start
-      time_end
-    }
-  }
-}
-`
-
-export const FETCH_CHECKOUT_SUMMARY = gql`
-  query fetchCheckoutSummary($_id:String!) {
-    checkoutSummary(_id:$_id) {
-      _id
-      user_id
       transaction_id
       gross_price
       total_discount
       courier_cost
       total_cost
+      shipping_address {
+        alamat
+        rtrw
+        kelurahan
+        kecamatan
+        kota
+        provinsi
+        kodepos
+      }
+      requested_shipping_date {
+        _id
+        date
+        time_start
+        time_end
+      }
+      actual_shipping_date {
+        _id
+        date
+        time_start
+        time_end
+      }
       payment_option {
         type
         detail
@@ -135,6 +130,37 @@ export const FETCH_CHECKOUT_SUMMARY = gql`
         }
         qty
         selected
+      }
+    }
+  }
+`
+
+export const FETCH_READY_TO_PROCESS_LIST = gql`
+  query fetchReadyToProcessOrders {
+    readyToProcessOrders {
+      _id
+      shipping_address {
+        alamat
+        rtrw
+        kelurahan
+        kecamatan
+        kota
+        provinsi
+        kodepos
+      }
+      products {
+        _id
+        product {
+          unit
+        }
+        qty
+        selected
+      }
+      requested_shipping_date {
+        _id
+        date
+        time_start
+        time_end
       }
     }
   }

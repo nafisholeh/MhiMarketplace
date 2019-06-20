@@ -15,6 +15,7 @@ export const reducers = combineReducers({
   checkout: require('./CheckoutRedux').reducer,
   product: require('./ProductRedux').reducer,
   onesignal: require('./OneSignalRedux').reducer,
+  list: require('./ListRedux').reducer,
 })
 
 export default () => {

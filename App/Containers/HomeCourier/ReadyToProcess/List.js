@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { View, ScrollView, FlatList, Text } from 'react-native';
 import { Query } from 'react-apollo';
+import { connect } from 'react-redux';
+import { func } from 'prop-types';
+import { withNavigation } from 'react-navigation';
 
 import {
   getReadableAddress,
@@ -12,9 +15,11 @@ import { QueryEffectSection } from 'Components';
 import { Colors } from 'Themes';
 import Item from './Item';
 import { FETCH_READY_TO_PROCESS_LIST } from 'GraphQL/Order/Query';
+import ListActions from 'Redux/ListRedux';
 
 class ReadyToProcessList extends Component {
   renderItems = ({item, index}) => {
+    const { selectListItem, navigation } = this.props;
     const { _id, shipping_address, products = [], requested_shipping_date = [] } = item || {};
     const district = getReadableSubdistrict(shipping_address);
     const address = getReadableAddress(shipping_address);
@@ -22,10 +27,15 @@ class ReadyToProcessList extends Component {
     const totalWeight = calcTotalWeight(products);
     return (
       <Item
+        id={_id}
         district={district}
         address={address}
         schedule={schedule}
         totalWeight={totalWeight}
+        onSelectItem={id => {
+          selectListItem(id);
+          navigation.navigate('ReadyToProcessDetail');
+        }}
       />
     );
   };
@@ -71,4 +81,12 @@ class ReadyToProcessList extends Component {
   }
 }
 
-export default ReadyToProcessList;
+ReadyToProcessList.propTypes = {
+  selectListItem: func,
+}
+
+const mapDispatchToProps = dispatch => ({
+  selectListItem: selectedId => dispatch(ListActions.selectListItem(selectedId)),
+});
+
+export default connect(null, mapDispatchToProps)(withNavigation(ReadyToProcessList));

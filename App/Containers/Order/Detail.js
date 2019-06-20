@@ -12,7 +12,7 @@ import { parseToRupiah } from 'Lib';
 import { QueryEffectPage } from 'Components';
 import { Colors } from 'Themes';
 import { getCheckoutId, getCheckoutName, getCheckoutStatus } from 'Redux/CheckoutRedux';
-import { FETCH_CHECKOUT_SUMMARY } from 'GraphQL/Order/Query';
+import { FETCH_ORDER_DETAIL } from 'GraphQL/Order/Query';
 import { COMPLETED_CHECKOUT_LIST, PAID_OFF_CHECKOUT_LIST } from 'GraphQL/Order/Query';
 import { CONFIRM_ORDER } from 'GraphQL/Order/Mutation';
 
@@ -90,10 +90,10 @@ class Detail extends Component {
         ) => {
           return (
             <Query 
-              query={FETCH_CHECKOUT_SUMMARY}
+              query={FETCH_ORDER_DETAIL}
               variables={{ _id: checkoutId }}>
               {({ loading, error, data, refetch }) => {
-                if (!data) {
+                if (loading || error || !data) {
                   return (
                     <QueryEffectPage
                       loading={loading}

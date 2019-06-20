@@ -8,7 +8,7 @@ import HTMLView from 'react-native-htmlview';
 
 import { Metrics, Images, Colors } from 'Themes';
 import { ToolbarButton } from 'Components';
-import { FETCH_CHECKOUT_SUMMARY } from 'GraphQL/Order/Query';
+import { FETCH_ORDER_DETAIL } from 'GraphQL/Order/Query';
 import { getCheckoutId } from 'Redux/CheckoutRedux';
 import { parseToRupiah } from 'Lib';
 
@@ -48,14 +48,14 @@ class Slip extends Component {
     return (
       <View style={{flex:1}}>
         <Query 
-          query={FETCH_CHECKOUT_SUMMARY}
+          query={FETCH_ORDER_DETAIL}
           variables={{ _id: checkoutId }}>
           {({ loading, error, data, refetch }) => {
             if (loading) return (<View />);
             else if (error) return (<View />);
-            const { checkoutSummary } = data;
-            if (!checkoutSummary) return (<View />);
-            const { products, transaction_id, total_cost, payment_option } = checkoutSummary;
+            const { orderDetail } = data;
+            if (!orderDetail) return (<View />);
+            const { products, transaction_id, total_cost, payment_option } = orderDetail;
             const { how_to_pay = '' } = payment_option;
             return (
               <ScrollView style={{ flex: 1, paddingHorizontal: Metrics.baseMargin }}>

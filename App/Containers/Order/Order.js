@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import { Metrics, Images } from 'Themes';
-import { FETCH_CHECKOUT_SUMMARY } from 'GraphQL/Order/Query';
+import { FETCH_ORDER_DETAIL } from 'GraphQL/Order/Query';
 import { getCheckoutId } from 'Redux/CheckoutRedux';
 
 class Order extends Component {
@@ -38,7 +38,7 @@ class Order extends Component {
     return (
       <View style={{flex:1}}>
         <Query 
-          query={FETCH_CHECKOUT_SUMMARY}
+          query={FETCH_ORDER_DETAIL}
           variables={{ _id: checkoutId }}>
           {({ loading, error, data, refetch }) => {
             if (loading) return (<View />);

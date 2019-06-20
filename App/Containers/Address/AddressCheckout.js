@@ -44,6 +44,7 @@ class AddressCheckout extends Component {
         variables={{ user_id: userId }}>
         {({ loading, error, data, refetch }) => {
           const { selectedAddress = {} } = data || {};
+          console.tron.log('AddressList/render', data)
           return (
             <TouchableOpacity 
               onPress={this.onOpenList} 

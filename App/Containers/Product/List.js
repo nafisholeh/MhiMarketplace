@@ -19,6 +19,7 @@ class List extends Component {
       <View style={styles.container}>
         <Query query={FETCH_PRODUCT_LIST}>
           {({ loading, error, data, refetch }) => {
+            console.tron.log('List/render', data)
             if(error) {
               return (<View></View>)
             } else if(data) {

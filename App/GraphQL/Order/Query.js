@@ -77,6 +77,37 @@ export const FETCH_CHECKOUT_ITEMS = gql`
   }
 `
 
+export const FETCH_READY_TO_PROCESS_LIST = gql`
+query fetchReadyToProcessOrders {
+  readyToProcessOrders {
+    _id
+    shipping_address {
+      alamat
+      rtrw
+      kelurahan
+      kecamatan
+      kota
+      provinsi
+      kodepos
+    }
+    products {
+      _id
+      product {
+        unit
+      }
+      qty
+      selected
+    }
+    requested_shipping_date {
+      _id
+      date
+      time_start
+      time_end
+    }
+  }
+}
+`
+
 export const FETCH_CHECKOUT_SUMMARY = gql`
   query fetchCheckoutSummary($_id:String!) {
     checkoutSummary(_id:$_id) {

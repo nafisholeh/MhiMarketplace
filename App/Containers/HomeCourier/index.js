@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 
 import MyOrder from './MyOrder';
+import ReadyToProcessList from './ReadyToProcess/List';
 
 class Home extends Component {
   static navigationOptions = ({navigation}) => {
@@ -25,6 +26,7 @@ class Home extends Component {
     return (
       <ScrollView>
         <MyOrder onNavigate={this.openMyOrder}/>
+        <ReadyToProcessList />
       </ScrollView>
     );
   }

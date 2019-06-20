@@ -11,10 +11,13 @@ import {
   getReadableCityState
 } from './Address';
 import { InAppNotification } from './InAppNotification';
+import { calcTotalWeight } from './Product';
+import { getUpcomingShippingSched, getReadableShippingSched } from './Shipping';
 
 export { 
   parseToRupiah, calcDiscount, isEmailValid, isEmailError, 
   getGraphQLError, getReadableDate, setTabBarHide, moderateScale,
   isString, getReadableAddress, getReadableSubdistrict, getReadableCityState,
-  InAppNotification
+  InAppNotification, calcTotalWeight, getReadableShippingSched,
+  getUpcomingShippingSched
 };

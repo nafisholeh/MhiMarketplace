@@ -44,6 +44,8 @@ export function getIntervalDateToday(old, _format) {
     switch(diff) {
       case 0: return 'Hari ini'; break
       case -1: return 'Kemarin'; break
+      case 1: return 'Besok'; break
+      case 2: return 'Lusa'; break
       default: return exports.getReadableDate(old, null, format)
     }
   } else {    // jika tahunnya tidak sama

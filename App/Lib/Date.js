@@ -39,14 +39,14 @@ export function getIntervalDateToday(old, _format) {
   let a = moment(old)
   let b = moment()
   let diff = a.diff(b, 'days')
-  let format = _.isNil(_format) ? 'DD MMM' : _format
+  let format = !_format ? 'DD MMM' : _format
   if(moment(old).isSame(moment(), 'year')) {  // jika tahunnya sama
     switch(diff) {
       case 0: return 'Hari ini'; break
       case -1: return 'Kemarin'; break
       case 1: return 'Besok'; break
       case 2: return 'Lusa'; break
-      default: return exports.getReadableDate(old, null, format)
+      default: return exports.getReadableDate(old, null, null, format)
     }
   } else {    // jika tahunnya tidak sama
     let isContainYear = format.includes('Y') || format.includes('y') ? true : false

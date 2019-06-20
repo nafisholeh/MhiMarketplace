@@ -17,7 +17,7 @@ class ReadyToProcessItem extends Component {
         <Text>{district}</Text>
         <Text>{address}</Text>
         <Text>{schedule}</Text>
-        <Text>{totalWeight}</Text>
+        <Text>Total Berat: {totalWeight}</Text>
       </View>
     );
   }

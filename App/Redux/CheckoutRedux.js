@@ -65,11 +65,14 @@ export const getChosenShipment = () =>
     const [ time_start, time_end ] = shipment_time.split(',');
     let shipmentDate = [];
     for (const key of Object.keys(shipment_date)) {
-      shipmentDate.push({
-        date: key,
-        time_start,
-        time_end,
-      });
+      const { selected } = shipment_date[key];
+      if (selected) {
+        shipmentDate.push({
+          date: key,
+          time_start,
+          time_end,
+        });  
+      }
     }
     return shipmentDate;
   })

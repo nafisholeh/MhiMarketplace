@@ -8,6 +8,7 @@ import { CalendarList, LocaleConfig } from 'react-native-calendars';
 import moment from 'moment';
 
 import { QueryEffectPage } from 'Components';
+import OrderedProducts from './OrderedProducts';
 import { getReadableAddress, getReadableSubdistrict, getReadableCityState } from 'Lib';
 import { getSelectedListId } from 'Redux/ListRedux';
 import { FETCH_ORDER_DETAIL } from 'GraphQL/Order/Query';
@@ -110,7 +111,7 @@ class Detail extends Component {
             user_id = {},
             shipping_address = {},
             requested_shipping_date: requested = [],
-            products: []
+            products = []
           } = orderDetail || {};
           const { name } = user_id;
           const dateRequested = requested.reduce(
@@ -125,7 +126,7 @@ class Detail extends Component {
             <ScrollView
               contentContainerStyle={{ 
                 paddingHorizontal: 15,
-                paddingVertical: 10
+                paddingVertical: 10,
               }}
             >
               <Text style={{ textAlign: 'right' }}>{transaction_id}</Text>
@@ -143,6 +144,10 @@ class Detail extends Component {
                 onDayPress={this.onDaySelect}
                 markedDates={markedDates}
               />
+              <Text style={{ marginTop: 15, marginBottom: 10 }}>
+                Detail Barang
+              </Text>
+              <OrderedProducts products={products} />
             </ScrollView>
           );
         }}

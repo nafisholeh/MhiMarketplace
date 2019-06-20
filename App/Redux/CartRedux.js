@@ -134,8 +134,7 @@ export const isCheckoutValid = () =>
     cartSelectors(),
     state => {
       const { selected } = state;
-      if (!Array.isArray(selected)) return false;
-      return selected.length > 0;
+      return Array.isArray(selected) && selected.length ? true : false;
     }
   )
 

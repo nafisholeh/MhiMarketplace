@@ -78,7 +78,7 @@ class Item extends Component {
           { discount > 0 &&
             <Text style={styles.detailPrice}>{parseToRupiah(calcDiscount(price, discount))}</Text>
           }
-          { discount === 0 &&
+          { !discount &&
             <Text style={styles.detailPrice}>{parseToRupiah(price)}</Text>
           }
           <UpDownCounter

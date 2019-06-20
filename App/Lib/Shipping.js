@@ -24,10 +24,10 @@ export const getReadableShippingSched = shippingDate => {
   const { date, time_start = '00:00', time_end = '24:00' } = shippingDate || {};
   if (!date || !shippingDate) return 'Jadwal tidak tersedia'; 
   
-  const relativeDate = getIntervalDateToday(moment(date, 'YYYY-MM-DD'));
+  const relativeDate = getIntervalDateToday(moment(date, 'YYYY-MM-DD'), 'DD MMM');
   let timeRange = '';
   if (time_start !== '00:00' || time_end === '24:00' || time_end === '00:00') {
-    timeRange = `${time_start} - ${time_end}`;
+    timeRange = `(${time_start} - ${time_end})`;
   }
-  return `${relativeDate ? `${relativeDate}` : ``}${timeRange ? `, ${timeRange}` : ``}`;
+  return `${relativeDate ? `${relativeDate}` : ``}${timeRange ? ` ${timeRange}` : ``}`;
 }

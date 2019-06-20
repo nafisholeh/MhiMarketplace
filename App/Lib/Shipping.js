@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import { getIntervalDateToday } from './Date';
 
 export const getUpcomingShippingSched = (shippingDates = []) => {
@@ -15,16 +17,14 @@ export const getUpcomingShippingSched = (shippingDates = []) => {
   });
 
   const closestShipping = shippingDates.length > closestIndex ? shippingDates[closestIndex] : null;
-  console.tron.log('getUpcomingShippingSched', closestShipping);
   return exports.getReadableShippingSched(closestShipping);
 }
 
 export const getReadableShippingSched = shippingDate => {
   const { date, time_start = '00:00', time_end = '24:00' } = shippingDate || {};
-  console.tron.log('getReadableShippingSched', shippingDate, date, time_start, time_end)
   if (!date || !shippingDate) return 'Jadwal tidak tersedia'; 
   
-  const relativeDate = getIntervalDateToday(date);
+  const relativeDate = getIntervalDateToday(moment(date, 'YYYY-MM-DD'));
   let timeRange = '';
   if (time_start !== '00:00' || time_end === '24:00' || time_end === '00:00') {
     timeRange = `${time_start} - ${time_end}`;

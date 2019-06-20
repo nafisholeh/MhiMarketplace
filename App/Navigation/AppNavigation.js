@@ -7,24 +7,19 @@ import CourierNavigation from './Tabs/CourierNavigation';
 import FinanceNavigation from './Tabs/FinanceNavigation';
 import StockOpnameNavigation from './Tabs/StockOpnameNavigation';
 
-import { isKurir, isStokOpname, isKeuangan } from 'Redux/SessionRedux';
-
-const getInitialRouteName = () => {
-  if (isKurir()) return 'CourierNav';
-  else if (isStokOpname()) return 'StockOpnameNav';
-  else if (isKeuangan()) return 'FinanceNav';
-  else return 'ConsumerNav';
-}
+import { store } from 'Containers/App';
+import Setup from 'Containers/Setup/Setup';
 
 const PrimarySwitchNavigator = createSwitchNavigator(
   {
+    Setup: { screen: Setup },
     ConsumerNav: { screen: ConsumerNavigation },
     CourierNav: { screen: CourierNavigation },
     FinanceNav: { screen: FinanceNavigation },
     StockOpnameNav: { screen: StockOpnameNavigation },
   },
   {
-    initialRouteName: getInitialRouteName(),
+    initialRouteName: 'Setup',
   }
 )
 

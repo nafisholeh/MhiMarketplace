@@ -32,15 +32,4 @@ CourierNavigation.navigationOptions = ({ navigation }) => {
   }
 }
 
-const ParentNavigator = createStackNavigator(
-  {
-    Setup: { screen: Setup },
-    CourierNavigation: { screen: CourierNavigation },
-  }, {
-    initialRouteName: 'Setup',
-    header: null,
-    headerMode: 'none'
-  }
-)
-
-export default ParentNavigator;
+export default CourierNavigation;

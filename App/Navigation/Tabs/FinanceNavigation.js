@@ -28,15 +28,4 @@ ConsumerNavigation.navigationOptions = ({ navigation }) => {
   }
 }
 
-const ParentNavigator = createStackNavigator(
-  {
-    Setup: { screen: Setup },
-    ConsumerNavigation: { screen: ConsumerNavigation },
-  }, {
-    initialRouteName: 'Setup',
-    header: null,
-    headerMode: 'none'
-  }
-)
-
-export default ParentNavigator;
+export default ConsumerNavigation;

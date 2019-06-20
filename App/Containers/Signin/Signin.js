@@ -12,6 +12,7 @@ import { ADD_ONE_SIGNAL_TOKEN } from 'GraphQL/OneSignal/Mutation';
 import SessionActions, { getSignupEmail } from 'Redux/SessionRedux';
 import { getOneSignalToken } from 'Redux/OneSignalRedux';
 import { isEmailError, getGraphQLError, InAppNotification } from 'Lib';
+import Config from 'Config/AppConfig';
 import styles from './Styles'
     
 class Signin extends Component {
@@ -93,8 +94,22 @@ class Signin extends Component {
       if (signin) {
         await storeSession(signin);
         this.setState({ loading: false });
-        if (user_type === 'kurir') navigation.navigate("CourierNav");
-        else navigation.navigate("ConsumerNav");
+        let screenName = 'Home';
+        switch (user_type) {
+          case Config.userType.KURIR:
+            screenName = 'CourierNav';
+            break;
+          case Config.userType.STOK_OPNAME:
+            screenName = 'StockOpnameNav';
+            break;
+          case Config.userType.KEUANGAN:
+            screenName = 'FinanceNav';
+            break;
+          default:
+            screenName = 'Home';
+            break;
+        }
+        navigation.navigate(screenName);
       }
     } catch (error) {
       this.setState({ loading: false });

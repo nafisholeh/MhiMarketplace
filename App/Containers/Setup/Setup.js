@@ -16,6 +16,7 @@ import { ADD_ONE_SIGNAL_TOKEN } from 'GraphQL/OneSignal/Mutation';
 import { getUserId } from 'Redux/SessionRedux';
 import OneSignalActions, { getOneSignalToken } from 'Redux/OneSignalRedux';
 import CartActions, { isFetchingCart, isFetchingCartSuccess } from 'Redux/CartRedux';
+import { isKurir, isStokOpname, isKeuangan, isAdmin } from 'Redux/SessionRedux';
 
 class Setup extends Component {
   
@@ -53,13 +54,17 @@ class Setup extends Component {
   }
   
   checkIfDone = () => {
-    const { navigation, isFetchingCartSuccess } = this.props;
+    const { navigation, isFetchingCartSuccess, isKurir, isStokOpname, isKeuangan, isAdmin } = this.props;
     const { isCourierCostFinish, isPaymentFinish, isTokenFinish } = this.state;
     if (
       isCourierCostFinish && isFetchingCartSuccess && 
       isPaymentFinish && isTokenFinish
     ) {
-      navigation.navigate('Home');
+      if (isKurir) navigation.navigate('CourierNav');
+      else if (isStokOpname) navigation.navigate('StockOpnameNav');
+      else if (isKeuangan) navigation.navigate('FinanceNav');
+      else if (!isAdmin) navigation.navigate('ConsumerNav');
+      else navigation.navigate('ConsumerNav');
     }
   };
   
@@ -185,6 +190,10 @@ Setup.propTypes = {
   onSuccessFetchingCart: func,
   onErrorFetchingCart: func,
   storeNotifId: func,
+  isKurir: bool,
+  isStokOpname: bool,
+  isKeuangan: bool,
+  isAdmin: bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -192,6 +201,10 @@ const mapStateToProps = createStructuredSelector({
   oneSignalToken: getOneSignalToken(),
   isFetchingCart: isFetchingCart(),
   isFetchingCartSuccess: isFetchingCartSuccess(),
+  isKurir: isKurir(),
+  isStokOpname: isStokOpname(),
+  isKeuangan: isKeuangan(),
+  isAdmin: isAdmin(),
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -30,4 +30,10 @@ export default {
   debounceInterval: 1000,
   defaulCourierCost: 25000,
   warningMandatory: 'Wajib diisi',
+  userType: {
+    KURIR: 'kurir',
+    STOK_OPNAME: 'stok opname',
+    KEUANGAN: 'keuangan',
+    KONSUMEN: 'user',
+  }
 }

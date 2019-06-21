@@ -50,31 +50,31 @@ class ReadyToProcessList extends Component {
         >
           {({ loading, error, data, refetch }) => {
             const { readyToProcessOrders = [] } = data || {};
-            if (loading || error || !Array.isArray(readyToProcessOrders) || !readyToProcessOrders.length) {
+            if (Array.isArray(readyToProcessOrders) && readyToProcessOrders.length) {
               return (
-                <QueryEffectSection
-                  isLoading={loading}
-                  isError={error}
-                  isEmpty={!readyToProcessOrders.length}
-                  onRefetch={refetch}
-                />
-              );
+                <View style={{
+                  marginHorizontal: 10,
+                  marginVertical: 10,
+                  borderRadius: 5,
+                  borderWidth: 0.5,
+                  borderColor: Colors.brown_light
+                }}>
+                  <FlatList
+                    keyExtractor={(item, id) => item._id.toString()}
+                    data={readyToProcessOrders} 
+                    renderItem={this.renderItems}
+                  />
+                </View>
+              )
             }
             return (
-              <View style={{
-                marginHorizontal: 10,
-                marginVertical: 10,
-                borderRadius: 5,
-                borderWidth: 0.5,
-                borderColor: Colors.brown_light
-              }}>
-                <FlatList
-                  keyExtractor={(item, id) => item._id.toString()}
-                  data={readyToProcessOrders} 
-                  renderItem={this.renderItems}
-                />
-              </View>
-            )
+              <QueryEffectSection
+                isLoading={loading}
+                isError={error}
+                isEmpty={!readyToProcessOrders.length}
+                onRefetch={refetch}
+              />
+            );
           }}
         </Query>
       </View>

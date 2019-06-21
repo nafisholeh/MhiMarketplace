@@ -19,7 +19,7 @@ import {
 } from 'Lib';
 import { getSelectedListId } from 'Redux/ListRedux';
 import { FETCH_ORDER_DETAIL } from 'GraphQL/Order/Query';
-import { TAKE_ORDER } from 'GraphQL/Order/Mutation';
+import { TAKE_ORDER, cacheTakeOrder } from 'GraphQL/Order/Mutation';
 import { getUserId } from 'Redux/SessionRedux';
 
 class Detail extends Component {
@@ -111,7 +111,7 @@ class Detail extends Component {
         order_id: _id,
         courier_id: courierId,
         actual_shipping_date: normalizedSelectedDates,
-      }
+      },
     });
   };
   
@@ -121,7 +121,7 @@ class Detail extends Component {
   };
 
   render() {
-    const { listId: _id } = this.props;
+    const { listId: _id, userId } = this.props;
     const { markedDates, minDate, maxDate } = this.state;
     return (
       <Fragment>
@@ -189,14 +189,15 @@ class Detail extends Component {
         </Query>
         <Mutation
           mutation={TAKE_ORDER}
+          update={(cache, data) => cacheTakeOrder(cache, data, _id)}
           onCompleted={this.onTakeOrderComplete}
           ignoreResults={false}
           errorPolicy='all'
         >
-          {(mutate, {loading, error, data}) => {
+          {(takeOrder, {loading, error, data}) => {
             return (
               <TouchableOpacity
-                onPress={() => this.takeThisOrder(mutate)}
+                onPress={() => this.takeThisOrder(takeOrder)}
                 style={{
                   height: 50,
                   backgroundColor: Colors.green_light,

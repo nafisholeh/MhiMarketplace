@@ -1,5 +1,7 @@
 import gql from 'graphql-tag';
 
+import { FETCH_READY_TO_PROCESS_LIST } from './Query';
+
 export const START_CHECKOUT = gql`
   mutation startCheckout($user_id: String!) {
     startCheckout(user_id: $user_id) {
@@ -68,3 +70,26 @@ export const TAKE_ORDER = gql`
     }
   }
 `
+
+export const cacheTakeOrder = (cache, { data }, removedId) => {
+  const { readyToProcessOrders } = cache.readQuery({
+    query: FETCH_READY_TO_PROCESS_LIST,  
+  });
+  if (
+    !removedId ||
+    !Array.isArray(readyToProcessOrders) ||
+    !readyToProcessOrders.length
+  ) {
+    return;
+  }
+  const removedIndex = readyToProcessOrders.findIndex(item => item._id === removedId);
+  cache.writeQuery({
+    query: FETCH_READY_TO_PROCESS_LIST,
+    data: {
+      readyToProcessOrders: [
+        ...readyToProcessOrders.slice(0, removedIndex),
+        ...readyToProcessOrders.slice(removedIndex + 1,readyToProcessOrders.length)
+      ]
+    }
+  });
+};

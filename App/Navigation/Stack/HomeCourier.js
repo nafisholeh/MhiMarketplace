@@ -20,6 +20,8 @@ import Slip from 'Containers/Slip/Slip';
 import Account from 'Containers/Account/Account';
 import OrderDetail from 'Containers/Order/Detail';
 import ReadyToProcessDetail from 'Containers/HomeCourier/ReadyToProcess/Detail';
+import Processing from 'Containers/HomeCourier/Processing'
+import ProcessingDetail from 'Containers/HomeCourier/Processing/Detail'
 
 const HomeNav = createStackNavigator({
   Home: { screen: Home },
@@ -35,6 +37,8 @@ const HomeNav = createStackNavigator({
   Slip: { screen: Slip },
   OrderDetail: { screen: OrderDetail },
   ReadyToProcessDetail: { screen: ReadyToProcessDetail },
+  Processing: { screen: Processing },
+  ProcessingDetail: { screen: ProcessingDetail },
 }, {
   initialRouteName: 'Home',
   navigationOptions: {

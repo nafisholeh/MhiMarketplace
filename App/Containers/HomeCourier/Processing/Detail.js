@@ -26,7 +26,7 @@ class Detail extends Component {
   static navigationOptions = ({navigation}) => {
     const {params = {}} = navigation.state
     return {
-      title: 'Detail Pesanan Baru',
+      title: 'Detail Pesanan Saya',
     }
   }
 
@@ -34,28 +34,12 @@ class Detail extends Component {
     super(props);
     this.state = {
       markedDates: {},
-      minDate: null,
-      maxDate: null,
+      allProducts: [],
+      takenProducts: [],
       isFetchComplete: false,
+      canProceed: false,
     }
   }
-  
-  onDaySelect = day => {
-    const { markedDates = {}, isFetchComplete } = this.state;
-    const selectedDay = moment(day.dateString).format('YYYY-MM-DD');
-    if (!isFetchComplete || !markedDates.hasOwnProperty(selectedDay)) return;
-      
-    let selected = true;
-    if (markedDates[selectedDay]) {
-      selected = !markedDates[selectedDay].selected;
-    }
-    
-    const updatedMarkedDates = {
-      ...markedDates,
-      ...{ [selectedDay]: { marked: true, dotColor: 'red', selected } } 
-    };
-    this.setState({ markedDates: updatedMarkedDates });
-  };
   
   getRequestedDate = (data = []) => {
     return data.reduce(
@@ -63,7 +47,7 @@ class Detail extends Component {
         const { date } = item || {};
         obj[date] = {
           marked: true,
-          dotColor: 'red', 
+          dotColor: 'red',
           disabled: false
         };
         return obj
@@ -72,37 +56,40 @@ class Detail extends Component {
     );
   };
   
-  getRequestedMinDate = (data = []) => {
-    const { date = now } = data.reduce(
-      (total, current) => {
-        const { date: totalDate } = total || {};
-        const { date: currentDate } = current || {};
-        return new Date(totalDate) < new Date(currentDate) ? total : current;
-      });
-    return new Date(date); 
-  };
-  
-  getRequestedMaxDate = (data = []) => {
-    const { date = now } = data.reduce(
-      (total, current) => {
-        const { date: totalDate } = total || {};
-        const { date: currentDate } = current || {};
-        return new Date(totalDate) > new Date(currentDate) ? total : current;
-      });
-    return new Date(date); 
+  getActualDate = (data = []) => {
+    return data.reduce(
+      (obj, item) => {
+        const { date } = item || {};
+        obj[date] = { selected: true };
+        return obj
+      },
+      {}
+    );
   };
   
   onFetchComplete = data => {
     const { orderDetail = {} } = data || {}; 
-    const { requested_shipping_date: requested = [] } = orderDetail || {};
+    const {
+      requested_shipping_date: requested = [],
+      actual_shipping_date: actual = [],
+    } = orderDetail || {};
     
     this.setState(prevState => {
       return {
         isFetchComplete: true,
-        markedDates: {...prevState.markedDates, ...this.getRequestedDate(requested)},
-        minDate: this.getRequestedMinDate(requested),
-        maxDate: this.getRequestedMaxDate(requested),
+        markedDates: {
+          ...prevState.markedDates,
+          ...this.getRequestedDate(requested),
+          ...this.getActualDate(actual),
+        },
       }
+    });
+  };
+  
+  onProductSelectionChange = (takenProducts = []) => {
+    this.setState({
+      takenProducts,
+      canProceed: takenProducts.every(item => item),
     });
   };
   
@@ -133,7 +120,7 @@ class Detail extends Component {
 
   render() {
     const { listId: _id, userId } = this.props;
-    const { markedDates, minDate, maxDate } = this.state;
+    const { markedDates, canProceed } = this.state;
     return (
       <Fragment>
         <Query
@@ -156,18 +143,9 @@ class Detail extends Component {
               transaction_id,
               user_id = {},
               shipping_address = {},
-              requested_shipping_date: requested = [],
               products = []
             } = orderDetail || {};
             const { name } = user_id;
-            const dateRequested = requested.reduce(
-              (obj, item) => {
-                const { date } = item || {};
-                obj[date] = { marked: true }
-                return obj
-              },
-              {}
-            );
             return (
               <ScrollView
                 contentContainerStyle={{ 
@@ -187,13 +165,16 @@ class Detail extends Component {
                   pagingEnabled={true}
                   minDate={new Date('2018-01-01')}
                   maxDate={new Date('2018-01-01')}
-                  onDayPress={this.onDaySelect}
                   markedDates={markedDates}
                 />
                 <Text style={{ marginTop: 15, marginBottom: 10 }}>
                   Detail Barang
                 </Text>
-                <OrderedProducts products={products} />
+                <OrderedProducts
+                  products={products}
+                  selectable
+                  onSelectionChange={this.onProductSelectionChange}
+                />
               </ScrollView>
             );
           }}
@@ -209,9 +190,10 @@ class Detail extends Component {
             return (
               <TouchableOpacity
                 onPress={() => this.takeThisOrder(takeOrder)}
+                disabled={!canProceed}
                 style={{
                   height: 50,
-                  backgroundColor: Colors.green_light,
+                  backgroundColor: canProceed ? Colors.green_light : Colors.brown_light,
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
@@ -225,7 +207,12 @@ class Detail extends Component {
                   />
                 }
                 {!loading &&
-                  <Text style={{ color: 'white' }}>AMBIL</Text>
+                  <Text style={{ color: 'white' }}>
+                    {canProceed ? 
+                      `BARANG TERAMBIL SEMUA` :
+                      `KONFIRMASI BARANG DULU`
+                    }
+                  </Text>
                 }
               </TouchableOpacity>
             );

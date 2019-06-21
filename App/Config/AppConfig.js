@@ -16,7 +16,8 @@ export default {
     'ProductEdit',
     'ProductAdd',
     'OrderDetail',
-    'ReadyToProcessDetail'
+    'ReadyToProcessDetail',
+    'ProcessingDetail',
   ],
   pageState: {
     ERROR: 'error',

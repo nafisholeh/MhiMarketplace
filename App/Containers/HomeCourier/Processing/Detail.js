@@ -19,7 +19,7 @@ import {
 } from 'Lib';
 import { getSelectedListId } from 'Redux/ListRedux';
 import { FETCH_ORDER_DETAIL } from 'GraphQL/Order/Query';
-import { TAKE_ORDER, cacheTakeOrder } from 'GraphQL/Order/Mutation';
+import { TAKE_ORDER_PRODUCTS, cacheTakeOrderProducts } from 'GraphQL/Order/Mutation';
 import { getUserId } from 'Redux/SessionRedux';
 
 class Detail extends Component {
@@ -93,33 +93,20 @@ class Detail extends Component {
     });
   };
   
-  takeThisOrder = mutate => {
-    const { markedDates = {} } = this.state;
-    const { listId: _id, courierId } = this.props;
-    const selectedDates = filterObject(markedDates, 'selected', true) || {};
-    let normalizedSelectedDates = [];
-    Object
-      .keys(selectedDates)
-      .forEach((key) => {
-        const { date } = selectedDates[key];
-        normalizedSelectedDates.push({ date: key, time_start: '00:00', time_end: '24:00' });
-      });
+  takeOrderProduct = mutate => {
+    const { listId: _id } = this.props;
     mutate({
-      variables: {
-        order_id: _id,
-        courier_id: courierId,
-        actual_shipping_date: normalizedSelectedDates,
-      },
+      variables: { order_id: _id }
     });
   };
   
-  onTakeOrderComplete = () => {
+  onTakeOrderProductComplete = () => {
     const { navigation } = this.props;
     navigation.goBack();
   };
 
   render() {
-    const { listId: _id, userId } = this.props;
+    const { listId: _id, courierId } = this.props;
     const { markedDates, canProceed } = this.state;
     return (
       <Fragment>
@@ -180,16 +167,16 @@ class Detail extends Component {
           }}
         </Query>
         <Mutation
-          mutation={TAKE_ORDER}
-          update={(cache, data) => cacheTakeOrder(cache, data, _id)}
-          onCompleted={this.onTakeOrderComplete}
+          mutation={TAKE_ORDER_PRODUCTS}
+          update={(cache, data) => cacheTakeOrderProducts(cache, data, _id, courierId)}
+          onCompleted={this.onTakeOrderProductComplete}
           ignoreResults={false}
           errorPolicy='all'
         >
           {(takeOrder, {loading, error, data}) => {
             return (
               <TouchableOpacity
-                onPress={() => this.takeThisOrder(takeOrder)}
+                onPress={() => this.takeOrderProduct(takeOrder)}
                 disabled={!canProceed}
                 style={{
                   height: 50,

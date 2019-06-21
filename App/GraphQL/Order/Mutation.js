@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-import { FETCH_READY_TO_PROCESS_LIST } from './Query';
+import { FETCH_READY_TO_PROCESS_LIST, FETCH_PROCESSING_LIST } from './Query';
 
 export const START_CHECKOUT = gql`
   mutation startCheckout($user_id: String!) {
@@ -89,6 +89,40 @@ export const cacheTakeOrder = (cache, { data }, removedId) => {
       readyToProcessOrders: [
         ...readyToProcessOrders.slice(0, removedIndex),
         ...readyToProcessOrders.slice(removedIndex + 1,readyToProcessOrders.length)
+      ]
+    }
+  });
+};
+
+export const TAKE_ORDER_PRODUCTS = gql`
+  mutation($order_id: String!) {
+    takeOrderProducts(order_id: $order_id) {
+      _id
+    }
+  }
+`
+
+export const cacheTakeOrderProducts = (cache, { data }, removedId, courierId) => {
+  const dataChild = cache.readQuery({
+    query: FETCH_PROCESSING_LIST,
+    variables: { courier_id: courierId },
+  });
+  const { processingOrders } = dataChild || {};
+  if (
+    !removedId ||
+    !Array.isArray(processingOrders) ||
+    !processingOrders.length
+  ) {
+    return;
+  }
+  const removedIndex = processingOrders.findIndex(item => item._id === removedId);
+  cache.writeQuery({
+    query: FETCH_PROCESSING_LIST,
+    variables: { courier_id: courierId },
+    data: {
+      processingOrders: [
+        ...processingOrders.slice(0, removedIndex),
+        ...processingOrders.slice(removedIndex + 1, processingOrders.length)
       ]
     }
   });

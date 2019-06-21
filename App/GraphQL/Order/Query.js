@@ -202,3 +202,9 @@ export const FETCH_PROCESSING_LIST = gql`
     }
   }
 `
+
+export const FETCH_PROCESSING_COUNT = gql`
+  query($courier_id:String!) {
+    processingOrdersCount(courier_id:$courier_id)
+  }
+`

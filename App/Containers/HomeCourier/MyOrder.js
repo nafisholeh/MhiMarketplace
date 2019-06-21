@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
-import { bool, func } from 'prop-types';
+import { bool, func, string } from 'prop-types';
 import { withNavigation } from 'react-navigation';
+import { Query } from 'react-apollo';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { DotIndicator } from 'react-native-indicators';
 
+import { FETCH_PROCESSING_COUNT } from 'GraphQL/Order/Query';
+import { getUserId } from 'Redux/SessionRedux';
 import { Colors } from 'Themes';
 
 class MyOrder extends Component {
@@ -12,6 +18,7 @@ class MyOrder extends Component {
   };
 
   render() {
+    const { courierId } = this.props;
     return (
       <TouchableOpacity
         onPress={this.onNavigate}
@@ -26,14 +33,40 @@ class MyOrder extends Component {
           justifyContent: 'space-between'
         }}
       >
-        <Text>Pesanan Saya</Text>
-        <Text
+        <Text style={{ flex: 2 }}>Pesanan Saya</Text>
+        <View 
           style={{
-            textAlign: 'right',
+            flex: 1,
+            flexDirection: 'column',
           }}
         >
-          12
-        </Text>
+          <Query
+            query={FETCH_PROCESSING_COUNT}
+            variables={{ courier_id: courierId }}
+          >
+            {({ loading, error, data, refetch }) => {
+              if (loading) {
+                return (
+                  <DotIndicator
+                    count={3}
+                    size={5}
+                    color='red'
+                    animationDuration={800}
+                    style={{ alignSelf: 'flex-end', marginRight: 10 }}
+                  />
+                );
+              } else if (data) {
+                const { processingOrdersCount = 0 } = data;
+                return (
+                  <Text style={{ textAlign: 'right' }}>
+                    {processingOrdersCount || 0}
+                  </Text>
+                );
+              }
+              return null;
+            }}
+          </Query>
+        </View>
       </TouchableOpacity>
     );
   }
@@ -41,6 +74,11 @@ class MyOrder extends Component {
 
 MyOrder.propTypes = {
   onNavigate: func,
+  courierId: string,
 };
 
-export default MyOrder;
+const mapStateToProps = createStructuredSelector({
+  courierId: getUserId(),
+});
+
+export default connect(mapStateToProps, null)(MyOrder);

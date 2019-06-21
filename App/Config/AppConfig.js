@@ -22,6 +22,7 @@ export default {
     ERROR: 'error',
     INFO: 'info',
     CART: 'cart',
+    EMPTY: 'empty',
     EMPTY_CART: 'cart',
     LOCATION: 'location',
     EMPTY_LOCATION: 'location',

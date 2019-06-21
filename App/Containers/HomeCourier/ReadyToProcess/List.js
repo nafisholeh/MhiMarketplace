@@ -49,16 +49,17 @@ class ReadyToProcessList extends Component {
           onCompleted={this.onFetchComplete}
         >
           {({ loading, error, data, refetch }) => {
-            if (!data) {
+            const { readyToProcessOrders = [] } = data || {};
+            if (loading || error || !Array.isArray(readyToProcessOrders) || !readyToProcessOrders.length) {
               return (
                 <QueryEffectSection
-                  loading={loading}
-                  state={error}
-                  onStateRefresh={refetch}
+                  isLoading={loading}
+                  isError={error}
+                  isEmpty={!readyToProcessOrders.length}
+                  onRefetch={refetch}
                 />
               );
             }
-            const { readyToProcessOrders } = data;
             return (
               <View style={{
                 marginHorizontal: 10,

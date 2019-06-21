@@ -17,15 +17,18 @@ class Home extends Component {
     }
   }
 
-  openMyOrder = () => {
+  openPage = page => {
     const { navigation } = this.props;
-    if (navigation) navigation.navigate('Processing');
+    if (navigation) navigation.navigate(page);
   };
 
   render() {
     return (
       <ScrollView>
-        <MyOrder onNavigate={this.openMyOrder}/>
+        <MyOrder 
+          onOpenProcessing={() => this.openPage('Processing')}
+          onOpenReadyToSend={() => this.openPage('ReadyToSend')}
+        />
         <ReadyToProcessList />
       </ScrollView>
     );

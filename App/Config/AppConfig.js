@@ -18,6 +18,7 @@ export default {
     'OrderDetail',
     'ReadyToProcessDetail',
     'ProcessingDetail',
+    'ReadyToSendDetail',
   ],
   pageState: {
     ERROR: 'error',

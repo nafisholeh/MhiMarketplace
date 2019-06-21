@@ -208,3 +208,46 @@ export const FETCH_PROCESSING_COUNT = gql`
     processingOrdersCount(courier_id:$courier_id)
   }
 `
+
+export const FETCH_READY_TO_SEND_LIST = gql`
+  query fetchReadyToSendOrders($courier_id:String!) {
+    readyToSendOrders(courier_id:$courier_id) {
+      _id
+      shipping_address {
+        alamat
+        rtrw
+        kelurahan
+        kecamatan
+        kota
+        provinsi
+        kodepos
+      }
+      products {
+        _id
+        product {
+          unit
+        }
+        qty
+        selected
+      }
+      requested_shipping_date {
+        _id
+        date
+        time_start
+        time_end
+      }
+      actual_shipping_date {
+        _id
+        date
+        time_start
+        time_end
+      }
+    }
+  }
+`
+
+export const FETCH_READY_TO_SEND_COUNT = gql`
+  query($courier_id:String!) {
+    readyToSendOrdersCount(courier_id:$courier_id)
+  }
+`

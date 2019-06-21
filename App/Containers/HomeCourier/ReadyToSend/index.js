@@ -7,11 +7,11 @@ import { withNavigation } from 'react-navigation';
 
 import List from './List';
 
-class Processing extends Component {
+class ReadyToSend extends Component {
   static navigationOptions = ({navigation}) => {
     const {params = {}} = navigation.state
     return {
-      title: 'Pesanan Siap Ambil',
+      title: 'Pesanan Siap Kirim',
     }
   }
 
@@ -24,7 +24,7 @@ class Processing extends Component {
   }
 }
 
-Processing.propTypes = {
+ReadyToSend.propTypes = {
   
 };
 
@@ -32,4 +32,4 @@ const mapStateToProps = createStructuredSelector({
   
 });
 
-export default connect(mapStateToProps, null)(withNavigation(Processing));
+export default connect(mapStateToProps, null)(withNavigation(ReadyToSend));

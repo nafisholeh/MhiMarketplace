@@ -19,7 +19,7 @@ import {
 } from 'Lib';
 import { getSelectedListId } from 'Redux/ListRedux';
 import { FETCH_ORDER_DETAIL } from 'GraphQL/Order/Query';
-import { TAKE_ORDER_PRODUCTS, cacheTakeOrderProducts } from 'GraphQL/Order/Mutation';
+import { SENDING_ORDER_PRODUCTS, cacheSendingOrderProducts } from 'GraphQL/Order/Mutation';
 import { getUserId } from 'Redux/SessionRedux';
 
 class Detail extends Component {
@@ -84,14 +84,14 @@ class Detail extends Component {
     });
   };
   
-  takeOrderProduct = mutate => {
+  sendingOrderProduct = mutate => {
     const { listId: _id } = this.props;
     mutate({
       variables: { order_id: _id }
     });
   };
   
-  onTakeOrderProductComplete = () => {
+  onSendingOrderComplete = () => {
     const { navigation } = this.props;
     navigation.goBack();
   };
@@ -156,16 +156,16 @@ class Detail extends Component {
           }}
         </Query>
         <Mutation
-          mutation={TAKE_ORDER_PRODUCTS}
-          update={(cache, data) => cacheTakeOrderProducts(cache, data, _id, courierId)}
-          onCompleted={this.onTakeOrderProductComplete}
+          mutation={SENDING_ORDER_PRODUCTS}
+          update={(cache, data) => cacheSendingOrderProducts(cache, data, _id, courierId)}
+          onCompleted={this.onSendingOrderComplete}
           ignoreResults={false}
           errorPolicy='all'
         >
-          {(takeOrder, {loading, error, data}) => {
+          {(sendingOrder, {loading, error, data}) => {
             return (
               <TouchableOpacity
-                onPress={() => this.takeOrderProduct(takeOrder)}
+                onPress={() => this.sendingOrderProduct(sendingOrder)}
                 style={{
                   height: 50,
                   backgroundColor: Colors.green_light,

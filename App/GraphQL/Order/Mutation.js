@@ -1,6 +1,10 @@
 import gql from 'graphql-tag';
 
-import { FETCH_READY_TO_PROCESS_LIST, FETCH_PROCESSING_LIST } from './Query';
+import {
+  FETCH_READY_TO_PROCESS_LIST,
+  FETCH_PROCESSING_LIST,
+  FETCH_READY_TO_SEND_LIST
+} from './Query';
 
 export const START_CHECKOUT = gql`
   mutation startCheckout($user_id: String!) {
@@ -123,6 +127,40 @@ export const cacheTakeOrderProducts = (cache, { data }, removedId, courierId) =>
       processingOrders: [
         ...processingOrders.slice(0, removedIndex),
         ...processingOrders.slice(removedIndex + 1, processingOrders.length)
+      ]
+    }
+  });
+};
+
+export const SENDING_ORDER_PRODUCTS = gql`
+  mutation($order_id: String!) {
+    sendingOrderProducts(order_id: $order_id) {
+      _id
+    }
+  }
+`
+
+export const cacheSendingOrderProducts = (cache, { data }, removedId, courierId) => {
+  const dataChild = cache.readQuery({
+    query: FETCH_READY_TO_SEND_LIST,
+    variables: { courier_id: courierId },
+  });
+  const { readyToSendOrders } = dataChild || {};
+  if (
+    !removedId ||
+    !Array.isArray(readyToSendOrders) ||
+    !readyToSendOrders.length
+  ) {
+    return;
+  }
+  const removedIndex = readyToSendOrders.findIndex(item => item._id === removedId);
+  cache.writeQuery({
+    query: FETCH_READY_TO_SEND_LIST,
+    variables: { courier_id: courierId },
+    data: {
+      readyToSendOrders: [
+        ...readyToSendOrders.slice(0, removedIndex),
+        ...readyToSendOrders.slice(removedIndex + 1, readyToSendOrders.length)
       ]
     }
   });

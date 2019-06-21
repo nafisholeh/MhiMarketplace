@@ -1,17 +1,26 @@
-import React, { Component } from 'react';
-import { ScrollView, View, Text } from 'react-native';
-import { Query } from 'react-apollo';
+import React, { Component, Fragment } from 'react';
+import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
+import { DotIndicator } from 'react-native-indicators';
+import { Query, Mutation } from 'react-apollo';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { string } from 'prop-types';
 import { CalendarList, LocaleConfig } from 'react-native-calendars';
 import moment from 'moment';
 
+import { Colors } from 'Themes';
 import { QueryEffectPage } from 'Components';
 import OrderedProducts from './OrderedProducts';
-import { getReadableAddress, getReadableSubdistrict, getReadableCityState } from 'Lib';
+import {
+  getReadableAddress,
+  getReadableSubdistrict,
+  getReadableCityState,
+  filterObject,
+} from 'Lib';
 import { getSelectedListId } from 'Redux/ListRedux';
 import { FETCH_ORDER_DETAIL } from 'GraphQL/Order/Query';
+import { TAKE_ORDER } from 'GraphQL/Order/Mutation';
+import { getUserId } from 'Redux/SessionRedux';
 
 class Detail extends Component {
   constructor(props) {
@@ -85,83 +94,144 @@ class Detail extends Component {
       }
     });
   };
+  
+  takeThisOrder = mutate => {
+    const { markedDates = {} } = this.state;
+    const { listId: _id, courierId } = this.props;
+    const selectedDates = filterObject(markedDates, 'selected', true) || {};
+    let normalizedSelectedDates = [];
+    Object
+      .keys(selectedDates)
+      .forEach((key) => {
+        const { date } = selectedDates[key];
+        normalizedSelectedDates.push({ date: key, time_start: '00:00', time_end: '24:00' });
+      });
+    mutate({
+      variables: {
+        order_id: _id,
+        courier_id: courierId,
+        actual_shipping_date: normalizedSelectedDates,
+      }
+    });
+  };
+  
+  onTakeOrderComplete = () => {
+    const { navigation } = this.props;
+    navigation.goBack();
+  };
 
   render() {
     const { listId: _id } = this.props;
     const { markedDates, minDate, maxDate } = this.state;
     return (
-      <Query
-        query={FETCH_ORDER_DETAIL}
-        variables={{ _id }}
-        onCompleted={this.onFetchComplete}
-      >
-        {({ loading, error, data, refetch }) => {
-          if (loading || error || !data) {
-            return (
-              <QueryEffectPage
-                loading={loading}
-                state={error}
-                onStateRefresh={refetch}
-              />
+      <Fragment>
+        <Query
+          query={FETCH_ORDER_DETAIL}
+          variables={{ _id }}
+          onCompleted={this.onFetchComplete}
+        >
+          {({ loading, error, data, refetch }) => {
+            if (loading || error || !data) {
+              return (
+                <QueryEffectPage
+                  loading={loading}
+                  state={error}
+                  onStateRefresh={refetch}
+                />
+              );
+            }
+            const { orderDetail = {} } = data || {}; 
+            const {
+              transaction_id,
+              user_id = {},
+              shipping_address = {},
+              requested_shipping_date: requested = [],
+              products = []
+            } = orderDetail || {};
+            const { name } = user_id;
+            const dateRequested = requested.reduce(
+              (obj, item) => {
+                const { date } = item || {};
+                obj[date] = { marked: true }
+                return obj
+              },
+              {}
             );
-          }
-          const { orderDetail = {} } = data || {}; 
-          const {
-            transaction_id,
-            user_id = {},
-            shipping_address = {},
-            requested_shipping_date: requested = [],
-            products = []
-          } = orderDetail || {};
-          const { name } = user_id;
-          const dateRequested = requested.reduce(
-            (obj, item) => {
-              const { date } = item || {};
-              obj[date] = { marked: true }
-              return obj
-            },
-            {}
-          );
-          return (
-            <ScrollView
-              contentContainerStyle={{ 
-                paddingHorizontal: 15,
-                paddingVertical: 10,
-              }}
-            >
-              <Text style={{ textAlign: 'right' }}>{transaction_id}</Text>
-              <Text>Nama: {name}</Text>
-              <Text>Alamat:</Text>
-              <Text>{getReadableAddress(shipping_address)}</Text>
-              <Text>{getReadableSubdistrict(shipping_address)}</Text>
-              <Text>{getReadableCityState(shipping_address)}</Text>
-              <Text style={{ marginTop: 15 }}>Pilih Jadwal Pengiriman</Text>
-              <CalendarList
-                horizontal={true}
-                pagingEnabled={true}
-                minDate={minDate}
-                maxDate={maxDate}
-                onDayPress={this.onDaySelect}
-                markedDates={markedDates}
-              />
-              <Text style={{ marginTop: 15, marginBottom: 10 }}>
-                Detail Barang
-              </Text>
-              <OrderedProducts products={products} />
-            </ScrollView>
-          );
-        }}
-      </Query>
+            return (
+              <ScrollView
+                contentContainerStyle={{ 
+                  paddingHorizontal: 15,
+                  paddingVertical: 10,
+                }}
+              >
+                <Text style={{ textAlign: 'right' }}>{transaction_id}</Text>
+                <Text>Nama: {name}</Text>
+                <Text>Alamat:</Text>
+                <Text>{getReadableAddress(shipping_address)}</Text>
+                <Text>{getReadableSubdistrict(shipping_address)}</Text>
+                <Text>{getReadableCityState(shipping_address)}</Text>
+                <Text style={{ marginTop: 15 }}>Pilih Jadwal Pengiriman</Text>
+                <CalendarList
+                  horizontal={true}
+                  pagingEnabled={true}
+                  minDate={minDate}
+                  maxDate={maxDate}
+                  onDayPress={this.onDaySelect}
+                  markedDates={markedDates}
+                />
+                <Text style={{ marginTop: 15, marginBottom: 10 }}>
+                  Detail Barang
+                </Text>
+                <OrderedProducts products={products} />
+              </ScrollView>
+            );
+          }}
+        </Query>
+        <Mutation
+          mutation={TAKE_ORDER}
+          onCompleted={this.onTakeOrderComplete}
+          ignoreResults={false}
+          errorPolicy='all'
+        >
+          {(mutate, {loading, error, data}) => {
+            return (
+              <TouchableOpacity
+                onPress={() => this.takeThisOrder(mutate)}
+                style={{
+                  height: 50,
+                  backgroundColor: Colors.green_light,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                {loading &&
+                  <DotIndicator
+                    count={4}
+                    size={7}
+                    color='white'
+                    animationDuration={800}
+                  />
+                }
+                {!loading &&
+                  <Text style={{ color: 'white' }}>AMBIL</Text>
+                }
+              </TouchableOpacity>
+            );
+          }}
+        </Mutation>
+      </Fragment>
     );
   }
 }
 
 Detail.propTypes = {
   listId: string,
+  courierId: string,
 };
 
 const mapStateToProps = createStructuredSelector({
   listId: getSelectedListId(),
+  courierId: getUserId(),
 });
 
 export default connect(mapStateToProps, null)(Detail);

@@ -60,3 +60,11 @@ export const CONFIRM_ORDER = gql`
     }
   }
 `
+
+export const TAKE_ORDER = gql`
+  mutation($order_id: String!, $courier_id: String!, $actual_shipping_date: [ShippingDateInput!]) {
+    takeOrder(order_id: $order_id, courier_id: $courier_id, actual_shipping_date: $actual_shipping_date) {
+      _id
+    }
+  }
+`

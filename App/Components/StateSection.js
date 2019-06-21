@@ -1,28 +1,24 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
-import PropTypes from 'prop-types';
+import { string, func, oneOfType, number } from 'prop-types';
 
 import { Colors, Images, Metrics, Constants } from 'Themes';
 import { moderateScale } from 'Lib';
 var _ = require('lodash');
 
-export default class StateSection extends Component {
+class StateSection extends Component {
 
-  _onPress = () => {
+  onPress = () => {
     const { onPress } = this.props;
     if(onPress) onPress();
   }
 
   render() {
-    const { style, types, title, buttonTitle } = this.props;
+    const { style, icon, title, buttonTitle } = this.props;
     return (
       <View style={[ styles.container, style]}>
         <Image
-          source={
-            types === 'empty' ?
-              Images.cart_empty :
-              Images.server_error
-          }
+          source={icon}
           resizeMode='contain'
           style={styles.image}
         />
@@ -32,7 +28,7 @@ export default class StateSection extends Component {
         </Text>
         { buttonTitle &&
           <TouchableOpacity
-            onPress={this._onPress}
+            onPress={this.onPress}
             style={styles.button}>
             <Text
               numberOfLines={1}
@@ -86,9 +82,11 @@ const styles = StyleSheet.create({
 })
 
 StateSection.propTypes = {
-
+  icon: string,
+  title: string,
+  buttonTitle: string,
+  onPress: func,
+  style: oneOfType([ number, string ]),
 }
 
-StateSection.defaultProps = {
-
-}
+export default StateSection;

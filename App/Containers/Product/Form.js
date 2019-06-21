@@ -252,9 +252,9 @@ class Form extends Component {
     if (isEdit && !fetching_complete) {
       return (
         <QueryEffectPage
-          loading={fetching_init}
-          state={fetching_error}
-          onStateRefresh={() => this.fetchInitData()}
+          isLoading={fetching_init}
+          isError={fetching_error}
+          onRefetch={() => this.fetchInitData()}
         />
       );
     }

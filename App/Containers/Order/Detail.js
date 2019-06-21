@@ -96,9 +96,9 @@ class Detail extends Component {
                 if (loading || error || !data) {
                   return (
                     <QueryEffectPage
-                      loading={loading}
-                      state={error}
-                      onStateRefresh={refetch}
+                      isLoading={loading}
+                      isError={error}
+                      onRefetch={refetch}
                     />
                   );
                 }

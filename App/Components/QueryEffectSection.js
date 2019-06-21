@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { bool, string, func, shape, oneOfType } from 'prop-types';
 
-import LoadingPage from './LoadingPage';
-import StatePage from './StatePage';
+import LoadingSection from './LoadingSection';
+import StateSection from './StateSection';
 import AppConfig from 'Config/AppConfig';
 
 const loadingTitleDefault = "Sedang menyiapkan data";
@@ -26,15 +26,14 @@ class QueryEffectSection extends Component {
     } = this.props;
     if (isLoading) {
       return (
-        <LoadingPage
+        <LoadingSection
           title={title || loadingTitleDefault}
-          subtitle={subtitle || loadingSubtitleDefault}
         />
       );
     }
     if (isEmpty) {
       return (
-        <StatePage
+        <StateSection
           title={title || emptyTitleDefault}
           icon={iconEmpty || AppConfig.pageState.EMPTY}
         />
@@ -42,8 +41,7 @@ class QueryEffectSection extends Component {
     }
     if (isError) {
       return (
-        <StatePage
-          types="error"
+        <StateSection
           icon={iconError || AppConfig.pageState.ERROR}
           title={errorTitleDefault}
           buttonTitle={errorButtonDefault}

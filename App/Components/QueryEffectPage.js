@@ -4,44 +4,50 @@ import { bool, string, func, shape, oneOfType } from 'prop-types';
 
 import LoadingPage from './LoadingPage';
 import StatePage from './StatePage';
+import AppConfig from 'Config/AppConfig';
 
-const loadingDefaultTitle = "Sedang menyiapkan data";
-const loadingDefaultSubtitle = "Mohon tunggu sebentar";
-const stateDefaultType = "error";
-const stateDefaultTitle = "Maaf sedang terjadi gangguan, Silahkan coba beberapa saat lagi";
-const stateDefaultButton = "Coba Lagi";
+const loadingTitleDefault = "Sedang menyiapkan data";
+const loadingSubtitleDefault = "Mohon tunggu sebentar";
+const emptyTitleDefault = "Data Kosong";
+const errorTitleDefault = "Maaf sedang terjadi gangguan, Silahkan coba beberapa saat lagi";
+const errorButtonDefault = "Coba Lagi";
 
 class QueryEffectPage extends Component {
   render() {
     const {
-      loading,
-      state,
-      loadingData: {
-        title: loadingTitle = loadingDefaultTitle,
-        subtitle: loadingSubtitle = loadingDefaultSubtitle
-      },
-      stateData: {
-        type = stateDefaultType,
-        title: errorTitle = stateDefaultTitle,
-        buttonTitle: errorButtonTitle = stateDefaultButton, 
-      },
-      onStateRefresh
+      isLoading,
+      isError,
+      isEmpty,
+      title,
+      subtitle,
+      onRefetch,
+      iconEmpty,
+      iconError,
     } = this.props;
-    if (loading) {
+    if (isLoading) {
       return (
         <LoadingPage
-          title={loadingTitle}
-          subtitle={loadingSubtitle}
+          title={title || loadingTitleDefault}
+          subtitle={subtitle || loadingSubtitleDefault}
         />
       );
     }
-    if (state) {
+    if (isEmpty) {
       return (
         <StatePage
-          types={type}
-          title={errorTitle}
-          buttonTitle={errorButtonTitle}
-          onPress={() => onStateRefresh()}
+          title={title || emptyTitleDefault}
+          icon={iconEmpty || AppConfig.pageState.EMPTY}
+        />
+      )
+    }
+    if (isError) {
+      return (
+        <StatePage
+          types="error"
+          icon={iconError || AppConfig.pageState.ERROR}
+          title={errorTitleDefault}
+          buttonTitle={errorButtonDefault}
+          onPress={() => onRefetch()}
         />
       );
     }
@@ -50,30 +56,14 @@ class QueryEffectPage extends Component {
 };
 
 QueryEffectPage.propTypes = {
-  loading: bool,
-  loadingData: shape({
-    title: string,
-    subtitle: string,
-  }),
-  state: oneOfType(shape({}), bool),
-  stateData: shape({
-    type: string,
-    title: string,
-    buttonTitle: string,
-  }),
-  onStateRefresh: func.isRequired,
+  isLoading: bool,
+  isEmpty: bool,
+  isError: oneOfType(shape({}), bool),
+  title: string,
+  subtitle: string,
+  onRefetch: func.isRequired,
+  iconEmpty: string,
+  iconError: string,
 };
-
-QueryEffectPage.defaultProps = {
-  loadingData: {
-    title: undefined,
-    subtitle: undefined,
-  },
-  stateData: {
-    type: undefined,
-    title: undefined,
-    buttonTitle: undefined,
-  }
-}
 
 export default QueryEffectPage;

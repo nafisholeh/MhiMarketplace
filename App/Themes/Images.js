@@ -16,6 +16,7 @@ const images = {
   user: require(pathPrefix+'user.png'),
   needLogin: require(pathPrefix+'need-login.png'),
   edit: require(pathPrefix+'edit.png'),
+  history: require(pathPrefix+'history.png'),
 }
 
 export default images

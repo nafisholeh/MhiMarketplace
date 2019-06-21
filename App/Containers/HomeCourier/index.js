@@ -5,6 +5,8 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 
+import { HeaderButton } from 'Components';
+import { Images } from 'Themes';
 import MyOrder from './MyOrder';
 import ReadyToProcessList from './ReadyToProcess/List';
 
@@ -14,6 +16,12 @@ class Home extends Component {
     return {
       title: 'MH.id',
       headerLeft: null,
+      headerRight: (
+        <HeaderButton
+          onPress={() => navigation.navigate('Completed')}
+          icon={Images.history}
+        />
+      ),
     }
   }
 

@@ -251,3 +251,23 @@ export const FETCH_READY_TO_SEND_COUNT = gql`
     readyToSendOrdersCount(courier_id:$courier_id)
   }
 `
+
+export const FETCH_COMPLETED_LIST = gql`
+  query fetchCompletedOrders($courier_id:String!) {
+    completedOrders(courier_id:$courier_id) {
+      _id
+      shipping_address {
+        alamat
+        rtrw
+        kelurahan
+        kecamatan
+        kota
+        provinsi
+        kodepos
+      }
+      time_stamp {
+        complete
+      }
+    }
+  }
+`

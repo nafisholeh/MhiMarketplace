@@ -24,6 +24,8 @@ import Processing from 'Containers/HomeCourier/Processing';
 import ProcessingDetail from 'Containers/HomeCourier/Processing/Detail';
 import ReadyToSend from 'Containers/HomeCourier/ReadyToSend';
 import ReadyToSendDetail from 'Containers/HomeCourier/ReadyToSend/Detail';
+import Completed from 'Containers/HomeCourier/Completed';
+import CompletedDetail from 'Containers/HomeCourier/Completed/Detail';
 
 const HomeNav = createStackNavigator({
   Home: { screen: Home },
@@ -43,6 +45,8 @@ const HomeNav = createStackNavigator({
   ProcessingDetail: { screen: ProcessingDetail },
   ReadyToSend: { screen: ReadyToSend },
   ReadyToSendDetail: { screen: ReadyToSendDetail },
+  Completed: { screen: Completed },
+  CompletedDetail: { screen: CompletedDetail },
 }, {
   initialRouteName: 'Home',
   navigationOptions: {

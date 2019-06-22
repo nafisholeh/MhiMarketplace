@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ScrollView, View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Query, Mutation, compose } from 'react-apollo';
-import { string, func, number } from 'prop-types';
+import { string, func, number, bool } from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import { withNavigation } from 'react-navigation';
 
@@ -12,7 +12,7 @@ import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { UPDATE_CART_ITEM } from 'GraphQL/Cart/Mutation';
 import { FETCH_SOME_PRODUCT } from 'GraphQL/Product/Query';
 import { OptimizedList, StatePage } from 'Components';
-import { getUserId } from 'Redux/SessionRedux';
+import { getUserId, isKurir } from 'Redux/SessionRedux';
 import { getCartTotalGrossPrice } from 'Redux/CartRedux';
 import CheckoutActions from 'Redux/CheckoutRedux';
 import { Images, Metrics, Colors } from 'Themes';
@@ -30,8 +30,9 @@ class Cart extends Component {
   }
   
   startBuying = () => {
-    const { navigation } = this.props;
-    navigation.navigate('Home');
+    const { navigation, isKurir } = this.props;
+    if (isKurir) navigation.navigate('CourierShop');
+    else navigation.navigate('Home');
   };
   
   onOpenSignin = () => {
@@ -133,11 +134,13 @@ Cart.propTypes = {
   grossPriceTotal: number,
   updateCartItem: func,
   storeCheckoutId: func,
+  isKurir: bool,
 }
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
   grossPriceTotal: getCartTotalGrossPrice(),
+  isKurir: isKurir(),
 });
 
 const mapDispatchToProps = dispatch => ({

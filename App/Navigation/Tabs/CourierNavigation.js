@@ -8,14 +8,14 @@ import { tabNavOptions } from './Options';
 
 import AccountNav from '../Stack/Account';
 import HomeNav from '../Stack/HomeCourier';
-import OrderNav from '../Stack/OrderCourier'
+import OrderPanel from '../Stack/OrderPanel'
 import ShoppingCourier from '../Stack/ShoppingCourier';
 import Setup from 'Containers/Setup/Setup';
 
 const CourierNavigation = createBottomTabNavigator(
   {
     Home: { screen: HomeNav },
-    Orders: { screen: OrderNav },
+    Orders: { screen: OrderPanel },
     Shopping: { screen: ShoppingCourier },
     Account: { screen: AccountNav },
   },

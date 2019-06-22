@@ -32,7 +32,7 @@ class Home extends Component {
 
   render() {
     return (
-      <ScrollView>
+      <ScrollView contentContainerStyle={{ flex: 1 }}>
         <ReadyToProcessList />
       </ScrollView>
     );

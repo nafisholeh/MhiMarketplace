@@ -11,7 +11,7 @@ import {
   getUpcomingShippingSched,
   calcTotalWeight
 } from 'Lib';
-import { QueryEffectSection } from 'Components';
+import { QueryEffectPage } from 'Components';
 import { Colors } from 'Themes';
 import Item from './Item';
 import { FETCH_READY_TO_PROCESS_LIST } from 'GraphQL/Order/Query';
@@ -42,7 +42,7 @@ class ReadyToProcessList extends Component {
   
   render() {
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <Text style={{ marginBottom: 10, marginHorizontal: 10, marginTop: 10 }}>Daftar Pesanan Baru</Text>
         <Query 
           query={FETCH_READY_TO_PROCESS_LIST}
@@ -68,7 +68,7 @@ class ReadyToProcessList extends Component {
               )
             }
             return (
-              <QueryEffectSection
+              <QueryEffectPage
                 isLoading={loading}
                 isError={error}
                 isEmpty={!readyToProcessOrders.length}

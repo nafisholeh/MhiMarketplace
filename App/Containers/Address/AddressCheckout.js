@@ -28,7 +28,6 @@ class AddressCheckout extends Component {
   };
   
   onFetchComplete = data => {
-    console.tron.log('AddressCheckout/onFetchComplete', data);
     const { selectedAddress } = data || {};
     const { _id = '' } = selectedAddress || {};
     const { selectShipmentAddress } = this.props;
@@ -44,7 +43,6 @@ class AddressCheckout extends Component {
         onCompleted={this.onFetchComplete}
         variables={{ user_id: userId }}>
         {({ loading, error, data, refetch }) => {
-          console.tron.log('AddressCheckout/render', loading, error, data);
           const { selectedAddress = {} } = data || {};
           return (
             <TouchableOpacity 
@@ -58,7 +56,7 @@ class AddressCheckout extends Component {
                 />
               )}
               {!selectedAddress && (
-                <Text style={{ textAlign: 'center' }}>
+                <Text style={{ textAlign: 'center', marginVertical: 20 }}>
                   Silahkan pilih alamat pengiriman terlebih dahulu
                 </Text>
               )}

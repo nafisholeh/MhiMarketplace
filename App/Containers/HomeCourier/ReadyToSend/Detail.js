@@ -18,7 +18,7 @@ import {
   filterObject,
 } from 'Lib';
 import { getSelectedListId } from 'Redux/ListRedux';
-import { FETCH_ORDER_DETAIL } from 'GraphQL/Order/Query';
+import { FETCH_ORDER_DETAIL, FETCH_READY_TO_SEND_COUNT } from 'GraphQL/Order/Query';
 import { SENDING_ORDER_PRODUCTS, cacheSendingOrderProducts } from 'GraphQL/Order/Mutation';
 import { getUserId } from 'Redux/SessionRedux';
 
@@ -159,6 +159,12 @@ class Detail extends Component {
           mutation={SENDING_ORDER_PRODUCTS}
           update={(cache, data) => cacheSendingOrderProducts(cache, data, _id, courierId)}
           onCompleted={this.onSendingOrderComplete}
+          refetchQueries={[
+            {
+              query: FETCH_READY_TO_SEND_COUNT,
+              variables: { courier_id: courierId }
+            }
+          ]}
           ignoreResults={false}
           errorPolicy='all'
         >

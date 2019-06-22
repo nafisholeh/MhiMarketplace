@@ -18,7 +18,11 @@ import {
   filterObject,
 } from 'Lib';
 import { getSelectedListId } from 'Redux/ListRedux';
-import { FETCH_ORDER_DETAIL } from 'GraphQL/Order/Query';
+import {
+  FETCH_ORDER_DETAIL,
+  FETCH_PROCESSING_LIST,
+  FETCH_PROCESSING_COUNT
+} from 'GraphQL/Order/Query';
 import { TAKE_ORDER, cacheTakeOrder } from 'GraphQL/Order/Mutation';
 import { getUserId } from 'Redux/SessionRedux';
 
@@ -202,6 +206,18 @@ class Detail extends Component {
           mutation={TAKE_ORDER}
           update={(cache, data) => cacheTakeOrder(cache, data, _id)}
           onCompleted={this.onTakeOrderComplete}
+          refetchQueries={
+            [
+              {
+                query: FETCH_PROCESSING_LIST,
+                variables: { courier_id: userId }
+              },
+              {
+                query: FETCH_PROCESSING_COUNT,
+                variables: { courier_id: userId }
+              }
+            ]
+          }
           ignoreResults={false}
           errorPolicy='all'
         >

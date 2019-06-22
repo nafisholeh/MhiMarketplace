@@ -128,6 +128,8 @@ class Detail extends Component {
                 <Timeline
                   data={timeline}
                   innerCircle="dot"
+                  timeStyle={{ fontWeight: 'normal' }}
+                  titleStyle={{ fontWeight: 'normal' }}
                 />
               </ScrollView>
             );

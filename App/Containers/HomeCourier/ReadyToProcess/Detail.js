@@ -136,7 +136,7 @@ class Detail extends Component {
   };
 
   render() {
-    const { listId: _id, userId } = this.props;
+    const { listId: _id, courierId } = this.props;
     const { markedDates, minDate, maxDate } = this.state;
     return (
       <Fragment>

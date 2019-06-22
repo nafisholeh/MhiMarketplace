@@ -9,7 +9,7 @@ import { withNavigation } from 'react-navigation';
 import { parseToRupiah, calcDiscount } from 'Lib';
 import { Images } from 'Themes';
 import styles from './Styles';
-import { getUserId, isAdmin } from 'Redux/SessionRedux';
+import { getUserId, isStokOpname } from 'Redux/SessionRedux';
 import { getCartItemIds } from 'Redux/CartRedux';
 import { UPDATE_CART_ITEM, UPDATE_CART_ITEM_SCHEMA, cacheUpdateCartItem } from 'GraphQL/Cart/Mutation';
 import ProductActions from 'Redux/ProductRedux';
@@ -28,7 +28,7 @@ class Item extends Component {
   }
   
   render() {
-    const { data, cartItemIds, userId, isAdmin } = this.props
+    const { data, cartItemIds, userId, isStokOpname } = this.props
     if (!data) {
       return <View />
     }
@@ -55,7 +55,7 @@ class Item extends Component {
             </Text>
             <Text>{parseToRupiah(calcDiscount(price, discount))}</Text>
           </View>
-          { isAdmin &&
+          { isStokOpname &&
             <TouchableOpacity
               style={styles.product__item_cart}
               onPress={this.onEdit}
@@ -66,7 +66,7 @@ class Item extends Component {
               />
             </TouchableOpacity>
           }
-          { !isInsideCart && !isAdmin &&
+          { !isInsideCart && !isStokOpname &&
             <Mutation
               mutation={UPDATE_CART_ITEM_SCHEMA}
               variables={{ user_id: userId, product_id: productId, qty: null }}
@@ -110,14 +110,14 @@ Item.propTypes = {
   updateCartItem: func,
   userId: string,
   cartItemIds: arrayOf(string),
-  isAdmin: bool,
+  isStokOpname: bool,
   storeEditedProduct: func,
 }
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
   cartItemIds: getCartItemIds(),
-  isAdmin: isAdmin(),
+  isStokOpname: isStokOpname(),
 });
 
 const mapDispatchToProps = dispatch => ({

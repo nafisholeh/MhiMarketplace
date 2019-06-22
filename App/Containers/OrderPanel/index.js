@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import { ScrollView, Text } from 'react-native';
-import { bool } from 'prop-types';
+import { ScrollView, Text, View, TouchableOpacity } from 'react-native';
+import { bool, func, string } from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
+import { Query } from 'react-apollo';
+import { DotIndicator } from 'react-native-indicators';
 
 import { HeaderButton } from 'Components';
 import { Images } from 'Themes';
 
-import MyOrder from './MyOrder';
-import ReadyToProcessList from 'Containers/Courier/ReadyToProcess/List';
+import Item from './Item';
 
 class OrderPanel extends Component {
   static navigationOptions = ({navigation}) => {
@@ -32,14 +33,20 @@ class OrderPanel extends Component {
   };
 
   render() {
+    const { courierId } = this.props;
     return (
-      <ScrollView>
-        <MyOrder 
-          onOpenProcessing={() => this.openPage('Processing')}
-          onOpenReadyToSend={() => this.openPage('ReadyToSend')}
+      <View style={{ paddingVertical: 5 }}>
+        <Item
+          title="Siap Ambil Barang"
+          description="Anda ambil barang dari tempat yg telah ditentukan"
+          onPress={() => this.openPage('Processing')}
         />
-        <ReadyToProcessList />
-      </ScrollView>
+        <Item
+          title="Siap Kirim"
+          description="Barang telah diambil dan siap untuk dikirim"
+          onPress={() => this.openPage('ReadyToSend')}
+        />
+      </View>
     );
   }
 }

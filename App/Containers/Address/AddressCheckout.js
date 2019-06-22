@@ -28,10 +28,11 @@ class AddressCheckout extends Component {
   };
   
   onFetchComplete = data => {
-    const { selectedAddress: { _id } = {} } = data || {};
+    console.tron.log('AddressCheckout/onFetchComplete', data);
+    const { selectedAddress } = data || {};
+    const { _id = '' } = selectedAddress || {};
     const { selectShipmentAddress } = this.props;
     selectShipmentAddress(_id);
-    console.tron.log('AddressCheckout/onFetchComplete', _id)
   }
   
   render() {
@@ -43,8 +44,8 @@ class AddressCheckout extends Component {
         onCompleted={this.onFetchComplete}
         variables={{ user_id: userId }}>
         {({ loading, error, data, refetch }) => {
+          console.tron.log('AddressCheckout/render', loading, error, data);
           const { selectedAddress = {} } = data || {};
-          console.tron.log('AddressList/render', data)
           return (
             <TouchableOpacity 
               onPress={this.onOpenList} 

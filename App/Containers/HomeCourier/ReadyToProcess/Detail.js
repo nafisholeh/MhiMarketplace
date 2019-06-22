@@ -204,17 +204,17 @@ class Detail extends Component {
         </Query>
         <Mutation
           mutation={TAKE_ORDER}
-          update={(cache, data) => cacheTakeOrder(cache, data, _id)}
+          update={(cache, data) => cacheTakeOrder(cache, data, _id, courierId)}
           onCompleted={this.onTakeOrderComplete}
           refetchQueries={
             [
               {
                 query: FETCH_PROCESSING_LIST,
-                variables: { courier_id: userId }
+                variables: { courier_id: courierId }
               },
               {
                 query: FETCH_PROCESSING_COUNT,
-                variables: { courier_id: userId }
+                variables: { courier_id: courierId }
               }
             ]
           }

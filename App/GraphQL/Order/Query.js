@@ -159,6 +159,7 @@ export const FETCH_READY_TO_PROCESS_LIST = gql`
       products {
         _id
         product {
+          _id
           unit
         }
         qty
@@ -190,6 +191,7 @@ export const FETCH_PROCESSING_LIST = gql`
       products {
         _id
         product {
+          _id
           unit
         }
         qty
@@ -233,6 +235,7 @@ export const FETCH_READY_TO_SEND_LIST = gql`
       products {
         _id
         product {
+          _id
           unit
         }
         qty

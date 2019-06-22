@@ -12,7 +12,8 @@ import { HeaderButton } from 'Components';
 import { Images } from 'Themes';
 import {
   FETCH_PROCESSING_COUNT,
-  FETCH_READY_TO_SEND_COUNT
+  FETCH_READY_TO_SEND_COUNT,
+  FETCH_SENDING_COUNT,
 } from 'GraphQL/Order/Query';
 
 import Item from './Item';
@@ -61,8 +62,8 @@ class OrderPanel extends Component {
           title="Sedang Kirim"
           description="Anda sedang dalam perjalanan untuk kirim barang ke konsumen"
           courierId={courierId}
-          query={FETCH_READY_TO_SEND_COUNT}
-          queryResponse="readyToSendOrdersCount"
+          query={FETCH_SENDING_COUNT}
+          queryResponse="sendingOrdersCount"
           onPress={() => this.openPage('Sending')}
         />
       </View>

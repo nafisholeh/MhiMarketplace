@@ -263,6 +263,50 @@ export const FETCH_READY_TO_SEND_COUNT = gql`
   }
 `
 
+export const FETCH_SENDING_LIST = gql`
+  query fetchSendingOrders($courier_id:String!) {
+    sendingOrders(courier_id:$courier_id) {
+      _id
+      shipping_address {
+        alamat
+        rtrw
+        kelurahan
+        kecamatan
+        kota
+        provinsi
+        kodepos
+      }
+      products {
+        _id
+        product {
+          _id
+          unit
+        }
+        qty
+        selected
+      }
+      requested_shipping_date {
+        _id
+        date
+        time_start
+        time_end
+      }
+      actual_shipping_date {
+        _id
+        date
+        time_start
+        time_end
+      }
+    }
+  }
+`
+
+export const FETCH_SENDING_COUNT = gql`
+  query($courier_id:String!) {
+    sendingOrdersCount(courier_id:$courier_id)
+  }
+`
+
 export const FETCH_COMPLETED_LIST = gql`
   query fetchCompletedOrders($courier_id:String!) {
     completedOrders(courier_id:$courier_id) {

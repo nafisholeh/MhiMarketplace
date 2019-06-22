@@ -45,5 +45,13 @@ export default {
     KILOGRAM: 'kg',
     GRAM: 'gram',
     PIECES: 'pcs',
+  },
+  timelineTitle: {
+    incomplete: 'Checkout pesanan',
+    ready_to_process: 'Konsumen konfirmasi pesanan',
+    processing: 'Kurir telah konfirmasi pengiriman',
+    ready_to_send: 'Barang diambil dari gudang',
+    sending: 'Pesanan sedang dikirim',
+    complete: 'Barang telah sampai di konsumen'
   }
 }

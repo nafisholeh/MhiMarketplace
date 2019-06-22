@@ -92,6 +92,14 @@ export const FETCH_ORDER_DETAIL = gql`
       total_discount
       courier_cost
       total_cost
+      time_stamp {
+        incomplete
+        ready_to_process
+        processing
+        ready_to_send
+        sending
+        complete
+      }
       shipping_address {
         alamat
         rtrw

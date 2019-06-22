@@ -6,6 +6,7 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { string } from 'prop-types';
 import moment from 'moment';
+import Timeline from 'react-native-timeline-listview';
 
 import { Colors } from 'Themes';
 import { QueryEffectPage } from 'Components';
@@ -20,6 +21,7 @@ import { getSelectedListId } from 'Redux/ListRedux';
 import { FETCH_ORDER_DETAIL } from 'GraphQL/Order/Query';
 import { SENDING_ORDER_PRODUCTS, cacheSendingOrderProducts } from 'GraphQL/Order/Mutation';
 import { getUserId } from 'Redux/SessionRedux';
+import AppConfig from 'Config/AppConfig';
 
 class Detail extends Component {
   static navigationOptions = ({navigation}) => {
@@ -33,25 +35,49 @@ class Detail extends Component {
     super(props);
     this.state = {
       isFetchComplete: false,
+      timeline: [],
     }
   }
+  
+  parseTimeline = timestamp => {
+    const {
+      incomplete,
+      ready_to_process,
+      processing,
+      ready_to_send,
+      sending,
+      complete
+    } = timestamp || {};
+    let timeline = [];
+    Object.keys(timestamp).forEach(key => {
+      if (key === '__typename') return;
+      timeline.push({
+        title: AppConfig.timelineTitle[key],
+        time: moment(timestamp[key], 'YYYY-MM-DD hh:mm:ss').format('hh:mm'),
+      });
+    });
+    return timeline;
+  };
   
   onFetchComplete = data => {
     const { orderDetail = {} } = data || {}; 
     const {
       requested_shipping_date: requested = [],
       actual_shipping_date: actual = [],
+      time_stamp = {}
     } = orderDetail || {};
     
     this.setState(prevState => {
       return {
-        isFetchComplete: true
+        isFetchComplete: true,
+        timeline: this.parseTimeline(time_stamp),
       }
     });
   };
 
   render() {
     const { listId: _id, courierId } = this.props;
+    const { timeline } = this.state;
     return (
       <Fragment>
         <Query
@@ -95,6 +121,13 @@ class Detail extends Component {
                 </Text>
                 <OrderedProducts
                   products={products}
+                />
+                <Text style={{ marginTop: 15, marginBottom: 10 }}>
+                  Lini Masa
+                </Text>
+                <Timeline
+                  data={timeline}
+                  innerCircle="dot"
                 />
               </ScrollView>
             );

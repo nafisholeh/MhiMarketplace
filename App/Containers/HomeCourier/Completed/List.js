@@ -27,7 +27,6 @@ class CompletedList extends Component {
     const district = getReadableSubdistrict(shipping_address);
     const address = getReadableAddress(shipping_address);
     const arrivalTime = getReadableDate(complete);
-    complete
     return (
       <Item
         id={_id}

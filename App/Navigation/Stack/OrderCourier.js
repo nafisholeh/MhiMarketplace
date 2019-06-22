@@ -6,18 +6,7 @@ import { Images } from 'Themes';
 import { tabNavOptions } from '../Tabs/Options';
 import styles from '../Styles/NavigationStyles'
 
-import Signin from 'Containers/Signin/Signin'
-import Signup from 'Containers/Signup/Signup'
-import Home from 'Containers/HomeCourier'
-import Detail from 'Containers/Product/Detail'
-import ProductAdd from 'Containers/Product/Add';
-import ProductEdit from 'Containers/Product/Edit'; 
-import Cart from 'Containers/Cart/Cart'
-import Checkout from 'Containers/Checkout/Checkout'
-import AddressList from 'Containers/Address/AddressList';
-import AddressInput from 'Containers/Address/AddressInput';
-import Slip from 'Containers/Slip/Slip';
-import Account from 'Containers/Account/Account';
+import OrderPanel from 'Containers/OrderPanel';
 import OrderDetail from 'Containers/Order/Detail';
 import ReadyToProcessDetail from 'Containers/Courier/ReadyToProcess/Detail';
 import Processing from 'Containers/Courier/Processing';
@@ -27,18 +16,8 @@ import ReadyToSendDetail from 'Containers/Courier/ReadyToSend/Detail';
 import Completed from 'Containers/Courier/Completed';
 import CompletedDetail from 'Containers/Courier/Completed/Detail';
 
-const HomeNav = createStackNavigator({
-  Home: { screen: Home },
-  ProductDetail: { screen: Detail },
-  ProductAdd: { screen: ProductAdd },
-  ProductEdit: { screen: ProductEdit },
-  Cart: { screen: Cart },
-  Checkout: { screen: Checkout },
-  AddressList: { screen: AddressList },
-  AddressInput: { screen: AddressInput },
-  Signin: { screen: Signin },
-  Signup: { screen: Signup },  
-  Slip: { screen: Slip },
+const OrderNav = createStackNavigator({
+  OrderPanel: { screen: OrderPanel }, 
   OrderDetail: { screen: OrderDetail },
   ReadyToProcessDetail: { screen: ReadyToProcessDetail },
   Processing: { screen: Processing },
@@ -48,12 +27,12 @@ const HomeNav = createStackNavigator({
   Completed: { screen: Completed },
   CompletedDetail: { screen: CompletedDetail },
 }, {
-  initialRouteName: 'Home',
+  initialRouteName: 'OrderPanel',
   navigationOptions: {
     headerStyle: styles.header
   }
 })
 
-HomeNav.navigationOptions = (data) => tabNavOptions(data, Images.courier_shop)
+OrderNav.navigationOptions = (data) => tabNavOptions(data, Images.shipping)
 
-export default HomeNav;
+export default OrderNav;

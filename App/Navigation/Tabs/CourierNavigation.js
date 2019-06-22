@@ -7,16 +7,16 @@ import styles from '../Styles/NavigationStyles'
 import { tabNavOptions } from './Options';
 
 import AccountNav from '../Stack/Account';
-import CartNav from '../Stack/Cart';
 import HomeNav from '../Stack/HomeCourier';
+import OrderNav from '../Stack/OrderCourier'
 import ShoppingCourier from '../Stack/ShoppingCourier';
 import Setup from 'Containers/Setup/Setup';
 
 const CourierNavigation = createBottomTabNavigator(
   {
     Home: { screen: HomeNav },
+    Orders: { screen: OrderNav },
     Shopping: { screen: ShoppingCourier },
-    Cart: { screen: CartNav },
     Account: { screen: AccountNav },
   },
   {

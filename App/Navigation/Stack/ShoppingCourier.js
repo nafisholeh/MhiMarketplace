@@ -21,7 +21,7 @@ import Account from 'Containers/Account/Account';
 import OrderDetail from 'Containers/Order/Detail';
 
 const Navigation = createStackNavigator({
-  Home: { screen: Home },
+  CourierShop: { screen: Home },
   ProductDetail: { screen: Detail },
   ProductAdd: { screen: ProductAdd },
   ProductEdit: { screen: ProductEdit },
@@ -34,7 +34,7 @@ const Navigation = createStackNavigator({
   Slip: { screen: Slip },
   OrderDetail: { screen: OrderDetail },
 }, {
-  initialRouteName: 'Home',
+  initialRouteName: 'CourierShop',
   navigationOptions: {
     headerStyle: styles.header
   }

@@ -8,9 +8,10 @@ import { withNavigation } from 'react-navigation';
 import { HeaderButton } from 'Components';
 import { Images } from 'Themes';
 
+import MyOrder from './MyOrder';
 import ReadyToProcessList from 'Containers/Courier/ReadyToProcess/List';
 
-class Home extends Component {
+class OrderPanel extends Component {
   static navigationOptions = ({navigation}) => {
     const {params = {}} = navigation.state
     return {
@@ -33,13 +34,17 @@ class Home extends Component {
   render() {
     return (
       <ScrollView>
+        <MyOrder 
+          onOpenProcessing={() => this.openPage('Processing')}
+          onOpenReadyToSend={() => this.openPage('ReadyToSend')}
+        />
         <ReadyToProcessList />
       </ScrollView>
     );
   }
 }
 
-Home.propTypes = {
+OrderPanel.propTypes = {
   
 };
 
@@ -47,4 +52,4 @@ const mapStateToProps = createStructuredSelector({
   
 });
 
-export default connect(mapStateToProps, null)(withNavigation(Home));
+export default connect(mapStateToProps, null)(withNavigation(OrderPanel));

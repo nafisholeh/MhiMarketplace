@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
-import { bool, func, string } from 'prop-types';
+import { bool, func, string, any } from 'prop-types';
 import { withNavigation } from 'react-navigation';
 import { Query } from 'react-apollo';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { DotIndicator } from 'react-native-indicators';
 
-import {
-  FETCH_PROCESSING_COUNT,
-  FETCH_READY_TO_SEND_COUNT
-} from 'GraphQL/Order/Query';
 import { getUserId } from 'Redux/SessionRedux';
 import { Colors } from 'Themes';
 
@@ -21,7 +17,13 @@ class Item extends Component {
   };
 
   render() {
-    const { title, description, courierId } = this.props;
+    const {
+      query,
+      queryResponse,
+      title,
+      description,
+      courierId
+    } = this.props;
     return (
       <TouchableOpacity
         onPress={this.onPress}
@@ -49,7 +51,7 @@ class Item extends Component {
           }}
         >
           <Query
-            query={FETCH_PROCESSING_COUNT}
+            query={query}
             variables={{ courier_id: courierId }}
           >
             {({ loading, error, data, refetch }) => {
@@ -64,14 +66,14 @@ class Item extends Component {
                   />
                 );
               } else if (data) {
-                const { processingOrdersCount = 0 } = data;
+                const { [queryResponse]: total = 0 } = data;
                 return (
                   <Text style={{
                     textAlign: 'right',
                     fontSize: 18,
                     fontWeight: 'bold',
                   }}>
-                    {processingOrdersCount || 0}
+                    {total || 0}
                   </Text>
                 );
               }
@@ -85,14 +87,12 @@ class Item extends Component {
 }
 
 Item.propTypes = {
+  query: any,
+  queryResponse: string,
   title: string,
   description: string,
   onPress: func,
   courierId: string,
 };
 
-const mapStateToProps = createStructuredSelector({
-  courierId: getUserId(),
-});
-
-export default connect(mapStateToProps, null)(Item);
+export default Item;

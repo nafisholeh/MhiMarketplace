@@ -185,8 +185,8 @@ class Detail extends Component {
                 <CalendarList
                   horizontal={true}
                   pagingEnabled={true}
-                  minDate={new Date('2018-01-01')}
-                  maxDate={new Date('2018-01-01')}
+                  minDate={minDate}
+                  maxDate={maxDate}
                   onDayPress={this.onDaySelect}
                   markedDates={markedDates}
                 />

@@ -12,6 +12,7 @@ import createStore from '../Redux'
 import ApolloClientProvider from 'Services/ApolloClientProvider'
 import { InAppNotification } from 'Lib';
 import AppConfig from "Config/AppConfig";
+import { cacheNewOrder } from 'Containers/Courier/ReadyToProcess/Helper';
 
 // create our store
 export const store = createStore()
@@ -42,11 +43,20 @@ class App extends Component {
   }
   
   onReceived(notification) {
-    // console.tron.log("Notification received: ", notification);
+    const { payload = {} } = notification || {};
+    const { additionalData = {} } = payload || {};
+    const { __purpose } = additionalData || {};
+    switch (__purpose) {
+      case AppConfig.notifPurpose.NEW_ORDER:
+        cacheNewOrder(additionalData);
+        break;
+      default:
+        break;
+    }
   }
 
   onOpened(openResult) {
-    // console.tron.log('Message: ', openResult);
+    
   }
   
   render () {

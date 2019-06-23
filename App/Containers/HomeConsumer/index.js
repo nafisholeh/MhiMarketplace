@@ -10,26 +10,29 @@ import { FETCH_CART } from 'GraphQL/Cart/Query';
 import List from 'Containers/Product/List';
 import { HeaderButton } from 'Components';
 import CartActions from 'Redux/CartRedux';
-import { getUserId, isStokOpname } from 'Redux/SessionRedux';
+import { getUserId, isKurir } from 'Redux/SessionRedux';
 import { Images, Metrics } from 'Themes';
 import styles from './Styles';
     
 class Home extends Component {
   static navigationOptions = ({navigation}) => {
-    const {params} = navigation.state
+    const { params } = navigation.state
+    const { isKurir = false } = params || {};
     return {
       title: 'MH.id',
       headerLeft: null,
       headerRight: (
         <HeaderButton
-          onPress={() => navigation.navigate('Cart')}
-          icon={Images.cart}
+          onPress={() => navigation.navigate(isKurir ? 'Cart' : 'SendingList')}
+          icon={isKurir ? Images.cart : Images.tracking}
         />
       ),
     }
   }
 
   componentDidMount() {
+    const { navigation, isKurir } = this.props;
+    navigation.setParams({ isKurir });
     this.fetchInitCart();
   }
   
@@ -61,12 +64,12 @@ class Home extends Component {
 Home.propTypes = {
   userId: string,
   storeCart: func,
-  isStokOpname: bool,
+  isKurir: bool,
 }
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
-  isStokOpname: isStokOpname(),
+  isKurir: isKurir(),
 });
 
 const mapDispatchToProps = (dispatch) => ({

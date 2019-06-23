@@ -101,6 +101,7 @@ export const FETCH_ORDER_DETAIL = gql`
         complete
       }
       shipping_address {
+        _id
         alamat
         rtrw
         kelurahan
@@ -148,6 +149,7 @@ export const FETCH_READY_TO_PROCESS_LIST = gql`
     readyToProcessOrders {
       _id
       shipping_address {
+        _id
         alamat
         rtrw
         kelurahan
@@ -180,6 +182,7 @@ export const FETCH_PROCESSING_LIST = gql`
     processingOrders(courier_id:$courier_id) {
       _id
       shipping_address {
+        _id
         alamat
         rtrw
         kelurahan
@@ -224,6 +227,7 @@ export const FETCH_READY_TO_SEND_LIST = gql`
     readyToSendOrders(courier_id:$courier_id) {
       _id
       shipping_address {
+        _id
         alamat
         rtrw
         kelurahan
@@ -268,6 +272,7 @@ export const FETCH_SENDING_LIST = gql`
     sendingOrders(courier_id:$courier_id) {
       _id
       shipping_address {
+        _id
         alamat
         rtrw
         kelurahan
@@ -312,6 +317,7 @@ export const FETCH_COMPLETED_LIST = gql`
     completedOrders(courier_id:$courier_id) {
       _id
       shipping_address {
+        _id
         alamat
         rtrw
         kelurahan

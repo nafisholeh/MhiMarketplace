@@ -60,7 +60,8 @@ class AddressInput extends Component {
           kelurahan,
           kecamatan,
           kota,
-          provinsi 
+          provinsi,
+          kodepos
         }
       }
     });

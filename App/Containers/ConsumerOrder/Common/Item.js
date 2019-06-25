@@ -23,18 +23,22 @@ class Item extends Component {
         }}
       >
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Text style={{ fontWeight: 'bold' }}>
+          <Text
+            numberOfLines={1}
+            style={{ fontWeight: 'bold' }}>
             {`#${transactionId}` || '-'}
           </Text>
-          <Text style={{ fontWeight: 'bold' }}>
+          <Text
+            numberOfLines={1}
+            style={{ fontWeight: 'bold' }}>
             {subtitle || '-'}
           </Text>
         </View>
-        <Text>
+        <Text numberOfLines={1}>
           {title || '-'}
         </Text>
         {body && (
-          <Text>
+          <Text numberOfLines={1}>
             {body}
           </Text>
         )}

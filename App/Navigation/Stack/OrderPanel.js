@@ -8,15 +8,15 @@ import styles from '../Styles/NavigationStyles'
 
 import OrderPanel from 'Containers/OrderPanel';
 import OrderDetail from 'Containers/Order/Detail';
-import ReadyToProcessDetail from 'Containers/Courier/ReadyToProcess/Detail';
-import Processing from 'Containers/Courier/Processing';
-import ProcessingDetail from 'Containers/Courier/Processing/Detail';
-import ReadyToSend from 'Containers/Courier/ReadyToSend';
-import ReadyToSendDetail from 'Containers/Courier/ReadyToSend/Detail';
-import Sending from 'Containers/Courier/Sending';
-import SendingDetail from 'Containers/Courier/Sending/Detail';
-import Completed from 'Containers/Courier/Completed';
-import CompletedDetail from 'Containers/Courier/Completed/Detail';
+import ReadyToProcessDetail from 'Containers/CourierOrder/ReadyToProcess/Detail';
+import Processing from 'Containers/CourierOrder/Processing';
+import ProcessingDetail from 'Containers/CourierOrder/Processing/Detail';
+import ReadyToSend from 'Containers/CourierOrder/ReadyToSend';
+import ReadyToSendDetail from 'Containers/CourierOrder/ReadyToSend/Detail';
+import Sending from 'Containers/CourierOrder/Sending';
+import SendingDetail from 'Containers/CourierOrder/Sending/Detail';
+import Completed from 'Containers/CourierOrder/Completed';
+import CompletedDetail from 'Containers/CourierOrder/Completed/Detail';
 
 const OrderNav = createStackNavigator({
   OrderPanel: { screen: OrderPanel }, 

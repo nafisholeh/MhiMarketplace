@@ -19,6 +19,7 @@ import AddressInput from 'Containers/Address/AddressInput';
 import Slip from 'Containers/Slip/Slip';
 import Account from 'Containers/Account/Account';
 import OrderDetail from 'Containers/Order/Detail';
+import ConsumerOrder from 'Containers/ConsumerOrder';
 
 const HomeNav = createStackNavigator({
   Home: { screen: Home },
@@ -33,6 +34,7 @@ const HomeNav = createStackNavigator({
   Signup: { screen: Signup },  
   Slip: { screen: Slip },
   OrderDetail: { screen: OrderDetail },
+  ConsumerOrder: { screen: ConsumerOrder },
 }, {
   initialRouteName: 'Home',
   navigationOptions: {

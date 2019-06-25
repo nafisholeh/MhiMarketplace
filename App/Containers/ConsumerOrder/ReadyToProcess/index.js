@@ -2,51 +2,61 @@ import React, { Component } from 'react';
 import { View, ScrollView, FlatList, Text } from 'react-native';
 import { Query } from 'react-apollo';
 import { connect } from 'react-redux';
-import { func } from 'prop-types';
+import { func, string } from 'prop-types';
 import { withNavigation } from 'react-navigation';
+import { createStructuredSelector } from 'reselect';
 
 import {
   getReadableAddress,
   getReadableSubdistrict,
   getUpcomingShippingSched,
-  calcTotalWeight
+  calcTotalWeight,
+  getReadableDate,
+  getIntervalTimeToday,
+  getAggregateProducts,
+  parseToRupiah,
 } from 'Lib';
-import { QueryEffectPage } from 'Components';
+import { QueryEffectSection } from 'Components';
 import { Colors } from 'Themes';
 import Item from './Item';
 import { FETCH_READY_TO_PROCESS_LIST } from 'GraphQL/Order/Query';
 import ListActions from 'Redux/ListRedux';
+import { getUserId } from 'Redux/SessionRedux';
 
-class ReadyToProcessList extends Component {
+class ConsumerOrder extends Component {
   renderItems = ({item, index}) => {
     const { selectListItem, navigation } = this.props;
-    const { _id, shipping_address, products = [], requested_shipping_date = [] } = item || {};
-    const district = getReadableSubdistrict(shipping_address);
-    const address = getReadableAddress(shipping_address);
-    const schedule = getUpcomingShippingSched(requested_shipping_date);
-    const totalWeight = calcTotalWeight(products);
+    const {
+      _id,
+      products,
+      transaction_id,
+      total_cost,
+    } = item || {};
+    const title = getAggregateProducts(products);
     return (
       <Item
         id={_id}
-        district={district}
-        address={address}
-        schedule={schedule}
-        totalWeight={totalWeight}
+        transactionId={transaction_id}
+        title={title}
+        subtitle={parseToRupiah(total_cost)}
         onSelectItem={id => {
           selectListItem(id);
-          navigation.navigate('ReadyToProcessDetail');
+          navigation.navigate('SendingDetail');
         }}
       />
     );
   };
   
   render() {
+    const { userId } = this.props;
     return (
       <View style={{ flex: 1 }}>
-        <Text style={{ marginBottom: 10, marginHorizontal: 10, marginTop: 10 }}>Daftar Pesanan Baru</Text>
-        <Query 
+        <Text style={{ paddingHorizontal: 10, marginTop: 10 }}>
+          Menunggu diproses
+        </Text>
+        <Query
           query={FETCH_READY_TO_PROCESS_LIST}
-          onCompleted={this.onFetchComplete}
+          variables={{ courier_id: null, user_id: userId }}
         >
           {({ loading, error, data, refetch }) => {
             const { readyToProcessOrders = [] } = data || {};
@@ -68,7 +78,7 @@ class ReadyToProcessList extends Component {
               )
             }
             return (
-              <QueryEffectPage
+              <QueryEffectSection
                 isLoading={loading}
                 isError={error}
                 isEmpty={!readyToProcessOrders.length}
@@ -82,12 +92,17 @@ class ReadyToProcessList extends Component {
   }
 }
 
-ReadyToProcessList.propTypes = {
+ConsumerOrder.propTypes = {
   selectListItem: func,
+  userId: string,
 }
+
+const mapStateToProps = createStructuredSelector({
+  userId: getUserId(),
+});
 
 const mapDispatchToProps = dispatch => ({
   selectListItem: selectedId => dispatch(ListActions.selectListItem(selectedId)),
 });
 
-export default connect(null, mapDispatchToProps)(withNavigation(ReadyToProcessList));
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(ConsumerOrder));

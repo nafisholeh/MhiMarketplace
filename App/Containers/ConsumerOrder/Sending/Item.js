@@ -11,7 +11,7 @@ class Item extends Component {
   };
 
   render() {
-    const { id, district, address, arrivalTime } = this.props;
+    const { id, district, address, injuryTime } = this.props;
     return (
       <TouchableOpacity
         onPress={this.onClickItem}
@@ -22,9 +22,14 @@ class Item extends Component {
           borderColor: Colors.brown_light,
         }}
       >
+        <Text style={{ fontWeight: 'bold' }}>
+          {injuryTime ? 
+            `Ditunggu ${injuryTime}` :
+            'Belum terisi'
+          }
+        </Text>
         <Text>{district}</Text>
         <Text>{address}</Text>
-        <Text>Terkirim: {arrivalTime || 'Belum terisi'}</Text>
       </TouchableOpacity>
     );
   }
@@ -34,7 +39,7 @@ Item.propTypes = {
   id: string,
   district: string,
   address: string,
-  arrivalTime: string,
+  injuryTime: string,
 };
 
 export default Item;

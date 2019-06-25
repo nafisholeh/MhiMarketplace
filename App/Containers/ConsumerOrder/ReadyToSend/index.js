@@ -14,14 +14,14 @@ import {
   getReadableDate,
   getIntervalTimeToday
 } from 'Lib';
-import { QueryEffectPage } from 'Components';
+import { QueryEffectSection } from 'Components';
 import { Colors } from 'Themes';
 import Item from './Item';
-import { FETCH_SENDING_LIST } from 'GraphQL/Order/Query';
+import { FETCH_READY_TO_SEND_LIST } from 'GraphQL/Order/Query';
 import ListActions from 'Redux/ListRedux';
 import { getUserId } from 'Redux/SessionRedux';
 
-class CompletedList extends Component {
+class SendingList extends Component {
   renderItems = ({item, index}) => {
     const { selectListItem, navigation } = this.props;
     const {
@@ -55,9 +55,10 @@ class CompletedList extends Component {
     const { userId } = this.props;
     return (
       <View style={{ flex: 1 }}>
+        <Text>Barang siap dikirim kurir</Text>
         <Query
-          query={FETCH_SENDING_LIST}
-          variables={{ courier_id: userId }}
+          query={FETCH_READY_TO_SEND_LIST}
+          variables={{ courier_id: null, user_id: userId }}
         >
           {({ loading, error, data, refetch }) => {
             const { sendingOrders = [] } = data || {};
@@ -79,7 +80,7 @@ class CompletedList extends Component {
               )
             }
             return (
-              <QueryEffectPage
+              <QueryEffectSection
                 isLoading={loading}
                 isError={error}
                 isEmpty={!sendingOrders.length}
@@ -93,7 +94,7 @@ class CompletedList extends Component {
   }
 }
 
-CompletedList.propTypes = {
+SendingList.propTypes = {
   selectListItem: func,
   userId: string,
 }
@@ -106,4 +107,4 @@ const mapDispatchToProps = dispatch => ({
   selectListItem: selectedId => dispatch(ListActions.selectListItem(selectedId)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(CompletedList));
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(SendingList));

@@ -12,30 +12,40 @@ import {
   getUpcomingShippingSched,
   calcTotalWeight,
   getReadableDate,
+  getIntervalTimeToday
 } from 'Lib';
-import { QueryEffectPage } from 'Components';
+import { QueryEffectSection } from 'Components';
 import { Colors } from 'Themes';
 import Item from './Item';
-import { FETCH_COMPLETED_LIST } from 'GraphQL/Order/Query';
+import { FETCH_PROCESSING_LIST } from 'GraphQL/Order/Query';
 import ListActions from 'Redux/ListRedux';
 import { getUserId } from 'Redux/SessionRedux';
 
-class CompletedList extends Component {
+class SendingList extends Component {
   renderItems = ({item, index}) => {
     const { selectListItem, navigation } = this.props;
-    const { _id, shipping_address, time_stamp: { complete } = {} } = item || {};
+    const {
+      _id,
+      shipping_address,
+      actual_shipping_date = [],
+    } = item || {};
     const district = getReadableSubdistrict(shipping_address);
     const address = getReadableAddress(shipping_address);
-    const arrivalTime = getReadableDate(complete);
+    let injuryTime = null;
+    if (actual_shipping_date.length) {
+      const { date, time_start, time_end } = actual_shipping_date[0];
+      const time = `${date} ${time_end}`;
+      injuryTime = getIntervalTimeToday(time);
+    }
     return (
       <Item
         id={_id}
         district={district}
         address={address}
-        arrivalTime={arrivalTime}
+        injuryTime={injuryTime}
         onSelectItem={id => {
           selectListItem(id);
-          navigation.navigate('CompletedDetail');
+          navigation.navigate('SendingDetail');
         }}
       />
     );
@@ -45,13 +55,14 @@ class CompletedList extends Component {
     const { userId } = this.props;
     return (
       <View style={{ flex: 1 }}>
+        <Text>Pesanan sedang diproses kurir</Text>
         <Query
-          query={FETCH_COMPLETED_LIST}
-          variables={{ courier_id: userId }}
+          query={FETCH_PROCESSING_LIST}
+          variables={{ courier_id: null, user_id: userId }}
         >
           {({ loading, error, data, refetch }) => {
-            const { completedOrders = [] } = data || {};
-            if (Array.isArray(completedOrders) && completedOrders.length) {
+            const { sendingOrders = [] } = data || {};
+            if (Array.isArray(sendingOrders) && sendingOrders.length) {
               return (
                 <View style={{
                   marginHorizontal: 10,
@@ -62,17 +73,17 @@ class CompletedList extends Component {
                 }}>
                   <FlatList
                     keyExtractor={(item, id) => item._id.toString()}
-                    data={completedOrders} 
+                    data={sendingOrders} 
                     renderItem={this.renderItems}
                   />
                 </View>
               )
             }
             return (
-              <QueryEffectPage
+              <QueryEffectSection
                 isLoading={loading}
                 isError={error}
-                isEmpty={!completedOrders.length}
+                isEmpty={!sendingOrders.length}
                 onRefetch={refetch}
               />
             );
@@ -83,7 +94,7 @@ class CompletedList extends Component {
   }
 }
 
-CompletedList.propTypes = {
+SendingList.propTypes = {
   selectListItem: func,
   userId: string,
 }
@@ -96,4 +107,4 @@ const mapDispatchToProps = dispatch => ({
   selectListItem: selectedId => dispatch(ListActions.selectListItem(selectedId)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(CompletedList));
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(SendingList));

@@ -11,7 +11,7 @@ class Item extends Component {
   };
 
   render() {
-    const { id, district, address, consumerSchedule, courierSchedule } = this.props;
+    const { id, transactionId, title, subtitle } = this.props;
     return (
       <TouchableOpacity
         onPress={this.onClickItem}
@@ -22,10 +22,17 @@ class Item extends Component {
           borderColor: Colors.brown_light,
         }}
       >
-        <Text>{district}</Text>
-        <Text>{address}</Text>
-        <Text>Diminta: {consumerSchedule || 'Belum terisi'}</Text>
-        <Text>Bisanya: {courierSchedule || 'Belum terisi'}</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Text style={{ fontWeight: 'bold' }}>
+            {`#${transactionId}` || '-'}
+          </Text>
+          <Text style={{ fontWeight: 'bold' }}>
+            {subtitle || '-'}
+          </Text>
+        </View>
+        <Text>
+          {title || '-'}
+        </Text>
       </TouchableOpacity>
     );
   }
@@ -33,11 +40,9 @@ class Item extends Component {
 
 Item.propTypes = {
   id: string,
-  district: string,
-  address: string,
-  consumerSchedule: string,
-  courierSchedule: string,
-  onSelectItem: func,
+  transactionId: string,
+  title: string,
+  subtitle: string,
 };
 
 export default Item;

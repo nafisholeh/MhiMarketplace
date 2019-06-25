@@ -4,14 +4,14 @@ import { string, func } from 'prop-types';
 
 import { Colors } from 'Themes';
 
-class ProcessingItem extends Component {
+class Item extends Component {
   onClickItem = () => {
     const { onSelectItem, id } = this.props;
     if (onSelectItem) onSelectItem(id);
   };
 
   render() {
-    const { id, district, address, consumerSchedule, courierSchedule } = this.props;
+    const { id, district, address, injuryTime } = this.props;
     return (
       <TouchableOpacity
         onPress={this.onClickItem}
@@ -22,22 +22,24 @@ class ProcessingItem extends Component {
           borderColor: Colors.brown_light,
         }}
       >
+        <Text style={{ fontWeight: 'bold' }}>
+          {injuryTime ? 
+            `Ditunggu ${injuryTime}` :
+            'Belum terisi'
+          }
+        </Text>
         <Text>{district}</Text>
         <Text>{address}</Text>
-        <Text>Diminta: {consumerSchedule || 'Belum terisi'}</Text>
-        <Text>Bisanya: {courierSchedule || 'Belum terisi'}</Text>
       </TouchableOpacity>
     );
   }
 }
 
-ProcessingItem.propTypes = {
+Item.propTypes = {
   id: string,
   district: string,
   address: string,
-  consumerSchedule: string,
-  courierSchedule: string,
-  onSelectItem: func,
+  injuryTime: string,
 };
 
-export default ProcessingItem;
+export default Item;

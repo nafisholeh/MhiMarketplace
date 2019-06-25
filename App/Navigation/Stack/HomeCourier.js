@@ -19,13 +19,13 @@ import AddressInput from 'Containers/Address/AddressInput';
 import Slip from 'Containers/Slip/Slip';
 import Account from 'Containers/Account/Account';
 import OrderDetail from 'Containers/Order/Detail';
-import ReadyToProcessDetail from 'Containers/Courier/ReadyToProcess/Detail';
-import Processing from 'Containers/Courier/Processing';
-import ProcessingDetail from 'Containers/Courier/Processing/Detail';
-import ReadyToSend from 'Containers/Courier/ReadyToSend';
-import ReadyToSendDetail from 'Containers/Courier/ReadyToSend/Detail';
-import Completed from 'Containers/Courier/Completed';
-import CompletedDetail from 'Containers/Courier/Completed/Detail';
+import ReadyToProcessDetail from 'Containers/CourierOrder/ReadyToProcess/Detail';
+import Processing from 'Containers/CourierOrder/Processing';
+import ProcessingDetail from 'Containers/CourierOrder/Processing/Detail';
+import ReadyToSend from 'Containers/CourierOrder/ReadyToSend';
+import ReadyToSendDetail from 'Containers/CourierOrder/ReadyToSend/Detail';
+import Completed from 'Containers/CourierOrder/Completed';
+import CompletedDetail from 'Containers/CourierOrder/Completed/Detail';
 
 const HomeNav = createStackNavigator({
   Home: { screen: Home },

@@ -6,7 +6,8 @@ import { func, string } from 'prop-types';
 import { withNavigation } from 'react-navigation';
 import { createStructuredSelector } from 'reselect';
 
-import { Colors } from 'Themes';
+import { HeaderButton } from 'Components';
+import { Colors, Images } from 'Themes';
 import { getUserId } from 'Redux/SessionRedux';
 
 import ReadyToProcessList from './ReadyToProcess';
@@ -14,7 +15,21 @@ import ProcessingList from './Processing';
 import ReadyToSendList from './ReadyToSend';
 import SendingList from './Sending';
 
-class ConsumerOrder extends Component {  
+class ConsumerOrder extends Component {
+  static navigationOptions = ({navigation}) => {
+    const { params } = navigation.state
+    const { isKurir = false } = params || {};
+    return {
+      title: 'Sekilas Pesanan Anda',
+      headerRight: (
+        <HeaderButton
+          onPress={() => navigation.navigate('ConsumerCompleted')}
+          icon={Images.sent}
+        />
+      ),
+    }
+  }
+  
   render() {
     const { userId } = this.props;
     return (

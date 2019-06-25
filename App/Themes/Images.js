@@ -20,6 +20,7 @@ const images = {
   courier_shop: require(pathPrefix+'courier_shop.png'),
   shipping: require(pathPrefix+'shipping.png'),
   tracking: require(pathPrefix+'tracking.png'),
+  sent: require(pathPrefix+'sent.png'),
 }
 
 export default images

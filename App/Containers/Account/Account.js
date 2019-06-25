@@ -3,13 +3,16 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { shape, string, func } from 'prop-types';
+import { Mutation } from 'react-apollo';
+import { DotIndicator } from 'react-native-indicators';
 
 import Config from 'Config/AppConfig';
 import { StatePage } from 'Components';
 import { Colors, Metrics } from 'Themes';
-import SessionActions, { getUser } from 'Redux/SessionRedux';
+import SessionActions, { getUser, getUserId } from 'Redux/SessionRedux';
 import CartActions from 'Redux/CartRedux';
 import CheckoutActions from 'Redux/CheckoutRedux';
+import { SIGNOUT } from 'GraphQL/User/Mutation';
 
 class Account extends Component {
   
@@ -20,13 +23,20 @@ class Account extends Component {
     }
   }
   
-  signout = async () => {
+  signout = mutate => {
+    const { userId: user_id } = this.props;
+    mutate({
+      variables: { user_id }
+    });
+  };
+  
+  onSignoutComplete = async () => {
     const { reset: clearSession, resetCart, resetCheckout, navigation } = this.props;
     await clearSession();
     await resetCart();
     await resetCheckout();
     navigation.navigate('ConsumerNav');
-  };
+  }
   
   signin = () => {
     const { navigation } = this.props;
@@ -51,17 +61,37 @@ class Account extends Component {
       <View style={{ flex: 1, padding: Metrics.baseMargin }}>
         <Text>{email}</Text>
         <Text>{name}</Text>
-        <TouchableOpacity
-          style={{
-            flex: 1,
-            maxHeight: 50,
-            justifyContent: 'center',
-            backgroundColor: Colors.green_light
+        <Mutation
+          mutation={SIGNOUT}
+          onCompleted={this.onSignoutComplete}
+          ignoreResults={false}
+          errorPolicy='all'>
+          { (mutate, {loading, error, data}) => {
+            return (
+              <TouchableOpacity
+                style={{
+                  flex: 1,
+                  maxHeight: 50,
+                  justifyContent: 'center',
+                  backgroundColor: Colors.green_light
+                }}
+                onPress={() => this.signout(mutate)}
+              >
+                {loading && (
+                  <DotIndicator
+                    count={4}
+                    size={7}
+                    color='white'
+                    animationDuration={800}
+                  /> 
+                )}
+                {!loading && (
+                  <Text style={{ alignSelf: 'center', color: 'white' }}>Keluar</Text>
+                )}
+              </TouchableOpacity>
+            );
           }}
-          onPress={this.signout}
-        >
-          <Text style={{ alignSelf: 'center', color: 'white' }}>Keluar</Text>
-        </TouchableOpacity>
+        </Mutation>
       </View>
     )
   }
@@ -75,10 +105,12 @@ Account.propTypes = {
   reset: func,
   resetCart: func,
   resetCheckout: func,
+  userId: string,
 };
 
 const mapStateToProps = createStructuredSelector({
   user: getUser(),
+  userId: getUserId(),
 });
 
 const mapDispatchToProps = dispatch => ({

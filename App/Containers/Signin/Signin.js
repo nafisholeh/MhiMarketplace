@@ -8,7 +8,6 @@ import { DotIndicator } from 'react-native-indicators';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { SIGNIN } from 'GraphQL/User/Mutation';
-import { ADD_ONE_SIGNAL_TOKEN } from 'GraphQL/OneSignal/Mutation';
 import SessionActions, { getSignupEmail } from 'Redux/SessionRedux';
 import { getOneSignalToken } from 'Redux/OneSignalRedux';
 import { isEmailError, getGraphQLError, InAppNotification } from 'Lib';
@@ -77,19 +76,14 @@ class Signin extends Component {
     const { storeSession, storeSignupEmail } = this.props;
     storeSignupEmail(null);
     try {
-      const { navigation, oneSignalToken } = this.props;
+      const { navigation, oneSignalToken: token } = this.props;
       this.setState({ loading: true });
       const signinResult = await ApolloClientProvider.client.mutate({
         mutation: SIGNIN,
-        variables: { email, password },
+        variables: { email, password, token },
       });
       const { data: { signin } } = signinResult;
       const { _id: userId, user_type } = signin;
-      
-      const tokenResult = await ApolloClientProvider.client.mutate({
-        mutation: ADD_ONE_SIGNAL_TOKEN,
-        variables: { user_id: userId , token: oneSignalToken },
-      });
       
       if (signin) {
         await storeSession(signin);

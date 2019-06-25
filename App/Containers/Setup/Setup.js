@@ -12,7 +12,7 @@ import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { FETCH_ADDRESS } from 'GraphQL/Address/Query';
 import { FETCH_COURIER_COST } from 'GraphQL/CourierCost/Query';
 import { FETCH_PAYMENT_OPTION } from 'GraphQL/PaymentOption/Query';
-import { ADD_ONE_SIGNAL_TOKEN } from 'GraphQL/OneSignal/Mutation';
+import { ADD_ONE_SIGNAL_TOKEN } from 'GraphQL/User/Mutation';
 import { getUserId } from 'Redux/SessionRedux';
 import OneSignalActions, { getOneSignalToken } from 'Redux/OneSignalRedux';
 import CartActions, { isFetchingCart, isFetchingCartSuccess } from 'Redux/CartRedux';
@@ -189,7 +189,6 @@ Setup.propTypes = {
   onStartFetchingCart: func,
   onSuccessFetchingCart: func,
   onErrorFetchingCart: func,
-  storeNotifId: func,
   isKurir: bool,
   isStokOpname: bool,
   isKeuangan: bool,
@@ -211,7 +210,6 @@ const mapDispatchToProps = dispatch => ({
   onStartFetchingCart: () => dispatch(CartActions.onStartFetchingCart()),
   onSuccessFetchingCart: () => dispatch(CartActions.onSuccessFetchingCart()),
   onErrorFetchingCart: error => dispatch(CartActions.onErrorFetchingCart(error)),
-  storeNotifId: oneSignalUserId => dispatch(OneSignalActions.storeNotifId(oneSignalUserId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Setup);

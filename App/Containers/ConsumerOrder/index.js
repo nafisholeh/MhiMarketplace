@@ -21,8 +21,8 @@ class ConsumerOrder extends Component {
     return (
       <View style={{ flex: 1 }}>
         <ReadyToProcessList />
-        {/* <ProcessingList />
-        <ReadyToSendList />
+        <ProcessingList />
+        {/* <ReadyToSendList />
         <SendingList /> */}
       </View>
     );

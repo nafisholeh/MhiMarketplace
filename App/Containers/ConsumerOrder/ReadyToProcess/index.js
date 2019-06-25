@@ -18,7 +18,7 @@ import {
 } from 'Lib';
 import { QueryEffectSection } from 'Components';
 import { Colors } from 'Themes';
-import Item from './Item';
+import Item from '../Common/Item';
 import { FETCH_READY_TO_PROCESS_LIST } from 'GraphQL/Order/Query';
 import ListActions from 'Redux/ListRedux';
 import { getUserId } from 'Redux/SessionRedux';

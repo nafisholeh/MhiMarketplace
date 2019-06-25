@@ -16,7 +16,7 @@ import {
 } from 'Lib';
 import { QueryEffectSection } from 'Components';
 import { Colors } from 'Themes';
-import Item from './Item';
+import Item from '../Common/Item';
 import { FETCH_PROCESSING_LIST } from 'GraphQL/Order/Query';
 import ListActions from 'Redux/ListRedux';
 import { getUserId } from 'Redux/SessionRedux';
@@ -26,23 +26,17 @@ class SendingList extends Component {
     const { selectListItem, navigation } = this.props;
     const {
       _id,
-      shipping_address,
-      actual_shipping_date = [],
+      products,
+      transaction_id,
+      total_cost,
     } = item || {};
-    const district = getReadableSubdistrict(shipping_address);
-    const address = getReadableAddress(shipping_address);
-    let injuryTime = null;
-    if (actual_shipping_date.length) {
-      const { date, time_start, time_end } = actual_shipping_date[0];
-      const time = `${date} ${time_end}`;
-      injuryTime = getIntervalTimeToday(time);
-    }
+    const title = getAggregateProducts(products);
     return (
       <Item
         id={_id}
-        district={district}
-        address={address}
-        injuryTime={injuryTime}
+        transactionId={transaction_id}
+        title={title}
+        subtitle={parseToRupiah(total_cost)}
         onSelectItem={id => {
           selectListItem(id);
           navigation.navigate('SendingDetail');
@@ -55,14 +49,14 @@ class SendingList extends Component {
     const { userId } = this.props;
     return (
       <View style={{ flex: 1 }}>
-        <Text>Pesanan sedang diproses kurir</Text>
+        <Text style={{ paddingHorizontal: 10 }}>Pesanan sedang diproses kurir</Text>
         <Query
           query={FETCH_PROCESSING_LIST}
           variables={{ courier_id: null, user_id: userId }}
         >
           {({ loading, error, data, refetch }) => {
-            const { sendingOrders = [] } = data || {};
-            if (Array.isArray(sendingOrders) && sendingOrders.length) {
+            const { processingOrders = [] } = data || {};
+            if (Array.isArray(processingOrders) && processingOrders.length) {
               return (
                 <View style={{
                   marginHorizontal: 10,
@@ -73,7 +67,7 @@ class SendingList extends Component {
                 }}>
                   <FlatList
                     keyExtractor={(item, id) => item._id.toString()}
-                    data={sendingOrders} 
+                    data={processingOrders} 
                     renderItem={this.renderItems}
                   />
                 </View>
@@ -83,7 +77,7 @@ class SendingList extends Component {
               <QueryEffectSection
                 isLoading={loading}
                 isError={error}
-                isEmpty={!sendingOrders.length}
+                isEmpty={!processingOrders.length}
                 onRefetch={refetch}
               />
             );

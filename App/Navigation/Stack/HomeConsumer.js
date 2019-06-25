@@ -20,6 +20,7 @@ import Slip from 'Containers/Slip/Slip';
 import Account from 'Containers/Account/Account';
 import OrderDetail from 'Containers/Order/Detail';
 import ConsumerOrder from 'Containers/ConsumerOrder';
+import ConsumerCompleted from 'Containers/ConsumerCompleted';
 
 const HomeNav = createStackNavigator({
   Home: { screen: Home },
@@ -35,6 +36,7 @@ const HomeNav = createStackNavigator({
   Slip: { screen: Slip },
   OrderDetail: { screen: OrderDetail },
   ConsumerOrder: { screen: ConsumerOrder },
+  ConsumerCompleted: { screen: ConsumerCompleted },
 }, {
   initialRouteName: 'Home',
   navigationOptions: {

@@ -330,6 +330,16 @@ export const FETCH_COMPLETED_LIST = gql`
       _id
       transaction_id
       total_cost
+      products {
+        _id
+        product {
+          _id
+          title
+          unit
+        }
+        qty
+        selected
+      }
       shipping_address {
         _id
         alamat

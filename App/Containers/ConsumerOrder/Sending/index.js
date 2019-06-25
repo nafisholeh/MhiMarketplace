@@ -12,11 +12,12 @@ import {
   getUpcomingShippingSched,
   calcTotalWeight,
   getReadableDate,
-  getIntervalTimeToday
+  getIntervalTimeToday,
+  parseToRupiah,
 } from 'Lib';
 import { QueryEffectSection } from 'Components';
 import { Colors } from 'Themes';
-import Item from './Item';
+import Item from '../Common/Item';
 import { FETCH_SENDING_LIST } from 'GraphQL/Order/Query';
 import ListActions from 'Redux/ListRedux';
 import { getUserId } from 'Redux/SessionRedux';
@@ -26,23 +27,20 @@ class SendingList extends Component {
     const { selectListItem, navigation } = this.props;
     const {
       _id,
-      shipping_address,
-      actual_shipping_date = [],
+      products,
+      transaction_id,
+      total_cost,
+      actual_shipping_date,
     } = item || {};
-    const district = getReadableSubdistrict(shipping_address);
-    const address = getReadableAddress(shipping_address);
-    let injuryTime = null;
-    if (actual_shipping_date.length) {
-      const { date, time_start, time_end } = actual_shipping_date[0];
-      const time = `${date} ${time_end}`;
-      injuryTime = getIntervalTimeToday(time);
-    }
+    const title = getAggregateProducts(products);
+    const shippingDate = getUpcomingShippingSched(actual_shipping_date);
     return (
       <Item
         id={_id}
-        district={district}
-        address={address}
-        injuryTime={injuryTime}
+        transactionId={transaction_id}
+        title={title}
+        subtitle={parseToRupiah(total_cost)}
+        body={shippingDate}
         onSelectItem={id => {
           selectListItem(id);
           navigation.navigate('SendingDetail');
@@ -55,7 +53,7 @@ class SendingList extends Component {
     const { userId } = this.props;
     return (
       <View style={{ flex: 1 }}>
-        <Text>Sedang dikirim kurir</Text>
+        <Text style={{ paddingHorizontal: 10 }}>Sedang dikirim kurir</Text>
         <Query
           query={FETCH_SENDING_LIST}
           variables={{ courier_id: null, user_id: userId }}

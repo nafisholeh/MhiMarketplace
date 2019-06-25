@@ -13,7 +13,6 @@ import ReadyToProcessList from './ReadyToProcess';
 import ProcessingList from './Processing';
 import ReadyToSendList from './ReadyToSend';
 import SendingList from './Sending';
-import CompletedList from './Completed';
 
 class ConsumerOrder extends Component {  
   render() {
@@ -23,7 +22,7 @@ class ConsumerOrder extends Component {
         <ReadyToProcessList />
         <ProcessingList />
         <ReadyToSendList />
-        {/* <SendingList /> */}
+        <SendingList />
       </ScrollView>
     );
   }

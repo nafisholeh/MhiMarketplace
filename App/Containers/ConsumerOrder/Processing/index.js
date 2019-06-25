@@ -12,7 +12,8 @@ import {
   getUpcomingShippingSched,
   calcTotalWeight,
   getReadableDate,
-  getIntervalTimeToday
+  getIntervalTimeToday,
+  parseToRupiah,
 } from 'Lib';
 import { QueryEffectSection } from 'Components';
 import { Colors } from 'Themes';

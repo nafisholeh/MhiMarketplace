@@ -19,12 +19,12 @@ class ConsumerOrder extends Component {
   render() {
     const { userId } = this.props;
     return (
-      <View style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }}>
         <ReadyToProcessList />
         <ProcessingList />
-        {/* <ReadyToSendList />
-        <SendingList /> */}
-      </View>
+        <ReadyToSendList />
+        {/* <SendingList /> */}
+      </ScrollView>
     );
   }
 }

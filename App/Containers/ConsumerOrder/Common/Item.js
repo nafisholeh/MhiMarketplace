@@ -11,7 +11,7 @@ class Item extends Component {
   };
 
   render() {
-    const { id, transactionId, title, subtitle } = this.props;
+    const { id, transactionId, title, subtitle, body } = this.props;
     return (
       <TouchableOpacity
         onPress={this.onClickItem}
@@ -33,6 +33,11 @@ class Item extends Component {
         <Text>
           {title || '-'}
         </Text>
+        {body && (
+          <Text>
+            {body}
+          </Text>
+        )}
       </TouchableOpacity>
     );
   }
@@ -43,6 +48,7 @@ Item.propTypes = {
   transactionId: string,
   title: string,
   subtitle: string,
+  body: string,
 };
 
 export default Item;

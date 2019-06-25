@@ -58,8 +58,8 @@ class SendingList extends Component {
           variables={{ courier_id: null, user_id: userId }}
         >
           {({ loading, error, data, refetch }) => {
-            const { sendingOrders = [] } = data || {};
-            if (Array.isArray(sendingOrders) && sendingOrders.length) {
+            const { readyToSendOrders = [] } = data || {};
+            if (Array.isArray(readyToSendOrders) && readyToSendOrders.length) {
               return (
                 <View style={{
                   marginHorizontal: 10,
@@ -70,7 +70,7 @@ class SendingList extends Component {
                 }}>
                   <FlatList
                     keyExtractor={(item, id) => item._id.toString()}
-                    data={sendingOrders} 
+                    data={readyToSendOrders} 
                     renderItem={this.renderItems}
                   />
                 </View>
@@ -80,7 +80,7 @@ class SendingList extends Component {
               <QueryEffectSection
                 isLoading={loading}
                 isError={error}
-                isEmpty={!sendingOrders.length}
+                isEmpty={!readyToSendOrders.length}
                 onRefetch={refetch}
               />
             );

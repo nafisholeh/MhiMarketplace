@@ -8,7 +8,7 @@ import { withNavigation } from 'react-navigation';
 import { HeaderButton } from 'Components';
 import { Images } from 'Themes';
 
-import ReadyToProcessList from 'Containers/Courier/ReadyToProcess/List';
+import ReadyToProcessList from 'Containers/CourierOrder/ReadyToProcess/List';
 
 class Home extends Component {
   static navigationOptions = ({navigation}) => {

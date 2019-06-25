@@ -15,3 +15,8 @@ export const calcTotalWeight = products => {
   const totalInWeight = parseFloat((totalKilogram + (totalGram / 1000)).toFixed(2));
   return `${totalInWeight ? `${totalInWeight} Kg` : ``}${totalPcs ? ` dan ${totalPcs} pcs`: ``}`;
 };
+
+export const getAggregateProducts = products => {
+  if (!Array.isArray(products) || !products.length) return '-';
+  return products.map(({ product: { title } }) => title).join(', ');
+}

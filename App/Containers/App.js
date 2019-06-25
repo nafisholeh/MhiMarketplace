@@ -12,7 +12,7 @@ import createStore from '../Redux'
 import ApolloClientProvider from 'Services/ApolloClientProvider'
 import { InAppNotification } from 'Lib';
 import AppConfig from "Config/AppConfig";
-import { cacheNewOrder } from 'Containers/Courier/ReadyToProcess/Helper';
+import { cacheNewOrder } from 'Containers/CourierOrder/ReadyToProcess/Helper';
 
 // create our store
 export const store = createStore()

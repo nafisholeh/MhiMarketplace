@@ -145,9 +145,11 @@ export const FETCH_ORDER_DETAIL = gql`
 `
 
 export const FETCH_READY_TO_PROCESS_LIST = gql`
-  query fetchReadyToProcessOrders {
-    readyToProcessOrders {
+  query fetchReadyToProcessOrders($user_id:String) {
+    readyToProcessOrders(user_id:$user_id) {
       _id
+      transaction_id
+      total_cost
       shipping_address {
         _id
         alamat
@@ -162,6 +164,7 @@ export const FETCH_READY_TO_PROCESS_LIST = gql`
         _id
         product {
           _id
+          title
           unit
         }
         qty
@@ -178,9 +181,11 @@ export const FETCH_READY_TO_PROCESS_LIST = gql`
 `
 
 export const FETCH_PROCESSING_LIST = gql`
-  query fetchProcessingOrders($courier_id:String!) {
-    processingOrders(courier_id:$courier_id) {
+  query fetchProcessingOrders($courier_id:String, $user_id:String) {
+    processingOrders(courier_id:$courier_id, user_id:$user_id) {
       _id
+      transaction_id
+      total_cost
       shipping_address {
         _id
         alamat
@@ -195,6 +200,7 @@ export const FETCH_PROCESSING_LIST = gql`
         _id
         product {
           _id
+          title
           unit
         }
         qty
@@ -223,9 +229,11 @@ export const FETCH_PROCESSING_COUNT = gql`
 `
 
 export const FETCH_READY_TO_SEND_LIST = gql`
-  query fetchReadyToSendOrders($courier_id:String!) {
-    readyToSendOrders(courier_id:$courier_id) {
+  query fetchReadyToSendOrders($courier_id:String, $user_id:String) {
+    readyToSendOrders(courier_id:$courier_id, user_id:$user_id) {
       _id
+      transaction_id
+      total_cost
       shipping_address {
         _id
         alamat
@@ -240,6 +248,7 @@ export const FETCH_READY_TO_SEND_LIST = gql`
         _id
         product {
           _id
+          title
           unit
         }
         qty
@@ -268,9 +277,11 @@ export const FETCH_READY_TO_SEND_COUNT = gql`
 `
 
 export const FETCH_SENDING_LIST = gql`
-  query fetchSendingOrders($courier_id:String!) {
-    sendingOrders(courier_id:$courier_id) {
+  query fetchSendingOrders($courier_id:String, $user_id:String) {
+    sendingOrders(courier_id:$courier_id, user_id:$user_id) {
       _id
+      transaction_id
+      total_cost
       shipping_address {
         _id
         alamat
@@ -285,6 +296,7 @@ export const FETCH_SENDING_LIST = gql`
         _id
         product {
           _id
+          title
           unit
         }
         qty
@@ -313,9 +325,11 @@ export const FETCH_SENDING_COUNT = gql`
 `
 
 export const FETCH_COMPLETED_LIST = gql`
-  query fetchCompletedOrders($courier_id:String!) {
-    completedOrders(courier_id:$courier_id) {
+  query fetchCompletedOrders($courier_id:String, $user_id:String) {
+    completedOrders(courier_id:$courier_id, user_id:$user_id) {
       _id
+      transaction_id
+      total_cost
       shipping_address {
         _id
         alamat

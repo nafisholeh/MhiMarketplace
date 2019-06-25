@@ -11,7 +11,7 @@ import {
   getReadableCityState
 } from './Address';
 import { InAppNotification } from './InAppNotification';
-import { calcTotalWeight } from './Product';
+import { calcTotalWeight, getAggregateProducts } from './Product';
 import { getUpcomingShippingSched, getReadableShippingSched } from './Shipping';
 import { filterObject } from './Object';
 
@@ -20,5 +20,6 @@ export {
   getGraphQLError, getReadableDate, setTabBarHide, moderateScale,
   isString, getReadableAddress, getReadableSubdistrict, getReadableCityState,
   InAppNotification, calcTotalWeight, getReadableShippingSched,
-  getUpcomingShippingSched, filterObject, getIntervalTimeToday
+  getUpcomingShippingSched, filterObject, getIntervalTimeToday,
+  getAggregateProducts,
 };

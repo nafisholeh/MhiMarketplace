@@ -23,7 +23,7 @@ class Home extends Component {
       headerLeft: null,
       headerRight: (
         <HeaderButton
-          onPress={() => navigation.navigate(isKurir ? 'Cart' : 'SendingList')}
+          onPress={() => navigation.navigate(isKurir ? 'Cart' : 'ConsumerOrder')}
           icon={isKurir ? Images.cart : Images.tracking}
         />
       ),

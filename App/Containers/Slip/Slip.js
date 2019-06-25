@@ -56,7 +56,7 @@ class Slip extends Component {
             const { orderDetail } = data;
             if (!orderDetail) return (<View />);
             const { products, transaction_id, total_cost, payment_option } = orderDetail;
-            const { how_to_pay = '' } = payment_option;
+            const { how_to_pay = '' } = payment_option || {};
             return (
               <ScrollView style={{ flex: 1, paddingHorizontal: Metrics.baseMargin }}>
                 <View style={{ marginVertical: Metrics.section }}>

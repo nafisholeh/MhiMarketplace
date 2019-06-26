@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { TouchableOpacity, View, Text } from 'react-native';
 import { DotIndicator } from 'react-native-indicators';
-import { func, string, bool, string, oneOfType } from 'prop-types';
+import { func, string, bool, number, oneOfType } from 'prop-types';
 
 import { Colors } from 'Themes';
 
@@ -15,11 +15,13 @@ class BottomButton extends Component {
     } = this.props;
     return (
       <TouchableOpacity
-        onPress={() => this.onStartSyncCart(syncCartItem)}
-        disabled={isDisabled}
+        onPress={() => {
+          if (onPress) onPress();
+        }}
+        disabled={isDisabled || isLoading}
         style={{
           height: 50,
-          backgroundColor: isDisabled ? Colors.green_light : Colors.brown_light,
+          backgroundColor: !isDisabled ? Colors.green_light : Colors.brown_light,
           alignItems: 'center',
           justifyContent: 'center',
         }}

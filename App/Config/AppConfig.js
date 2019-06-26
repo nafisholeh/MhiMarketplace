@@ -20,6 +20,8 @@ export default {
     'ProcessingDetail',
     'ReadyToSendDetail',
     'CompletedDetail',
+    'ConsumerOrderDetail',
+    'ConsumerSendingDetail'
   ],
   pageState: {
     ERROR: 'error',

@@ -14,11 +14,10 @@ import ImagePicker from './Image/ImagePicker';
 import ImageRobust from './Image/ImageRobust';
 import BottomButton from './BottomButton';
 import TouchableOpacity from './TouchableOpacity';
-import UpDownCounter from './UpDownCounter';
 
 export {
   OptimizedList, StatePage, UpDownCounter, HeaderButton, ToolbarButton,
   RadioButton, LoadingPage, LoadingSection, Touchable, QueryEffectPage,
   ImagePicker, ImageRobust, QueryEffectSection, StateSection, BottomButton,
-  TouchableOpacity, UpDownCounter
+  TouchableOpacity,
 }

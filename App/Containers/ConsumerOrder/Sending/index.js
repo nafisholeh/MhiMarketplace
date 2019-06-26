@@ -44,7 +44,7 @@ class SendingList extends Component {
         body={shippingDate}
         onSelectItem={id => {
           selectListItem(id);
-          navigation.navigate('ConsumerOrderDetail');
+          navigation.navigate('ConsumerSendingDetail');
         }}
       />
     );

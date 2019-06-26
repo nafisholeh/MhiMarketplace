@@ -50,7 +50,7 @@ export const FINISH_CHECKOUT = gql`
 `
 
 export const CONFIRM_ORDER = gql`
-  mutation($_id: String!, $account_number: String!, $account_bank: String!, $total_paid: Int!, $transaction_detail: String) {
+  mutation confirmOrder($_id: String!, $account_number: String!, $account_bank: String!, $total_paid: Int!, $transaction_detail: String) {
     confirmOrder(_id: $_id, account_number: $account_number, account_bank: $account_bank, total_paid: $total_paid, transaction_detail: $transaction_detail) {
       _id
       cart_id
@@ -68,7 +68,7 @@ export const CONFIRM_ORDER = gql`
 `
 
 export const TAKE_ORDER = gql`
-  mutation($order_id: String!, $courier_id: String!, $actual_shipping_date: [ShippingDateInput!]) {
+  mutation takeOrder($order_id: String!, $courier_id: String!, $actual_shipping_date: [ShippingDateInput!]) {
     takeOrder(order_id: $order_id, courier_id: $courier_id, actual_shipping_date: $actual_shipping_date) {
       _id
     }
@@ -99,7 +99,7 @@ export const cacheTakeOrder = (cache, { data }, removedId) => {
 };
 
 export const TAKE_ORDER_PRODUCTS = gql`
-  mutation($order_id: String!) {
+  mutation takeOrderProducts($order_id: String!) {
     takeOrderProducts(order_id: $order_id) {
       _id
     }
@@ -133,7 +133,7 @@ export const cacheTakeOrderProducts = (cache, { data }, removedId, courierId) =>
 };
 
 export const SENDING_ORDER_PRODUCTS = gql`
-  mutation($order_id: String!) {
+  mutation sendingOrderProducts($order_id: String!) {
     sendingOrderProducts(order_id: $order_id) {
       _id
     }
@@ -165,3 +165,11 @@ export const cacheSendingOrderProducts = (cache, { data }, removedId, courierId)
     }
   });
 };
+
+export const CONFIRM_ORDER_ARRIVAL = gql`
+  mutation confirmOrderArrival($order_id: String!) {
+    confirmOrderArrival(order_id: $order_id) {
+      _id
+    }
+  }
+`

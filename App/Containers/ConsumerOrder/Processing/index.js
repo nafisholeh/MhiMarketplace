@@ -14,6 +14,7 @@ import {
   getReadableDate,
   getIntervalTimeToday,
   parseToRupiah,
+  getAggregateProducts,
 } from 'Lib';
 import { QueryEffectSection } from 'Components';
 import { Colors } from 'Themes';
@@ -40,7 +41,7 @@ class SendingList extends Component {
         subtitle={parseToRupiah(total_cost)}
         onSelectItem={id => {
           selectListItem(id);
-          navigation.navigate('SendingDetail');
+          navigation.navigate('ConsumerOrderDetail');
         }}
       />
     );

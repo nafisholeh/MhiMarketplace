@@ -14,6 +14,7 @@ import {
   getReadableDate,
   getIntervalTimeToday,
   parseToRupiah,
+  getAggregateProducts,
 } from 'Lib';
 import { QueryEffectPage } from 'Components';
 import { Colors } from 'Themes';
@@ -50,7 +51,7 @@ class ConsumerCompleted extends Component {
         body={arrivalTime}
         onSelectItem={id => {
           selectListItem(id);
-          navigation.navigate('SendingDetail');
+          navigation.navigate('ConsumerOrderDetail');
         }}
       />
     );

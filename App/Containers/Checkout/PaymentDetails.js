@@ -138,13 +138,13 @@ class PaymentDetails extends Component {
           <Text>Harga Kurir</Text>
           <Text>{parseToRupiah(courierCost) || '-'}</Text>
         </View>
-        <View style={styles.paymentDetail}>
-          <Text>Harga Akhir</Text>
-          <Text>{parseToRupiah(grossPrice + courierCost) || '-'}</Text>
-        </View>
         {totalDiscount ? 
           (
             <Fragment>
+              <View style={styles.paymentDetail}>
+                <Text>Harga Akhir</Text>
+                <Text>{parseToRupiah(grossPrice + courierCost) || '-'}</Text>
+              </View>
               <View style={styles.paymentDetail}>
                 <Text>Harga diskon (Anda menghemat)</Text>
                 <Text

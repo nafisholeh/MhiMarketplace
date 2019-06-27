@@ -10,13 +10,15 @@ class Item extends Component {
       data,
       data: {
         product: { _id, title, photo, price, discount, unit }, 
-        qty = 0 
+        qty = 1
       },
       userId
     } = this.props;
     if (!data) {
       return (<View />);
     }
+    const normalPrice = price * qty;
+    const discountPrice = (price - calcDiscount(price, discount)) * qty;
     return (
       <View style={styles.container}>
         <Image
@@ -28,12 +30,12 @@ class Item extends Component {
           <Text style={styles.detailTitle}>{title}</Text>
           { discount > 0 &&
             <Text>
-              {parseToRupiah(price - calcDiscount(price, discount))}
+              {parseToRupiah(discountPrice)}
             </Text>
           }
           { (discount === 0 || !discount) &&
             <Text>
-              {parseToRupiah(price)}
+              {parseToRupiah(normalPrice)}
             </Text>
           }
           <Text style={{ alignSelf: 'flex-end' }}>

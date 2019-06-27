@@ -23,6 +23,7 @@ class QueryEffectPage extends Component {
       onRefetch,
       iconEmpty,
       iconError,
+      buttonTitle,
     } = this.props;
     if (isLoading) {
       return (
@@ -36,7 +37,10 @@ class QueryEffectPage extends Component {
       return (
         <StatePage
           title={title || emptyTitleDefault}
+          subtitle={subtitle}
           icon={iconEmpty || AppConfig.pageState.EMPTY}
+          buttonTitle={buttonTitle}
+          onPress={() => onRefetch()}
         />
       )
     }
@@ -64,6 +68,7 @@ QueryEffectPage.propTypes = {
   onRefetch: func.isRequired,
   iconEmpty: string,
   iconError: string,
+  buttonTitle: string,
 };
 
 export default QueryEffectPage;

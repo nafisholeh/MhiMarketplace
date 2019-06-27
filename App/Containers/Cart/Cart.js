@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { ScrollView, View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Query, Mutation, compose } from 'react-apollo';
@@ -11,7 +11,7 @@ import Footer from './Footer';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { UPDATE_CART_ITEM } from 'GraphQL/Cart/Mutation';
 import { FETCH_SOME_PRODUCT } from 'GraphQL/Product/Query';
-import { OptimizedList, StatePage } from 'Components';
+import { OptimizedList, StatePage, QueryEffectPage } from 'Components';
 import { getUserId, isKurir } from 'Redux/SessionRedux';
 import { getCartTotalGrossPrice } from 'Redux/CartRedux';
 import CheckoutActions from 'Redux/CheckoutRedux';
@@ -74,56 +74,58 @@ class Cart extends Component {
     }
     return (
       <View style={{flex:1}}>
-        <ScrollView
-          style={{flex:1}}
-          contentContainerStyle={{ flex: 1 }}
-        >
-          <Query 
-            query={FETCH_CART}
-            variables={{ user_id: userId }}>
-            {({ loading, error, data, refetch }) => {
-              if (loading) {
-                return (<View></View>)
-              } else if (error) {
-                return (<View></View>)
-              } else if (data) {
-                const { cart } = data;
-                if (cart && cart.length === 0) {
-                  return (
-                    <StatePage 
-                      title="Keranjang belanja kosong"
-                      subtitle="ayo mulai belanja"
-                      buttonTitle="Belanja Yuk"
-                      icon={AppConfig.pageState.EMPTY_CART}
-                      onPress={this.startBuying}
-                    />
-                  )
-                }
-                const { checked_out, checked_out_id } = cart[0];
-                if (checked_out) {
-                  storeCheckoutId(checked_out_id);
-                  return (
-                    <StatePage 
-                      title="Pesanan sebelumnya belum selesai"
-                      subtitle="Silahkan selesaikan terlebih dahulu"
-                      buttonTitle="Selesaikan Yuk"
-                      icon={AppConfig.pageState.NEED_CHECKOUT}
-                      onPress={this.openCheckout}
-                    />
-                  )
-                }
+        <Query 
+          query={FETCH_CART}
+          variables={{ user_id: userId }}>
+          {({ loading, error, data, refetch }) => {
+            const { cart = [] } = data;
+            if (Array.isArray(cart) && cart.length) {
+              const { checked_out, _id } = cart[0];
+              if (checked_out) {
+                storeCheckoutId(_id);
                 return (
-                  <FlatList
-                    keyExtractor={(item, id) => item._id.toString()}
-                    data={cart} 
-                    renderItem={this.renderCartItems}
+                  <QueryEffectPage
+                    title="Pesanan sebelumnya belum selesai"
+                    subtitle="Silahkan selesaikan terlebih dahulu"
+                    buttonTitle="Selesaikan Yuk"
+                    isEmpty
+                    iconEmpty={AppConfig.pageState.NEED_CHECKOUT}
+                    onRefetch={this.openCheckout}
                   />
                 )
               }
-            }}
-          </Query>
-        </ScrollView>
-        <Footer />
+              return (
+                <Fragment>
+                  <ScrollView
+                    style={{flex:1}}
+                    contentContainerStyle={{ flex: 1 }}
+                  >
+                    <FlatList
+                      keyExtractor={(item, id) => item._id.toString()}
+                      data={cart} 
+                      renderItem={this.renderCartItems}
+                    />
+                  </ScrollView>
+                  <Footer />
+                </Fragment>
+              )
+            }
+            return (
+              <QueryEffectPage
+                title="Keranjang belanja kosong"
+                subtitle="ayo mulai belanja"
+                isLoading={loading}
+                isError={error}
+                isEmpty={!cart.length}
+                iconEmpty={AppConfig.pageState.EMPTY_CART}
+                onRefetch={() => {
+                  if (!cart.length) this.startBuying();
+                  else refetch();
+                }}
+              />
+            );
+          }}
+        </Query>
       </View>
     )
   }

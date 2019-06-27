@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
-import { parseToRupiah, calcDiscount } from 'Lib';
+import { parseToRupiah, calcDiscount, InAppNotification } from 'Lib';
 import { Colors, Metrics } from 'Themes';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { SYNC_CART, cacheSetCart } from 'GraphQL/Cart/Mutation';
@@ -30,7 +30,6 @@ class Footer extends Component {
     super(props);
     this.state = {
       isInitiatingCheckout: false,
-      isInitiateCheckoutError: null,
     };
   }
   
@@ -41,10 +40,7 @@ class Footer extends Component {
   
   initiateCheckout = () => {
     const { userId, storeCheckoutId, resetCart } = this.props;
-    this.setState({
-      isInitiatingCheckout: true,
-      isInitiateCheckoutError: null,
-    });
+    this.setState({ isInitiatingCheckout: true });
     ApolloClientProvider.client.mutate({
       mutation: START_CHECKOUT,
       variables: { user_id: userId },
@@ -61,10 +57,8 @@ class Footer extends Component {
       this.onOpenCheckoutPage();
     })
     .catch(err => {
-      this.setState({
-        isInitiatingCheckout: false,
-        isInitiateCheckoutError: true,
-      });
+      InAppNotification.error();
+      this.setState({ isInitiatingCheckout: false });
     });
   };
   
@@ -85,7 +79,7 @@ class Footer extends Component {
 
   render() {
     const { grossTotal, isCheckoutValid, isCartFilled, isAnyCartItemSelected } = this.props;
-    const { isInitiatingCheckout, isInitiateCheckoutError } = this.state;
+    const { isInitiatingCheckout } = this.state;
     if (!isCartFilled) return (<View/>);
     return (
       <View style={{
@@ -122,7 +116,7 @@ class Footer extends Component {
                   justifyContent: 'center',
                 }}
                 >
-                {(loading || isInitiateCheckoutError) &&
+                {(loading || isInitiatingCheckout) &&
                   <DotIndicator
                     count={4}
                     size={7}
@@ -130,7 +124,7 @@ class Footer extends Component {
                     animationDuration={800}
                   />
                 }
-                {(!loading && !isInitiateCheckoutError) &&
+                {(!loading && !isInitiatingCheckout) &&
                   <Text style={{color: 'white'}}>
                     Checkout
                   </Text>

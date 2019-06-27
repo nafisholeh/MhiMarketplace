@@ -31,7 +31,7 @@ class Item extends Component {
               {parseToRupiah(calcDiscount(price, discount))}
             </Text>
           }
-          { discount === 0 &&
+          { (discount === 0 || !discount) &&
             <Text>
               {parseToRupiah(price)}
             </Text>

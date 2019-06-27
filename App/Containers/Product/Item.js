@@ -53,7 +53,7 @@ class Item extends Component {
             }>
               {parseToRupiah(price)}
             </Text>
-            <Text>{parseToRupiah(calcDiscount(price, discount))}</Text>
+            <Text>{parseToRupiah(price - calcDiscount(price, discount))}</Text>
           </View>
           { isStokOpname &&
             <TouchableOpacity

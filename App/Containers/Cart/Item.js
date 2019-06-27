@@ -76,7 +76,7 @@ class Item extends Component {
         <View style={styles.detail}>
           <Text style={styles.detailTitle}>{title}</Text>
           { discount > 0 &&
-            <Text style={styles.detailPrice}>{parseToRupiah(calcDiscount(price, discount))}</Text>
+            <Text style={styles.detailPrice}>{parseToRupiah(price - calcDiscount(price, discount))}</Text>
           }
           { !discount &&
             <Text style={styles.detailPrice}>{parseToRupiah(price)}</Text>

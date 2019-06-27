@@ -93,7 +93,7 @@ export const getCartTotalGrossPrice = () =>
       if (selected.length === 0) return 0;
       const totalPrice = selected.reduce((total, n) => {
         const prices = n.product.discount ? 
-          calcDiscount(n.product.price, n.product.discount) : 
+          n.product.price - calcDiscount(n.product.price, n.product.discount) : 
           n.product.price;
         return total + (prices * n.qty);
       }, 0);

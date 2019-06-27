@@ -28,7 +28,7 @@ class Item extends Component {
           <Text style={styles.detailTitle}>{title}</Text>
           { discount > 0 &&
             <Text>
-              {parseToRupiah(calcDiscount(price, discount))}
+              {parseToRupiah(price - calcDiscount(price, discount))}
             </Text>
           }
           { (discount === 0 || !discount) &&

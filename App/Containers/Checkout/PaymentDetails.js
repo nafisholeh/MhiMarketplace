@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -20,6 +20,7 @@ class PaymentDetails extends Component {
     super(props);
     this.state = {
       grossPrice: 0,
+      cleanPrice: 0,
       totalDiscount: 0,
       courierCost: AppConfig.defaulCourierCost,
       totalCost: 0,
@@ -40,6 +41,7 @@ class PaymentDetails extends Component {
   setupData = () => {
     const { data } = this.props;
     this.setState({
+      cleanPrice: this.getCleanPrice(data),
       grossPrice: this.getGrossPrice(data),
       totalDiscount: this.getDiscount(data),
     }, () => {
@@ -52,11 +54,20 @@ class PaymentDetails extends Component {
     });
   };
   
+  getCleanPrice = data => {
+    if (!Array.isArray(data)) return 0;
+    const total = data.reduce((total, value) => {
+      const { product: { price = 0, discount = 0}, qty = 0 } = value;
+      return total + ((price - calcDiscount(price, discount)) * qty);
+    }, 0);
+    return total;
+  }
+  
   getGrossPrice = data => {
     if (!Array.isArray(data)) return 0;
     const total = data.reduce((total, value) => {
       const { product: { price = 0, discount = 0}, qty = 0 } = value;
-      return total + (price - calcDiscount(price, discount) * qty);
+      return total + (price * qty);
     }, 0);
     return total;
   }
@@ -65,14 +76,14 @@ class PaymentDetails extends Component {
     if (!Array.isArray(data)) return 0;
     const total = data.reduce((total, value) => {
       const { product: { price = 0, discount = 0}, qty = 0 } = value;
-      return total + calcDiscount(price, discount) * qty;
+      return total + (calcDiscount(price, discount) * qty);
     }, 0);
     return total;
   };
   
   getTotalCost = (data, courier = 0) => {
     if (!Array.isArray(data)) return 0;
-    const total = this.getGrossPrice(data);
+    const total = this.getCleanPrice(data);
     return total + courier;
   }
   
@@ -103,7 +114,13 @@ class PaymentDetails extends Component {
   };
   
   render() {
-    const { totalDiscount, courierCost, totalCost, grossPrice } = this.state;
+    const {
+      totalDiscount,
+      courierCost = 0,
+      totalCost,
+      grossPrice,
+      cleanPrice
+    } = this.state;
     return (
       <View
         style={{
@@ -114,27 +131,36 @@ class PaymentDetails extends Component {
         }}
       >
         <View style={styles.paymentDetail}>
-          <Text>Harga Total</Text>
+          <Text>Harga Sebenarnya</Text>
           <Text>{parseToRupiah(grossPrice) || '-'}</Text>
         </View>
         <View style={styles.paymentDetail}>
           <Text>Harga Kurir</Text>
           <Text>{parseToRupiah(courierCost) || '-'}</Text>
         </View>
-        {totalDiscount ? (
-          <View style={styles.paymentDetail}>
-            <Text>Anda menghemat</Text>
-            <Text
-              style={{
-                color: Colors.red
-              }}
-            >
-              {`${parseToRupiah(totalDiscount)}` || '-'}
-            </Text>
-          </View>) : null
+        <View style={styles.paymentDetail}>
+          <Text>Harga Akhir</Text>
+          <Text>{parseToRupiah(grossPrice + courierCost) || '-'}</Text>
+        </View>
+        {totalDiscount ? 
+          (
+            <Fragment>
+              <View style={styles.paymentDetail}>
+                <Text>Harga diskon (Anda menghemat)</Text>
+                <Text
+                  style={{
+                    color: Colors.red
+                  }}
+                >
+                  {`${parseToRupiah(totalDiscount)}` || '-'}
+                </Text>
+              </View>
+            </Fragment>
+          ) : 
+          null
         }
         <View style={{ marginHorizontal: Metrics.baseMargin }}>
-          <Text>Total yang harus dibayarkan</Text>
+          <Text>Total yang dibayarkan</Text>
           <Text style={{
               fontSize: 22,
               fontWeight: 'bold',

@@ -20,7 +20,7 @@ import {
 } from 'Lib';
 import { getSelectedListId } from 'Redux/ListRedux';
 import { FETCH_ORDER_DETAIL } from 'GraphQL/Order/Query';
-import { CONFIRM_ORDER_ARRIVAL } from 'GraphQL/Order/Mutation';
+import { CONFIRM_ORDER_ARRIVAL, cacheOrderArrival } from 'GraphQL/Order/Mutation';
 import { SENDING_ORDER_PRODUCTS, cacheSendingOrderProducts } from 'GraphQL/Order/Mutation';
 import { getUserId } from 'Redux/SessionRedux';
 import AppConfig from 'Config/AppConfig';
@@ -148,6 +148,7 @@ class Detail extends Component {
         </Query>
         <Mutation
           mutation={CONFIRM_ORDER_ARRIVAL}
+          update={(cache, data) => cacheOrderArrival(cache, data, _id, courierId)}
           onCompleted={this.onConfirmComplete}
           ignoreResults={false}
           errorPolicy='all' 

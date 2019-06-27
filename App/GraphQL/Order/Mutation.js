@@ -3,7 +3,8 @@ import gql from 'graphql-tag';
 import {
   FETCH_READY_TO_PROCESS_LIST,
   FETCH_PROCESSING_LIST,
-  FETCH_READY_TO_SEND_LIST
+  FETCH_READY_TO_SEND_LIST,
+  FETCH_SENDING_LIST
 } from './Query';
 
 export const START_CHECKOUT = gql`
@@ -173,3 +174,29 @@ export const CONFIRM_ORDER_ARRIVAL = gql`
     }
   }
 `
+
+export const cacheOrderArrival = (cache, { data }, removedId, courierId) => {
+  const dataChild = cache.readQuery({
+    query: FETCH_SENDING_LIST,
+    variables: { courier_id: courierId },
+  });
+  const { sendingOrders } = dataChild || {};
+  if (
+    !removedId ||
+    !Array.isArray(sendingOrders) ||
+    !sendingOrders.length
+  ) {
+    return;
+  }
+  const removedIndex = sendingOrders.findIndex(item => item._id === removedId);
+  cache.writeQuery({
+    query: FETCH_SENDING_LIST,
+    variables: { courier_id: courierId },
+    data: {
+      sendingOrders: [
+        ...sendingOrders.slice(0, removedIndex),
+        ...sendingOrders.slice(removedIndex + 1, sendingOrders.length)
+      ]
+    }
+  });
+};

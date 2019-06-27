@@ -114,6 +114,7 @@ class Cart extends Component {
               <QueryEffectPage
                 title="Keranjang belanja kosong"
                 subtitle="ayo mulai belanja"
+                buttonTitle="Belanja Yuk"
                 isLoading={loading}
                 isError={error}
                 isEmpty={!cart.length}

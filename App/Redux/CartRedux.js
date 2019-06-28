@@ -20,6 +20,7 @@ const { Types, Creators } = createActions({
   updateCartQty: ['product_id', 'qty'],
   toggleSelectItem: ['product_id', 'status'],
   deleteCartItem: ['product_id'],
+  storeOutOfStock: ['out_of_stock'],
 })
 
 export const CartTypes = Types
@@ -33,6 +34,7 @@ export const INITIAL_STATE = Immutable({
   errorInfo: null,
   cart: null,
   selected: [],
+  out_of_stock: [],
 })
 
 /* ------------- Selectors ------------- */
@@ -138,6 +140,15 @@ export const isCheckoutValid = () =>
     }
   )
 
+export const getOutOfStock = () => 
+  createSelector(
+    cartSelectors(),
+    state => {
+      const { out_of_stock = [] } = state; 
+      return out_of_stock || [];
+    }
+  )
+
 /* ------------- Reducers ------------- */
 
 export const resetCart = state => INITIAL_STATE
@@ -215,6 +226,10 @@ export const deleteCartItem = (state, { product_id }) => {
   });
 }
 
+export const storeOutOfStock = (state, { out_of_stock }) => {
+  return state.merge({ out_of_stock: out_of_stock || [] });
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -227,4 +242,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_CART_QTY]: updateCartQty,
   [Types.TOGGLE_SELECT_ITEM]: toggleSelectItem,  
   [Types.DELETE_CART_ITEM]: deleteCartItem,
+  [Types.STORE_OUT_OF_STOCK]: storeOutOfStock,
 })

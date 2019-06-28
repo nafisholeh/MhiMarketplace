@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { ScrollView, View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Query, Mutation, compose } from 'react-apollo';
-import { string, func, number, bool } from 'prop-types';
+import { string, func, number, bool, arrayOf, shape } from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import { withNavigation } from 'react-navigation';
 
@@ -13,7 +13,7 @@ import { UPDATE_CART_ITEM } from 'GraphQL/Cart/Mutation';
 import { FETCH_SOME_PRODUCT } from 'GraphQL/Product/Query';
 import { OptimizedList, StatePage, QueryEffectPage } from 'Components';
 import { getUserId, isKurir } from 'Redux/SessionRedux';
-import { getCartTotalGrossPrice } from 'Redux/CartRedux';
+import { getCartTotalGrossPrice, getOutOfStock } from 'Redux/CartRedux';
 import CheckoutActions from 'Redux/CheckoutRedux';
 import { Images, Metrics, Colors } from 'Themes';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
@@ -26,6 +26,23 @@ class Cart extends Component {
     const {params = {}} = navigation.state
     return {
       title: 'Keranjang Belanja',
+    }
+  }
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      refresh: false,
+    };
+  }
+  
+  componentDidUpdate(prevProps) {
+    if (prevProps.outOfStock !== this.props.outOfStock) {
+      this.setState((prevState) => {
+        return {
+          refresh: !prevState.refresh,
+        }
+      });
     }
   }
   
@@ -46,18 +63,25 @@ class Cart extends Component {
   }
   
   renderCartItems = ({ item, index }) => {
-    const { userId } = this.props;
+    const { _id: cartItemId, product: { _id: productId }} = item;
+    const { userId, outOfStock } = this.props;
+    const outOfStockProduct = Array.isArray(outOfStock) ?
+      outOfStock.filter(({ _id, maxStock}) => productId === _id) : [];
+    const maxStock = Array.isArray(outOfStockProduct) && outOfStockProduct.length ?
+      outOfStockProduct[0].maxStock : 0;
     return (
       <Item 
-        key={item._id}
+        key={cartItemId}
         data={item}
         userId={userId}
         navigation={this.props.navigation}
+        maxStock={maxStock}
       />
     );
   };
 
   render() {
+    const { refresh } = this.state;
     const { userId, grossPriceTotal, storeCheckoutId } = this.props;
     if (!userId) {
       return (
@@ -104,6 +128,7 @@ class Cart extends Component {
                       keyExtractor={(item, id) => item._id.toString()}
                       data={cart} 
                       renderItem={this.renderCartItems}
+                      extraData={refresh}
                     />
                   </ScrollView>
                   <Footer />
@@ -138,12 +163,17 @@ Cart.propTypes = {
   updateCartItem: func,
   storeCheckoutId: func,
   isKurir: bool,
+  outOfStock: arrayOf(shape({
+    _id: string,
+    maxStock: number,
+  })),
 }
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
   grossPriceTotal: getCartTotalGrossPrice(),
   isKurir: isKurir(),
+  outOfStock: getOutOfStock(),
 });
 
 const mapDispatchToProps = dispatch => ({

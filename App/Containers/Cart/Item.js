@@ -57,7 +57,15 @@ class Item extends Component {
   }
   
   render() {
-    const { data, data: { product: { _id, title, photo, price, discount }, qty = 0 }, userId } = this.props
+    const {
+      data,
+      data: {
+        product: { _id, title, photo, price, discount },
+        qty = 0
+      },
+      userId,
+      maxStock
+    } = this.props
     const { selected } = this.state;
     if (!data) {
       return <View />
@@ -80,6 +88,9 @@ class Item extends Component {
           }
           { !discount &&
             <Text style={styles.detailPrice}>{parseToRupiah(price)}</Text>
+          }
+          { maxStock > 0 && 
+            <Text style={{ color: 'red'}}>Stok maksimal {maxStock}</Text>
           }
           <UpDownCounter
             initCounter={qty}
@@ -127,6 +138,7 @@ Item.propTypes = {
   updateCartQty: func,
   deleteCartItem: func,
   selected: arrayOf(string),
+  maxStock: number,
 }
 
 const mapStateToProps = createStructuredSelector({

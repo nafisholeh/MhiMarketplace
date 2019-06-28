@@ -18,6 +18,7 @@ export const START_CHECKOUT = gql`
       user_id {
         _id
       }
+      status
       gross_price
       total_discount
       courier_cost

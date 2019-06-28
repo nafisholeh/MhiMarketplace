@@ -33,13 +33,18 @@ class Footer extends Component {
     };
   }
   
+  componentDidMount() {
+    const { storeOutOfStock } = this.props;
+    storeOutOfStock(null);
+  }
+  
   onOpenCheckoutPage = () => {
     const { navigation } = this.props;
     navigation.navigate('Checkout');
   }
   
-  initiateCheckout = () => {
-    const { userId, storeCheckoutId, resetCart } = this.props;
+  initiateCheckout = data => {
+    const { userId, storeCheckoutId, resetCart, storeOutOfStock } = this.props;
     this.setState({ isInitiatingCheckout: true });
     ApolloClientProvider.client.mutate({
       mutation: START_CHECKOUT,
@@ -50,10 +55,17 @@ class Footer extends Component {
       }],
     })
     .then(res => {
-      const { data: { startCheckout: { _id:checkoutId = 0 }}} = res;
+      this.setState({ isInitiatingCheckout: false });
+      const { data: { startCheckout: { _id:checkoutId = 0, status, products }}} = res;
+      if (status === 'out of stock') {
+        const outOfStockProducts = Array.isArray(products) && products.map(({ _id, qty }) => ({ _id, maxStock: qty }));
+        const outOfStockTotal = Array.isArray(products) && products.length ? `${products.length} ` : ' ';
+        storeOutOfStock(outOfStockProducts);
+        InAppNotification.error("Checkout pesanan gagal", `Maaf, ada ${outOfStockTotal}produk yang melebihi stok`);
+        return;
+      }
       storeCheckoutId(checkoutId);
       resetCart();
-      this.setState({ isInitiatingCheckout: false });
       this.onOpenCheckoutPage();
     })
     .catch(err => {
@@ -181,6 +193,7 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = dispatch => ({
   storeCheckoutId: checkoutId => dispatch(CheckoutActions.storeCheckoutId(checkoutId)),
   resetCart: () => dispatch(CartActions.resetCart()),
+  storeOutOfStock: outOfStockProducts => dispatch(CartActions.storeOutOfStock(outOfStockProducts)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(Footer));

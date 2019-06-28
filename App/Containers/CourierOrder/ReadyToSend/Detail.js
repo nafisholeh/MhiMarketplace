@@ -159,12 +159,6 @@ class Detail extends Component {
           mutation={SENDING_ORDER_PRODUCTS}
           update={(cache, data) => cacheSendingOrderProducts(cache, data, _id, courierId)}
           onCompleted={this.onSendingOrderComplete}
-          refetchQueries={[
-            {
-              query: FETCH_READY_TO_SEND_COUNT,
-              variables: { courier_id: courierId }
-            }
-          ]}
           ignoreResults={false}
           errorPolicy='all'
         >

@@ -179,10 +179,6 @@ class Detail extends Component {
               {
                 query: FETCH_READY_TO_SEND_LIST,
                 variables: { courier_id: courierId }
-              },
-              {
-                query: FETCH_READY_TO_SEND_COUNT,
-                variables: { courier_id: courierId }
               }
             ]
           }

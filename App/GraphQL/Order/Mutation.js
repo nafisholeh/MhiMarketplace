@@ -4,7 +4,10 @@ import {
   FETCH_READY_TO_PROCESS_LIST,
   FETCH_PROCESSING_LIST,
   FETCH_READY_TO_SEND_LIST,
-  FETCH_SENDING_LIST
+  FETCH_SENDING_LIST,
+  FETCH_PROCESSING_COUNT,
+  FETCH_READY_TO_SEND_COUNT,
+  FETCH_SENDING_COUNT,
 } from './Query';
 
 export const START_CHECKOUT = gql`
@@ -107,7 +110,24 @@ export const TAKE_ORDER_PRODUCTS = gql`
   }
 `
 
+export const cacheOrderCount = (cache, query, courierId, isAdd) => {
+  const data = cache.readQuery({
+    query,
+    variables: { courier_id: courierId }
+  });
+  const value = data[Object.keys(data)[0]] || 0;
+  cache.writeQuery({
+    query,
+    variables: { courier_id: courierId },
+    data: {
+      [Object.keys(data)[0]]: isAdd ? value + 1 : value - 1
+    }
+  });
+}
+
 export const cacheTakeOrderProducts = (cache, { data }, removedId, courierId) => {
+  exports.cacheOrderCount(cache, FETCH_PROCESSING_COUNT, courierId, false);
+  exports.cacheOrderCount(cache, FETCH_READY_TO_SEND_COUNT, courierId, true);
   const dataChild = cache.readQuery({
     query: FETCH_PROCESSING_LIST,
     variables: { courier_id: courierId },
@@ -142,6 +162,8 @@ export const SENDING_ORDER_PRODUCTS = gql`
 `
 
 export const cacheSendingOrderProducts = (cache, { data }, removedId, courierId) => {
+  exports.cacheOrderCount(cache, FETCH_READY_TO_SEND_COUNT, courierId, false);
+  exports.cacheOrderCount(cache, FETCH_SENDING_COUNT, courierId, true);
   const dataChild = cache.readQuery({
     query: FETCH_READY_TO_SEND_LIST,
     variables: { courier_id: courierId },

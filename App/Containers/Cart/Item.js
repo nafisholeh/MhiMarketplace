@@ -90,7 +90,7 @@ class Item extends Component {
             <Text style={styles.detailPrice}>{parseToRupiah(price)}</Text>
           }
           { maxStock > 0 && 
-            <Text style={{ color: 'red'}}>Stok maksimal {maxStock}</Text>
+            <Text style={{ color: 'red'}}>Stok habis, sisa {maxStock}</Text>
           }
           <UpDownCounter
             initCounter={qty}

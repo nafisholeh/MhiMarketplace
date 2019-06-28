@@ -40,6 +40,13 @@ class OrderPanel extends Component {
 
   render() {
     const { courierId } = this.props;
+    if (!courierId) {
+      return (
+        <View>
+          <Text>Tidak ada ID kurir</Text>
+        </View>
+      );
+    }
     return (
       <View style={{ paddingVertical: 5 }}>
         <Item

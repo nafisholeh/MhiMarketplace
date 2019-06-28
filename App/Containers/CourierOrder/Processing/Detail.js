@@ -40,7 +40,6 @@ class Detail extends Component {
       markedDates: {},
       allProducts: [],
       takenProducts: [],
-      isFetchComplete: false,
       canProceed: false,
     }
   }
@@ -80,7 +79,6 @@ class Detail extends Component {
     
     this.setState(prevState => {
       return {
-        isFetchComplete: true,
         markedDates: {
           ...prevState.markedDates,
           ...this.getRequestedDate(requested),
@@ -118,6 +116,7 @@ class Detail extends Component {
           query={FETCH_ORDER_DETAIL}
           variables={{ _id }}
           onCompleted={this.onFetchComplete}
+          notifyOnNetworkStatusChange
         >
           {({ loading, error, data, refetch }) => {
             if (loading || error || !data) {

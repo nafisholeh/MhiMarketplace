@@ -105,6 +105,7 @@ class Detail extends Component {
           query={FETCH_ORDER_DETAIL}
           variables={{ _id }}
           onCompleted={this.onFetchComplete}
+          notifyOnNetworkStatusChange
         >
           {({ loading, error, data, refetch }) => {
             if (loading || error || !data) {

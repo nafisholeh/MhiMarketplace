@@ -79,7 +79,35 @@ export const TAKE_ORDER = gql`
   }
 `
 
-export const cacheTakeOrder = (cache, { data }, removedId) => {
+export const cacheOrderCount = (cache, query, defName, courierId, isAdd) => {
+  let data = {};
+  try {
+    data = cache.readQuery({
+      query,
+      variables: { courier_id: courierId }
+    });
+  } catch (err) {
+    cache.writeQuery({
+      query,
+      variables: { courier_id: courierId },
+      data: {
+        [defName]: 1,
+      }
+    });
+    return;
+  }
+  const value = data[defName] || 0;
+  cache.writeQuery({
+    query,
+    variables: { courier_id: courierId },
+    data: {
+      [defName]: isAdd ? value + 1 : value - 1
+    }
+  });
+}
+
+export const cacheTakeOrder = (cache, { data }, removedId, courierId) => {
+  exports.cacheOrderCount(cache, FETCH_PROCESSING_COUNT, 'processingOrdersCount', courierId, true);
   const { readyToProcessOrders } = cache.readQuery({
     query: FETCH_READY_TO_PROCESS_LIST,  
   });
@@ -110,24 +138,9 @@ export const TAKE_ORDER_PRODUCTS = gql`
   }
 `
 
-export const cacheOrderCount = (cache, query, courierId, isAdd) => {
-  const data = cache.readQuery({
-    query,
-    variables: { courier_id: courierId }
-  });
-  const value = data[Object.keys(data)[0]] || 0;
-  cache.writeQuery({
-    query,
-    variables: { courier_id: courierId },
-    data: {
-      [Object.keys(data)[0]]: isAdd ? value + 1 : value - 1
-    }
-  });
-}
-
 export const cacheTakeOrderProducts = (cache, { data }, removedId, courierId) => {
-  exports.cacheOrderCount(cache, FETCH_PROCESSING_COUNT, courierId, false);
-  exports.cacheOrderCount(cache, FETCH_READY_TO_SEND_COUNT, courierId, true);
+  exports.cacheOrderCount(cache, FETCH_PROCESSING_COUNT, 'processingOrdersCount', courierId, false);
+  exports.cacheOrderCount(cache, FETCH_READY_TO_SEND_COUNT, 'readyToSendOrdersCount', courierId, true);
   const dataChild = cache.readQuery({
     query: FETCH_PROCESSING_LIST,
     variables: { courier_id: courierId },
@@ -162,8 +175,8 @@ export const SENDING_ORDER_PRODUCTS = gql`
 `
 
 export const cacheSendingOrderProducts = (cache, { data }, removedId, courierId) => {
-  exports.cacheOrderCount(cache, FETCH_READY_TO_SEND_COUNT, courierId, false);
-  exports.cacheOrderCount(cache, FETCH_SENDING_COUNT, courierId, true);
+  exports.cacheOrderCount(cache, FETCH_READY_TO_SEND_COUNT, 'readyToSendOrdersCount', courierId, false);
+  exports.cacheOrderCount(cache, FETCH_SENDING_COUNT, 'sendingOrdersCount', courierId, true);
   const dataChild = cache.readQuery({
     query: FETCH_READY_TO_SEND_LIST,
     variables: { courier_id: courierId },

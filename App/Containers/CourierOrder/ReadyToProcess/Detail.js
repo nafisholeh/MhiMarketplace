@@ -21,7 +21,6 @@ import { getSelectedListId } from 'Redux/ListRedux';
 import {
   FETCH_ORDER_DETAIL,
   FETCH_PROCESSING_LIST,
-  FETCH_PROCESSING_COUNT
 } from 'GraphQL/Order/Query';
 import { TAKE_ORDER, cacheTakeOrder } from 'GraphQL/Order/Mutation';
 import { getUserId } from 'Redux/SessionRedux';
@@ -210,10 +209,6 @@ class Detail extends Component {
             [
               {
                 query: FETCH_PROCESSING_LIST,
-                variables: { courier_id: courierId }
-              },
-              {
-                query: FETCH_PROCESSING_COUNT,
                 variables: { courier_id: courierId }
               }
             ]

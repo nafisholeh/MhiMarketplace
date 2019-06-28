@@ -19,7 +19,7 @@ import {
 } from 'Lib';
 import { getSelectedListId } from 'Redux/ListRedux';
 import { FETCH_ORDER_DETAIL } from 'GraphQL/Order/Query';
-import { SENDING_ORDER_PRODUCTS, cacheSendingOrderProducts } from 'GraphQL/Order/Mutation';
+import { FINISH_SENDING_ORDER, cacheFinishSendingOrder } from 'GraphQL/Order/Mutation';
 import { getUserId } from 'Redux/SessionRedux';
 import AppConfig from 'Config/AppConfig';
 
@@ -70,6 +70,18 @@ class Detail extends Component {
         timeline: this.parseTimeline(time_stamp),
       }
     });
+  };
+  
+  finishSendingOrder = mutate => {
+    const { listId: order_id } = this.props;
+    mutate({
+      variables: { order_id }
+    });
+  };
+  
+  onSentOrderComplete = () => {
+    const { navigation } = this.props;
+    navigation.goBack();
   };
 
   render() {
@@ -133,6 +145,41 @@ class Detail extends Component {
             );
           }}
         </Query>
+        <Mutation
+          mutation={FINISH_SENDING_ORDER}
+          update={(cache, data) => cacheFinishSendingOrder(cache, data, _id, courierId)}
+          onCompleted={this.onSentOrderComplete}
+          ignoreResults={false}
+          errorPolicy='all'
+        >
+          {(mutate, {loading, error, data}) => {
+            return (
+              <TouchableOpacity
+                onPress={() => this.finishSendingOrder(mutate)}
+                style={{
+                  height: 50,
+                  backgroundColor: Colors.green_light,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                {loading &&
+                  <DotIndicator
+                    count={4}
+                    size={7}
+                    color='white'
+                    animationDuration={800}
+                  />
+                }
+                {!loading &&
+                  <Text style={{ color: 'white' }}>
+                    PESANAN TERKIRIM
+                  </Text>
+                }
+              </TouchableOpacity>
+            );
+          }}
+        </Mutation>
       </Fragment>
     );
   }

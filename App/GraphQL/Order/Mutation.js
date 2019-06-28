@@ -202,6 +202,41 @@ export const cacheSendingOrderProducts = (cache, { data }, removedId, courierId)
   });
 };
 
+export const FINISH_SENDING_ORDER = gql`
+  mutation finishSendingOrder($order_id: String!) {
+    finishSendingOrder(order_id: $order_id) {
+      _id
+    }
+  }
+`
+
+export const cacheFinishSendingOrder = (cache, { data }, removedId, courierId) => {
+  exports.cacheOrderCount(cache, FETCH_SENDING_COUNT, 'sendingOrdersCount', courierId, false);
+  const dataChild = cache.readQuery({
+    query: FETCH_SENDING_LIST,
+    variables: { courier_id: courierId },
+  });
+  const { sendingOrders } = dataChild || {};
+  if (
+    !removedId ||
+    !Array.isArray(sendingOrders) ||
+    !sendingOrders.length
+  ) {
+    return;
+  }
+  const removedIndex = sendingOrders.findIndex(item => item._id === removedId);
+  cache.writeQuery({
+    query: FETCH_SENDING_LIST,
+    variables: { courier_id: courierId },
+    data: {
+      sendingOrders: [
+        ...sendingOrders.slice(0, removedIndex),
+        ...sendingOrders.slice(removedIndex + 1, sendingOrders.length)
+      ]
+    }
+  });
+};
+
 export const CONFIRM_ORDER_ARRIVAL = gql`
   mutation confirmOrderArrival($order_id: String!) {
     confirmOrderArrival(order_id: $order_id) {

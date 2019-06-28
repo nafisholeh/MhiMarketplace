@@ -223,8 +223,8 @@ export const FETCH_PROCESSING_LIST = gql`
 `
 
 export const FETCH_PROCESSING_COUNT = gql`
-  query($courier_id:String!) {
-    processingOrdersCount(courier_id:$courier_id)
+  query processingOrdersCount($courier_id:String!, $user_id:String) {
+    processingOrdersCount(courier_id:$courier_id, user_id:$user_id)
   }
 `
 
@@ -271,8 +271,8 @@ export const FETCH_READY_TO_SEND_LIST = gql`
 `
 
 export const FETCH_READY_TO_SEND_COUNT = gql`
-  query($courier_id:String!) {
-    readyToSendOrdersCount(courier_id:$courier_id)
+  query readyToSendOrdersCount($courier_id:String!, $user_id:String) {
+    readyToSendOrdersCount(courier_id:$courier_id, user_id:$user_id)
   }
 `
 
@@ -319,8 +319,8 @@ export const FETCH_SENDING_LIST = gql`
 `
 
 export const FETCH_SENDING_COUNT = gql`
-  query($courier_id:String!) {
-    sendingOrdersCount(courier_id:$courier_id)
+  query sendingOrdersCount($courier_id:String!, $user_id:String) {
+    sendingOrdersCount(courier_id:$courier_id, user_id:$user_id)
   }
 `
 

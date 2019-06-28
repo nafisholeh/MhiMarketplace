@@ -14,6 +14,7 @@ import {
   FETCH_PROCESSING_COUNT,
   FETCH_READY_TO_SEND_COUNT,
   FETCH_SENDING_COUNT,
+  FETCH_SENT_COUNT,
 } from 'GraphQL/Order/Query';
 
 import Item from './Item';
@@ -72,6 +73,14 @@ class OrderPanel extends Component {
           query={FETCH_SENDING_COUNT}
           queryResponse="sendingOrdersCount"
           onPress={() => this.openPage('Sending')}
+        />
+        <Item
+          title="Telah Terkirim belum terkonfirmasi"
+          description="Barang sudah sampai tapi belum dikonfirmasi oleh konsumen"
+          courierId={courierId}
+          query={FETCH_SENT_COUNT}
+          queryResponse="sentOrdersCount"
+          onPress={() => this.openPage('Sent')}
         />
       </View>
     );

@@ -7,11 +7,11 @@ import { withNavigation } from 'react-navigation';
 
 import List from './List';
 
-class Completed extends Component {
+class Sent extends Component {
   static navigationOptions = ({navigation}) => {
     const {params = {}} = navigation.state
     return {
-      title: 'Pesanan Sedang Kirim',
+      title: 'Pesanan Terkirim',
     }
   }
 
@@ -24,7 +24,7 @@ class Completed extends Component {
   }
 }
 
-Completed.propTypes = {
+Sent.propTypes = {
   
 };
 
@@ -32,4 +32,4 @@ const mapStateToProps = createStructuredSelector({
   
 });
 
-export default connect(mapStateToProps, null)(withNavigation(Completed));
+export default connect(mapStateToProps, null)(withNavigation(Sent));

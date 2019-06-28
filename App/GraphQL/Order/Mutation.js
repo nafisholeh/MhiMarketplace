@@ -8,6 +8,7 @@ import {
   FETCH_PROCESSING_COUNT,
   FETCH_READY_TO_SEND_COUNT,
   FETCH_SENDING_COUNT,
+  FETCH_SENT_COUNT,
 } from './Query';
 
 export const START_CHECKOUT = gql`
@@ -212,6 +213,7 @@ export const FINISH_SENDING_ORDER = gql`
 
 export const cacheFinishSendingOrder = (cache, { data }, removedId, courierId) => {
   exports.cacheOrderCount(cache, FETCH_SENDING_COUNT, 'sendingOrdersCount', courierId, false);
+  exports.cacheOrderCount(cache, FETCH_SENT_COUNT, 'sentOrdersCount', courierId, true);
   const dataChild = cache.readQuery({
     query: FETCH_SENDING_LIST,
     variables: { courier_id: courierId },

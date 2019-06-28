@@ -15,6 +15,8 @@ import ReadyToSend from 'Containers/CourierOrder/ReadyToSend';
 import ReadyToSendDetail from 'Containers/CourierOrder/ReadyToSend/Detail';
 import Sending from 'Containers/CourierOrder/Sending';
 import SendingDetail from 'Containers/CourierOrder/Sending/Detail';
+import Sent from 'Containers/CourierOrder/Sent';
+import SentDetail from 'Containers/CourierOrder/Sent/Detail';
 import Completed from 'Containers/CourierOrder/Completed';
 import CompletedDetail from 'Containers/CourierOrder/Completed/Detail';
 
@@ -28,6 +30,8 @@ const OrderNav = createStackNavigator({
   ReadyToSendDetail: { screen: ReadyToSendDetail },
   Sending: { screen: Sending },
   SendingDetail: { screen: SendingDetail },
+  Sent: { screen: Sent },
+  SentDetail: { screen: SentDetail },
   Completed: { screen: Completed },
   CompletedDetail: { screen: CompletedDetail },
 }, {

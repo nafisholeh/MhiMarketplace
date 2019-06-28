@@ -18,8 +18,7 @@ import {
   filterObject,
 } from 'Lib';
 import { getSelectedListId } from 'Redux/ListRedux';
-import { FETCH_ORDER_DETAIL, FETCH_SENT_LIST } from 'GraphQL/Order/Query';
-import { FINISH_SENDING_ORDER, cacheFinishSendingOrder } from 'GraphQL/Order/Mutation';
+import { FETCH_ORDER_DETAIL } from 'GraphQL/Order/Query';
 import { getUserId } from 'Redux/SessionRedux';
 import AppConfig from 'Config/AppConfig';
 
@@ -27,7 +26,7 @@ class Detail extends Component {
   static navigationOptions = ({navigation}) => {
     const {params = {}} = navigation.state
     return {
-      title: 'Detail Pesanan Sedang Kirim',
+      title: 'Detail Pesanan Terkirim',
     }
   }
 
@@ -145,49 +144,6 @@ class Detail extends Component {
             );
           }}
         </Query>
-        <Mutation
-          mutation={FINISH_SENDING_ORDER}
-          update={(cache, data) => cacheFinishSendingOrder(cache, data, _id, courierId)}
-          onCompleted={this.onSentOrderComplete}
-          refetchQueries={
-            [
-              {
-                query: FETCH_SENT_LIST,
-                variables: { courier_id: courierId }
-              }
-            ]
-          }
-          ignoreResults={false}
-          errorPolicy='all'
-        >
-          {(mutate, {loading, error, data}) => {
-            return (
-              <TouchableOpacity
-                onPress={() => this.finishSendingOrder(mutate)}
-                style={{
-                  height: 50,
-                  backgroundColor: Colors.green_light,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                {loading &&
-                  <DotIndicator
-                    count={4}
-                    size={7}
-                    color='white'
-                    animationDuration={800}
-                  />
-                }
-                {!loading &&
-                  <Text style={{ color: 'white' }}>
-                    PESANAN TERKIRIM
-                  </Text>
-                }
-              </TouchableOpacity>
-            );
-          }}
-        </Mutation>
       </Fragment>
     );
   }

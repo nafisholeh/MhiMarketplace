@@ -20,6 +20,7 @@ export default {
     'ProcessingDetail',
     'ReadyToSendDetail',
     'SendingDetail',
+    'SentDetail',
     'CompletedDetail',
     'ConsumerOrderDetail',
     'ConsumerSendingDetail'

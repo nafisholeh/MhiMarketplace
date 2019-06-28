@@ -324,6 +324,54 @@ export const FETCH_SENDING_COUNT = gql`
   }
 `
 
+export const FETCH_SENT_LIST = gql`
+  query fetchSentOrders($courier_id:String, $user_id:String) {
+    sentOrders(courier_id:$courier_id, user_id:$user_id) {
+      _id
+      transaction_id
+      total_cost
+      shipping_address {
+        _id
+        alamat
+        rtrw
+        kelurahan
+        kecamatan
+        kota
+        provinsi
+        kodepos
+      }
+      products {
+        _id
+        product {
+          _id
+          title
+          unit
+        }
+        qty
+        selected
+      }
+      requested_shipping_date {
+        _id
+        date
+        time_start
+        time_end
+      }
+      actual_shipping_date {
+        _id
+        date
+        time_start
+        time_end
+      }
+    }
+  }
+`
+
+export const FETCH_SENT_COUNT = gql`
+  query sentOrdersCount($courier_id:String!, $user_id:String) {
+    sentOrdersCount(courier_id:$courier_id, user_id:$user_id)
+  }
+`
+
 export const FETCH_COMPLETED_LIST = gql`
   query fetchCompletedOrders($courier_id:String, $user_id:String) {
     completedOrders(courier_id:$courier_id, user_id:$user_id) {

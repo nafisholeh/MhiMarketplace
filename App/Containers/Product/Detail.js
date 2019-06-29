@@ -81,7 +81,12 @@ class Detail extends Component {
               const priceRupiah = parseToRupiah(price);
               const discountRupiah = parseToRupiah(calcDiscount(price, discount));
               return (
-                <View style={styles.container}>
+                <View
+                  style={{
+                    flex: 1,
+                    backgroundColor: isInsideCart ? '#FC9000' : '#a8de1c',
+                  }}
+                >
                   <TouchableOpacity
                     onPress={() => navigation.goBack()}
                     style={{ 
@@ -91,7 +96,21 @@ class Detail extends Component {
                     }}>
                     <Image source={Images.back} style={{ width: 25, height: 25, tintColor: 'white' }} />
                   </TouchableOpacity>
-                  <ScrollView style={styles.scrollView}>
+                  <View 
+                    style={{
+                      position: 'absolute',
+                      alignSelf: 'center',
+                      width: 900, height: 900,
+                      marginTop: moderateScale(75),
+                      borderRadius: 450,
+                      backgroundColor: 'white',
+                    }}
+                  />
+                  <ScrollView 
+                    contentContainerStyle={{
+                      alignItems: 'center',
+                    }}
+                  >
                     <ProductDetailWrapper>
                       <Image
                         source={{ uri: photo }}
@@ -204,6 +223,7 @@ class Detail extends Component {
                       mutation={UPDATE_CART_ITEM_SCHEMA}
                       variables={{ user_id: userId, product_id: productId, qty: null }}
                       update={(cache, data) => cacheUpdateCartItem(cache, data, productId)}
+                      onCompleted={this.onUpdateCartItem}
                       onError={(error) => {}}
                       ignoreResults={false}
                       errorPolicy='all'>

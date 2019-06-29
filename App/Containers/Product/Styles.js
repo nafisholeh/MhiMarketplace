@@ -10,7 +10,7 @@ export default StyleSheet.create({
     backgroundColor: 'white',
   },
   scrollView: {
-    paddingHorizontal: Metrics.baseMargin,
+    // paddingHorizontal: Metrics.baseMargin,
     paddingBottom: Metrics.baseMargin,
   },
   logo: {

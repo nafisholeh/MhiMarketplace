@@ -16,11 +16,14 @@ import BottomButton from './BottomButton';
 import TouchableOpacity from './TouchableOpacity';
 import SearchBar from './SearchBar';
 import ProductWrapper from './Product/ProductWrapper';
+import ProductDetailWrapper from './Product/ProductDetailWrapper';
 import CartAddButton from './Product/CartAddButton';
+import CartAddBottomButton from './Product/CartAddBottomButton';
 
 export {
   OptimizedList, StatePage, UpDownCounter, HeaderButton, ToolbarButton,
   RadioButton, LoadingPage, LoadingSection, Touchable, QueryEffectPage,
   ImagePicker, ImageRobust, QueryEffectSection, StateSection, BottomButton,
-  TouchableOpacity, SearchBar, ProductWrapper, CartAddButton,
+  TouchableOpacity, SearchBar, ProductWrapper, CartAddButton, ProductDetailWrapper,
+  CartAddBottomButton,
 }

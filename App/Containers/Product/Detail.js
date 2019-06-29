@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Alert, ScrollView, Text, Image, View, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
@@ -11,10 +11,10 @@ import { UPDATE_CART_ITEM, UPDATE_CART_ITEM_SCHEMA, cacheUpdateCartItem } from '
 import { getUser, isAdmin } from 'Redux/SessionRedux';
 import { getCartItemIds } from 'Redux/CartRedux';
 
-import { Images, Metrics, Colors } from 'Themes'
-import { OptimizedList, HeaderButton } from 'Components'
-import { parseToRupiah, calcDiscount, getReadableDate } from 'Lib'
-import styles from './Styles'
+import { Images, Metrics, Colors } from 'Themes';
+import { OptimizedList, HeaderButton, ProductDetailWrapper, CartAddBottomButton } from 'Components';
+import { parseToRupiah, calcDiscount, getReadableDate, moderateScale } from 'Lib';
+import styles from './Styles';
 
 class Detail extends Component {
   
@@ -60,7 +60,7 @@ class Detail extends Component {
     const { 
       navigation: { state: { params: { data: { _id: productId } }}},
       cartItemIds,
-      user: { _id: userId },
+      user: { _id: userId } = {},
       navigation,
       isAdmin,
     } = this.props;
@@ -86,33 +86,118 @@ class Detail extends Component {
                     onPress={() => navigation.goBack()}
                     style={{ 
                       width: 40, height: 40, borderRadius: 20, 
-                      backgroundColor: Colors.brown_light,
                       justifyContent: 'center', alignItems: 'center',
                       marginLeft: 10, marginTop: 10
                     }}>
                     <Image source={Images.back} style={{ width: 25, height: 25, tintColor: 'white' }} />
                   </TouchableOpacity>
                   <ScrollView style={styles.scrollView}>
-                    <Image source={{ uri: photo }} style={{ width: Metrics.deviceWidth, height: 200 }} />
-
-                    <Text style={{ fontWeight: 'bold', marginBottom: 3, marginTop: 15, fontSize: 20 }}>{title}</Text>
-                    { discount > 0 &&
-                      <View style={{ flexDirection: 'row', marginBottom: 5 }}>
-                        <Text style={{ marginRight: 5, fontWeight: 'bold', textDecorationLine: 'line-through', textDecorationStyle: 'solid' }}>{priceRupiah}</Text>
-                        <Text style={{ fontWeight: 'bold', color: 'red', fontSize: 16 }}>{discountRupiah}</Text>
+                    <ProductDetailWrapper>
+                      <Image
+                        source={{ uri: photo }}
+                        style={{
+                          width: moderateScale(260),
+                          height: moderateScale(260),
+                          resizeMode: 'contain',
+                          alignSelf: 'center',
+                        }}
+                      />
+                      <View 
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          marginHorizontal: moderateScale(20),
+                          marginBottom: moderateScale(3),
+                        }}
+                      >
+                        { discount &&
+                          <Fragment>
+                            <Text
+                              style={{
+                                fontFamily: 'CircularStd-Book',
+                                fontSize: 18,
+                                color: 'rgba(0,0,0,0.68)',
+                                marginRight: moderateScale(10),
+                              }}
+                            >
+                              {discountRupiah}
+                            </Text>
+                            <Text 
+                              style={{
+                                fontFamily: 'CircularStd-Book',
+                                fontSize: 14,
+                                color: 'rgba(0,0,0,0.3)',
+                                textDecorationLine: 'line-through', 
+                                textDecorationStyle: 'solid',
+                              }}
+                            >
+                              {priceRupiah}
+                            </Text>
+                          </Fragment>
+                        }
+                        { !discount &&
+                          <Text style={{ fontWeight: 'bold' }}>{priceRupiah}</Text> 
+                        }
                       </View>
-                    }
-                    { discount === 0 &&
-                      <View style={{ marginBottom: 5 }}>
-                        <Text style={{ fontWeight: 'bold' }}>{priceRupiah}</Text>
-                      </View>
-                    }
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                      <Text style={{ marginBottom: 5 }}>Stok: {stock} {unit}</Text>
-                      <Text style={{ marginBottom: 5 }}>Min pesan: {minimum_order} {unit}</Text>
+                      <Text
+                        style={{
+                          fontFamily: 'CircularStd-Bold',
+                          fontSize: 20,
+                          color: Colors.black,
+                          marginHorizontal: moderateScale(20),
+                          marginBottom: moderateScale(5),
+                        }}
+                      >
+                        {title}
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: 'CircularStd-Book',
+                          fontSize: 16,
+                          color: 'rgba(0,0,0,0.3)',
+                          marginHorizontal: moderateScale(20),
+                        }}
+                      >
+                        {stock} {unit}
+                      </Text>
+                    </ProductDetailWrapper>
+                    
+                    <View
+                      style={{ 
+                        marginTop: moderateScale(20),
+                        marginBottom: moderateScale(30),
+                        marginHorizontal: moderateScale(28),
+                      }}
+                    >
+                      <Text 
+                        style={{
+                          fontFamily: 'CircularStd-Book',
+                          fontSize: 13,
+                          color: 'rgba(0,0,0,0.5)',
+                        }}
+                      >
+                        Min pesan: {minimum_order} {unit}
+                      </Text>
+                      <Text 
+                        style={{
+                          fontFamily: 'CircularStd-Book',
+                          fontSize: 13,
+                          color: 'rgba(0,0,0,0.5)',
+                          marginBottom: moderateScale(15),
+                        }}
+                      >
+                        Kadaluarsa: {getReadableDate(expired_date, 'DD-MM-YYYY', 'id', 'DD MMM YYYY')}
+                      </Text>
+                      <Text 
+                        style={{
+                          fontFamily: 'CircularStd-Book',
+                          fontSize: 13,
+                          color: 'rgba(0,0,0,0.5)',
+                        }}
+                      >
+                        {description}
+                      </Text>
                     </View>
-                    <Text style={{ marginBottom: 5 }}>Kadaluarsa: {getReadableDate(expired_date, 'DD-MM-YYYY', 'id', 'DD MMM YYYY')}</Text>
-                    <Text style={{ marginBottom: 20 }}>{description}</Text>
                   </ScrollView>
                   {!isAdmin &&
                     <Mutation
@@ -125,29 +210,12 @@ class Detail extends Component {
                       { (updateCartItem, {loading, error, data}) => {
                         const isAdded = isInsideCart || data;
                         return (
-                          <TouchableOpacity
+                          <CartAddBottomButton
                             onPress={() => this.onAddToCart(updateCartItem, isAdded)}
-                            style={{
-                              height: 50,
-                              backgroundColor: isAdded ? Colors.brown_dark : Colors.green_light,
-                              alignItems: 'center',
-                              justifyContent: 'center' 
-                            }}
-                            >
-                            {loading && (
-                              <DotIndicator
-                                count={4}
-                                size={7}
-                                color='white'
-                                animationDuration={800}
-                              />
-                            )}
-                            {!loading && (
-                              <Text style={{color: 'white'}}>
-                                {isAdded ? 'Lihat di Keranjang' : 'Pesan Sekarang'}
-                              </Text>
-                            )}
-                          </TouchableOpacity>
+                            title={isAdded ? 'Lihat di Keranjang' : 'Pesan Sekarang'}
+                            colors={isAdded ? ['#FC9000', '#FDAD00'] : ['#a8de1c', '#50ac02']}
+                            loading={loading}
+                          />
                         );
                       }}
                     </Mutation>

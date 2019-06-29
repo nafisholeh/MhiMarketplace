@@ -135,5 +135,5 @@ ViewShadow.defaultProps = {
   shadowHeightAndroid: 0.1,
   shadowOffsetHeight: 2,
   borderRadius: 0,
-  scaleFactor: 0.5,
+  scaleFactor: 0,
 }

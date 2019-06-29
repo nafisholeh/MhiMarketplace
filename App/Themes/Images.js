@@ -23,6 +23,8 @@ const images = {
   sent: require(pathPrefix+'sent.png'),
   delivery: require(pathPrefix+'delivery.png'),
   search: require(pathPrefix+'search.png'),
+  no_photo: require(pathPrefix+'no_photo.png'),
+  cart_add: require(pathPrefix+'cart_add.png'),
 }
 
 export default images

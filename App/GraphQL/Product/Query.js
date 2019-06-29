@@ -7,6 +7,8 @@ export const FETCH_PRODUCT_LIST = gql`
       title
       photo
       price
+      unit
+      stock
       discount
     }
   }

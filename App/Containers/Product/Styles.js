@@ -1,12 +1,13 @@
-import { StyleSheet } from 'react-native'
-import { Metrics, ApplicationStyles } from '../../Themes/'
+import { StyleSheet } from 'react-native';
+
+import { Metrics, ApplicationStyles } from '../../Themes/';
+import { moderateScale } from 'Lib';
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   container: {
     flex: 1,
     backgroundColor: 'white',
-    minHeight: 100,
   },
   scrollView: {
     paddingHorizontal: Metrics.baseMargin,
@@ -27,12 +28,6 @@ export default StyleSheet.create({
     minHeight: 100,
     // minWidth: 100,
   },
-  product__item: {
-    width: Metrics.deviceWidth, 
-    borderBottomWidth: 1, 
-    borderBottomColor: 'gray',
-    padding: 20,
-  },
   product__item_content: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -45,7 +40,7 @@ export default StyleSheet.create({
     justifyContent: 'center'
   },
   product__item_cart: {
-    alignSelf: 'center',
+    alignSelf: 'flex-end',
   },
   itemImage: {
     width: 20,

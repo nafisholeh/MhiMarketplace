@@ -3,7 +3,7 @@ import { isEmailValid, isEmailError } from './Email';
 import { getGraphQLError } from './GraphQL';
 import { getReadableDate, getIntervalTimeToday } from './Date';
 import { setTabBarHide } from './Navigation';
-import { moderateScale } from './Responsive';
+import { moderateScale, screenWidth, screenHeight } from './Responsive';
 import { isString } from './DataType';
 import {
   getReadableAddress,
@@ -21,5 +21,5 @@ export {
   isString, getReadableAddress, getReadableSubdistrict, getReadableCityState,
   InAppNotification, calcTotalWeight, getReadableShippingSched,
   getUpcomingShippingSched, filterObject, getIntervalTimeToday,
-  getAggregateProducts,
+  getAggregateProducts, screenWidth, screenHeight
 };

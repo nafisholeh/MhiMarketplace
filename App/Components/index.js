@@ -15,10 +15,11 @@ import ImageRobust from './Image/ImageRobust';
 import BottomButton from './BottomButton';
 import TouchableOpacity from './TouchableOpacity';
 import SearchBar from './SearchBar';
+import ProductWrapper from './ProductWrapper';
 
 export {
   OptimizedList, StatePage, UpDownCounter, HeaderButton, ToolbarButton,
   RadioButton, LoadingPage, LoadingSection, Touchable, QueryEffectPage,
   ImagePicker, ImageRobust, QueryEffectSection, StateSection, BottomButton,
-  TouchableOpacity, SearchBar,
+  TouchableOpacity, SearchBar, ProductWrapper,
 }

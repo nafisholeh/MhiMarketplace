@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Text, Image, View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { shape, number, string, func, arrayOf, bool } from 'prop-types';
 import { compose, Mutation } from 'react-apollo';
@@ -6,9 +6,10 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { withNavigation } from 'react-navigation';
 
-import { parseToRupiah, calcDiscount } from 'Lib';
-import { Images } from 'Themes';
+import { parseToRupiah, calcDiscount, moderateScale } from 'Lib';
+import { Images, Colors } from 'Themes';
 import styles from './Styles';
+import { ProductWrapper } from 'Components';
 import { getUserId, isStokOpname } from 'Redux/SessionRedux';
 import { getCartItemIds } from 'Redux/CartRedux';
 import { UPDATE_CART_ITEM, UPDATE_CART_ITEM_SCHEMA, cacheUpdateCartItem } from 'GraphQL/Cart/Mutation';
@@ -32,28 +33,91 @@ class Item extends Component {
     if (!data) {
       return <View />
     }
-    const  { _id: productId, title, price, discount, photo } = data
+    const  { _id: productId, title, price, discount, photo, unit, stock } = data;
     const isInsideCart = cartItemIds.indexOf(productId) > -1;
+    console.tron.log('Item/render', this.props)
     return (
-      <TouchableOpacity 
-        onPress={this.onItemClicked}
-        style={styles.product__item}
-      >
-        <View style={styles.product__item_content}>
-          <Image source={{uri: photo }} style={{width:60, height:60}}/>
-          <View style={styles.product__item_detail}>
-            <Text style={{fontWeight:'bold'}}>{title}</Text>
-            <Text style={
-                discount ? 
-                  {
-                    textDecorationLine: 'line-through', 
-                    textDecorationStyle: 'solid'
-                  } 
-                  : {}
-            }>
-              {parseToRupiah(price)}
+      <ProductWrapper onPress={this.onItemClicked}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'center'
+          }}
+        >
+          <Image
+            source={photo ? {uri: photo} : Images.no_photo}
+            style={{
+              width: 74,
+              height: 74,
+              resizeMode: 'contain',
+              marginRight: moderateScale(12),
+            }}
+          />
+          <View
+            style={{
+              flex: 1,
+              height: 74,
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+            }}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              {discount && (
+                <Fragment>
+                  <Text
+                    style={{
+                      fontFamily: 'CircularStd-Book',
+                      fontSize: 14,
+                      color: 'rgba(0,0,0,0.68)',
+                      marginRight: moderateScale(10),
+                    }}
+                  >
+                    {parseToRupiah(price - calcDiscount(price, discount))}
+                  </Text>
+                  <Text 
+                    style={{
+                      fontFamily: 'CircularStd-Book',
+                      fontSize: 12,
+                      color: 'rgba(0,0,0,0.3)',
+                      textDecorationLine: 'line-through', 
+                      textDecorationStyle: 'solid'
+                    }}
+                  >
+                    {parseToRupiah(price)}
+                  </Text>
+                </Fragment>                
+              )}
+              {!discount && (
+                <Text 
+                  style={{
+                    fontFamily: 'CircularStd-Book',
+                    fontSize: 14,
+                    color: 'rgba(0,0,0,0.68)',
+                  }}
+                >
+                  {parseToRupiah(price)}
+                </Text>
+              )}
+            </View>
+            <Text
+              style={{
+                fontFamily: 'CircularStd-Bold',
+                fontSize: 16,
+                color: Colors.black,
+              }}
+            >
+              {title}
             </Text>
-            <Text>{parseToRupiah(price - calcDiscount(price, discount))}</Text>
+            <Text
+              style={{
+                fontFamily: 'CircularStd-Book',
+                fontSize: 12,
+                color: 'rgba(0,0,0,0.3)',
+              }}
+            >
+              {stock ? `${stock} ${unit}` : `Stok sementara kosong`}
+            </Text>
           </View>
           { isStokOpname &&
             <TouchableOpacity
@@ -84,7 +148,7 @@ class Item extends Component {
                     {loading && (<ActivityIndicator size="small" />)}
                     {!loading && (
                       <Image
-                        source={error ? Images.syncFailed : Images.cart}
+                        source={error ? Images.syncFailed : Images.cart_add}
                         style={styles.itemImage}
                       />
                     )}
@@ -94,7 +158,7 @@ class Item extends Component {
             </Mutation>
           }
         </View>
-      </TouchableOpacity>
+      </ProductWrapper>
     )
   }
 }

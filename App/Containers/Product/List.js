@@ -10,6 +10,7 @@ import { Images, Metrics } from 'Themes';
 import { OptimizedList, QueryEffectPage } from 'Components';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import styles from './Styles';
+import { moderateScale } from 'Lib';
 
 class List extends Component {
   
@@ -18,7 +19,11 @@ class List extends Component {
   render() {
     const { searchTerm } = this.props;
     return (
-      <View style={styles.container}>
+      <View
+        style={{
+          flex: 1,
+        }}
+      >
         <Query
           query={FETCH_PRODUCT_LIST}
           variables={{
@@ -32,9 +37,13 @@ class List extends Component {
               return (
                 <OptimizedList
                   itemWidth={Metrics.deviceWidth}
-                  itemHeight={100}
+                  itemHeight={128}
                   data={products} 
                   renderRow={this._renderRow}
+                  contentContainerStyle={{
+                    paddingBottom: moderateScale(10),
+                    paddingTop: moderateScale(15),
+                  }}
                 />
               )
             }

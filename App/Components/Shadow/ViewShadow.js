@@ -36,7 +36,7 @@ export default class ViewShadow extends Component {
         <ViewOverflow style={[ styles(this.props).containerAndroid, this.props.style ]}>
           <BoxShadow
             setting={{
-              width: moderateScale(this.props.width, this.props.scaleFactor) * (1 - (this.props.shadowHorizontalMarginAndroid * 2)),
+              width: moderateScale(this.props.width, this.props.scaleFactor),
               height: moderateScale(this.props.height),
               x: 0,
               y: 0,

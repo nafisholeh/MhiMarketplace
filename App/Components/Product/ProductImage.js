@@ -17,7 +17,6 @@ class ProductImage extends Component {
 
   onError = (error) => {
     const { source } = this.props;
-    console.tron.log('ProductImage/error', source, error);
     this.setState({ error: true });
   };
 
@@ -38,10 +37,7 @@ class ProductImage extends Component {
         onLoadStart={(e) => { }}
         onLoadEnd={(e) => { }}
         onLoad={(e) => { }}
-        onError={(e) => {
-          console.tron.log('onError', source, e);
-          this.onError(e);
-        }}
+        onError={(e) => this.onError(e)}
         style={style}
       />
     );

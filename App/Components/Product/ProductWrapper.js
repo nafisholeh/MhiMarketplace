@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { func } from 'prop-types';
 
-import ViewShadow from './Shadow/ViewShadow';
+import ViewShadow from '../Shadow/ViewShadow';
 import { screenWidth, moderateScale } from 'Lib';
 import { Colors } from 'Themes';
 

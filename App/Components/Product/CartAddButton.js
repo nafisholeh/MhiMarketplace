@@ -20,7 +20,7 @@ const CartAddButton = ({ isError }) => isError ? (
         id="prefix__a"
         x1={0.5}
         x2={0.5}
-        y2={1}
+        y2={20}
         gradientUnits="objectBoundingBox"
       >
         <Stop offset={0} stopColor="#a8de1c" />

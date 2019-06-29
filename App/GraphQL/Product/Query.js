@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
 export const FETCH_PRODUCT_LIST = gql`
-  query fetchProductList {
-    products {
+  query fetchProductList($term: String!) {
+    products(term: $term) {
       _id
       title
       photo
@@ -35,18 +35,6 @@ export const FETCH_SOME_PRODUCT = gql`
       _id
       title
       unit
-      photo
-      price
-      discount
-    }
-  }
-`
-
-export const SEARCH_PRODUCTS = gql`
-  query searchProducts($term: String!) {
-    searchProducts(term: $term) {
-      _id
-      title
       photo
       price
       discount

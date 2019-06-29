@@ -23,6 +23,13 @@ class Home extends Component {
       header: null,
     }
   }
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchTerm: '',
+    };
+  }
 
   componentDidMount() {
     const { navigation, isKurir } = this.props;
@@ -46,8 +53,13 @@ class Home extends Component {
     .catch(err => {})
   }
   
+  onSearch = term => {
+    this.setState({ searchTerm: term });
+  };
+  
   render() {
     const { isKurir, navigation } = this.props;
+    const { searchTerm } = this.state;
     return (
       <View style={styles.container}>
         <View style={{
@@ -66,9 +78,13 @@ class Home extends Component {
               style={styles.icon}
             />
           </TouchableOpacity>
-          <SearchBar />
+          <SearchBar
+            onSearch={this.onSearch}
+          />
         </View>
-        <List />
+        <List
+          searchTerm={searchTerm}
+        />
       </View>
     )
   }

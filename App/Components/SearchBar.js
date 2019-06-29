@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, TextInput, Image } from 'react-native';
+import { View, TextInput, Image, TouchableOpacity } from 'react-native';
+import { func } from 'prop-types';
 
 import ViewShadow from './Shadow/ViewShadow';
 import { Colors, Images } from 'Themes';
@@ -14,7 +15,17 @@ class SearchBar extends Component {
   }
   
   onChangeText = value => {
+    if (value === '' || !value) {
+      const { onSearch } = this.props;
+      if (onSearch) onSearch(value);
+    }
     this.setState({ value });
+  };
+  
+  onSearch = () => {
+    const { value } = this.state;
+    const { onSearch } = this.props;
+    if (onSearch) onSearch(value);
   };
 
   render() {
@@ -43,23 +54,34 @@ class SearchBar extends Component {
           onChangeText={this.onChangeText}
           placeholder="Cari produk"
           selectTextOnFocus
+          returnKeyType='search'
+          clearTextOnFocus
+          onSubmitEditing={this.onSearch}
           value={value}
           style={{
             flex: 1,
             marginRight: moderateScale(5),
           }}
         />
-        <Image
-          source={Images.search}
-          style={{
-            width: moderateScale(20),
-            height: moderateScale(20),
-            tintColor: Colors.icon,
-          }}
-        />
+        <TouchableOpacity
+          onPress={this.onSearch}
+        >
+          <Image
+            source={Images.search}
+            style={{
+              width: moderateScale(20),
+              height: moderateScale(20),
+              tintColor: Colors.icon,
+            }}
+          />
+        </TouchableOpacity>
       </ViewShadow>
     );
   }
 }
+
+SearchBar.propTypes = {
+  onSearch: func,
+};
 
 export default SearchBar;

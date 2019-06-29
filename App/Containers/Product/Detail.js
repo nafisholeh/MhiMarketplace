@@ -66,7 +66,50 @@ class Detail extends Component {
     } = this.props;
     const isInsideCart = cartItemIds.indexOf(productId ) > -1;
     return (
-      <View style={{flex: 1}}>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: isInsideCart ? '#FC9000' : '#a8de1c',
+        }}
+      >
+        <View 
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            height: moderateScale(55),
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{ 
+              width: moderateScale(23), height: moderateScale(23),
+              justifyContent: 'center', alignItems: 'center',
+              marginLeft: moderateScale(30),
+            }}>
+            <Image source={Images.back} style={{ width: 25, height: 25, tintColor: 'white' }} />
+          </TouchableOpacity>
+          <Text
+            style={{
+              position: 'absolute',
+              left: '43%',
+              fontFamily: 'CircularStd-Bold',
+              fontSize: 16,
+              color: Colors.white,
+            }}
+          >
+            Details
+          </Text>
+        </View>
+        <View 
+          style={{
+            position: 'absolute',
+            alignSelf: 'center',
+            width: 900, height: 900,
+            marginTop: moderateScale(80),
+            borderRadius: 450,
+            backgroundColor: 'white',
+          }}
+        />
         <Query 
           variables={{ _id: productId }}
           query={FETCH_PRODUCT_DETAIL}>
@@ -81,31 +124,7 @@ class Detail extends Component {
               const priceRupiah = parseToRupiah(price);
               const discountRupiah = parseToRupiah(calcDiscount(price, discount));
               return (
-                <View
-                  style={{
-                    flex: 1,
-                    backgroundColor: isInsideCart ? '#FC9000' : '#a8de1c',
-                  }}
-                >
-                  <TouchableOpacity
-                    onPress={() => navigation.goBack()}
-                    style={{ 
-                      width: 40, height: 40, borderRadius: 20, 
-                      justifyContent: 'center', alignItems: 'center',
-                      marginLeft: 10, marginTop: 10
-                    }}>
-                    <Image source={Images.back} style={{ width: 25, height: 25, tintColor: 'white' }} />
-                  </TouchableOpacity>
-                  <View 
-                    style={{
-                      position: 'absolute',
-                      alignSelf: 'center',
-                      width: 900, height: 900,
-                      marginTop: moderateScale(75),
-                      borderRadius: 450,
-                      backgroundColor: 'white',
-                    }}
-                  />
+                <Fragment>
                   <ScrollView 
                     contentContainerStyle={{
                       alignItems: 'center',
@@ -242,7 +261,7 @@ class Detail extends Component {
                       }}
                     </Mutation>
                   }
-                </View>
+                </Fragment>
               )
             }
           }}

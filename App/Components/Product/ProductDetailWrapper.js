@@ -19,7 +19,7 @@ class ProductDetailWrapper extends Component {
         shadowOpacityAndroid={0.09}
         mainColor={Colors.white}
         shadowColor={Colors.brown_light}
-        style={{ marginHorizontal: moderateScale(18), marginTop: moderateScale(15) }}
+        style={{ marginHorizontal: moderateScale(18), marginTop: moderateScale(10) }}
       >
         {children}
       </ViewShadow>

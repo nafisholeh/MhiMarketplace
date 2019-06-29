@@ -9,7 +9,7 @@ import { withNavigation } from 'react-navigation';
 import { parseToRupiah, calcDiscount, moderateScale } from 'Lib';
 import { Images, Colors } from 'Themes';
 import styles from './Styles';
-import { ProductWrapper, CartAddButton } from 'Components';
+import { ProductWrapper, CartAddButton, ProductImage } from 'Components';
 import { getUserId, isStokOpname } from 'Redux/SessionRedux';
 import { getCartItemIds } from 'Redux/CartRedux';
 import { UPDATE_CART_ITEM, UPDATE_CART_ITEM_SCHEMA, cacheUpdateCartItem } from 'GraphQL/Cart/Mutation';
@@ -44,8 +44,8 @@ class Item extends Component {
             alignItems: 'center'
           }}
         >
-          <Image
-            source={photo ? {uri: photo} : Images.no_photo}
+          <ProductImage
+            source={photo}
             style={{
               width: 74,
               height: 74,

@@ -43,6 +43,7 @@ class List extends Component {
                   contentContainerStyle={{
                     paddingBottom: moderateScale(10),
                     paddingTop: moderateScale(15),
+                    alignItems: 'center',
                   }}
                 />
               )

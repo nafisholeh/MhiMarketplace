@@ -26,6 +26,7 @@ const images = {
   no_photo: require(pathPrefix+'no_photo.png'),
   cart_add: require(pathPrefix+'cart_add.png'),
   product_list: require(pathPrefix+'product_list.png'),
+  error: require(pathPrefix+'error.png'),
 }
 
 export default images

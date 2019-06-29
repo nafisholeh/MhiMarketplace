@@ -12,7 +12,13 @@ import { getUser, isAdmin } from 'Redux/SessionRedux';
 import { getCartItemIds } from 'Redux/CartRedux';
 
 import { Images, Metrics, Colors } from 'Themes';
-import { OptimizedList, HeaderButton, ProductDetailWrapper, CartAddBottomButton } from 'Components';
+import {
+  OptimizedList,
+  HeaderButton,
+  ProductDetailWrapper,
+  CartAddBottomButton,
+  ProductImage
+} from 'Components';
 import { parseToRupiah, calcDiscount, getReadableDate, moderateScale } from 'Lib';
 import styles from './Styles';
 
@@ -132,8 +138,8 @@ class Detail extends Component {
                     showsVerticalScrollIndicator={false}
                   >
                     <ProductDetailWrapper>
-                      <Image
-                        source={{ uri: photo }}
+                      <ProductImage
+                        source={photo}
                         style={{
                           width: moderateScale(260),
                           height: moderateScale(260),

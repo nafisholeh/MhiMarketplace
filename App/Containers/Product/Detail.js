@@ -125,7 +125,7 @@ class Detail extends Component {
                         style={{
                           flexDirection: 'row',
                           alignItems: 'center',
-                          marginHorizontal: moderateScale(20),
+                          marginHorizontal: moderateScale(30),
                           marginBottom: moderateScale(3),
                         }}
                       >
@@ -163,7 +163,7 @@ class Detail extends Component {
                           fontFamily: 'CircularStd-Bold',
                           fontSize: 20,
                           color: Colors.black,
-                          marginHorizontal: moderateScale(20),
+                          marginHorizontal: moderateScale(30),
                           marginBottom: moderateScale(5),
                         }}
                       >
@@ -174,7 +174,7 @@ class Detail extends Component {
                           fontFamily: 'CircularStd-Book',
                           fontSize: 16,
                           color: 'rgba(0,0,0,0.3)',
-                          marginHorizontal: moderateScale(20),
+                          marginHorizontal: moderateScale(30),
                         }}
                       >
                         {stock} {unit}
@@ -185,7 +185,8 @@ class Detail extends Component {
                       style={{ 
                         marginTop: moderateScale(20),
                         marginBottom: moderateScale(30),
-                        marginHorizontal: moderateScale(28),
+                        marginHorizontal: moderateScale(40),
+                        alignSelf: 'flex-start',
                       }}
                     >
                       <Text 

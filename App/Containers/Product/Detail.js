@@ -110,6 +110,7 @@ class Detail extends Component {
                     contentContainerStyle={{
                       alignItems: 'center',
                     }}
+                    showsVerticalScrollIndicator={false}
                   >
                     <ProductDetailWrapper>
                       <Image

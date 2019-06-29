@@ -66,8 +66,9 @@ class Home extends Component {
             flexDirection: 'row',
             justifyContent: 'space-around',
             alignItems: 'center',
-            marginTop: moderateScale(20),
-            marginBottom: moderateScale(25),
+            paddingTop: moderateScale(20),
+            paddingBottom: moderateScale(25),
+            zIndex: 2,
           }}
         >
           <TouchableOpacity

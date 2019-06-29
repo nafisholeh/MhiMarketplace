@@ -35,7 +35,6 @@ class Item extends Component {
     }
     const  { _id: productId, title, price, discount, photo, unit, stock } = data;
     const isInsideCart = cartItemIds.indexOf(productId) > -1;
-    console.tron.log('Item/render', this.props)
     return (
       <ProductWrapper onPress={this.onItemClicked}>
         <View

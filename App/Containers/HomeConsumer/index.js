@@ -8,7 +8,7 @@ import { createStructuredSelector } from 'reselect';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import List from 'Containers/Product/List';
-import { HeaderButton, SearchBar } from 'Components';
+import { HeaderButton, SearchBar, ConsumerPageHeader } from 'Components';
 import CartActions from 'Redux/CartRedux';
 import { getUserId, isKurir } from 'Redux/SessionRedux';
 import { Images, Metrics } from 'Themes';
@@ -62,27 +62,11 @@ class Home extends Component {
     const { searchTerm } = this.state;
     return (
       <View style={styles.container}>
-        <View style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            alignItems: 'center',
-            paddingTop: moderateScale(20),
-            paddingBottom: moderateScale(25),
-            zIndex: 2,
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => navigation.navigate(isKurir ? 'Cart' : 'ConsumerOrder')}
-          >
-            <Image
-              source={isKurir ? Images.cart : Images.delivery}
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-          <SearchBar
-            onSearch={this.onSearch}
-          />
-        </View>
+        <ConsumerPageHeader
+          icon={isKurir ? Images.cart : Images.delivery}
+          onIconPress={() => navigation.navigate(isKurir ? 'Cart' : 'ConsumerOrder')}
+          onSearch={this.onSearch}
+        />
         <List
           searchTerm={searchTerm}
         />

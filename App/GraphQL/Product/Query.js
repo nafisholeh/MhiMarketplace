@@ -41,3 +41,15 @@ export const FETCH_SOME_PRODUCT = gql`
     }
   }
 `
+
+export const SEARCH_PRODUCTS = gql`
+  query searchProducts($term: String!) {
+    searchProducts(term: $term) {
+      _id
+      title
+      photo
+      price
+      discount
+    }
+  }
+`

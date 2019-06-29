@@ -6,6 +6,8 @@ const colors = {
   brown_dark: '#382c1f',
   white: '#ffffff',
   red: '#e74c3c',
+  shadow: '#fffff9',
+  icon: '#707070',
 }
 
 export default colors

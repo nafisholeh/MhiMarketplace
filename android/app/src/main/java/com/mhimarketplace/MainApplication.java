@@ -3,6 +3,8 @@ package com.mhimarketplace;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.entria.views.RNViewOverflowPackage;
+import com.horcrux.svg.SvgPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
@@ -27,6 +29,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNViewOverflowPackage(),
+            new SvgPackage(),
             new FastImageViewPackage(),
             new PickerPackage(),
             new ReactNativeOneSignalPackage(),

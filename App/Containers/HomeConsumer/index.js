@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, TouchableOpacity, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 import { func, string, bool } from 'prop-types';
@@ -8,10 +8,11 @@ import { createStructuredSelector } from 'reselect';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import List from 'Containers/Product/List';
-import { HeaderButton } from 'Components';
+import { HeaderButton, SearchBar } from 'Components';
 import CartActions from 'Redux/CartRedux';
 import { getUserId, isKurir } from 'Redux/SessionRedux';
 import { Images, Metrics } from 'Themes';
+import { moderateScale } from 'Lib';
 import styles from './Styles';
     
 class Home extends Component {
@@ -19,14 +20,7 @@ class Home extends Component {
     const { params } = navigation.state
     const { isKurir = false } = params || {};
     return {
-      title: 'MH.id',
-      headerLeft: null,
-      headerRight: (
-        <HeaderButton
-          onPress={() => navigation.navigate(isKurir ? 'Cart' : 'ConsumerOrder')}
-          icon={isKurir ? Images.cart : Images.tracking}
-        />
-      ),
+      header: null,
     }
   }
 
@@ -53,8 +47,27 @@ class Home extends Component {
   }
   
   render() {
+    const { isKurir, navigation } = this.props;
     return (
       <View style={styles.container}>
+        <View style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            marginTop: moderateScale(20),
+            marginBottom: moderateScale(25),
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => navigation.navigate(isKurir ? 'Cart' : 'ConsumerOrder')}
+          >
+            <Image
+              source={isKurir ? Images.cart : Images.delivery}
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+          <SearchBar />
+        </View>
         <List />
       </View>
     )

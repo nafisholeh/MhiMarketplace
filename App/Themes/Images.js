@@ -21,6 +21,8 @@ const images = {
   shipping: require(pathPrefix+'shipping.png'),
   tracking: require(pathPrefix+'tracking.png'),
   sent: require(pathPrefix+'sent.png'),
+  delivery: require(pathPrefix+'delivery.png'),
+  search: require(pathPrefix+'search.png'),
 }
 
 export default images

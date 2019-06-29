@@ -26,4 +26,9 @@ export default StyleSheet.create({
     marginLeft: 15,
     marginTop: 15,
   },
+  icon: {
+    height: 30,
+    width: 35,
+    resizeMode: 'contain',
+  }
 })

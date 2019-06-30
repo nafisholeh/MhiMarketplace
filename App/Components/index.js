@@ -21,11 +21,12 @@ import CartAddButton from './Product/CartAddButton';
 import CartAddBottomButton from './Product/CartAddBottomButton';
 import ConsumerPageHeader from './ConsumerPageHeader';
 import ProductImage from './Product/ProductImage';
+import ListHeader from './Header/ListHeader';
 
 export {
   OptimizedList, StatePage, UpDownCounter, HeaderButton, ToolbarButton,
   RadioButton, LoadingPage, LoadingSection, Touchable, QueryEffectPage,
   ImagePicker, ImageRobust, QueryEffectSection, StateSection, BottomButton,
   TouchableOpacity, SearchBar, ProductWrapper, CartAddButton, ProductDetailWrapper,
-  CartAddBottomButton, ConsumerPageHeader, ProductImage,
+  CartAddBottomButton, ConsumerPageHeader, ProductImage, ListHeader,
 }

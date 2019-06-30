@@ -7,6 +7,7 @@ const colors = {
   black: '#000000',
   white: '#ffffff',
   red: '#e74c3c',
+  red2: '#FC5455',
   shadow: '#fffff9',
   icon: '#707070',
 }

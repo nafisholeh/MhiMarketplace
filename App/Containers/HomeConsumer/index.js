@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import { Images } from 'Themes';
-import { ConsumerPageHeader } from 'Components';
+import { ConsumerPageHeader, ListHeader } from 'Components';
 import { getUserId, isKurir } from 'Redux/SessionRedux';
 import ProductList from 'Containers/Product/List';
 
@@ -37,6 +37,11 @@ class HomeConsumer extends Component {
           icon={isKurir ? Images.cart : Images.delivery}
           onIconPress={() => navigation.navigate(isKurir ? 'Cart' : 'ConsumerOrder')}
           onSearch={this.onSearch}
+        />
+        <ListHeader
+          title="STOK MELIMPAH"
+          color="#03506C"
+          onNavigate={() => navigation.navigate('Store')}
         />
         <ProductList
           limit={2}

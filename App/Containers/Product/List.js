@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ScrollView, Text, Image, View, TouchableOpacity } from 'react-native';
 import { Query } from 'react-apollo';
 import { connect } from 'react-redux';
-import { string } from 'prop-types';
+import { string, number, object } from 'prop-types';
 
 import Item from './Item';
 import { FETCH_PRODUCT_LIST } from 'GraphQL/Product/Query';
@@ -17,7 +17,7 @@ class List extends Component {
   _renderRow = (type, data) => <Item data={data} />
 
   render() {
-    const { searchTerm } = this.props;
+    const { searchTerm, limit, sort } = this.props;
     return (
       <View
         style={{
@@ -27,7 +27,9 @@ class List extends Component {
         <Query
           query={FETCH_PRODUCT_LIST}
           variables={{
-            term: searchTerm
+            term: searchTerm,
+            limit,
+            sort
           }}
           fetchPolicy="network-only"
         >
@@ -65,6 +67,8 @@ class List extends Component {
 
 List.propTypes = {
   searchTerm: string,
+  limit: number,
+  sort: object,
 };
 
 export default connect(null, null)(List);

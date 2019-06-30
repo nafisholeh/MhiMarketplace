@@ -7,7 +7,7 @@ import { createStructuredSelector } from 'reselect';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
-import List from 'Containers/Product/List';
+import ProductList from 'Containers/Product/List';
 import { HeaderButton, SearchBar, ConsumerPageHeader } from 'Components';
 import CartActions from 'Redux/CartRedux';
 import { getUserId, isKurir } from 'Redux/SessionRedux';
@@ -71,7 +71,9 @@ class ConsumerProductList extends Component {
           onIconPress={() => navigation.navigate(isKurir ? 'Cart' : 'ConsumerOrder')}
           onSearch={this.onSearch}
         />
-        <List searchTerm={searchTerm} />
+        <ProductList
+          searchTerm={searchTerm}
+        />
       </View>
     )
   }

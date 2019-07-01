@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { func, string, bool } from 'prop-types';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-import { Images } from 'Themes';
+import { Images, Colors } from 'Themes';
 import { ConsumerPageHeader, ListHeader } from 'Components';
 import { getUserId, isKurir } from 'Redux/SessionRedux';
 import ProductList from 'Containers/Product/List';
@@ -32,11 +32,22 @@ class HomeConsumer extends Component {
   render() {
     const { isKurir, navigation } = this.props;
     return (
-      <View style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }}>
         <ConsumerPageHeader
           icon={isKurir ? Images.cart : Images.delivery}
           onIconPress={() => navigation.navigate(isKurir ? 'Cart' : 'ConsumerOrder')}
           onSearch={this.onSearch}
+        />
+        <ListHeader
+          title="STOK BARU"
+          color={Colors.red2}
+          onNavigate={() => navigation.navigate('Store')}
+        />
+        <ProductList
+          limit={2}
+          sort={{ expired_date: -1 }}
+          isSection
+          isHorizontal
         />
         <ListHeader
           title="STOK MELIMPAH"
@@ -48,7 +59,7 @@ class HomeConsumer extends Component {
           sort={{ stock: -1 }}
           isSection
         />
-      </View>
+      </ScrollView>
     );
   }
 }

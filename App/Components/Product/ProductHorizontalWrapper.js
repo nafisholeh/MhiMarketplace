@@ -6,21 +6,19 @@ import ViewShadow from '../Shadow/ViewShadow';
 import { screenWidth, moderateScale } from 'Lib';
 import { Colors } from 'Themes';
 
-class ProductWrapper extends Component {
+class ProductVerticalWrapper extends Component {
   render() {
     const { children, onPress } = this.props;
     return (
       <ViewShadow
-        width={screenWidth - 40}
-        height={115}
+        width={(screenWidth / 2) - moderateScale(25)}
+        height={220}
         borderRadius={4}
         shadowBorderRadiusAndroid={3}
         shadowRadiusAndroid={18}
-        shadowOpacityAndroid={0.05}
+        shadowOpacityAndroid={0.1}
         mainColor={Colors.white}
         shadowColor={Colors.brown_light}
-        style={{ marginHorizontal: moderateScale(18) }}
-        styleChildren={{ padding: moderateScale(10) }}
       >
         <TouchableOpacity
           style={{ flex: 1 }}
@@ -36,8 +34,8 @@ class ProductWrapper extends Component {
   }
 }
 
-ProductWrapper.propTypes = {
+ProductVerticalWrapper.propTypes = {
   onPress: func,
 };
 
-export default ProductWrapper;
+export default ProductVerticalWrapper;

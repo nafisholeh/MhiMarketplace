@@ -15,7 +15,8 @@ import ImageRobust from './Image/ImageRobust';
 import BottomButton from './BottomButton';
 import TouchableOpacity from './TouchableOpacity';
 import SearchBar from './SearchBar';
-import ProductWrapper from './Product/ProductWrapper';
+import ProductVerticalWrapper from './Product/ProductVerticalWrapper';
+import ProductHorizontalWrapper from './Product/ProductHorizontalWrapper';
 import ProductDetailWrapper from './Product/ProductDetailWrapper';
 import CartAddButton from './Product/CartAddButton';
 import CartAddBottomButton from './Product/CartAddBottomButton';
@@ -27,6 +28,7 @@ export {
   OptimizedList, StatePage, UpDownCounter, HeaderButton, ToolbarButton,
   RadioButton, LoadingPage, LoadingSection, Touchable, QueryEffectPage,
   ImagePicker, ImageRobust, QueryEffectSection, StateSection, BottomButton,
-  TouchableOpacity, SearchBar, ProductWrapper, CartAddButton, ProductDetailWrapper,
-  CartAddBottomButton, ConsumerPageHeader, ProductImage, ListHeader,
-}
+  TouchableOpacity, SearchBar, ProductVerticalWrapper, ProductHorizontalWrapper,
+  CartAddButton, ProductDetailWrapper, CartAddBottomButton, ConsumerPageHeader, 
+  ProductImage, ListHeader,
+};

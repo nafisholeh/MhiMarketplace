@@ -9,7 +9,7 @@ import { withNavigation } from 'react-navigation';
 import { parseToRupiah, calcDiscount, moderateScale } from 'Lib';
 import { Images, Colors } from 'Themes';
 import styles from './Styles';
-import { ProductWrapper, CartAddButton, ProductImage } from 'Components';
+import { ProductVerticalWrapper, CartAddButton, ProductImage } from 'Components';
 import { getUserId, isStokOpname } from 'Redux/SessionRedux';
 import { getCartItemIds } from 'Redux/CartRedux';
 import { UPDATE_CART_ITEM, UPDATE_CART_ITEM_SCHEMA, cacheUpdateCartItem } from 'GraphQL/Cart/Mutation';
@@ -36,7 +36,7 @@ class Item extends Component {
     const  { _id: productId, title, price, discount, photo, unit, stock } = data;
     const isInsideCart = cartItemIds.indexOf(productId) > -1;
     return (
-      <ProductWrapper onPress={this.onItemClicked}>
+      <ProductVerticalWrapper onPress={this.onItemClicked}>
         <View
           style={{
             flex: 1,
@@ -47,8 +47,8 @@ class Item extends Component {
           <ProductImage
             source={photo}
             style={{
-              width: 74,
-              height: 74,
+              width: moderateScale(74),
+              height: moderateScale(74),
               resizeMode: 'contain',
               marginRight: moderateScale(12),
             }}
@@ -71,6 +71,7 @@ class Item extends Component {
                       color: 'rgba(0,0,0,0.68)',
                       marginRight: moderateScale(10),
                     }}
+                    numberOfLines={1}
                   >
                     {parseToRupiah(price - calcDiscount(price, discount))}
                   </Text>
@@ -82,6 +83,7 @@ class Item extends Component {
                       textDecorationLine: 'line-through', 
                       textDecorationStyle: 'solid'
                     }}
+                    numberOfLines={1}
                   >
                     {parseToRupiah(price)}
                   </Text>
@@ -94,6 +96,7 @@ class Item extends Component {
                     fontSize: 14,
                     color: 'rgba(0,0,0,0.68)',
                   }}
+                  numberOfLines={1}
                 >
                   {parseToRupiah(price)}
                 </Text>
@@ -105,6 +108,7 @@ class Item extends Component {
                 fontSize: 16,
                 color: Colors.black,
               }}
+              numberOfLines={2}
             >
               {title}
             </Text>
@@ -114,6 +118,7 @@ class Item extends Component {
                 fontSize: 12,
                 color: 'rgba(0,0,0,0.3)',
               }}
+              numberOfLines={1}
             >
               {stock ? `${stock} ${unit}` : `Stok sementara kosong`}
             </Text>
@@ -154,7 +159,7 @@ class Item extends Component {
             </Mutation>
           }
         </View>
-      </ProductWrapper>
+      </ProductVerticalWrapper>
     )
   }
 }

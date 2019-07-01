@@ -64,7 +64,7 @@ class HomeConsumer extends Component {
             onPress={() => this.openStoreByCategory('fruit')}
           />
           <CategoryItem
-            title="Sayuran"
+            title="Hortikultura"
             icon={Images.horti}
             color={Colors.horti_bg}
             onPress={() => this.openStoreByCategory('horti')}

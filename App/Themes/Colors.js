@@ -10,6 +10,15 @@ const colors = {
   red2: '#FC5455',
   shadow: '#fffff9',
   icon: '#707070',
+  veggie_dark: '#50ac02',
+  veggie_light: '#a8de1c',
+  veggie_bg: 'rgba(136, 192, 87, 0.25)',
+  fruit_dark: '#fdad00',
+  fruit_light: '#fc9000',
+  fruit_bg: 'rgba(252, 215, 112, 0.25)',
+  horti_dark: '#00B9AE',
+  horti_light: '#2EC4B6',
+  horti_bg: 'rgba(0, 185, 174, 0.25)',
 }
 
 export default colors

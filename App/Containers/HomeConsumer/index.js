@@ -6,7 +6,8 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import { Images, Colors } from 'Themes';
-import { ConsumerPageHeader, ListHeader } from 'Components';
+import { moderateScale} from 'Lib';
+import { ConsumerPageHeader, ListHeader, CategoryItem } from 'Components';
 import { getUserId, isKurir } from 'Redux/SessionRedux';
 import ProductList from 'Containers/Product/List';
 
@@ -28,6 +29,11 @@ class HomeConsumer extends Component {
   onSearch = term => {
     this.setState({ searchTerm: term });
   };
+  
+  openStoreByCategory = category => {
+    const { navigation } = this.props;
+    navigation.navigate('Store');
+  };
 
   render() {
     const { isKurir, navigation } = this.props;
@@ -38,6 +44,32 @@ class HomeConsumer extends Component {
           onIconPress={() => navigation.navigate(isKurir ? 'Cart' : 'ConsumerOrder')}
           onSearch={this.onSearch}
         />
+        <View
+          style={{
+            flexDirection: 'row',
+            marginHorizontal: moderateScale(15),
+            marginBottom: moderateScale(18),
+          }}
+        >
+          <CategoryItem
+            title="Sayuran"
+            icon={Images.veggie}
+            color={Colors.veggie_bg}
+            onPress={() => this.openStoreByCategory('veggie')}
+          />
+          <CategoryItem
+            title="Buah"
+            icon={Images.fruit}
+            color={Colors.fruit_bg}
+            onPress={() => this.openStoreByCategory('fruit')}
+          />
+          <CategoryItem
+            title="Sayuran"
+            icon={Images.horti}
+            color={Colors.horti_bg}
+            onPress={() => this.openStoreByCategory('horti')}
+          />
+        </View>
         <ListHeader
           title="STOK BARU"
           color={Colors.red2}

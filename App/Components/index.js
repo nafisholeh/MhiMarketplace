@@ -23,6 +23,7 @@ import CartAddBottomButton from './Product/CartAddBottomButton';
 import ConsumerPageHeader from './ConsumerPageHeader';
 import ProductImage from './Product/ProductImage';
 import ListHeader from './Header/ListHeader';
+import CategoryItem from './Product/CategoryItem';
 
 export {
   OptimizedList, StatePage, UpDownCounter, HeaderButton, ToolbarButton,
@@ -30,5 +31,5 @@ export {
   ImagePicker, ImageRobust, QueryEffectSection, StateSection, BottomButton,
   TouchableOpacity, SearchBar, ProductVerticalWrapper, ProductHorizontalWrapper,
   CartAddButton, ProductDetailWrapper, CartAddBottomButton, ConsumerPageHeader, 
-  ProductImage, ListHeader,
+  ProductImage, ListHeader, CategoryItem,
 };

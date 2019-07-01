@@ -5,6 +5,9 @@ import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
+import ApolloClientProvider from 'Services/ApolloClientProvider';
+import { FETCH_CART } from 'GraphQL/Cart/Query';
+import CartActions from 'Redux/CartRedux';
 import { Images, Colors } from 'Themes';
 import { moderateScale} from 'Lib';
 import { ConsumerPageHeader, ListHeader, CategoryItem } from 'Components';
@@ -26,13 +29,34 @@ class HomeConsumer extends Component {
     };
   }
   
+  componentDidMount() {
+    const { navigation } = this.props;
+    this.fetchInitCart();
+  }
+  
+  fetchInitCart = () => {
+    const { storeCart, userId } = this.props;
+    if (!userId) {
+      return;
+    }
+    ApolloClientProvider.client.query({
+      query: FETCH_CART,
+      variables: { user_id: userId }
+    })
+    .then(data => {
+      const { data: { cart }} = data;
+      storeCart(cart);
+    })
+    .catch(err => {})
+  }
+  
   onSearch = term => {
     this.setState({ searchTerm: term });
   };
   
   openStoreByCategory = category => {
     const { navigation } = this.props;
-    navigation.navigate('Store');
+    navigation.navigate('ProductList');
   };
 
   render() {
@@ -106,4 +130,8 @@ const mapStateToProps = createStructuredSelector({
   isKurir: isKurir(),
 });
 
-export default connect(mapStateToProps, null)(withNavigation(HomeConsumer));
+const mapDispatchToProps = (dispatch) => ({
+  storeCart: cart => dispatch(CartActions.storeCart(cart)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(HomeConsumer));

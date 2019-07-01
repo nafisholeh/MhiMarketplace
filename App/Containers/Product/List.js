@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { ScrollView, Text, Image, View, TouchableOpacity } from 'react-native';
 import { Query } from 'react-apollo';
 import { connect } from 'react-redux';
-import { string, number, object } from 'prop-types';
+import { string, number, object, bool } from 'prop-types';
 
 import Item from './Item';
 import { FETCH_PRODUCT_LIST } from 'GraphQL/Product/Query';
 import { Images, Metrics } from 'Themes';
-import { OptimizedList, QueryEffectPage } from 'Components';
+import { OptimizedList, QueryEffectPage, QueryEffectSection } from 'Components';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import styles from './Styles';
 import { moderateScale } from 'Lib';
@@ -17,10 +17,11 @@ class List extends Component {
   _renderRow = (type, data) => <Item data={data} />
 
   render() {
-    const { searchTerm, limit, sort } = this.props;
+    const { searchTerm, limit, sort, isSection } = this.props;
     return (
       <View
         style={{
+          flex: 1,
           zIndex: 1,
         }}
       >
@@ -50,6 +51,16 @@ class List extends Component {
                 />
               )
             }
+            if (isSection) {
+              return (
+                <QueryEffectSection
+                  isLoading={loading}
+                  isError={error}
+                  isEmpty={!products.length}
+                  onRefetch={refetch}
+                />
+              );
+            }
             return (
               <QueryEffectPage
                 isLoading={loading}
@@ -69,6 +80,7 @@ List.propTypes = {
   searchTerm: string,
   limit: number,
   sort: object,
+  isSection: bool,
 };
 
 export default connect(null, null)(List);

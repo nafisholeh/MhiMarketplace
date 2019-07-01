@@ -46,6 +46,7 @@ class HomeConsumer extends Component {
         <ProductList
           limit={2}
           sort={{ stock: -1 }}
+          isSection
         />
       </View>
     );

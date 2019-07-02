@@ -16,6 +16,7 @@ export const SYNC_CART = gql`
         title
         photo
         price
+        unit
         discount
       }
       qty
@@ -42,6 +43,7 @@ export const UPDATE_CART_ITEM_SCHEMA = gql`
         title
         photo
         price
+        unit
         discount
       }
       qty

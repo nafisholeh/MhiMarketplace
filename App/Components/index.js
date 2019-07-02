@@ -19,6 +19,7 @@ import ProductVerticalWrapper from './Product/ProductVerticalWrapper';
 import ProductHorizontalWrapper from './Product/ProductHorizontalWrapper';
 import ProductDetailWrapper from './Product/ProductDetailWrapper';
 import CartAddButton from './Product/CartAddButton';
+import CartSubtractButton from './Product/CartSubtractButton';
 import CartAddBottomButton from './Product/CartAddBottomButton';
 import ConsumerPageHeader from './Header/ConsumerPageHeader';
 import ProductImage from './Product/ProductImage';
@@ -33,5 +34,5 @@ export {
   ImagePicker, ImageRobust, QueryEffectSection, StateSection, BottomButton,
   TouchableOpacity, SearchBar, ProductVerticalWrapper, ProductHorizontalWrapper,
   CartAddButton, ProductDetailWrapper, CartAddBottomButton, ConsumerPageHeader, 
-  ProductImage, ListHeader, CategoryItem, AppTitle, HeaderTitle
+  ProductImage, ListHeader, CategoryItem, AppTitle, HeaderTitle, CartSubtractButton
 };

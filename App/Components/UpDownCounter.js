@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Image, TextInput, StyleSheet } from 'react-native';
-import { number, func } from 'prop-types';
+import { View, TouchableOpacity, Image, TextInput, Text, StyleSheet } from 'react-native';
+import { number, func, string } from 'prop-types';
 import { debounce } from 'throttle-debounce';
 
 import AppConfig from 'Config/AppConfig';
 import { Images } from 'Themes';
+import { CartAddButton, CartSubtractButton } from 'Components';
 
 const minAllowed = 0;
 
@@ -68,16 +69,13 @@ class UpDownCounter extends Component {
   
   render() {
     const { counter } = this.state;
+    const { unit } = this.props;
     return (
       <View style={styles.container}>
         <TouchableOpacity
           onPress={this.descreaseCounter}
           style={styles.buttonLeftContainer}>
-          <Image
-            source={Images.minus}
-            resizeMode='contain'
-            style={styles.button}
-          />
+          <CartSubtractButton />
         </TouchableOpacity>
         <TextInput
           underlineColorAndroid='rgba(0,0,0,0)'
@@ -89,14 +87,13 @@ class UpDownCounter extends Component {
           keyboardType='numeric'
           style={styles.input}
         />
+      <Text style={styles.input}>
+          {unit}
+        </Text>
         <TouchableOpacity
           onPress={this.increaseCounter}
           style={styles.buttonRightContainer}>
-          <Image
-            source={Images.plus}
-            resizeMode='contain'
-            style={styles.button}
-          />
+          <CartAddButton />
         </TouchableOpacity>
       </View>
     )
@@ -121,12 +118,15 @@ const styles = StyleSheet.create({
   input: {
     padding: 0,
     textAlign: 'center',
+    fontFamily: 'CircularStd-Bold',
+    fontSize: 16,
   }
 });
 
 UpDownCounter.propTypes = {
   initCounter: number,
   onCounterChanged: func,
+  unit: string,
 };
 
 export default UpDownCounter;

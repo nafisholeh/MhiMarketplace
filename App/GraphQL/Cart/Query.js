@@ -9,6 +9,7 @@ export const FETCH_CART = gql`
         title
         photo
         price
+        unit
         discount
       }
       qty
@@ -28,6 +29,7 @@ export const FETCH_SELECTED_CART = gql`
         title
         photo
         price
+        unit
         discount
       }
       qty

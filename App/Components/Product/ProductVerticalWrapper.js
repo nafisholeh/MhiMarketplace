@@ -8,7 +8,7 @@ import { Colors } from 'Themes';
 
 class ProductVerticalWrapper extends Component {
   render() {
-    const { children, onPress } = this.props;
+    const { children, onPress, styleParent, styleChildren } = this.props;
     return (
       <ViewShadow
         width={screenWidth - 40}
@@ -19,11 +19,17 @@ class ProductVerticalWrapper extends Component {
         shadowOpacityAndroid={0.1}
         mainColor={Colors.white}
         shadowColor={Colors.brown_light}
-        style={{ marginHorizontal: moderateScale(18) }}
+        style={{
+          ...{ marginHorizontal: moderateScale(18) },
+          ...styleParent 
+        }}
         styleChildren={{ padding: moderateScale(10) }}
       >
         <TouchableOpacity
-          style={{ flex: 1 }}
+          style={{
+            ...{ flex: 1 },
+            ...styleChildren
+          }}
           onPress={() => {
             const { onPress } = this.props;
             if (onPress) onPress();

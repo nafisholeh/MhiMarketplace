@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Text, Image, View, TouchableOpacity, ActivityIndicator, CheckBox } from 'react-native';
 import { shape, number, string, func, arrayOf } from 'prop-types';
 import { Mutation, compose } from 'react-apollo';
@@ -6,15 +6,15 @@ import { connect } from 'react-redux';
 import update from 'immutability-helper';
 import { createStructuredSelector } from 'reselect';
 
-import { parseToRupiah, isString, calcDiscount } from 'Lib';
-import { UpDownCounter } from 'Components';
+import { parseToRupiah, isString, calcDiscount, moderateScale } from 'Lib';
+import { UpDownCounter, ProductVerticalWrapper, ProductImage } from 'Components';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { cacheSelectCartItem } from 'GraphQL/Cart/Mutation';
 import { UPDATE_CART_ITEM, DELETE_CART_ITEM } from 'GraphQL/Cart/Mutation';
 import CartActions, { getCartItemIdSelected } from 'Redux/CartRedux';
 import { getUserId } from 'Redux/SessionRedux';
 import styles from './Styles';
-import { Images } from 'Themes';
+import { Images, Colors } from 'Themes';
 var _ = require('lodash');
 
 class Item extends Component {
@@ -60,42 +60,106 @@ class Item extends Component {
     const {
       data,
       data: {
-        product: { _id, title, photo, price, discount },
+        product: { _id, title, photo, price, discount, unit },
         qty = 0
       },
       userId,
-      maxStock
+      maxStock,
+      index
     } = this.props
     const { selected } = this.state;
     if (!data) {
       return <View />
     }
     return (
-      <View style={styles.container}>
+      <ProductVerticalWrapper
+        styleParent={{
+          marginTop: index === 0 ? moderateScale(15) : 0,
+          marginBottom: moderateScale(12),
+        }}
+        styleChildren={{
+          flex: 1,
+          flexDirection: 'row',
+          alignItems: 'center'
+        }}
+        onPress={this.onItemClicked}
+      >
         <CheckBox
           onValueChange={this.toggleSelect}
           value={selected} 
         />
-        <Image
-          source={{ uri: photo }}
-          style={styles.image}
-          resizeMode="contain"
+        <ProductImage
+          source={photo}
+          style={{
+            width: moderateScale(68),
+            height: moderateScale(68),
+            resizeMode: 'contain',
+            marginRight: moderateScale(12),
+          }}
         />
         <View style={styles.detail}>
-          <Text style={styles.detailTitle}>{title}</Text>
-          { discount > 0 &&
-            <Text style={styles.detailPrice}>{parseToRupiah(price - calcDiscount(price, discount))}</Text>
-          }
-          { !discount &&
-            <Text style={styles.detailPrice}>{parseToRupiah(price)}</Text>
-          }
-          { maxStock > 0 && 
-            <Text style={{ color: 'red'}}>Stok habis, sisa {maxStock}</Text>
-          }
-          <UpDownCounter
-            initCounter={qty}
-            onCounterChanged={this.onCounterChanged}
-          />
+          <View
+            style={{
+              flex: 1,
+              marginTop: moderateScale(10),
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+            }}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              {discount && (
+                <Text
+                  style={{
+                    fontFamily: 'CircularStd-Book',
+                    fontSize: 14,
+                    color: 'rgba(0,0,0,0.68)',
+                    marginRight: moderateScale(10),
+                  }}
+                  numberOfLines={1}
+                >
+                  {parseToRupiah(price - calcDiscount(price, discount))}
+                </Text>              
+              )}
+              {!discount && (
+                <Text 
+                  style={{
+                    fontFamily: 'CircularStd-Book',
+                    fontSize: 14,
+                    color: 'rgba(0,0,0,0.68)',
+                  }}
+                  numberOfLines={1}
+                >
+                  {parseToRupiah(price)}
+                </Text>
+              )}
+            </View>
+            <Text
+              style={{
+                fontFamily: 'CircularStd-Bold',
+                fontSize: 16,
+                color: Colors.black,
+              }}
+              numberOfLines={2}
+            >
+              {title}
+            </Text>
+            { maxStock > 0 && 
+              <Text
+                style={{
+                  fontFamily: 'CircularStd-Book',
+                  fontSize: 12,
+                  color: 'red',
+                }}
+              >
+                Stok habis, sisa {maxStock}
+              </Text>
+            }
+            <UpDownCounter
+              initCounter={qty}
+              unit={unit}
+              onCounterChanged={this.onCounterChanged}
+            />
+          </View>
         </View>
         <Mutation
           mutation={DELETE_CART_ITEM}
@@ -117,7 +181,7 @@ class Item extends Component {
             )
           }}
         </Mutation>
-      </View>
+      </ProductVerticalWrapper>
     )
   }
 }
@@ -139,6 +203,7 @@ Item.propTypes = {
   deleteCartItem: func,
   selected: arrayOf(string),
   maxStock: number,
+  index: number,
 }
 
 const mapStateToProps = createStructuredSelector({

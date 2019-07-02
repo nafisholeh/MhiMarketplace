@@ -18,7 +18,7 @@ import CheckoutActions from 'Redux/CheckoutRedux';
 import { Images, Metrics, Colors } from 'Themes';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import AppConfig from 'Config/AppConfig';
-import { calcDiscount, parseToRupiah } from 'Lib';
+import { calcDiscount, parseToRupiah, moderateScale } from 'Lib';
 
 class Cart extends Component {
   
@@ -75,6 +75,7 @@ class Cart extends Component {
       outOfStockProduct[0].maxStock : 0;
     return (
       <Item 
+        index={index}
         key={cartItemId}
         data={item}
         userId={userId}
@@ -124,17 +125,12 @@ class Cart extends Component {
               }
               return (
                 <Fragment>
-                  <ScrollView
-                    style={{flex:1}}
-                    contentContainerStyle={{ flex: 1 }}
-                  >
-                    <FlatList
-                      keyExtractor={(item, id) => item._id.toString()}
-                      data={cart} 
-                      renderItem={this.renderCartItems}
-                      extraData={refresh}
-                    />
-                  </ScrollView>
+                  <FlatList
+                    keyExtractor={(item, id) => item._id.toString()}
+                    data={cart} 
+                    renderItem={this.renderCartItems}
+                    extraData={refresh}
+                  />
                   <Footer />
                 </Fragment>
               )

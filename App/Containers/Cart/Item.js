@@ -47,14 +47,19 @@ class Item extends Component {
       variables: { user_id: userId },
       data: { cart: update(cart, { $splice: [[deletedIndex, 1]] }) }
     });
-  }
+  };
   
   toggleSelect = state => {
     const { toggleSelectItem, data: { product: { _id } } } = this.props;
     toggleSelectItem(_id, state);
     cacheSelectCartItem(_id, state);
     this.setState({ selected: state });
-  }
+  };
+  
+  onItemClicked = () => {
+    const { selected } = this.state;
+    this.toggleSelect(!selected);
+  };
   
   render() {
     const {

@@ -20,7 +20,7 @@ import ProductHorizontalWrapper from './Product/ProductHorizontalWrapper';
 import ProductDetailWrapper from './Product/ProductDetailWrapper';
 import CartAddButton from './Product/CartAddButton';
 import CartSubtractButton from './Product/CartSubtractButton';
-import CartAddBottomButton from './Product/CartAddBottomButton';
+import ButtonPrimary from './ButtonPrimary';
 import ConsumerPageHeader from './Header/ConsumerPageHeader';
 import ProductImage from './Product/ProductImage';
 import ListHeader from './Header/ListHeader';
@@ -33,6 +33,6 @@ export {
   RadioButton, LoadingPage, LoadingSection, Touchable, QueryEffectPage,
   ImagePicker, ImageRobust, QueryEffectSection, StateSection, BottomButton,
   TouchableOpacity, SearchBar, ProductVerticalWrapper, ProductHorizontalWrapper,
-  CartAddButton, ProductDetailWrapper, CartAddBottomButton, ConsumerPageHeader, 
+  CartAddButton, ProductDetailWrapper, ButtonPrimary, ConsumerPageHeader, 
   ProductImage, ListHeader, CategoryItem, AppTitle, HeaderTitle, CartSubtractButton
 };

@@ -19,6 +19,8 @@ const colors = {
   horti_dark: '#00B9AE',
   horti_light: '#2EC4B6',
   horti_bg: 'rgba(0, 185, 174, 0.25)',
+  disabled_dark: '#454955',
+  disabled_light: '#C8CCBF',
   border: 'rgba(133, 133, 133, 0.2)',
 }
 

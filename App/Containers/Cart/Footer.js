@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
-import { parseToRupiah, calcDiscount, InAppNotification } from 'Lib';
+import { parseToRupiah, moderateScale, calcDiscount, InAppNotification } from 'Lib';
 import { Colors, Metrics } from 'Themes';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { SYNC_CART, cacheSetCart } from 'GraphQL/Cart/Mutation';
@@ -24,6 +24,7 @@ import CartActions, {
 } from 'Redux/CartRedux';
 import CheckoutActions from 'Redux/CheckoutRedux';
 import { getUserId } from 'Redux/SessionRedux';
+import { ButtonPrimary } from 'Components';
 
 class Footer extends Component {
   constructor(props) {
@@ -100,9 +101,23 @@ class Footer extends Component {
           borderTopColor: Colors.brown_light
         }}>
         {isAnyCartItemSelected &&
-          <View style={{ padding: 15 }}>
-            <Text style={{ fontSize: 16 }}>Total</Text>
-            <Text style={{ fontSize: 22, fontWeight: 'bold' }}>
+          <View style={{ padding: moderateScale(15) }}>
+            <Text
+              style={{
+                fontFamily: 'CircularStd',
+                fontSize: 16,
+                color: 'rgba(0,0,0,0.68)',
+              }}
+            >
+              Total
+            </Text>
+            <Text
+              style={{
+                fontFamily: 'CircularStd-Bold',
+                fontSize: 22,
+                color: Colors.black
+              }}
+            >
               {parseToRupiah(grossTotal) || '0'}
             </Text>
           </View>
@@ -115,33 +130,19 @@ class Footer extends Component {
           errorPolicy='all'>
           { (syncCartItem, {loading, error, data}) => {
             return (
-              <TouchableOpacity
+              <ButtonPrimary
                 onPress={() => this.onStartSyncCart(syncCartItem)}
                 disabled={
                   loading ||
                   isInitiatingCheckout ||
                   !isCheckoutValid}
-                style={{
-                  height: 50,
-                  backgroundColor: isCheckoutValid ? Colors.green_light : Colors.brown_light,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-                >
-                {(loading || isInitiatingCheckout) &&
-                  <DotIndicator
-                    count={4}
-                    size={7}
-                    color='white'
-                    animationDuration={800}
-                  />
+                loading={loading || isInitiatingCheckout}
+                colors={isCheckoutValid ?
+                  [Colors.veggie_light, Colors.veggie_dark]
+                  : [Colors.disabled_light, Colors.disabled_dark]
                 }
-                {(!loading && !isInitiatingCheckout) &&
-                  <Text style={{color: 'white'}}>
-                    Checkout
-                  </Text>
-                }
-              </TouchableOpacity>
+                title="Checkout"
+              />
             );
           }}
         </Mutation>

@@ -6,16 +6,18 @@ import LinearGradient from 'react-native-linear-gradient';
 import { screenWidth } from 'Lib';
 import { Colors } from 'Themes';
 
-const CartAddBottomButton = ({ onPress, loading, title, colors }) => (
+const ButtonMain = ({ style, onPress, loading, disabled, title, colors }) => (
   <LinearGradient
     start={{x: 0, y: 0}} end={{x: 1, y: 0}}
     colors={colors}
     style={{
-      height: 50,
+      ...{ height: 50 },
+      ...style
     }}
   >
     <TouchableOpacity
       onPress={() => onPress()}
+      disabled={disabled}
       style={{
         flex: 1,
         alignItems: 'center',
@@ -45,4 +47,4 @@ const CartAddBottomButton = ({ onPress, loading, title, colors }) => (
   </LinearGradient>
 )
 
-export default CartAddBottomButton;
+export default ButtonMain;

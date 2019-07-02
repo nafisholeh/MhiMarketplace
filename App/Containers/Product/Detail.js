@@ -16,7 +16,7 @@ import {
   OptimizedList,
   HeaderButton,
   ProductDetailWrapper,
-  CartAddBottomButton,
+  ButtonPrimary,
   ProductImage
 } from 'Components';
 import { parseToRupiah, calcDiscount, getReadableDate, moderateScale } from 'Lib';
@@ -257,7 +257,7 @@ class Detail extends Component {
                       { (updateCartItem, {loading, error, data}) => {
                         const isAdded = isInsideCart || data;
                         return (
-                          <CartAddBottomButton
+                          <ButtonPrimary
                             onPress={() => this.onAddToCart(updateCartItem, isAdded)}
                             title={isAdded ? 'Lihat di Keranjang' : 'Pesan Sekarang'}
                             colors={isAdded ? ['#FC9000', '#FDAD00'] : ['#a8de1c', '#50ac02']}

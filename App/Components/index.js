@@ -2,7 +2,7 @@ import OptimizedList from './OptimizedList';
 import StatePage from './StatePage';
 import StateSection from './StateSection';
 import UpDownCounter from './UpDownCounter';
-import HeaderButton from './HeaderButton';
+import HeaderButton from './Header/HeaderButton';
 import ToolbarButton from './ToolbarButton';
 import RadioButton from './RadioButton';
 import LoadingPage from './LoadingPage';
@@ -20,11 +20,12 @@ import ProductHorizontalWrapper from './Product/ProductHorizontalWrapper';
 import ProductDetailWrapper from './Product/ProductDetailWrapper';
 import CartAddButton from './Product/CartAddButton';
 import CartAddBottomButton from './Product/CartAddBottomButton';
-import ConsumerPageHeader from './ConsumerPageHeader';
+import ConsumerPageHeader from './Header/ConsumerPageHeader';
 import ProductImage from './Product/ProductImage';
 import ListHeader from './Header/ListHeader';
 import CategoryItem from './Product/CategoryItem';
 import AppTitle from './AppTitle';
+import HeaderTitle from './Header/HeaderTitle';
 
 export {
   OptimizedList, StatePage, UpDownCounter, HeaderButton, ToolbarButton,
@@ -32,5 +33,5 @@ export {
   ImagePicker, ImageRobust, QueryEffectSection, StateSection, BottomButton,
   TouchableOpacity, SearchBar, ProductVerticalWrapper, ProductHorizontalWrapper,
   CartAddButton, ProductDetailWrapper, CartAddBottomButton, ConsumerPageHeader, 
-  ProductImage, ListHeader, CategoryItem, AppTitle,
+  ProductImage, ListHeader, CategoryItem, AppTitle, HeaderTitle
 };

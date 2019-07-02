@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { func, string, bool, oneOfType, number } from 'prop-types';
 
-import SearchBar from './SearchBar';
+import SearchBar from '../SearchBar';
 import { Images, Metrics } from 'Themes';
 import { moderateScale } from 'Lib';
     

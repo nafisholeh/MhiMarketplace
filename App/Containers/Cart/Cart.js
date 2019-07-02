@@ -11,7 +11,7 @@ import Footer from './Footer';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { UPDATE_CART_ITEM } from 'GraphQL/Cart/Mutation';
 import { FETCH_SOME_PRODUCT } from 'GraphQL/Product/Query';
-import { OptimizedList, StatePage, QueryEffectPage } from 'Components';
+import { OptimizedList, StatePage, QueryEffectPage, HeaderTitle } from 'Components';
 import { getUserId, isKurir } from 'Redux/SessionRedux';
 import { getCartTotalGrossPrice, getOutOfStock } from 'Redux/CartRedux';
 import CheckoutActions from 'Redux/CheckoutRedux';
@@ -25,7 +25,11 @@ class Cart extends Component {
   static navigationOptions = ({navigation}) => {
     const {params = {}} = navigation.state
     return {
-      title: 'Keranjang Belanja',
+      headerLeft: null,
+      headerRight: null,
+      header: (
+        <HeaderTitle title="Keranjang Belanja Anda" />
+      ),
     }
   }
   

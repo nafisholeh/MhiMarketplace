@@ -149,7 +149,10 @@ class Footer extends Component {
                   : [Colors.disabled_light, Colors.disabled_dark]
                 }
                 title="Checkout"
-                style={{ marginBottom: moderateScale(10) }}
+                style={{
+                  marginBottom: moderateScale(10),
+                  marginTop: !isAnyCartItemSelected ? moderateScale(15) : 0,
+                }}
               />
             );
           }}

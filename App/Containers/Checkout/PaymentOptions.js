@@ -8,6 +8,7 @@ import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { Metrics } from 'Themes';
 import { RadioButton } from 'Components';
 import CheckoutActions from 'Redux/CheckoutRedux';
+import ViewWrapper from './ViewWrapper';
 
 class PaymentOptions extends Component {
   constructor(props) {
@@ -98,11 +99,12 @@ class PaymentOptions extends Component {
   render() {
     const { cod, transfer, payments, paymentSelected } = this.state;
     return (
-      <View 
-        style={{
-          flex: 1,
-          marginHorizontal: Metrics.baseMargin,
-          marginTop: Metrics.baseMargin
+      <ViewWrapper
+        height={60}
+        styleChildren={{
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         <Text>Bayar di Tempat (COD)</Text>
@@ -112,7 +114,7 @@ class PaymentOptions extends Component {
           keyExtractor={(item, id) => item._id.toString()}
           renderItem={this.renderPaymentItems}
         /> */}
-      </View>
+      </ViewWrapper>
     );
   }
 }

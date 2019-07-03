@@ -20,10 +20,4 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
-  paymentDetail: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginHorizontal: Metrics.baseMargin,
-    marginBottom: Metrics.smallMargin,
-  },
 })

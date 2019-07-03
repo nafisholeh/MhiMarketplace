@@ -1,12 +1,11 @@
 import React, { Component, Fragment } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { string, arrayOf, shape, number, func } from 'prop-types';
 
 import { Colors, Metrics } from 'Themes';
-import styles from './Styles';
-import { parseToRupiah, calcDiscount } from 'Lib';
+import { parseToRupiah, calcDiscount, moderateScale } from 'Lib';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { FETCH_COURIER_COST } from 'GraphQL/CourierCost/Query';
 import { getUserId } from 'Redux/SessionRedux';
@@ -124,34 +123,42 @@ class PaymentDetails extends Component {
     return (
       <View
         style={{
-          borderTopColor: Colors.brown_light,
-          borderTopWidth: 0.5,
-          marginTop: Metrics.baseMargin,
-          paddingTop: Metrics.doubleBaseMargin,
+          backgroundColor: Colors.white,
+          borderTopWidth: 0.8,
+          borderTopColor: Colors.border,
+          marginTop: moderateScale(20),
+          paddingHorizontal: moderateScale(15),
+          paddingTop: moderateScale(15),
         }}
       >
         <View style={styles.paymentDetail}>
-          <Text>Harga Sebenarnya</Text>
-          <Text>{parseToRupiah(grossPrice) || '-'}</Text>
+          <Text style={styles.priceTitle}>
+            Harga Sebenarnya
+          </Text>
+          <Text style={styles.priceValue}>
+            {parseToRupiah(grossPrice) || '-'}
+          </Text>
         </View>
         <View style={styles.paymentDetail}>
-          <Text>Harga Kurir</Text>
-          <Text>{parseToRupiah(courierCost) || '-'}</Text>
+          <Text style={styles.priceTitle}>Harga Kurir</Text>
+          <Text style={styles.priceValue}>
+            {parseToRupiah(courierCost) || '-'}
+          </Text>
         </View>
         {totalDiscount ? 
           (
             <Fragment>
               <View style={styles.paymentDetail}>
-                <Text>Harga Akhir</Text>
-                <Text>{parseToRupiah(grossPrice + courierCost) || '-'}</Text>
+                <Text style={styles.priceTitle}>Harga Akhir</Text>
+                <Text style={styles.priceValue}>
+                  {parseToRupiah(grossPrice + courierCost) || '-'}
+                </Text>
               </View>
               <View style={styles.paymentDetail}>
-                <Text>Harga diskon (Anda menghemat)</Text>
-                <Text
-                  style={{
-                    color: Colors.red
-                  }}
-                >
+                <Text style={styles.priceTitle}>
+                  Harga diskon (Anda menghemat)
+                </Text>
+                <Text style={styles.priceValue}>
                   {`${parseToRupiah(totalDiscount)}` || '-'}
                 </Text>
               </View>
@@ -160,10 +167,11 @@ class PaymentDetails extends Component {
           null
         }
         <View style={{ marginHorizontal: Metrics.baseMargin }}>
-          <Text>Total yang dibayarkan</Text>
-          <Text style={{
+          <Text style={styles.priceTitle}>Total yang dibayarkan</Text>
+          <Text
+            style={{
+              fontFamily: 'CircularStd-Bold',
               fontSize: 22,
-              fontWeight: 'bold',
               textAlign: 'right',
               color: Colors.green_light
             }}
@@ -175,6 +183,25 @@ class PaymentDetails extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  priceTitle: {
+    fontFamily: 'CircularStd',
+    fontSize: 14,
+    color: 'rgba(0,0,0,0.68)',
+  },
+  priceValue: {
+    fontFamily: 'CircularStd-Book',
+    fontSize: 16,
+    color: 'rgba(0,0,0,0.68)',
+  },
+  paymentDetail: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: Metrics.baseMargin,
+    marginBottom: Metrics.smallMargin,
+  },
+});
 
 PaymentDetails.propTypes = {
   userId: string,

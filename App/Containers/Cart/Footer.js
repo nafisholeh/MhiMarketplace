@@ -95,7 +95,8 @@ class Footer extends Component {
     const { isInitiatingCheckout } = this.state;
     if (!isCartFilled) return (<View/>);
     return (
-      <View style={{
+      <View
+        style={{
           backgroundColor: Colors.white,
           borderTopWidth: 0.8,
           borderTopColor: Colors.border

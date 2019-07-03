@@ -79,7 +79,6 @@ class Checkout extends Component {
         <ScrollView
           style={{
             flex: 1,
-            paddingHorizontal: moderateScale(15),
             marginBottom: Metrics.doubleBaseMargin
           }}
         >

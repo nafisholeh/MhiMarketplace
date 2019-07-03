@@ -13,6 +13,7 @@ class CheckoutTitle extends Component {
         style={{
           marginTop: moderateScale(10),
           marginBottom: moderateScale(10),
+          marginHorizontal: moderateScale(15),
         }}
       >
         <Text

@@ -9,6 +9,8 @@ import { createStructuredSelector } from 'reselect';
 import Item from './Item';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { Metrics, Colors } from 'Themes';
+import { ViewShadow } from 'Components';
+import { screenWidth, moderateScale } from 'Lib';
 import { FETCH_SELECTED_ADDRESS } from 'GraphQL/Address/Query';
 import { getUserId } from 'Redux/SessionRedux';
 import CheckoutActions from 'Redux/CheckoutRedux';
@@ -45,22 +47,34 @@ class AddressCheckout extends Component {
         {({ loading, error, data, refetch }) => {
           const { selectedAddress = {} } = data || {};
           return (
-            <TouchableOpacity 
-              onPress={this.onOpenList} 
-              style={styles.container}
+            <ViewShadow
+              width={screenWidth - 40}
+              height={100}
+              borderRadius={10}
+              shadowBorderRadiusAndroid={10}
+              shadowRadiusAndroid={18}
+              shadowOpacityAndroid={0.09}
+              mainColor={Colors.white}
+              shadowColor={Colors.brown_light}
+              style={{ alignSelf: 'center' }}
             >
-              {!loading && selectedAddress && (
-                <Item
-                  data={selectedAddress}
-                  isDisabled
-                />
-              )}
-              {!selectedAddress && (
-                <Text style={{ textAlign: 'center', marginVertical: 20 }}>
-                  Silahkan pilih alamat pengiriman terlebih dahulu
-                </Text>
-              )}
-            </TouchableOpacity>
+              <TouchableOpacity
+                onPress={this.onOpenList}
+                style={{ flex: 1, paddingHorizontal: moderateScale(5) }}
+              >
+                {!loading && selectedAddress && (
+                  <Item
+                    data={selectedAddress}
+                    isDisabled
+                  />
+                )}
+                {!selectedAddress && (
+                  <Text style={{ textAlign: 'center', marginVertical: 20 }}>
+                    Silahkan pilih alamat pengiriman terlebih dahulu
+                  </Text>
+                )}
+              </TouchableOpacity>
+            </ViewShadow>
           );
         }}
       </Query>
@@ -72,13 +86,6 @@ AddressCheckout.propTypes = {
   userId: string,
   selectShipmentAddress: func,
 };
-
-const styles = StyleSheet.create({
-  container: {
-    borderBottomColor: Colors.brown_light,
-    borderBottomWidth: 0.5,
-  }
-});
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),

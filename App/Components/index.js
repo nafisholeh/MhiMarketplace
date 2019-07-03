@@ -28,6 +28,7 @@ import ListHeader from './Header/ListHeader';
 import CategoryItem from './Product/CategoryItem';
 import AppTitle from './AppTitle';
 import HeaderTitle from './Header/HeaderTitle';
+import ViewShadow from './Shadow/ViewShadow';
 
 export {
   OptimizedList, StatePage, UpDownCounter, HeaderButton, ToolbarButton,
@@ -36,5 +37,5 @@ export {
   TouchableOpacity, SearchBar, ProductVerticalWrapper, ProductHorizontalWrapper,
   CartAddButton, ProductDetailWrapper, ButtonPrimary, ButtonSecondary, 
   ConsumerPageHeader, ProductImage, ListHeader, CategoryItem, AppTitle,
-  HeaderTitle, CartSubtractButton
+  HeaderTitle, CartSubtractButton, ViewShadow
 };

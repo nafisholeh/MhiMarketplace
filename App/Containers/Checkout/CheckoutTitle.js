@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { string } from 'prop-types';
 
-import { Metrics } from 'Themes';
+import { Metrics, Colors } from 'Themes';
+import { moderateScale } from 'Lib';
 
 class CheckoutTitle extends Component {
   render() {
@@ -10,12 +11,17 @@ class CheckoutTitle extends Component {
     return (
       <View
         style={{
-          paddingHorizontal: Metrics.baseMargin,
-          marginTop: Metrics.baseMargin,
-          marginBottom: Metrics.smallMargin
+          marginTop: moderateScale(10),
+          marginBottom: moderateScale(10),
         }}
       >
-        <Text style={{ fontWeight: 'bold' }}>
+        <Text
+          style={{
+            fontFamily: 'CircularStd-Book',
+            fontSize: 16,
+            color: Colors.black,
+          }}
+        >
           {title}
         </Text>
       </View>

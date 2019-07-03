@@ -24,14 +24,19 @@ import {
   getChosenShipment,
   getSelectedShipmentAddress
 } from 'Redux/CheckoutRedux';
+import { HeaderTitle } from 'Components';
+import { moderateScale } from 'Lib';
 
 class Checkout extends Component {
   
   static navigationOptions = ({navigation}) => {
     const {params = {}} = navigation.state
     return {
-      title: 'Rekap Pesanan',
       headerLeft: null,
+      headerRight: null,
+      header: (
+        <HeaderTitle title="Checkout" />
+      ),
     }
   }
   
@@ -70,8 +75,14 @@ class Checkout extends Component {
   render() {
     const { userId, checkoutId, shippingDate } = this.props;
     return (
-      <View style={{flex:1}}>
-        <ScrollView style={{ flex: 1, marginBottom: Metrics.doubleBaseMargin }}>
+      <View style={{ flex: 1 }}>
+        <ScrollView
+          style={{
+            flex: 1,
+            paddingHorizontal: moderateScale(15),
+            marginBottom: Metrics.doubleBaseMargin
+          }}
+        >
           <CheckoutTitle title="Alamat Pengiriman" />
           <AddressCheckout />
           <Query 

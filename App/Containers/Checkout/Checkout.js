@@ -24,7 +24,7 @@ import {
   getChosenShipment,
   getSelectedShipmentAddress
 } from 'Redux/CheckoutRedux';
-import { HeaderTitle } from 'Components';
+import { HeaderTitle, ButtonPrimary } from 'Components';
 import { moderateScale } from 'Lib';
 
 class Checkout extends Component {
@@ -119,27 +119,11 @@ class Checkout extends Component {
         >
           { (finishCheckout, {loading, error, data}) => {
             return (
-              <TouchableOpacity
+              <ButtonPrimary
                 onPress={() => this.onFinishCheckout(finishCheckout)}
-                style={{
-                  height: 50,
-                  backgroundColor: Colors.green_light,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                {loading &&
-                  <DotIndicator
-                    count={4}
-                    size={7}
-                    color='white'
-                    animationDuration={800}
-                  />
-                }
-                {!loading &&
-                  <Text style={{ color: 'white' }}>Bayar Sekarang</Text>
-                }
-              </TouchableOpacity>
+                loading={loading}
+                title="Selesaikan Checkout"
+              />
             );
           }}
         </Mutation>

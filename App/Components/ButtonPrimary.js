@@ -9,7 +9,7 @@ import { Colors } from 'Themes';
 const ButtonMain = ({ style, onPress, loading, disabled, title, colors }) => (
   <LinearGradient
     start={{x: 0, y: 0}} end={{x: 1, y: 0}}
-    colors={colors}
+    colors={colors || [ Colors.veggie_light, Colors.veggie_dark ]}
     style={{
       ...{ height: 50 },
       ...style

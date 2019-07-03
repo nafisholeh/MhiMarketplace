@@ -92,7 +92,14 @@ class Detail extends Component {
               justifyContent: 'center', alignItems: 'center',
               marginLeft: moderateScale(30),
             }}>
-            <Image source={Images.back} style={{ width: 25, height: 25, tintColor: 'white' }} />
+            <Image
+              source={Images.back}
+              style={{
+                width: moderateScale(20),
+                height: moderateScale(20),
+                tintColor: 'white'
+              }}
+            />
           </TouchableOpacity>
           <Text
             style={{

@@ -28,20 +28,6 @@ import ConsumerProductList from 'Containers/ConsumerProductList';
 const ProductListConsumer = createStackNavigator({
   ProductList: { screen: ConsumerProductList },
   ProductDetail: { screen: Detail },
-  ProductAdd: { screen: ProductAdd },
-  ProductEdit: { screen: ProductEdit },
-  Cart: { screen: Cart },
-  Checkout: { screen: Checkout },
-  AddressList: { screen: AddressList },
-  AddressInput: { screen: AddressInput },
-  Signin: { screen: Signin },
-  Signup: { screen: Signup },  
-  Slip: { screen: Slip },
-  OrderDetail: { screen: OrderDetail },
-  ConsumerOrder: { screen: ConsumerOrder },
-  ConsumerCompleted: { screen: ConsumerCompleted },
-  ConsumerOrderDetail: { screen: ConsumerOrderDetail },
-  ConsumerSendingDetail: { screen: ConsumerSendingDetail },
 }, {
   initialRouteName: 'ProductList',
   navigationOptions: {

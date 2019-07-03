@@ -27,20 +27,6 @@ import ConsumerSendingDetail from 'Containers/ConsumerOrder/Sending/Detail';
 const HomeNav = createStackNavigator({
   Home: { screen: Home },
   ProductDetail: { screen: Detail },
-  ProductAdd: { screen: ProductAdd },
-  ProductEdit: { screen: ProductEdit },
-  Cart: { screen: Cart },
-  Checkout: { screen: Checkout },
-  AddressList: { screen: AddressList },
-  AddressInput: { screen: AddressInput },
-  Signin: { screen: Signin },
-  Signup: { screen: Signup },  
-  Slip: { screen: Slip },
-  OrderDetail: { screen: OrderDetail },
-  ConsumerOrder: { screen: ConsumerOrder },
-  ConsumerCompleted: { screen: ConsumerCompleted },
-  ConsumerOrderDetail: { screen: ConsumerOrderDetail },
-  ConsumerSendingDetail: { screen: ConsumerSendingDetail },
 }, {
   initialRouteName: 'Home',
   navigationOptions: {

@@ -20,7 +20,7 @@ const ConsumerNavigation = createBottomTabNavigator(
     Account: { screen: AccountNav },
   },
   {
-    initialRouteName: 'Cart',
+    initialRouteName: 'Home',
     backBehavior: 'initialRoute',
   }
 )

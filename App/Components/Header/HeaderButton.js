@@ -3,6 +3,7 @@ import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { func, number, string, oneOfType } from 'prop-types';
 
 import { Metrics } from 'Themes';
+import { moderateScale } from 'Lib';
 
 class HeaderButton extends Component {
   render() {
@@ -20,8 +21,8 @@ const styles = StyleSheet.create({
     marginHorizontal: Metrics.baseMargin,
   },
   icon: {
-    width: 30,
-    height: 30,
+    width: moderateScale(30),
+    height: moderateScale(30),
   }
 });
 

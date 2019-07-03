@@ -7,7 +7,6 @@ export default {
     'ProductDetail',
     'Signin',
     'Signup',
-    'Cart',
     'Checkout',
     'AddressList',
     'AddressInput',

@@ -24,7 +24,7 @@ import CartActions, {
 } from 'Redux/CartRedux';
 import CheckoutActions from 'Redux/CheckoutRedux';
 import { getUserId } from 'Redux/SessionRedux';
-import { ButtonPrimary } from 'Components';
+import { ButtonSecondary } from 'Components';
 
 class Footer extends Component {
   constructor(props) {
@@ -101,7 +101,14 @@ class Footer extends Component {
           borderTopColor: Colors.brown_light
         }}>
         {isAnyCartItemSelected &&
-          <View style={{ padding: moderateScale(15) }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              paddingHorizontal: moderateScale(30),
+              paddingVertical: moderateScale(15),
+            }}
+          >
             <Text
               style={{
                 fontFamily: 'CircularStd',
@@ -114,7 +121,7 @@ class Footer extends Component {
             <Text
               style={{
                 fontFamily: 'CircularStd-Bold',
-                fontSize: 22,
+                fontSize: 16,
                 color: Colors.black
               }}
             >
@@ -130,7 +137,7 @@ class Footer extends Component {
           errorPolicy='all'>
           { (syncCartItem, {loading, error, data}) => {
             return (
-              <ButtonPrimary
+              <ButtonSecondary
                 onPress={() => this.onStartSyncCart(syncCartItem)}
                 disabled={
                   loading ||
@@ -142,6 +149,7 @@ class Footer extends Component {
                   : [Colors.disabled_light, Colors.disabled_dark]
                 }
                 title="Checkout"
+                style={{ marginBottom: moderateScale(10) }}
               />
             );
           }}

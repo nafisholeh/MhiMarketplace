@@ -8,7 +8,9 @@ import moment from 'moment';
 
 import { FETCH_DELIVERIES } from 'GraphQL/Delivery/Query';
 import { Metrics, Colors } from 'Themes';
+import { moderateScale, screenWidth } from 'Lib';
 import CheckoutActions from 'Redux/CheckoutRedux';
+import ViewWrapper from './ViewWrapper';
 
 LocaleConfig.locales['fr'] = {
   monthNames: ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','Nopember','Desember'],
@@ -70,20 +72,22 @@ class DeliveryOptions extends Component {
         storeShipmentTime(`${time_start},${time_end}`);
       }
     }
-    console.tron.log('fetchTimeSuccess', data);
   }
   
   render() {
     const { selected, markedDates } = this.state;
     const { storeShipmentTime } = this.props;
     return (
-      <View style={{ borderBottomWidth: 0.4, borderBottomColor: Colors.brown_light }}>
+      <ViewWrapper
+        height={410}
+        styleChildren={{ flexDirection: 'column' }}
+      >
         <CalendarList
           horizontal={true}
-          pagingEnabled={true}
           minDate={TODAY}
           onDayPress={this.onDaySelect}
           markedDates={markedDates}
+          calendarWidth={moderateScale(screenWidth - 45)}
         />
         <Query 
           query={FETCH_DELIVERIES}
@@ -94,11 +98,23 @@ class DeliveryOptions extends Component {
             const { deliveries } = data;
             return (
               <View style={{ marginLeft: 25, marginRight: 15, flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ fontWeight: 'bold' }}>Jam:</Text>
+                <Text
+                  style={{
+                    fontFamily: 'CircularStd-Book',
+                    fontSize: 14,
+                    color: 'rgba(0,0,0,0.68)',
+                    marginRight: moderateScale(10),
+                  }}
+                >
+                  Jam:
+                </Text>
                 <Picker
                   selectedValue={selected}
                   style={{ flex:1, borderWidth:1, borderColor: 'gray' }}
-                  itemStyle={{ textAlign: 'center' }}
+                  itemStyle={{
+                    textAlign: 'center',
+                    color: 'red',
+                  }}
                   onValueChange={this.onValueChange}>
                   {deliveries.map(item => (
                     <Picker.Item
@@ -112,7 +128,7 @@ class DeliveryOptions extends Component {
             );
           }}
         </Query>
-      </View>
+      </ViewWrapper>
     );
   }
 }

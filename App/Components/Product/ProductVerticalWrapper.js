@@ -8,14 +8,22 @@ import { Colors } from 'Themes';
 
 class ProductVerticalWrapper extends Component {
   render() {
-    const { children, onPress, styleParent, styleChildren } = this.props;
+    const {
+      children,
+      disabled,
+      shadowRadiusAndroid,
+      height,
+      onPress,
+      styleParent,
+      styleChildren
+    } = this.props;
     return (
       <ViewShadow
         width={screenWidth - 40}
-        height={115}
+        height={height || 115}
         borderRadius={4}
         shadowBorderRadiusAndroid={3}
-        shadowRadiusAndroid={18}
+        shadowRadiusAndroid={shadowRadiusAndroid || 18}
         shadowOpacityAndroid={0.1}
         mainColor={Colors.white}
         shadowColor={Colors.brown_light}
@@ -30,6 +38,7 @@ class ProductVerticalWrapper extends Component {
             ...{ flex: 1 },
             ...styleChildren
           }}
+          disabled={disabled}
           onPress={() => {
             const { onPress } = this.props;
             if (onPress) onPress();

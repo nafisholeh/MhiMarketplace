@@ -20,13 +20,12 @@ class CheckoutList extends Component {
   render() {
     const { data } = this.props;
     return (
-      <View style={{flex: 1}}>
-        <FlatList
-          keyExtractor={(item, id) => item._id.toString()}
-          data={data} 
-          renderItem={this.renderCheckoutItems}
-        />
-      </View>
+      <FlatList
+        keyExtractor={(item, id) => item._id.toString()}
+        data={data} 
+        renderItem={this.renderCheckoutItems}
+        // contentContainerStyle={{ paddingBottom: 100, backgroundColor: 'yellow' }}
+      />
     )
   }
 }

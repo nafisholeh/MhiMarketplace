@@ -36,129 +36,128 @@ class Item extends Component {
     const  { _id: productId, title, price, discount, photo, unit, stock } = data;
     const isInsideCart = cartItemIds.indexOf(productId) > -1;
     return (
-      <ProductVerticalWrapper onPress={this.onItemClicked}>
+      <ProductVerticalWrapper
+        onPress={this.onItemClicked}
+        styleChildren={{
+          flex: 1,
+          flexDirection: 'row',
+          alignItems: 'center'
+        }}
+      >
+        <ProductImage
+          source={photo}
+          style={{
+            width: moderateScale(74),
+            height: moderateScale(74),
+            resizeMode: 'contain',
+            marginRight: moderateScale(12),
+          }}
+        />
         <View
           style={{
             flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center'
+            height: 74,
+            flexDirection: 'column',
+            justifyContent: 'space-between',
           }}
         >
-          <ProductImage
-            source={photo}
-            style={{
-              width: moderateScale(74),
-              height: moderateScale(74),
-              resizeMode: 'contain',
-              marginRight: moderateScale(12),
-            }}
-          />
-          <View
-            style={{
-              flex: 1,
-              height: 74,
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-            }}
-          >
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              {discount && (
-                <Fragment>
-                  <Text
-                    style={{
-                      fontFamily: 'CircularStd-Book',
-                      fontSize: 14,
-                      color: 'rgba(0,0,0,0.68)',
-                      marginRight: moderateScale(10),
-                    }}
-                    numberOfLines={1}
-                  >
-                    {parseToRupiah(price - calcDiscount(price, discount))}
-                  </Text>
-                  <Text 
-                    style={{
-                      fontFamily: 'CircularStd-Book',
-                      fontSize: 12,
-                      color: 'rgba(0,0,0,0.3)',
-                      textDecorationLine: 'line-through', 
-                      textDecorationStyle: 'solid'
-                    }}
-                    numberOfLines={1}
-                  >
-                    {parseToRupiah(price)}
-                  </Text>
-                </Fragment>                
-              )}
-              {!discount && (
-                <Text 
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            {discount && (
+              <Fragment>
+                <Text
                   style={{
                     fontFamily: 'CircularStd-Book',
                     fontSize: 14,
                     color: 'rgba(0,0,0,0.68)',
+                    marginRight: moderateScale(10),
+                  }}
+                  numberOfLines={1}
+                >
+                  {parseToRupiah(price - calcDiscount(price, discount))}
+                </Text>
+                <Text 
+                  style={{
+                    fontFamily: 'CircularStd-Book',
+                    fontSize: 12,
+                    color: 'rgba(0,0,0,0.3)',
+                    textDecorationLine: 'line-through', 
+                    textDecorationStyle: 'solid'
                   }}
                   numberOfLines={1}
                 >
                   {parseToRupiah(price)}
                 </Text>
-              )}
-            </View>
-            <Text
-              style={{
-                fontFamily: 'CircularStd-Bold',
-                fontSize: 16,
-                color: Colors.black,
-              }}
-              numberOfLines={2}
-            >
-              {title}
-            </Text>
-            <Text
-              style={{
-                fontFamily: 'CircularStd-Book',
-                fontSize: 12,
-                color: 'rgba(0,0,0,0.3)',
-              }}
-              numberOfLines={1}
-            >
-              {stock ? `${stock} ${unit}` : `Stok sementara kosong`}
-            </Text>
+              </Fragment>                
+            )}
+            {!discount && (
+              <Text 
+                style={{
+                  fontFamily: 'CircularStd-Book',
+                  fontSize: 14,
+                  color: 'rgba(0,0,0,0.68)',
+                }}
+                numberOfLines={1}
+              >
+                {parseToRupiah(price)}
+              </Text>
+            )}
           </View>
-          { isStokOpname &&
-            <TouchableOpacity
-              style={styles.product__item_cart}
-              onPress={this.onEdit}
-            >
-              <Image
-                source={Images.edit}
-                style={styles.itemImage}
-              />
-            </TouchableOpacity>
-          }
-          { !isInsideCart && !isStokOpname &&
-            <Mutation
-              mutation={UPDATE_CART_ITEM_SCHEMA}
-              variables={{ user_id: userId, product_id: productId, qty: null }}
-              update={(cache, data) => cacheUpdateCartItem(cache, data, productId)}
-              onError={(error) => {}}
-              ignoreResults={false}
-              errorPolicy='all'>
-              { (updateCartItem, {loading, error, data}) => {
-                if (data) return (<View/>);
-                return (
-                  <TouchableOpacity
-                    style={styles.product__item_cart}
-                    onPress={() => updateCartItem()}
-                  >
-                    {loading && (<ActivityIndicator size="small" />)}
-                    {!loading && (
-                      <CartAddButton isError={error} />
-                    )}
-                  </TouchableOpacity>
-                );
-              }}
-            </Mutation>
-          }
+          <Text
+            style={{
+              fontFamily: 'CircularStd-Bold',
+              fontSize: 16,
+              color: Colors.black,
+            }}
+            numberOfLines={2}
+          >
+            {title}
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'CircularStd-Book',
+              fontSize: 12,
+              color: 'rgba(0,0,0,0.3)',
+            }}
+            numberOfLines={1}
+          >
+            {stock ? `${stock} ${unit}` : `Stok sementara kosong`}
+          </Text>
         </View>
+        { isStokOpname &&
+          <TouchableOpacity
+            style={styles.product__item_cart}
+            onPress={this.onEdit}
+          >
+            <Image
+              source={Images.edit}
+              style={styles.itemImage}
+            />
+          </TouchableOpacity>
+        }
+        { !isInsideCart && !isStokOpname &&
+          <Mutation
+            mutation={UPDATE_CART_ITEM_SCHEMA}
+            variables={{ user_id: userId, product_id: productId, qty: null }}
+            update={(cache, data) => cacheUpdateCartItem(cache, data, productId)}
+            onError={(error) => {}}
+            ignoreResults={false}
+            errorPolicy='all'>
+            { (updateCartItem, {loading, error, data}) => {
+              if (data) return (<View/>);
+              return (
+                <TouchableOpacity
+                  style={styles.product__item_cart}
+                  onPress={() => updateCartItem()}
+                >
+                  {loading && (<ActivityIndicator size="small" />)}
+                  {!loading && (
+                    <CartAddButton isError={error} />
+                  )}
+                </TouchableOpacity>
+              );
+            }}
+          </Mutation>
+        }
       </ProductVerticalWrapper>
     )
   }

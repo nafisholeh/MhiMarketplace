@@ -11,7 +11,7 @@ class CheckoutTitle extends Component {
     return (
       <View
         style={{
-          marginTop: moderateScale(10),
+          marginTop: moderateScale(15),
           marginBottom: moderateScale(10),
           marginHorizontal: moderateScale(15),
         }}

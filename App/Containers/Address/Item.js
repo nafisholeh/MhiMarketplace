@@ -68,9 +68,33 @@ class AddressItem extends Component {
                   flexDirection: 'column',
                   justifyContent: 'center',
                 }}>
-                <Text>{getReadableAddress(address)}</Text>
-                <Text>{getReadableSubdistrict(address)}</Text>
-                <Text>{getReadableCityState(address)}</Text>
+                <Text
+                  style={{
+                    fontFamily: 'CircularStd-Book',
+                    fontSize: 14,
+                    color: 'rgba(29, 29, 29, 0.5)'
+                  }}
+                >
+                  {getReadableAddress(address)}
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: 'CircularStd-Book',
+                    fontSize: 14,
+                    color: 'rgba(29, 29, 29, 0.5)'
+                  }}
+                >
+                  {getReadableSubdistrict(address)}
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: 'CircularStd-Book',
+                    fontSize: 14,
+                    color: 'rgba(29, 29, 29, 0.5)'
+                  }}
+                >
+                  {getReadableCityState(address)}
+                </Text>
               </View>
               {selected &&
                 <Image

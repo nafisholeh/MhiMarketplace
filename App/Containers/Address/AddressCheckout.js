@@ -48,7 +48,7 @@ class AddressCheckout extends Component {
           const { selectedAddress = {} } = data || {};
           return (
             <ViewShadow
-              width={screenWidth - 40}
+              width={screenWidth - 35}
               height={100}
               borderRadius={10}
               shadowBorderRadiusAndroid={10}
@@ -69,7 +69,12 @@ class AddressCheckout extends Component {
                   />
                 )}
                 {!selectedAddress && (
-                  <Text style={{ textAlign: 'center', marginVertical: 20 }}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      marginVertical: 20
+                    }}
+                  >
                     Silahkan pilih alamat pengiriman terlebih dahulu
                   </Text>
                 )}

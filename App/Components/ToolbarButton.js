@@ -6,11 +6,9 @@ import { Images, Metrics } from 'Themes';
 
 class ToolbarButton extends Component {
   render() {
-    const { navigation, onPress, icon } = this.props;
+    const { navigation, onPress, icon, style } = this.props;
     return (
-      <TouchableOpacity 
-        onPress={onPress}
-        style={styles.container}>
+      <TouchableOpacity onPress={onPress}>
         <Image source={icon} style={styles.image} />
       </TouchableOpacity>
     )
@@ -22,9 +20,6 @@ ToolbarButton.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: Metrics.baseMargin,
-  },
   image: {
     width: 25,
     height: 25,

@@ -97,8 +97,8 @@ class Footer extends Component {
     return (
       <View style={{
           backgroundColor: Colors.white,
-          borderTopWidth: 0.4,
-          borderTopColor: Colors.brown_light
+          borderTopWidth: 0.8,
+          borderTopColor: Colors.border
         }}>
         {isAnyCartItemSelected &&
           <View

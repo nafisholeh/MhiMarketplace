@@ -60,7 +60,12 @@ class AddressCheckout extends Component {
             >
               <TouchableOpacity
                 onPress={this.onOpenList}
-                style={{ flex: 1, paddingHorizontal: moderateScale(5) }}
+                style={{
+                  flex: 1,
+                  paddingHorizontal: moderateScale(5),
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
               >
                 {!loading && selectedAddress && (
                   <Item
@@ -71,8 +76,10 @@ class AddressCheckout extends Component {
                 {!selectedAddress && (
                   <Text
                     style={{
+                      fontFamily: 'CircularStd-Book',
+                      fontSize: 16,
+                      color: Colors.red2,
                       textAlign: 'center',
-                      marginVertical: 20
                     }}
                   >
                     Silahkan pilih alamat pengiriman terlebih dahulu

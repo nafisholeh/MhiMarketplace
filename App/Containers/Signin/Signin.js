@@ -100,7 +100,7 @@ class Signin extends Component {
             screenName = 'FinanceNav';
             break;
           default:
-            screenName = 'Home';
+            screenName = 'ConsumerNav';
             break;
         }
         navigation.navigate(screenName);

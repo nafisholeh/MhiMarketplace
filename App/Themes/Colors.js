@@ -22,6 +22,7 @@ const colors = {
   disabled_dark: '#454955',
   disabled_light: '#C8CCBF',
   border: 'rgba(133, 133, 133, 0.2)',
+  text: 'rgba(0,0,0,0.68)',
 }
 
 export default colors

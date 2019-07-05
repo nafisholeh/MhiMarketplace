@@ -15,7 +15,7 @@ import {
 } from 'GraphQL/Address/Query';
 import { ADD_ADDRESS, cacheAddAddress } from 'GraphQL/Address/Mutation';
 import { Colors, Metrics, Images } from 'Themes';
-import { InAppNotification, graphqlToRNPickerSelect } from 'Lib';
+import { InAppNotification, graphqlToRNPickerSelect, moderateScale } from 'Lib';
 import styles from './Styles';
 import { getUserId } from 'Redux/SessionRedux';
 import { KeyboardFriendlyView, InputText, InputPicker } from 'Components';
@@ -130,6 +130,8 @@ class AddressInput extends Component {
       kab_key_selected,
       error_kelurahan,
       error_kodepos,
+      error_rtrw,
+      error_alamat,
       
       dummy,
       
@@ -158,8 +160,13 @@ class AddressInput extends Component {
         { (addAddress, {loading, error, data}) => {
           return (
             <React.Fragment>
-              <ScrollView style={{ flex: 1, paddingHorizontal: Metrics.baseMargin }}>
-                <KeyboardFriendlyView>
+              <ScrollView>
+                <KeyboardFriendlyView
+                  style={{
+                    paddingVertical: moderateScale(20),
+                    paddingHorizontal: moderateScale(15),
+                  }}
+                >
                   
                   <InputPicker
                     title="Provinsi"
@@ -206,23 +213,29 @@ class AddressInput extends Component {
                     error={error_kodepos}
                     editable={false}
                   />
-
-                  <TextField
-                    ref={ref => this._rtrw = ref}
-                    label='RT/RW'
-                    style={{flex: 1}}
-                    onChangeText={rtrw => this.setState({ rtrw })}
-                    returnKeyType='next'
+                  
+                  <InputText
+                    title='RT/RW'
+                    value={rtrw}
+                    onChangeText={(rtrw) => this.setState({ rtrw })}
+                    placeholder='RT/RW'
+                    error={error_rtrw}
                     onSubmitEditing={() => this._alamat.focus()}
-                  />
-                  <TextField
-                    ref={ref => this._alamat = ref}
-                    label='Alamat Lengkap'
-                    multiline
-                    onChangeText={alamat => this.setState({ alamat })}
                     returnKeyType='next'
-                    onSubmitEditing={() => this._kodepos.focus()}
                   />
+                  
+                  <InputText
+                    refs={(ref) => this._alamat = ref}
+                    title='Alamat lengkap'
+                    value={alamat}
+                    onChangeText={(alamat) => this.setState({ alamat })}
+                    placeholder='Nama Gedung, jalan dan lainnya'
+                    multiline={true}
+                    error={error_alamat}
+                    styleContainer={{ height: moderateScale(120) }}
+                    styleBorder={{ height: moderateScale(100), alignItems: 'flex-start' }}
+                  />
+
                 </KeyboardFriendlyView>
               </ScrollView>
               <TouchableOpacity

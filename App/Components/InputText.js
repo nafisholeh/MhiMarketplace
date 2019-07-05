@@ -90,10 +90,10 @@ export default class InputText extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: moderateScale(10),
+    marginBottom: moderateScale(15),
   },
   prefix: {
-    color: Colors.text_title,
+    color: 'rgba(0,0,0,0.68)',
     fontFamily: 'CircularStd-Book',
     fontSize: 14,
     fontWeight: Platform.OS === 'ios' ? '300' : null,
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     marginRight: moderateScale(5),
   },
   title: {
-    color: Colors.text_secondary,
+    color: 'rgba(0,0,0,0.68)',
     fontFamily: 'CircularStd-Book',
     fontSize: 14,
     fontWeight: Platform.OS === 'ios' ? '300' : null,
@@ -112,8 +112,8 @@ const styles = StyleSheet.create({
   inputContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: Colors.border_search,
+    borderWidth: 0.5,
+    borderColor: Colors.brown_light,
     backgroundColor: Colors.white,
     borderRadius: 3,
     paddingVertical: Platform.OS === 'ios' ? moderateScale(14) : 0,
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: Colors.text_halal_price,
+    borderColor: Colors.red2,
     backgroundColor: Colors.white,
     borderRadius: 3,
     paddingVertical: Platform.OS === 'ios' ? moderateScale(14) : 0,
@@ -132,14 +132,14 @@ const styles = StyleSheet.create({
   },
   inputValue: {
     flex: 1,
-    color: Colors.text_title,
+    color: Colors.text,
     fontFamily: 'CircularStd-Book',
     fontSize: 14,
     fontWeight: Platform.OS === 'ios' ? '300' : null,
     letterSpacing: -0.34,
   },
   inputError: {
-    color: Colors.text_halal_price,
+    color: Colors.red2,
     fontFamily: 'CircularStd-Book',
     fontSize: 10,
     fontWeight: Platform.OS === 'ios' ? '300' : null,

@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { func, string, bool, oneOfType, number } from 'prop-types';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
 import SearchBar from '../SearchBar';
 import { Images, Metrics } from 'Themes';
 import { moderateScale } from 'Lib';
-    
+import { getUserId } from 'Redux/SessionRedux';
+
 class ConsumerPageHeader extends Component {
   render() {
-    const { onIconPress, onSearch, icon } = this.props;
+    const { onIconPress, onSearch, icon, userId } = this.props;
     return (
       <View
         style={{
@@ -20,17 +23,20 @@ class ConsumerPageHeader extends Component {
           zIndex: 2,
         }}
       >
-        <TouchableOpacity onPress={() => onIconPress()}>
-          <Image
-            source={icon}
-            style={{
-              height: 30,
-              width: 35,
-              resizeMode: 'contain',
-            }}
-          />
-        </TouchableOpacity>
+        {userId &&
+          <TouchableOpacity onPress={() => onIconPress()}>
+            <Image
+              source={icon}
+              style={{
+                height: 30,
+                width: 35,
+                resizeMode: 'contain',
+              }}
+            />
+          </TouchableOpacity>
+        }
         <SearchBar
+          isFullWidth={!userId}
           onSearch={term => onSearch(term)}
         />
       </View>
@@ -42,6 +48,11 @@ ConsumerPageHeader.propTypes = {
   icon: oneOfType([string, number]),
   onIconPress: func,
   onSearch: func,
+  userId: string,
 }
 
-export default ConsumerPageHeader;
+const mapStateToProps = createStructuredSelector({
+  userId: getUserId(),
+});
+
+export default connect(mapStateToProps, null)(ConsumerPageHeader);

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { View, TextInput, Image, TouchableOpacity } from 'react-native';
-import { func } from 'prop-types';
+import { func, bool } from 'prop-types';
 
 import ViewShadow from './Shadow/ViewShadow';
 import { Colors, Images } from 'Themes';
-import { moderateScale } from 'Lib';
+import { moderateScale, screenWidth } from 'Lib';
 
 class SearchBar extends Component {
   constructor(props) {
@@ -29,10 +29,11 @@ class SearchBar extends Component {
   };
 
   render() {
+    const { isFullWidth } = this.props;
     const { value } = this.state;
     return (
       <ViewShadow
-        width={275}
+        width={isFullWidth ? screenWidth - 40 : 275}
         height={50}
         borderRadius={4}
         shadowBorderRadiusAndroid={3}
@@ -82,6 +83,7 @@ class SearchBar extends Component {
 
 SearchBar.propTypes = {
   onSearch: func,
+  isFullWidth: bool,
 };
 
 export default SearchBar;

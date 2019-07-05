@@ -74,8 +74,4 @@ const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
 });
 
-const mapDispatchToProps = dispatch => ({
-  
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(ConsumerOrder));
+export default connect(mapStateToProps, null)(withNavigation(ConsumerOrder));

@@ -30,6 +30,7 @@ const HomeNav = createStackNavigator({
   ConsumerOrder: { screen: ConsumerOrder },
   ConsumerCompleted: { screen: ConsumerCompleted },
   ConsumerOrderDetail: { screen: ConsumerOrderDetail },
+  ConsumerSendingDetail: { screen: ConsumerSendingDetail },
 }, {
   initialRouteName: 'HomeConsumer',
   navigationOptions: {

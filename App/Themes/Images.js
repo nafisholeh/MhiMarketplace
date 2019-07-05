@@ -31,6 +31,7 @@ const images = {
   veggie: require(pathPrefix+'veggie.png'),
   fruit: require(pathPrefix+'fruit.png'),
   horti: require(pathPrefix+'horti.png'),
+  logout: require(pathPrefix+'logout.png'),
 }
 
 export default images

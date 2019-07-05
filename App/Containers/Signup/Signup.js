@@ -133,7 +133,7 @@ class Signup extends Component {
         />
 
         <InputTextAccount
-          ref={(ref) => this._email = ref}
+          refs={(ref) => this._email = ref}
           label="Email"
           value={email || ''}
           error={error_email || isEmailError(email)}
@@ -143,7 +143,7 @@ class Signup extends Component {
         />
         
         <InputTextAccount
-          ref={(ref) => this._password = ref}
+          refs={(ref) => this._password = ref}
           label="Password"
           value={password || ''}
           error={error_password}
@@ -154,7 +154,7 @@ class Signup extends Component {
         />
       
         <InputTextAccount
-          ref={(ref) => this._password_repeat = ref}
+          refs={(ref) => this._password_repeat = ref}
           label="Ulangi Password"
           value={password_repeat || ''}
           error={error_password_repeat}

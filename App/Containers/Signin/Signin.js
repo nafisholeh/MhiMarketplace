@@ -157,7 +157,7 @@ class Signin extends Component {
           />
         
           <InputTextAccount
-            ref={(ref) => this._password = ref}
+            refs={(ref) => this._password = ref}
             label="Password"
             value={password || ''}
             error={error_password}

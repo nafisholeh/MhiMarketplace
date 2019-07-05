@@ -30,6 +30,7 @@ import AppTitle from './AppTitle';
 import HeaderTitle from './Header/HeaderTitle';
 import ViewShadow from './Shadow/ViewShadow';
 import InputText from './InputText';
+import InputTextAccount from './InputTextAccount';
 import InputPicker from './InputPicker';
 import KeyboardFriendlyView from './KeyboardFriendlyView';
 
@@ -41,5 +42,5 @@ export {
   CartAddButton, ProductDetailWrapper, ButtonPrimary, ButtonSecondary, 
   ConsumerPageHeader, ProductImage, ListHeader, CategoryItem, AppTitle,
   HeaderTitle, CartSubtractButton, ViewShadow, InputText, InputPicker, 
-  KeyboardFriendlyView
+  KeyboardFriendlyView, InputTextAccount
 };

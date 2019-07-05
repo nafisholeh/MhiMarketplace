@@ -18,7 +18,7 @@ import {
   screenWidth,
   screenHeight,
 } from 'Lib';
-import { ButtonSecondary } from 'Components';
+import { ButtonSecondary, InputTextAccount } from 'Components';
 import Config from 'Config/AppConfig';
 import styles from './Styles';
 import { Colors, Images } from 'Themes';
@@ -148,26 +148,16 @@ class Signin extends Component {
             
           }}
         >
-          <TextField
+          <InputTextAccount
             label="Email"
             value={email || ''}
             error={error_email || isEmailError(email)}
             onChangeText={(text) => this.setState({ email: text })}
             returnKeyType="next"
             onSubmitEditing={() => this._password.focus()}
-            tintColor={Colors.veggie_dark}
-            errorColor={Colors.red2}
-            containerStyle={{
-              marginHorizontal: moderateScale(40),
-            }}
-            labelTextStyle={{
-              fontFamily: 'CircularStd-Book',
-              fontSize: 14,
-              color: Colors.text
-            }}
           />
         
-          <TextField
+          <InputTextAccount
             ref={(ref) => this._password = ref}
             label="Password"
             value={password || ''}
@@ -176,16 +166,9 @@ class Signin extends Component {
             onChangeText={(text) => this.setState({ password: text })}
             onSubmitEditing={this.onStartSignin}
             returnKeyType="go"
-            tintColor={Colors.veggie_dark}
-            errorColor={Colors.red2}
             containerStyle={{
               marginHorizontal: moderateScale(40),
               marginBottom: moderateScale(25),
-            }}
-            labelTextStyle={{
-              fontFamily: 'CircularStd-Book',
-              fontSize: 14,
-              color: Colors.text
             }}
           />
         
@@ -193,7 +176,7 @@ class Signin extends Component {
             onPress={this.onStartSignin}
             disabled={loading}
             loading={loading}
-            title="Signin"
+            title="Masuk"
             style={{ marginBottom: moderateScale(15) }}
           />
           

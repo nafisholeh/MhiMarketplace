@@ -35,6 +35,7 @@ import InputPicker from './InputPicker';
 import KeyboardFriendlyView from './KeyboardFriendlyView';
 import BackButton from './Header/BackButton';
 import CustomHeader from './Header/CustomHeader';
+import DayTimeline from './DayTimeline';
 
 export {
   OptimizedList, StatePage, UpDownCounter, HeaderButton, ToolbarButton,
@@ -44,5 +45,5 @@ export {
   CartAddButton, ProductDetailWrapper, ButtonPrimary, ButtonSecondary, 
   ConsumerPageHeader, ProductImage, ListHeader, CategoryItem, AppTitle,
   HeaderTitle, CartSubtractButton, ViewShadow, InputText, InputPicker, 
-  KeyboardFriendlyView, InputTextAccount, BackButton, CustomHeader
+  KeyboardFriendlyView, InputTextAccount, BackButton, CustomHeader, DayTimeline
 };

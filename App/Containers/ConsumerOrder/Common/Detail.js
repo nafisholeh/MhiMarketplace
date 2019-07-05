@@ -15,6 +15,7 @@ import {
   CustomHeader,
   ProductDetailWrapper,
   ViewShadow,
+  DayTimeline,
 } from 'Components';
 import OrderedProducts from './OrderedProducts';
 import {
@@ -48,23 +49,6 @@ class Detail extends Component {
     }
   }
   
-  parseTimeline = timestamp => {
-    let timeline = [];
-    Object.keys(timestamp).forEach(key => {
-      if (
-        key === '__typename' ||
-        !timestamp[key]
-      ) {
-        return;
-      }
-      timeline.push({
-        title: AppConfig.timelineTitle[key],
-        time: moment(timestamp[key], 'YYYY-MM-DD hh:mm:ss').format('hh:mm'),
-      });
-    });
-    return timeline;
-  };
-  
   onFetchComplete = data => {
     const { orderDetail = {} } = data || {}; 
     const {
@@ -76,7 +60,6 @@ class Detail extends Component {
     this.setState(prevState => {
       return {
         isFetchComplete: true,
-        timeline: this.parseTimeline(time_stamp),
       }
     });
   };
@@ -85,6 +68,7 @@ class Detail extends Component {
     const { listId: _ids, courierId } = this.props;
     const _id = '5d160bf5f63f263fb73e48be';
     const { timeline } = this.state;
+    console.tron.log('Detail', timeline);
     return (
       <View
         style={{
@@ -114,7 +98,8 @@ class Detail extends Component {
               user_id = {},
               total_cost,
               shipping_address = {},
-              products = []
+              products = [],
+              time_stamp
             } = orderDetail || {};
             const { name } = user_id;
             return (
@@ -235,8 +220,8 @@ class Detail extends Component {
                     fontSize: 16,
                     color: Colors.text,
                     marginTop: moderateScale(20),
-                    marginHorizontal: moderateScale(20),
                     marginBottom: moderateScale(10),
+                    marginHorizontal: moderateScale(20),
                   }}
                 >
                   Detail Barang
@@ -244,15 +229,19 @@ class Detail extends Component {
                 <OrderedProducts
                   products={products}
                 />
-                <Text style={{ marginTop: 15, marginBottom: 10 }}>
+                <Text
+                  style={{
+                    fontFamily: 'CircularStd-Book',
+                    fontSize: 16,
+                    color: Colors.text,
+                    marginTop: moderateScale(15),
+                    marginBottom: moderateScale(15),
+                    marginHorizontal: moderateScale(20),
+                  }}
+                >
                   Lini Masa
                 </Text>
-                <Timeline
-                  data={timeline}
-                  innerCircle="dot"
-                  timeStyle={{ fontWeight: 'normal' }}
-                  titleStyle={{ fontWeight: 'normal' }}
-                />
+                <DayTimeline data={time_stamp} />
               </ScrollView>
             );
           }}

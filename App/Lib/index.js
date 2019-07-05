@@ -1,7 +1,7 @@
 import { parseToRupiah, calcDiscount } from './money';
 import { isEmailValid, isEmailError } from './Email';
 import { getGraphQLError } from './GraphQL';
-import { getReadableDate, getIntervalTimeToday } from './Date';
+import { getReadableDate, getIntervalTimeToday, getIntervalDateToday } from './Date';
 import { setTabBarHide } from './Navigation';
 import { moderateScale, screenWidth, screenHeight } from './Responsive';
 import { isString } from './DataType';
@@ -22,5 +22,6 @@ export {
   isString, getReadableAddress, getReadableSubdistrict, getReadableCityState,
   InAppNotification, calcTotalWeight, getReadableShippingSched,
   getUpcomingShippingSched, filterObject, getIntervalTimeToday,
-  getAggregateProducts, screenWidth, screenHeight, graphqlToRNPickerSelect
+  getAggregateProducts, screenWidth, screenHeight, graphqlToRNPickerSelect,
+  getIntervalDateToday
 };

@@ -21,7 +21,7 @@ export class InAppNotification {
     this.dropDown.alertWithType(
       'info',
       title || errorTitleDefault,
-      body || errorBodyDefault
+      message || errorBodyDefault
     );
   }
 

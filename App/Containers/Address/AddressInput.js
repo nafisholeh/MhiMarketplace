@@ -43,18 +43,14 @@ class AddressInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      id_address: null,
       trigger_fetch_provinsi: false,
       trigger_fetch_kabupaten: false,
       trigger_fetch_kecamatan: false,
-      data_provinsi: '',
-      provinsi_selected: '',
-      kota: '',
-      kecamatan: '',
+      kodepos: '',
       kelurahan: '',
       rtrw: '',
       alamat: '',
-      kodepos: '',
-      dummy: [{label: 'loading', value: 0}],
     }
   }
   
@@ -63,20 +59,31 @@ class AddressInput extends Component {
   }
   
   validateData = () => {
-    const { provinsi, kota, kecamatan, kelurahan, alamat } = this.state; 
-    return provinsi && kota && kecamatan && kelurahan && alamat;
+    const {
+      id_address,
+      rtrw,
+      alamat,
+    } = this.state;
+    this.setState({
+      error_alamat: id_address ? false : true,
+      error_rtrw: rtrw ? false : true,
+      error_alamat_detail: alamat ? false : true,
+    })
+    return id_address && rtrw && alamat;
   }
   
   uploadAddress = addAddress => {
-    if(!this.validateData()) return;
+    if(!this.validateData()) {
+      InAppNotification.info(
+        "Alamat kurang lengkap",
+        "Silahkan isi semua isian"
+      );
+      return;
+    }
     const {
-      provinsi,
-      kota,
-      kecamatan,
-      kelurahan,
+      id_address,
       rtrw,
       alamat,
-      kodepos
     } = this.state; 
     const { userId } = this.props;
     addAddress({
@@ -85,11 +92,7 @@ class AddressInput extends Component {
         data: {
          	alamat,
           rtrw,
-          kelurahan,
-          kecamatan,
-          kota,
-          provinsi,
-          kodepos
+          id_address,
         }
       }
     });
@@ -127,8 +130,8 @@ class AddressInput extends Component {
   };
   
   onKecamatanChange = (val, i) => {
-    const [kodepos, kelurahan] = val.split('||') || [];
-    this.setState({ kelurahan, kodepos });
+    const [idAddress, kodepos, kelurahan] = val.split('||') || [];
+    this.setState({ id_address: idAddress, kelurahan, kodepos });
   };
   
   render() {
@@ -138,26 +141,13 @@ class AddressInput extends Component {
       trigger_fetch_kecamatan,
       prov_key_selected,
       kab_key_selected,
-      error_kelurahan,
-      error_kodepos,
-      error_rtrw,
-      error_alamat,
-      
-      dummy,
-      
-      data_provinsi,
-      provinsi_selected,
-      provinsi_selected_text,
-      error_provinsi,
-      error_fetch_provinsi,
-      fetching_provinsi,
-      
-      kota,
-      kecamatan,
-      kelurahan,
       rtrw,
       alamat,
-      kodepos
+      kelurahan,
+      kodepos,
+      error_alamat,
+      error_rtrw,
+      error_alamat_detail
     } = this.state; 
     const { userId } = this.props;
     return (
@@ -211,7 +201,7 @@ class AddressInput extends Component {
                     title='Kelurahan'
                     value={kelurahan}
                     placeholder='Kelurahan'
-                    error={error_kelurahan}
+                    error={error_alamat}
                     editable={false}
                   />
                 
@@ -220,7 +210,7 @@ class AddressInput extends Component {
                     title='Kode Pos'
                     value={kodepos}
                     placeholder='Kode Pos'
-                    error={error_kodepos}
+                    error={error_alamat}
                     editable={false}
                   />
                   
@@ -241,7 +231,7 @@ class AddressInput extends Component {
                     onChangeText={(alamat) => this.setState({ alamat })}
                     placeholder='Nama Gedung, jalan dan lainnya'
                     multiline={true}
-                    error={error_alamat}
+                    error={error_alamat_detail}
                     styleContainer={{ height: moderateScale(120) }}
                     styleBorder={{ height: moderateScale(100), alignItems: 'flex-start' }}
                   />

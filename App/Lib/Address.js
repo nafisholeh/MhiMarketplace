@@ -26,13 +26,13 @@ export const graphqlToRNPickerSelect = (input = [], isKeyDisplayed) => {
   let output = [];
   const keyMap = new Map();
   input.forEach(item => {
-    const { key, nama, kelurahan } = item || {};
+    const { key, nama, kelurahan, _id } = item || {};
     if (!key || !nama) return;
     if (!keyMap.has(key)) {
       keyMap.set(key, true); 
       let temp = {};
       temp['label'] = isKeyDisplayed ? `(${key}) - ${nama}` : nama;
-      temp['value'] = isKeyDisplayed ? `${key}||${kelurahan}` : key;
+      temp['value'] = isKeyDisplayed ? `${_id}||${key}||${kelurahan}` : key;
       output.push(temp);
     }
   });

@@ -53,6 +53,7 @@ export const FETCH_KABUPATEN_BY_PROVINSI = gql`
 export const FETCH_KECAMATAN_BY_KABUPATEN = gql`
   query fetchKecamatanByKabupaten($kab_key:String!) {
     kecamatanByKabupaten(kab_key: $kab_key) {
+      _id
       key
       nama
       kelurahan

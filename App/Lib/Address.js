@@ -19,3 +19,23 @@ export const getReadableCityState = data => {
   return `${kota ? `Kota ${kota}` : ``}${
     provinsi ? `, ${provinsi}` : ``}${kodepos ? kodepos : ``}`;
 };
+
+// konversi format data dari graphql response ke picker
+export const graphqlToRNPickerSelect = (input = [], isKeyDisplayed) => {
+  if (!Array.isArray(input) || !input.length) return null;
+  let output = [];
+  const keyMap = new Map();
+  input.forEach(item => {
+    const { key, nama, kelurahan } = item || {};
+    if (!key || !nama) return;
+    if (!keyMap.has(key)) {
+      keyMap.set(key, true); 
+      let temp = {};
+      temp['label'] = isKeyDisplayed ? `(${key}) - ${nama}` : nama;
+      temp['value'] = isKeyDisplayed ? `${key}||${kelurahan}` : key;
+      output.push(temp);
+    }
+  });
+  return output;
+}
+  

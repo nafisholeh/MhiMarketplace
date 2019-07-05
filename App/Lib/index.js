@@ -8,7 +8,8 @@ import { isString } from './DataType';
 import {
   getReadableAddress,
   getReadableSubdistrict,
-  getReadableCityState
+  getReadableCityState,
+  graphqlToRNPickerSelect,
 } from './Address';
 import { InAppNotification } from './InAppNotification';
 import { calcTotalWeight, getAggregateProducts } from './Product';
@@ -21,5 +22,5 @@ export {
   isString, getReadableAddress, getReadableSubdistrict, getReadableCityState,
   InAppNotification, calcTotalWeight, getReadableShippingSched,
   getUpcomingShippingSched, filterObject, getIntervalTimeToday,
-  getAggregateProducts, screenWidth, screenHeight
+  getAggregateProducts, screenWidth, screenHeight, graphqlToRNPickerSelect
 };

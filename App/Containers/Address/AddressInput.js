@@ -5,12 +5,21 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Mutation } from 'react-apollo';
 import { DotIndicator } from 'react-native-indicators';
+import RNPickerSelect from 'react-native-picker-select';
 
-import { FETCH_ADDRESS } from 'GraphQL/Address/Query';
+import {
+  FETCH_ADDRESS,
+  FETCH_ALL_PROVINSI,
+  FETCH_KABUPATEN_BY_PROVINSI,
+  FETCH_KECAMATAN_BY_KABUPATEN,
+} from 'GraphQL/Address/Query';
 import { ADD_ADDRESS, cacheAddAddress } from 'GraphQL/Address/Mutation';
-import { Colors, Metrics } from 'Themes';
+import { Colors, Metrics, Images } from 'Themes';
+import { InAppNotification, graphqlToRNPickerSelect } from 'Lib';
 import styles from './Styles';
 import { getUserId } from 'Redux/SessionRedux';
+import { KeyboardFriendlyView, InputText, InputPicker } from 'Components';
+import ApolloClientProvider from 'Services/ApolloClientProvider';
 
 class AddressInput extends Component {
   
@@ -24,14 +33,23 @@ class AddressInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      provinsi: '',
+      trigger_fetch_provinsi: false,
+      trigger_fetch_kabupaten: false,
+      trigger_fetch_kecamatan: false,
+      data_provinsi: '',
+      provinsi_selected: '',
       kota: '',
       kecamatan: '',
       kelurahan: '',
       rtrw: '',
       alamat: '',
-      kodepos: ''
+      kodepos: '',
+      dummy: [{label: 'loading', value: 0}],
     }
+  }
+  
+  componentWillMount() {
+    this.onFetchProvinsi();
   }
   
   validateData = () => {
@@ -70,51 +88,125 @@ class AddressInput extends Component {
   onUploadAddressCompleted = data => {
     const { navigation } = this.props;
     navigation.goBack();
+  };
+  
+  onFetchProvinsi() {
+    this.setState(prevState => {
+      return {
+        trigger_fetch_provinsi: !prevState.trigger_fetch_provinsi
+      };
+    });
   }
   
+  onProvinsiChange = (val, i) => {
+    this.setState(prevState => {
+      return {
+        prov_key_selected: val,
+        trigger_fetch_kabupaten: !prevState.trigger_fetch_kabupaten
+      };
+    });
+  };
+  
+  onKabupatenChange = (val, i) => {
+    this.setState(prevState => {
+      return {
+        kab_key_selected: val,
+        trigger_fetch_kecamatan: !prevState.trigger_fetch_kecamatan
+      };
+    });
+  };
+  
+  onKecamatanChange = (val, i) => {
+    const [kodepos, kelurahan] = val.split('||') || [];
+    this.setState({ kelurahan, kodepos });
+  };
+  
   render() {
-    const { provinsi, kota, kecamatan, kelurahan, rtrw, alamat, kodepos } = this.state; 
+    const {
+      trigger_fetch_provinsi,
+      trigger_fetch_kabupaten,
+      trigger_fetch_kecamatan,
+      prov_key_selected,
+      kab_key_selected,
+      error_kelurahan,
+      error_kodepos,
+      
+      dummy,
+      
+      data_provinsi,
+      provinsi_selected,
+      provinsi_selected_text,
+      error_provinsi,
+      error_fetch_provinsi,
+      fetching_provinsi,
+      
+      kota,
+      kecamatan,
+      kelurahan,
+      rtrw,
+      alamat,
+      kodepos
+    } = this.state; 
     const { userId } = this.props;
     return (
-      <View style={{ flex: 1, backgroundColor: 'white' }}>
-        <Mutation
-          mutation={ADD_ADDRESS}
-          onCompleted={this.onUploadAddressCompleted}
-          update={(cache, data) => cacheAddAddress(cache, data, this.state)}
-          ignoreResults={false}
-          errorPolicy='all'>
-          { (addAddress, {loading, error, data}) => {
-            return (
-              <React.Fragment>
-                <ScrollView style={{ flex: 1, paddingHorizontal: Metrics.baseMargin }}>
-                  <TextField
-                    label='Provinsi'
-                    onChangeText={provinsi => this.setState({ provinsi })}
-                    returnKeyType='next'
-                    onSubmitEditing={() => this._kota.focus()}
-                    style={styles.input}
+      <Mutation
+        mutation={ADD_ADDRESS}
+        onCompleted={this.onUploadAddressCompleted}
+        update={(cache, data) => cacheAddAddress(cache, data, this.state)}
+        ignoreResults={false}
+        errorPolicy='all'>
+        { (addAddress, {loading, error, data}) => {
+          return (
+            <React.Fragment>
+              <ScrollView style={{ flex: 1, paddingHorizontal: Metrics.baseMargin }}>
+                <KeyboardFriendlyView>
+                  
+                  <InputPicker
+                    title="Provinsi"
+                    placeholder="Pilih provinsi"
+                    query={FETCH_ALL_PROVINSI}
+                    onSelectionChange={this.onProvinsiChange}
+                    triggerFetch={trigger_fetch_provinsi}
+                    isInitialFetching
                   />
-                  <TextField
-                    ref={ref => this._kota = ref}
-                    label='Kota/Kabupaten'
-                    onChangeText={kota => this.setState({ kota })}
-                    returnKeyType='next'
-                    onSubmitEditing={() => this._kecamatan.focus()}
+                
+                  <InputPicker
+                    title="Kabupaten/Kota"
+                    placeholder="Pilih kabupaten/kota"
+                    query={FETCH_KABUPATEN_BY_PROVINSI}
+                    queryVariables={{ prov_key: prov_key_selected }}
+                    onSelectionChange={this.onKabupatenChange}
+                    triggerFetch={trigger_fetch_kabupaten}
                   />
-                  <TextField
-                    ref={ref => this._kecamatan = ref}
-                    label='Kecamatan'
-                    onChangeText={kecamatan => this.setState({ kecamatan })}
-                    returnKeyType='next'
-                    onSubmitEditing={() => this._kelurahan.focus()}
+                
+                  <InputPicker
+                    title="Kecamatan"
+                    placeholder="Pilih kecamatan"
+                    query={FETCH_KECAMATAN_BY_KABUPATEN}
+                    queryVariables={{ kab_key: kab_key_selected }}
+                    onSelectionChange={this.onKecamatanChange}
+                    triggerFetch={trigger_fetch_kecamatan}
+                    isKeyDisplayed
                   />
-                  <TextField
-                    ref={ref => this._kelurahan = ref}
-                    label='Kelurahan'
-                    onChangeText={kelurahan => this.setState({ kelurahan })}
-                    returnKeyType='next'
-                    onSubmitEditing={() => this._rtrw.focus()}
+                
+                  <InputText
+                    refs={(ref) => this._kelurahan = ref}
+                    title='Kelurahan'
+                    value={kelurahan}
+                    placeholder='Kelurahan'
+                    error={error_kelurahan}
+                    editable={false}
                   />
+                
+                  <InputText
+                    refs={(ref) => this._kodepos = ref}
+                    title='Kode Pos'
+                    value={kodepos}
+                    placeholder='Kode Pos'
+                    error={error_kodepos}
+                    editable={false}
+                  />
+
                   <TextField
                     ref={ref => this._rtrw = ref}
                     label='RT/RW'
@@ -131,34 +223,27 @@ class AddressInput extends Component {
                     returnKeyType='next'
                     onSubmitEditing={() => this._kodepos.focus()}
                   />
-                  <TextField
-                    ref={ref => this._kodepos = ref}
-                    label='Kodepos'
-                    onChangeText={kodepos => this.setState({ kodepos })}
-                    returnKeyType='go'
-                    onSubmitEditing={this.uploadAddress}
+                </KeyboardFriendlyView>
+              </ScrollView>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => this.uploadAddress(addAddress)}>
+                {loading &&
+                  <DotIndicator
+                    count={4}
+                    size={7}
+                    color='white'
+                    animationDuration={800}
                   />
-                </ScrollView>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => this.uploadAddress(addAddress)}>
-                  {loading &&
-                    <DotIndicator
-                      count={4}
-                      size={7}
-                      color='white'
-                      animationDuration={800}
-                    />
-                  }
-                  {!loading &&
-                    <Text style={{ color: 'white' }}>Tambah Alamat</Text>
-                  }
-                </TouchableOpacity>
-              </React.Fragment>
-            )
-          }}
-        </Mutation>
-      </View>
+                }
+                {!loading &&
+                  <Text style={{ color: 'white' }}>Tambah Alamat</Text>
+                }
+              </TouchableOpacity>
+            </React.Fragment>
+          )
+        }}
+      </Mutation>
     );
   }
 }

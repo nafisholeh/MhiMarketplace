@@ -29,6 +29,9 @@ import CategoryItem from './Product/CategoryItem';
 import AppTitle from './AppTitle';
 import HeaderTitle from './Header/HeaderTitle';
 import ViewShadow from './Shadow/ViewShadow';
+import InputText from './InputText';
+import InputPicker from './InputPicker';
+import KeyboardFriendlyView from './KeyboardFriendlyView';
 
 export {
   OptimizedList, StatePage, UpDownCounter, HeaderButton, ToolbarButton,
@@ -37,5 +40,6 @@ export {
   TouchableOpacity, SearchBar, ProductVerticalWrapper, ProductHorizontalWrapper,
   CartAddButton, ProductDetailWrapper, ButtonPrimary, ButtonSecondary, 
   ConsumerPageHeader, ProductImage, ListHeader, CategoryItem, AppTitle,
-  HeaderTitle, CartSubtractButton, ViewShadow
+  HeaderTitle, CartSubtractButton, ViewShadow, InputText, InputPicker, 
+  KeyboardFriendlyView
 };

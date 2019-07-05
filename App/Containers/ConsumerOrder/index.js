@@ -44,10 +44,22 @@ class ConsumerOrder extends Component {
           flex: 1
         }}
       >
-        <List query={FETCH_READY_TO_PROCESS_LIST} />
-        <List query={FETCH_PROCESSING_LIST} />
-        <List query={FETCH_READY_TO_SEND_LIST} />
-        <List query={FETCH_SENDING_LIST} />
+        <List
+          title="Menunggu diproses"
+          query={FETCH_READY_TO_PROCESS_LIST}
+        />
+        <List
+          title="Sedang diproses"
+          query={FETCH_PROCESSING_LIST} 
+        />
+        <List
+          title="Siap dikirim"
+          query={FETCH_READY_TO_SEND_LIST}
+        />
+        <List
+          title="Sedang dikirim"
+          query={FETCH_SENDING_LIST}
+        />
       </ScrollView>
     );
   }

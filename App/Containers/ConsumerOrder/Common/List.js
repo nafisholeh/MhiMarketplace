@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, ScrollView, FlatList, Text } from 'react-native';
 import { Query } from 'react-apollo';
 import { connect } from 'react-redux';
-import { func, string } from 'prop-types';
+import { func, string, bool } from 'prop-types';
 import { withNavigation } from 'react-navigation';
 import { createStructuredSelector } from 'reselect';
 
@@ -16,7 +16,7 @@ import {
   getAggregateProducts,
   parseToRupiah,
 } from 'Lib';
-import { QueryEffectSection } from 'Components';
+import { QueryEffectSection, QueryEffectPage } from 'Components';
 import { Colors } from 'Themes';
 import Item from '../Common/Item';
 import Title from '../Common/Title';
@@ -49,10 +49,10 @@ class List extends Component {
   };
   
   render() {
-    const { userId, query } = this.props;
+    const { title, userId, query, isPage } = this.props;
     return (
       <View style={{ flex: 1 }}>
-        <Title>Menunggu diproses</Title>
+        {title && <Title>{title}</Title>}
         <Query
           query={query}
           variables={{ courier_id: null, user_id: userId }}
@@ -68,6 +68,16 @@ class List extends Component {
                   renderItem={this.renderItems}
                 />
               )
+            }
+            if (isPage) {
+              return (
+                <QueryEffectPage
+                  isLoading={loading}
+                  isError={error}
+                  isEmpty={!items.length}
+                  onRefetch={refetch}
+                />
+              );
             }
             return (
               <QueryEffectSection
@@ -87,6 +97,7 @@ class List extends Component {
 List.propTypes = {
   selectListItem: func,
   userId: string,
+  isPage: bool,
 }
 
 const mapStateToProps = createStructuredSelector({

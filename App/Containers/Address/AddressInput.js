@@ -18,7 +18,13 @@ import { Colors, Metrics, Images } from 'Themes';
 import { InAppNotification, graphqlToRNPickerSelect, moderateScale } from 'Lib';
 import styles from './Styles';
 import { getUserId } from 'Redux/SessionRedux';
-import { KeyboardFriendlyView, InputText, InputPicker } from 'Components';
+import {
+  KeyboardFriendlyView,
+  InputText,
+  InputPicker,
+  HeaderTitle,
+  ButtonPrimary
+} from 'Components';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 
 class AddressInput extends Component {
@@ -26,7 +32,11 @@ class AddressInput extends Component {
   static navigationOptions = ({navigation}) => {
     const {params = {}} = navigation.state
     return {
-      title: 'Alamat Baru'
+      headerLeft: null,
+      headerRight: null,
+      header: (
+        <HeaderTitle title="Alamat Baru" />
+      ),
     }
   }
   
@@ -238,21 +248,11 @@ class AddressInput extends Component {
 
                 </KeyboardFriendlyView>
               </ScrollView>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => this.uploadAddress(addAddress)}>
-                {loading &&
-                  <DotIndicator
-                    count={4}
-                    size={7}
-                    color='white'
-                    animationDuration={800}
-                  />
-                }
-                {!loading &&
-                  <Text style={{ color: 'white' }}>Tambah Alamat</Text>
-                }
-              </TouchableOpacity>
+              <ButtonPrimary
+                onPress={() => this.uploadAddress(addAddress)}
+                title="Tambah Alamat"
+                loading={loading}
+              />
             </React.Fragment>
           )
         }}

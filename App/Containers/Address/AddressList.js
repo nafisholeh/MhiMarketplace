@@ -5,24 +5,28 @@ import { string } from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-import { StatePage, ToolbarButton } from 'Components';
+import { StatePage, ToolbarButton, HeaderTitle, QueryEffectPage } from 'Components';
 import Item from './Item';
 import { FETCH_ADDRESS } from 'GraphQL/Address/Query';
 import Config from 'Config/AppConfig';
 import { Images, Metrics } from 'Themes';
 import { getUserId } from 'Redux/SessionRedux';
+import { moderateScale } from 'Lib';
 
 class AddressList extends Component {
   
   static navigationOptions = ({navigation}) => {
     const {params = {}} = navigation.state
     return {
-      title: 'Alamat Anda',
+      headerLeft: null,
       headerRight: (
         <ToolbarButton
           icon={Images.add}
           onPress={() => navigation.navigate('AddressInput')} 
         />
+      ),
+      header: (
+        <HeaderTitle title="Alamat Anda" />
       ),
     }
   }
@@ -34,48 +38,44 @@ class AddressList extends Component {
   
   renderAddressItems = ({item, index}) => {
     return (
-      <Item data={item} />
+      <Item data={item} index={index} />
     );
   };
   
   render() {
     const { userId } = this.props;
     return (
-      <View style={{flex:1}}>
-        <Query 
-          query={FETCH_ADDRESS}
-          variables={{ user_id: userId }}>
-          {({ loading, error, data, refetch }) => {
-            if (loading) {
-              return (<View></View>)
-            } else if (error) {
-              return (<View></View>)
-            } else if (data) {
-              const { address } = data;
-              if (!address || (address && address.length === 0)) {
-                return (
-                  <StatePage 
-                    title="Alamat pengiriman kosong"
-                    subtitle="Tambahkan alamat pengiriman"
-                    buttonTitle="Tambah Yuk"
-                    icon={Config.pageState.EMPTY_LOCATION}
-                    onPress={this.startAddingAddress}
-                  />
-                )
-              }
-              return (
-                <ScrollView style={{flex:1}}>
-                  <FlatList
-                    keyExtractor={(item, id) => item._id.toString()}
-                    data={address} 
-                    renderItem={this.renderAddressItems}
-                  />
-                </ScrollView>
-              )
-            }
-          }}
-        </Query>
-      </View>
+      <Query 
+        query={FETCH_ADDRESS}
+        variables={{ user_id: userId }}>
+        {({ loading, error, data, refetch }) => {
+          const { address = [] } = data || {};
+          if (Array.isArray(address) && address.length) {
+            return (
+              <FlatList
+                keyExtractor={(item, id) => item._id.toString()}
+                data={address} 
+                renderItem={this.renderAddressItems}
+              />
+            );
+          }
+          return (
+            <QueryEffectPage
+              title="Alamat pengiriman kosong"
+              subtitle="Tambahkan alamat pengiriman"
+              buttonTitle="Tambah Yuk"
+              isLoading={loading}
+              isError={error}
+              isEmpty={!address.length}
+              iconEmpty={Config.pageState.EMPTY_LOCATION}
+              onRefetch={() => {
+                if (!address.length) this.startAddingAddress();
+                else refetch();
+              }}
+            />
+          );
+        }}
+      </Query>
     )
   }
 }

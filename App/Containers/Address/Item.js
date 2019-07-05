@@ -9,10 +9,13 @@ import ApolloClientProvider from 'Services/ApolloClientProvider';
 import {
   getReadableAddress,
   getReadableSubdistrict,
-  getReadableCityState
+  getReadableCityState,
+  screenWidth,
+  moderateScale,
 } from 'Lib';
 import AppConfig from 'Config/AppConfig';
-import { Metrics, Images } from 'Themes';
+import { ViewShadow } from 'Components';
+import { Metrics, Images, Colors } from 'Themes';
 import { SELECT_ADDRESS, cacheSelectAddress } from 'GraphQL/Address/Mutation';
 import { FETCH_SELECTED_ADDRESS } from 'GraphQL/Address/Query';
 import { getUserId } from 'Redux/SessionRedux';
@@ -39,7 +42,8 @@ class AddressItem extends Component {
       data: address,
       data: { _id, selected },
       userId,
-      isDisabled
+      isDisabled,
+      index
     } = this.props;
     return (
       <Mutation
@@ -50,59 +54,71 @@ class AddressItem extends Component {
         errorPolicy='all'>
         { (selectAddress, {loading, error, data}) => {
           return (
-            <TouchableOpacity
-              style={{
-                flex: 1,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                minHeight: 100,
-                padding: Metrics.baseMargin,
-                borderBottomColor: 'gray',
-                borderBottomWidth: isDisabled ? 0 : 0.5,
+            <ViewShadow
+              width={screenWidth - 35}
+              height={100}
+              borderRadius={10}
+              shadowBorderRadiusAndroid={10}
+              shadowRadiusAndroid={10}
+              shadowOpacityAndroid={0.09}
+              mainColor={Colors.white}
+              shadowColor={Colors.brown_light}
+              style={{ 
+                marginTop: !index ? moderateScale(15) : moderateScale(3),
+                marginBottom: moderateScale(7)
               }}
-              onPress={() => this.syncSelectedAddressOnAll(selectAddress)}
-              disabled={isDisabled}
             >
-              <View style={{
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                }}>
-                <Text
-                  style={{
-                    fontFamily: 'CircularStd-Book',
-                    fontSize: 14,
-                    color: 'rgba(29, 29, 29, 0.5)'
-                  }}
-                >
-                  {getReadableAddress(address)}
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: 'CircularStd-Book',
-                    fontSize: 14,
-                    color: 'rgba(29, 29, 29, 0.5)'
-                  }}
-                >
-                  {getReadableSubdistrict(address)}
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: 'CircularStd-Book',
-                    fontSize: 14,
-                    color: 'rgba(29, 29, 29, 0.5)'
-                  }}
-                >
-                  {getReadableCityState(address)}
-                </Text>
-              </View>
-              {selected &&
-                <Image
-                  source={Images[AppConfig.pageState.LOCATION]}
-                  style={{ width: 20, height: 20 }}
-                />
-              }
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: moderateScale(10),
+                }}
+                onPress={() => this.syncSelectedAddressOnAll(selectAddress)}
+                disabled={isDisabled}
+              >
+                <View style={{
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily: 'CircularStd-Book',
+                      fontSize: 14,
+                      color: 'rgba(29, 29, 29, 0.5)'
+                    }}
+                  >
+                    {getReadableAddress(address)}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: 'CircularStd-Book',
+                      fontSize: 14,
+                      color: 'rgba(29, 29, 29, 0.5)'
+                    }}
+                  >
+                    {getReadableSubdistrict(address)}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: 'CircularStd-Book',
+                      fontSize: 14,
+                      color: 'rgba(29, 29, 29, 0.5)'
+                    }}
+                  >
+                    {getReadableCityState(address)}
+                  </Text>
+                </View>
+                {selected &&
+                  <Image
+                    source={Images[AppConfig.pageState.LOCATION]}
+                    style={{ width: 20, height: 20 }}
+                  />
+                }
+              </TouchableOpacity>
+            </ViewShadow>
           )
         }}
       </Mutation>

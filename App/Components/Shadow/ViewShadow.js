@@ -86,6 +86,7 @@ const styles = (props) => StyleSheet.create({
   containerAndroid: {
     width: moderateScale(props.width, props.scaleFactor),
     height: moderateScale(props.height),
+    alignSelf: 'center',
   },
   children: {
     width: moderateScale(props.width, props.scaleFactor),

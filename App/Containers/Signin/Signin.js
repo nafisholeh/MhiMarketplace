@@ -3,7 +3,6 @@ import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { func, string } from 'prop-types';
 import { createStructuredSelector } from 'reselect';
-import { TextField } from 'react-native-material-textfield';
 import { DotIndicator } from 'react-native-indicators';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';

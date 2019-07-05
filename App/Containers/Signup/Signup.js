@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { View, Text, TextInput, TouchableOpacity } from 'react-native'
-import { TextField } from 'react-native-material-textfield';
 import { DotIndicator } from 'react-native-indicators';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
@@ -8,8 +7,9 @@ import { connect } from 'react-redux';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import SessionActions from 'Redux/SessionRedux';
 import { SIGNUP } from 'GraphQL/User/Mutation';
-import { isEmailError, getGraphQLError } from 'Lib';
-import styles from './Styles'
+import { isEmailError, getGraphQLError, moderateScale } from 'Lib';
+import { InputTextAccount, ButtonSecondary } from 'Components';
+import styles from './Styles';
     
 class Signup extends Component {
   
@@ -98,8 +98,21 @@ class Signup extends Component {
     } = this.state;
     return (
       <View style={styles.container}>
+        
+        <Text
+          style={{
+            fontFamily: 'CircularStd-Bold',
+            fontSize: 20,
+            color: 'rgba(0,0,0,0.68)',
+            marginTop: moderateScale(25),
+            marginLeft: moderateScale(15),
+            marginBottom: moderateScale(20),
+          }}
+        >
+          Pendaftaran akun baru
+        </Text>
       
-        <TextField
+        <InputTextAccount
           label="Name"
           value={name || ''}
           error={error_name}
@@ -108,7 +121,7 @@ class Signup extends Component {
           onSubmitEditing={() => this._email.focus()}
         />
 
-        <TextField
+        <InputTextAccount
           ref={(ref) => this._email = ref}
           label="Email"
           value={email || ''}
@@ -118,7 +131,7 @@ class Signup extends Component {
           onSubmitEditing={() => this._password.focus()}
         />
         
-        <TextField
+        <InputTextAccount
           ref={(ref) => this._password = ref}
           label="Password"
           value={password || ''}
@@ -129,7 +142,7 @@ class Signup extends Component {
           returnKeyType="next"
         />
       
-        <TextField
+        <InputTextAccount
           ref={(ref) => this._password_repeat = ref}
           label="Ulangi Password"
           value={password_repeat || ''}
@@ -138,21 +151,18 @@ class Signup extends Component {
           onChangeText={(text) => this.setState({ password_repeat: text })}
           onSubmitEditing={this.onStartSignup}
           returnKeyType="go"
+          containerStyle={{
+            marginHorizontal: moderateScale(40),
+            marginBottom: moderateScale(25),
+          }}
         />
       
-        <TouchableOpacity
+        <ButtonSecondary
           onPress={this.onStartSignup}
-          style={styles.button}>
-          {loading &&
-            <DotIndicator
-              count={4}
-              size={7}
-              color='white'
-              animationDuration={800}
-            />
-          }
-          {!loading && <Text style={styles.buttonTitle}>Daftar</Text>}
-        </TouchableOpacity>
+          disabled={loading}
+          loading={loading}
+          title="Daftar"
+        />
         
       </View>
     )

@@ -32,23 +32,46 @@ class Item extends Component {
         <TouchableOpacity
           onPress={this.onClickItem}
           style={{
-            paddingHorizontal: 15,
-            paddingVertical: 10,
+            paddingHorizontal: moderateScale(15),
+            paddingVertical: moderateScale(10),
           }}
         >
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginBottom: moderateScale(4),
+            }}
+          >
             <Text
               numberOfLines={1}
-              style={{ fontWeight: 'bold' }}>
+              style={{
+                fontFamily: 'CircularStd-Bold',
+                fontSize: 14,
+                color: 'rgba(0,0,0,0.68)',
+              }}
+            >
               {`#${transactionId}` || '-'}
             </Text>
             <Text
               numberOfLines={1}
-              style={{ fontWeight: 'bold' }}>
+              style={{
+                fontFamily: 'CircularStd-Book',
+                fontSize: 14,
+                color: 'rgba(0,0,0,0.68)',
+              }}
+            >
               {subtitle || '-'}
             </Text>
           </View>
-          <Text numberOfLines={1}>
+          <Text
+            style={{
+              fontFamily: 'CircularStd-Book',
+              fontSize: 14,
+              color: 'rgba(0,0,0,0.3)',
+            }}
+            numberOfLines={1}
+          >
             {title || '-'}
           </Text>
           {body && (

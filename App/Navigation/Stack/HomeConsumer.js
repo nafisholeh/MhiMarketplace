@@ -20,7 +20,7 @@ import Slip from 'Containers/Slip/Slip';
 import Account from 'Containers/Account/Account';
 import OrderDetail from 'Containers/Order/Detail';
 import ConsumerOrder from 'Containers/ConsumerOrder';
-import ConsumerCompleted from 'Containers/ConsumerCompleted';
+import ConsumerCompleted from 'Containers/ConsumerOrder/Completed';
 import ConsumerOrderDetail from 'Containers/ConsumerOrder/Common/Detail';
 import ConsumerSendingDetail from 'Containers/ConsumerOrder/Sending/Detail';
 

@@ -9,7 +9,12 @@ import ApolloClientProvider from 'Services/ApolloClientProvider';
 import SessionActions from 'Redux/SessionRedux';
 import { SIGNUP } from 'GraphQL/User/Mutation';
 import { isEmailError, getGraphQLError, moderateScale } from 'Lib';
-import { InputTextAccount, ButtonSecondary, BackButton } from 'Components';
+import {
+  InputTextAccount,
+  ButtonSecondary,
+  BackButton,
+  KeyboardFriendlyView
+} from 'Components';
 import { Images } from 'Themes';
 import styles from './Styles';
     
@@ -100,7 +105,7 @@ class Signup extends Component {
     } = this.state;
     const { navigation } = this.props;
     return (
-      <View style={styles.container}>
+      <KeyboardFriendlyView style={styles.container}>
         
         <View
           style={{
@@ -175,7 +180,7 @@ class Signup extends Component {
           title="Daftar"
         />
         
-      </View>
+      </KeyboardFriendlyView>
     )
   }
 }

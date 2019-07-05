@@ -17,7 +17,7 @@ import {
   screenWidth,
   screenHeight,
 } from 'Lib';
-import { ButtonSecondary, InputTextAccount } from 'Components';
+import { ButtonSecondary, InputTextAccount, KeyboardFriendlyView } from 'Components';
 import Config from 'Config/AppConfig';
 import styles from './Styles';
 import { Colors, Images } from 'Themes';
@@ -129,7 +129,7 @@ class Signin extends Component {
   render () {
     const { email, error_email, password, error_password, loading } = this.state;
     return (
-      <View style={{ flex: 1 }}>
+      <KeyboardFriendlyView style={{ flex: 1 }}>
         
         <Image
           source={Images.mhi}
@@ -209,7 +209,7 @@ class Signin extends Component {
           </View>
         </View>
         
-      </View>
+      </KeyboardFriendlyView>
     )
   }
 }

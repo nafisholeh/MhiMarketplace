@@ -9,7 +9,7 @@ class BackButton extends Component {
   render() {
     const { navigation, color } = this.props;
     return (
-      <TouchableOpacity onPress={() => navigation.goBack()}>
+      <TouchableOpacity onPress={() => navigation.goBack(null)}>
         <Image
           source={Images.back}
           style={{

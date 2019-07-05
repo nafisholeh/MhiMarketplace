@@ -19,6 +19,7 @@ class ProductVerticalWrapper extends Component {
         shadowOpacityAndroid={0.1}
         mainColor={Colors.white}
         shadowColor={Colors.brown_light}
+        style={{ alignSelf: 'flex-start' }}
       >
         <TouchableOpacity
           style={{ flex: 1 }}

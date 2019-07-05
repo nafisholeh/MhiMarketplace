@@ -17,7 +17,8 @@ import {
   HeaderButton,
   ProductDetailWrapper,
   ButtonPrimary,
-  ProductImage
+  ProductImage,
+  CustomHeader,
 } from 'Components';
 import { parseToRupiah, calcDiscount, getReadableDate, moderateScale } from 'Lib';
 import styles from './Styles';
@@ -78,51 +79,7 @@ class Detail extends Component {
           backgroundColor: isInsideCart ? '#FC9000' : '#a8de1c',
         }}
       >
-        <View 
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            height: moderateScale(55),
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            style={{ 
-              width: moderateScale(23), height: moderateScale(23),
-              justifyContent: 'center', alignItems: 'center',
-              marginLeft: moderateScale(30),
-            }}>
-            <Image
-              source={Images.back}
-              style={{
-                width: moderateScale(20),
-                height: moderateScale(20),
-                tintColor: 'white'
-              }}
-            />
-          </TouchableOpacity>
-          <Text
-            style={{
-              position: 'absolute',
-              left: '43%',
-              fontFamily: 'CircularStd-Bold',
-              fontSize: 16,
-              color: Colors.white,
-            }}
-          >
-            Details
-          </Text>
-        </View>
-        <View 
-          style={{
-            position: 'absolute',
-            alignSelf: 'center',
-            width: 900, height: 900,
-            marginTop: moderateScale(80),
-            borderRadius: 450,
-            backgroundColor: 'white',
-          }}
-        />
+        <CustomHeader title="Detail" />
         <Query 
           variables={{ _id: productId }}
           query={FETCH_PRODUCT_DETAIL}>

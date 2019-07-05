@@ -9,13 +9,22 @@ import moment from 'moment';
 import Timeline from 'react-native-timeline-listview';
 
 import { Colors } from 'Themes';
-import { QueryEffectPage } from 'Components';
+import {
+  QueryEffectPage,
+  HeaderTitle,
+  CustomHeader,
+  ProductDetailWrapper,
+  ViewShadow,
+} from 'Components';
 import OrderedProducts from './OrderedProducts';
 import {
   getReadableAddress,
   getReadableSubdistrict,
   getReadableCityState,
   filterObject,
+  screenWidth,
+  moderateScale,
+  parseToRupiah,
 } from 'Lib';
 import { getSelectedListId } from 'Redux/ListRedux';
 import { FETCH_ORDER_DETAIL } from 'GraphQL/Order/Query';
@@ -27,7 +36,7 @@ class Detail extends Component {
   static navigationOptions = ({navigation}) => {
     const {params = {}} = navigation.state
     return {
-      title: 'Detail Pesanan Terkirim',
+      header: <View></View>,
     }
   }
 
@@ -73,10 +82,17 @@ class Detail extends Component {
   };
 
   render() {
-    const { listId: _id, courierId } = this.props;
+    const { listId: _ids, courierId } = this.props;
+    const _id = '5d160bf5f63f263fb73e48be';
     const { timeline } = this.state;
     return (
-      <Fragment>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: '#a8de1c',
+        }}
+      >
+        <CustomHeader title="Detail" />
         <Query
           query={FETCH_ORDER_DETAIL}
           variables={{ _id }}
@@ -96,6 +112,7 @@ class Detail extends Component {
             const {
               transaction_id,
               user_id = {},
+              total_cost,
               shipping_address = {},
               products = []
             } = orderDetail || {};
@@ -107,12 +124,111 @@ class Detail extends Component {
                   paddingVertical: 10,
                 }}
               >
-                <Text style={{ textAlign: 'right' }}>{transaction_id}</Text>
-                <Text>Nama: {name}</Text>
-                <Text>Alamat:</Text>
-                <Text>{getReadableAddress(shipping_address)}</Text>
-                <Text>{getReadableSubdistrict(shipping_address)}</Text>
-                <Text>{getReadableCityState(shipping_address)}</Text>
+                <ViewShadow
+                  width={screenWidth - 60}
+                  height={270}
+                  borderRadius={10}
+                  shadowBorderRadiusAndroid={10}
+                  shadowRadiusAndroid={18}
+                  shadowOpacityAndroid={0.09}
+                  mainColor={Colors.white}
+                  shadowColor={Colors.brown_light}
+                  style={{
+                    marginHorizontal: moderateScale(18),
+                    marginTop: moderateScale(10)
+                  }}
+                  styleChildren={{
+                    padding: moderateScale(15),
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Text
+                    style={{
+                      textAlign: 'right',
+                      fontFamily: 'CircularStd-Bold',
+                      fontSize: 16,
+                    }}
+                  >
+                    {transaction_id ? `#${transaction_id}` : `n/a`}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: 'CircularStd-Book',
+                      fontSize: 14,
+                      color: Colors.text_light,
+                      marginBottom: moderateScale(5),
+                    }}
+                  >
+                    Harga Total
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: 'CircularStd-Book',
+                      fontSize: 18,
+                      color: Colors.veggie_dark,
+                      marginBottom: moderateScale(10),
+                    }}
+                  >
+                    {parseToRupiah(total_cost) || `n/a`}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: 'CircularStd-Book',
+                      fontSize: 14,
+                      color: Colors.text_light,
+                      marginBottom: moderateScale(5),
+                    }}
+                  >
+                    Nama
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: 'CircularStd-Book',
+                      fontSize: 16,
+                      color: Colors.text,
+                      marginBottom: moderateScale(10),
+                    }}
+                  >
+                    {name || `n/a`}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: 'CircularStd-Book',
+                      fontSize: 14,
+                      color: Colors.text_light,
+                      marginBottom: moderateScale(5),
+                    }}
+                  >
+                    Alamat
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: 'CircularStd-Book',
+                      fontSize: 16,
+                      color: Colors.text,
+                    }}
+                  >
+                    {getReadableAddress(shipping_address)}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: 'CircularStd-Book',
+                      fontSize: 16,
+                      color: Colors.text,
+                    }}
+                  >
+                    {getReadableSubdistrict(shipping_address)}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: 'CircularStd-Book',
+                      fontSize: 16,
+                      color: Colors.text,
+                    }}
+                  >
+                    {getReadableCityState(shipping_address)}
+                  </Text>
+                </ViewShadow>
                 <Text style={{ marginTop: 15, marginBottom: 10 }}>
                   Detail Barang
                 </Text>
@@ -132,7 +248,7 @@ class Detail extends Component {
             );
           }}
         </Query>
-      </Fragment>
+      </View>
     );
   }
 }

@@ -20,11 +20,10 @@ import { QueryEffectSection } from 'Components';
 import { Colors } from 'Themes';
 import Item from '../Common/Item';
 import Title from '../Common/Title';
-import { FETCH_READY_TO_PROCESS_LIST } from 'GraphQL/Order/Query';
 import ListActions from 'Redux/ListRedux';
 import { getUserId } from 'Redux/SessionRedux';
 
-class ConsumerOrder extends Component {
+class List extends Component {
   renderItems = ({item, index}) => {
     const { selectListItem, navigation } = this.props;
     const {
@@ -50,21 +49,22 @@ class ConsumerOrder extends Component {
   };
   
   render() {
-    const { userId } = this.props;
+    const { userId, query } = this.props;
     return (
       <View style={{ flex: 1 }}>
         <Title>Menunggu diproses</Title>
         <Query
-          query={FETCH_READY_TO_PROCESS_LIST}
+          query={query}
           variables={{ courier_id: null, user_id: userId }}
         >
           {({ loading, error, data, refetch }) => {
-            const { readyToProcessOrders = [] } = data || {};
-            if (Array.isArray(readyToProcessOrders) && readyToProcessOrders.length) {
+            const items = data[Object.keys(data)[0]] || [];
+            console.tron.log('List', items, data)
+            if (Array.isArray(items) && items.length) {
               return (
                 <FlatList
                   keyExtractor={(item, id) => item._id.toString()}
-                  data={readyToProcessOrders} 
+                  data={items} 
                   renderItem={this.renderItems}
                 />
               )
@@ -73,7 +73,7 @@ class ConsumerOrder extends Component {
               <QueryEffectSection
                 isLoading={loading}
                 isError={error}
-                isEmpty={!readyToProcessOrders.length}
+                isEmpty={!items.length}
                 onRefetch={refetch}
               />
             );
@@ -84,7 +84,7 @@ class ConsumerOrder extends Component {
   }
 }
 
-ConsumerOrder.propTypes = {
+List.propTypes = {
   selectListItem: func,
   userId: string,
 }
@@ -97,4 +97,4 @@ const mapDispatchToProps = dispatch => ({
   selectListItem: selectedId => dispatch(ListActions.selectListItem(selectedId)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(ConsumerOrder));
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(List));

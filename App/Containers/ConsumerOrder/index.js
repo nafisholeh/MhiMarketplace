@@ -11,10 +11,13 @@ import { Colors, Images } from 'Themes';
 import { moderateScale } from 'Lib';
 import { getUserId } from 'Redux/SessionRedux';
 
-import ReadyToProcessList from './ReadyToProcess';
-import ProcessingList from './Processing';
-import ReadyToSendList from './ReadyToSend';
-import SendingList from './Sending';
+import {
+  FETCH_READY_TO_PROCESS_LIST,
+  FETCH_PROCESSING_LIST,
+  FETCH_READY_TO_SEND_LIST,
+  FETCH_SENDING_LIST,
+} from 'GraphQL/Order/Query';
+import List from './Common/List';
 
 class ConsumerOrder extends Component {
   static navigationOptions = ({navigation}) => {
@@ -41,10 +44,10 @@ class ConsumerOrder extends Component {
           flex: 1
         }}
       >
-        <ReadyToProcessList />
-        <ProcessingList />
-        <ReadyToSendList />
-        <SendingList />
+        <List query={FETCH_READY_TO_PROCESS_LIST} />
+        <List query={FETCH_PROCESSING_LIST} />
+        <List query={FETCH_READY_TO_SEND_LIST} />
+        <List query={FETCH_SENDING_LIST} />
       </ScrollView>
     );
   }

@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native'
 import { DotIndicator } from 'react-native-indicators';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
+import { withNavigation } from 'react-navigation';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import SessionActions from 'Redux/SessionRedux';
 import { SIGNUP } from 'GraphQL/User/Mutation';
 import { isEmailError, getGraphQLError, moderateScale } from 'Lib';
-import { InputTextAccount, ButtonSecondary } from 'Components';
+import { InputTextAccount, ButtonSecondary, BackButton } from 'Components';
+import { Images } from 'Themes';
 import styles from './Styles';
     
 class Signup extends Component {
@@ -96,21 +98,30 @@ class Signup extends Component {
       error_password_repeat,
       loading,
     } = this.state;
+    const { navigation } = this.props;
     return (
       <View style={styles.container}>
         
-        <Text
+        <View
           style={{
-            fontFamily: 'CircularStd-Bold',
-            fontSize: 20,
-            color: 'rgba(0,0,0,0.68)',
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginLeft: moderateScale(10),
             marginTop: moderateScale(25),
-            marginLeft: moderateScale(15),
             marginBottom: moderateScale(20),
           }}
         >
-          Pendaftaran akun baru
-        </Text>
+          <BackButton />
+          <Text
+            style={{
+              fontFamily: 'CircularStd-Bold',
+              fontSize: 20,
+              color: 'rgba(0,0,0,0.68)',
+            }}
+          >
+            Pendaftaran akun baru
+          </Text>
+        </View>
       
         <InputTextAccount
           label="Name"
@@ -177,4 +188,4 @@ const mapDispatchToProps = dispatch => ({
   storeSignupEmail: email => dispatch(SessionActions.storeSignupEmail(email)),
 });
 
-export default connect(null, mapDispatchToProps)(Signup);
+export default connect(null, mapDispatchToProps)(withNavigation(Signup));

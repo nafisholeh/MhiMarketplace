@@ -19,6 +19,7 @@ import {
 import { QueryEffectSection } from 'Components';
 import { Colors } from 'Themes';
 import Item from '../Common/Item';
+import Title from '../Common/Title';
 import { FETCH_PROCESSING_LIST } from 'GraphQL/Order/Query';
 import ListActions from 'Redux/ListRedux';
 import { getUserId } from 'Redux/SessionRedux';
@@ -36,6 +37,7 @@ class SendingList extends Component {
     return (
       <Item
         id={_id}
+        index={index}
         transactionId={transaction_id}
         title={title}
         subtitle={parseToRupiah(total_cost)}
@@ -51,7 +53,7 @@ class SendingList extends Component {
     const { userId } = this.props;
     return (
       <View style={{ flex: 1 }}>
-        <Text style={{ paddingHorizontal: 10 }}>Pesanan sedang diproses kurir</Text>
+        <Title>Pesanan sedang diproses kurir</Title>
         <Query
           query={FETCH_PROCESSING_LIST}
           variables={{ courier_id: null, user_id: userId }}

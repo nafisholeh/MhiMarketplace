@@ -6,8 +6,9 @@ import { func, string } from 'prop-types';
 import { withNavigation } from 'react-navigation';
 import { createStructuredSelector } from 'reselect';
 
-import { HeaderButton } from 'Components';
+import { HeaderTitle } from 'Components';
 import { Colors, Images } from 'Themes';
+import { moderateScale } from 'Lib';
 import { getUserId } from 'Redux/SessionRedux';
 
 import ReadyToProcessList from './ReadyToProcess';
@@ -20,11 +21,13 @@ class ConsumerOrder extends Component {
     const { params } = navigation.state
     const { isKurir = false } = params || {};
     return {
-      title: 'Sekilas Pesanan Anda',
-      headerRight: (
-        <HeaderButton
-          onPress={() => navigation.navigate('ConsumerCompleted')}
-          icon={Images.sent}
+      header: (
+        <HeaderTitle
+          title="Status Pesanan Anda"
+          isEnableBack
+          isEnableRightNav
+          onRightNavigate={() => navigation.navigate('ConsumerCompleted')}
+          iconRightNav={Images.sent}
         />
       ),
     }
@@ -33,7 +36,11 @@ class ConsumerOrder extends Component {
   render() {
     const { userId } = this.props;
     return (
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView
+        style={{
+          flex: 1
+        }}
+      >
         <ReadyToProcessList />
         <ProcessingList />
         <ReadyToSendList />

@@ -19,6 +19,7 @@ import {
 import { QueryEffectSection } from 'Components';
 import { Colors } from 'Themes';
 import Item from '../Common/Item';
+import Title from '../Common/Title';
 import { FETCH_READY_TO_PROCESS_LIST } from 'GraphQL/Order/Query';
 import ListActions from 'Redux/ListRedux';
 import { getUserId } from 'Redux/SessionRedux';
@@ -36,6 +37,7 @@ class ConsumerOrder extends Component {
     return (
       <Item
         id={_id}
+        index={index}
         transactionId={transaction_id}
         title={title}
         subtitle={parseToRupiah(total_cost)}
@@ -51,9 +53,7 @@ class ConsumerOrder extends Component {
     const { userId } = this.props;
     return (
       <View style={{ flex: 1 }}>
-        <Text style={{ paddingHorizontal: 10, marginTop: 10 }}>
-          Menunggu diproses
-        </Text>
+        <Title>Menunggu diproses</Title>
         <Query
           query={FETCH_READY_TO_PROCESS_LIST}
           variables={{ courier_id: null, user_id: userId }}
@@ -62,19 +62,11 @@ class ConsumerOrder extends Component {
             const { readyToProcessOrders = [] } = data || {};
             if (Array.isArray(readyToProcessOrders) && readyToProcessOrders.length) {
               return (
-                <View style={{
-                  marginHorizontal: 10,
-                  marginVertical: 10,
-                  borderRadius: 5,
-                  borderWidth: 0.5,
-                  borderColor: Colors.brown_light
-                }}>
-                  <FlatList
-                    keyExtractor={(item, id) => item._id.toString()}
-                    data={readyToProcessOrders} 
-                    renderItem={this.renderItems}
-                  />
-                </View>
+                <FlatList
+                  keyExtractor={(item, id) => item._id.toString()}
+                  data={readyToProcessOrders} 
+                  renderItem={this.renderItems}
+                />
               )
             }
             return (

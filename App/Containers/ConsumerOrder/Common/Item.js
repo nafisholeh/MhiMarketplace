@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { string, func } from 'prop-types';
 
 import { Colors } from 'Themes';
+import { ViewShadow } from 'Components';
+import { screenWidth, moderateScale } from 'Lib';
 
 class Item extends Component {
   onClickItem = () => {
@@ -11,38 +13,51 @@ class Item extends Component {
   };
 
   render() {
-    const { id, transactionId, title, subtitle, body } = this.props;
+    const { id, transactionId, title, subtitle, body, index } = this.props;
     return (
-      <TouchableOpacity
-        onPress={this.onClickItem}
-        style={{
-          paddingHorizontal: 15,
-          paddingVertical: 10,
-          borderBottomWidth: 0.5,
-          borderColor: Colors.brown_light,
+      <ViewShadow
+        width={screenWidth - 35}
+        height={60}
+        borderRadius={10}
+        shadowBorderRadiusAndroid={10}
+        shadowRadiusAndroid={10}
+        shadowOpacityAndroid={0.09}
+        mainColor={Colors.white}
+        shadowColor={Colors.brown_light}
+        style={{ 
+          marginTop: !index ? moderateScale(15) : moderateScale(3),
+          marginBottom: moderateScale(7)
         }}
       >
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Text
-            numberOfLines={1}
-            style={{ fontWeight: 'bold' }}>
-            {`#${transactionId}` || '-'}
-          </Text>
-          <Text
-            numberOfLines={1}
-            style={{ fontWeight: 'bold' }}>
-            {subtitle || '-'}
-          </Text>
-        </View>
-        <Text numberOfLines={1}>
-          {title || '-'}
-        </Text>
-        {body && (
+        <TouchableOpacity
+          onPress={this.onClickItem}
+          style={{
+            paddingHorizontal: 15,
+            paddingVertical: 10,
+          }}
+        >
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Text
+              numberOfLines={1}
+              style={{ fontWeight: 'bold' }}>
+              {`#${transactionId}` || '-'}
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={{ fontWeight: 'bold' }}>
+              {subtitle || '-'}
+            </Text>
+          </View>
           <Text numberOfLines={1}>
-            {body}
+            {title || '-'}
           </Text>
-        )}
-      </TouchableOpacity>
+          {body && (
+            <Text numberOfLines={1}>
+              {body}
+            </Text>
+          )}
+        </TouchableOpacity>
+      </ViewShadow>
     );
   }
 }

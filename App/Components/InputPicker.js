@@ -31,9 +31,24 @@ class InputPicker extends Component {
     if (this.props.triggerFetch !== prevProps.triggerFetch) {
       this.onFetchData();
     }
+    if (this.props.triggerReset !== prevProps.triggerReset) {
+      this.resetData();
+    }
   }
   
-  onFetchData() {
+  resetData = () => {
+    this.setState({
+      data: null,
+      selected: null,
+      selected_text: '',
+      fetching: null,
+      error: null,
+      error_fetch: null,
+      dummy: [{label: 'loading', value: 0}],
+    });
+  };
+  
+  onFetchData = () => {
     const { query, queryVariables, title, isKeyDisplayed } = this.props;
     this.setState({
       fetching: true,

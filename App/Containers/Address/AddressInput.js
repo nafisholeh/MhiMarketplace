@@ -128,7 +128,11 @@ class AddressInput extends Component {
       return {
         provinsi: nama,
         prov_key_selected: id,
-        trigger_fetch_kabupaten: !prevState.trigger_fetch_kabupaten
+        trigger_fetch_kabupaten: !prevState.trigger_fetch_kabupaten,
+        trigger_reset_kecamatan: !prevState.trigger_reset_kecamatan,
+        id_address: null,
+        kelurahan: null,
+        kodepos: null,
       };
     });
   };
@@ -139,7 +143,11 @@ class AddressInput extends Component {
       return {
         kabupaten: nama,
         kab_key_selected: id,
-        trigger_fetch_kecamatan: !prevState.trigger_fetch_kecamatan
+        trigger_reset_kecamatan: !prevState.trigger_reset_kecamatan,
+        trigger_fetch_kecamatan: !prevState.trigger_fetch_kecamatan,
+        id_address: null,
+        kelurahan: null,
+        kodepos: null,
       };
     });
   };
@@ -159,6 +167,7 @@ class AddressInput extends Component {
       trigger_fetch_provinsi,
       trigger_fetch_kabupaten,
       trigger_fetch_kecamatan,
+      trigger_reset_kecamatan,
       prov_key_selected,
       kab_key_selected,
       rtrw,
@@ -204,6 +213,7 @@ class AddressInput extends Component {
                     queryVariables={{ prov_key: prov_key_selected }}
                     onSelectionChange={this.onKabupatenChange}
                     triggerFetch={trigger_fetch_kabupaten}
+                    // triggerReset={trigger_reset_kabupaten}
                   />
                 
                   <InputPicker
@@ -213,6 +223,7 @@ class AddressInput extends Component {
                     queryVariables={{ kab_key: kab_key_selected }}
                     onSelectionChange={this.onKecamatanChange}
                     triggerFetch={trigger_fetch_kecamatan}
+                    triggerReset={trigger_reset_kecamatan}
                     isKeyDisplayed
                   />
                 

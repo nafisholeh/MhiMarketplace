@@ -34,7 +34,7 @@ const HomeNav = createStackNavigator({
   Slip: { screen: Slip },
   OrderDetail: { screen: OrderDetail },
 }, {
-  initialRouteName: 'Home',
+  initialRouteName: 'HomeStockOpname',
   navigationOptions: {
     headerStyle: styles.header
   }

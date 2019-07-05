@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { shape, string, func } from 'prop-types';
@@ -27,10 +27,23 @@ class Account extends Component {
   }
   
   signout = mutate => {
-    const { userId: user_id } = this.props;
-    mutate({
-      variables: { user_id }
-    });
+    Alert.alert(
+      'Konfirmasi',
+      'Apa Anda yakin ingin keluar dari sesi ini?',
+      [
+        {
+          text: 'Batal',
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () => {
+          const { userId: user_id } = this.props;
+          mutate({
+            variables: { user_id }
+          });
+        }},
+      ],
+      {cancelable: false},
+    );
   };
   
   onSignoutComplete = async () => {
@@ -70,7 +83,7 @@ class Account extends Component {
           return (
             <View>
               <HeaderTitle
-                title={name}
+                title={`Halo, ${name}`}
                 isEnableRightNav
                 iconRightNav={Images.logout}
                 onRightNavigate={() => this.signout(mutate)}

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { func, string } from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import { DotIndicator } from 'react-native-indicators';
+import { StackActions, NavigationActions, SwitchActions } from 'react-navigation';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { SIGNIN } from 'GraphQL/User/Mutation';
@@ -81,7 +82,7 @@ class Signin extends Component {
   
   onSignin = async () => {
     const { email, password } = this.state;
-    const { storeSession, storeSignupEmail } = this.props;
+    const { storeSession, storeSignupEmail, navigation } = this.props;
     storeSignupEmail(null);
     try {
       const { navigation, oneSignalToken: token } = this.props;
@@ -96,24 +97,33 @@ class Signin extends Component {
       if (signin) {
         await storeSession(signin);
         this.setState({ loading: false });
-        let screenName = 'Home';
+        let screenName = 'HomeConsumer';
         switch (user_type) {
           case Config.userType.KURIR:
-            screenName = 'CourierNav';
+            screenName = 'HomeCourier';
             break;
           case Config.userType.STOK_OPNAME:
-            screenName = 'StockOpnameNav';
+            screenName = 'HomeStockOpname';
             break;
           case Config.userType.KEUANGAN:
-            screenName = 'FinanceNav';
+            screenName = 'HomeFinance';
             break;
           default:
-            screenName = 'ConsumerNav';
+            screenName = 'HomeConsumer';
             break;
         }
-        navigation.navigate(screenName);
+        const resetAction = StackActions.reset({
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: 'Account' })]
+        });
+        const goToHome = NavigationActions.navigate({
+          routeName: screenName
+        });
+        navigation.dispatch(resetAction);
+        navigation.dispatch(goToHome);
       }
     } catch (error) {
+      console.tron.log('switch', error)
       this.setState({ loading: false });
       const message = getGraphQLError(error);
       if (message.toLowerCase().indexOf("email") >= 0) {

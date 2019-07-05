@@ -28,7 +28,7 @@ import Completed from 'Containers/CourierOrder/Completed';
 import CompletedDetail from 'Containers/CourierOrder/Completed/Detail';
 
 const HomeNav = createStackNavigator({
-  Home: { screen: Home },
+  HomeCourier: { screen: Home },
   ProductDetail: { screen: Detail },
   ProductAdd: { screen: ProductAdd },
   ProductEdit: { screen: ProductEdit },
@@ -48,7 +48,7 @@ const HomeNav = createStackNavigator({
   Completed: { screen: Completed },
   CompletedDetail: { screen: CompletedDetail },
 }, {
-  initialRouteName: 'Home',
+  initialRouteName: 'HomeCourier',
   navigationOptions: {
     headerStyle: styles.header
   }

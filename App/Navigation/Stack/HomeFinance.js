@@ -21,7 +21,7 @@ import Account from 'Containers/Account/Account';
 import OrderDetail from 'Containers/Order/Detail';
 
 const HomeNav = createStackNavigator({
-  Home: { screen: Home },
+  HomeFinance: { screen: Home },
   ProductDetail: { screen: Detail },
   ProductAdd: { screen: ProductAdd },
   ProductEdit: { screen: ProductEdit },

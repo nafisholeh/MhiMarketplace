@@ -25,13 +25,13 @@ import ConsumerOrderDetail from 'Containers/ConsumerOrder/Common/Detail';
 import ConsumerSendingDetail from 'Containers/ConsumerOrder/Sending/Detail';
 
 const HomeNav = createStackNavigator({
-  Home: { screen: Home },
+  HomeConsumer: { screen: Home },
   ProductDetail: { screen: Detail },
   ConsumerOrder: { screen: ConsumerOrder },
   ConsumerCompleted: { screen: ConsumerCompleted },
   ConsumerOrderDetail: { screen: ConsumerOrderDetail },
 }, {
-  initialRouteName: 'Home',
+  initialRouteName: 'HomeConsumer',
   navigationOptions: {
     headerStyle: styles.header
   }

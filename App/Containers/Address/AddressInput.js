@@ -35,7 +35,7 @@ class AddressInput extends Component {
       headerLeft: null,
       headerRight: null,
       header: (
-        <HeaderTitle title="Alamat Baru" />
+        <HeaderTitle title="Alamat Baru" isEnableBack />
       ),
     }
   }

@@ -19,7 +19,7 @@ const CartNav = createStackNavigator({
   AddressInput: { screen: AddressInput },
   Slip: { screen: Slip },
 }, {
-  initialRouteName: 'Slip',
+  initialRouteName: 'Cart',
   navigationOptions: {
     headerStyle: styles.header
   }

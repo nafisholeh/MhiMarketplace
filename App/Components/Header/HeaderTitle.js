@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import { string } from 'prop-types';
+import { string, bool } from 'prop-types';
 
 import { moderateScale } from 'Lib';
 import { Colors } from 'Themes';
+import BackButton from './BackButton';
 
 class HeaderTitle extends Component {
   render() {
-    const { title } = this.props;
+    const { title, isEnableBack } = this.props;
     return (
       <View
         style={{
+          flexDirection: 'row',
+          alignItems: 'center',
           paddingLeft: moderateScale(15),
           paddingVertical: moderateScale(15),
           backgroundColor: Colors.white,
@@ -18,6 +21,7 @@ class HeaderTitle extends Component {
           borderBottomColor: Colors.border,
         }}
       >
+        {isEnableBack && <BackButton />}
         <Text
           style={{
             fontFamily: 'CircularStd-Bold',
@@ -34,6 +38,7 @@ class HeaderTitle extends Component {
 
 HeaderTitle.propTypes = {
   title: string,
+  isEnableBack: bool,
 };
 
 export default HeaderTitle;

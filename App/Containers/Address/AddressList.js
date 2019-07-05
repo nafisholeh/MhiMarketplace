@@ -26,7 +26,7 @@ class AddressList extends Component {
         />
       ),
       header: (
-        <HeaderTitle title="Alamat Anda" />
+        <HeaderTitle title="Alamat Anda" isEnableBack />
       ),
     }
   }

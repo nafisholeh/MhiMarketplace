@@ -32,7 +32,7 @@ export const graphqlToRNPickerSelect = (input = [], isKeyDisplayed) => {
       keyMap.set(key, true); 
       let temp = {};
       temp['label'] = isKeyDisplayed ? `(${key}) - ${nama}` : nama;
-      temp['value'] = isKeyDisplayed ? `${_id}||${key}||${kelurahan}` : key;
+      temp['value'] = isKeyDisplayed ? `${_id}||${key}||${kelurahan}||${nama}` : `${key}||${nama}`;
       output.push(temp);
     }
   });

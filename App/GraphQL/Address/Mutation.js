@@ -4,8 +4,8 @@ import { store } from 'Containers/App';
 import { FETCH_ADDRESS, FETCH_SELECTED_ADDRESS } from './Query';
 
 export const ADD_ADDRESS = gql`
-  mutation addAddress($user_id: String!, $data: AddressInput) {
-   addAddress(user_id:$user_id, data:$data) {
+  mutation addAddress($user_id: String!, $id_address: String!, $data: AddressInput) {
+   addAddress(user_id:$user_id, id_address: $id_address, data:$data) {
      _id
      alamat
      rtrw

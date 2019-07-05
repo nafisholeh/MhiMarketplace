@@ -84,15 +84,26 @@ class AddressInput extends Component {
       id_address,
       rtrw,
       alamat,
+      provinsi,
+      kabupaten,
+      kecamatan,
+      kelurahan,
+      kodepos,
     } = this.state; 
+    console.tron.log('addressupload', this.state)
     const { userId } = this.props;
     addAddress({
       variables: {
         user_id: userId,
+        id_address,
         data: {
          	alamat,
           rtrw,
-          id_address,
+          provinsi,
+          kota: kabupaten,
+          kecamatan,
+          kelurahan,
+          kodepos,
         }
       }
     });
@@ -112,26 +123,35 @@ class AddressInput extends Component {
   }
   
   onProvinsiChange = (val, i) => {
+    const [id, nama] = val.split('||') || [];
     this.setState(prevState => {
       return {
-        prov_key_selected: val,
+        provinsi: nama,
+        prov_key_selected: id,
         trigger_fetch_kabupaten: !prevState.trigger_fetch_kabupaten
       };
     });
   };
   
   onKabupatenChange = (val, i) => {
+    const [id, nama] = val.split('||') || [];
     this.setState(prevState => {
       return {
-        kab_key_selected: val,
+        kabupaten: nama,
+        kab_key_selected: id,
         trigger_fetch_kecamatan: !prevState.trigger_fetch_kecamatan
       };
     });
   };
   
   onKecamatanChange = (val, i) => {
-    const [idAddress, kodepos, kelurahan] = val.split('||') || [];
-    this.setState({ id_address: idAddress, kelurahan, kodepos });
+    const [idAddress, kodepos, kelurahan, kecamatan] = val.split('||') || [];
+    this.setState({
+      id_address: idAddress,
+      kecamatan,
+      kelurahan,
+      kodepos
+    });
   };
   
   render() {

@@ -1,6 +1,7 @@
 const pathPrefix = 'Assets/Images/';
 
 const images = {
+  mhi: require(pathPrefix+'mhi.jpg'),
   cart: require(pathPrefix+'cart.png'),
   minus: require(pathPrefix+'minus.png'),
   plus: require(pathPrefix+'plus.png'),

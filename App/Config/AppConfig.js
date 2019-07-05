@@ -5,8 +5,6 @@ export default {
   allowTextFontScaling: true,
   hiddenTabScreen: [
     'ProductDetail',
-    'Signin',
-    'Signup',
     'Checkout',
     'AddressList',
     'AddressInput',

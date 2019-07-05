@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { func, string } from 'prop-types';
 import { createStructuredSelector } from 'reselect';
@@ -10,9 +10,18 @@ import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { SIGNIN } from 'GraphQL/User/Mutation';
 import SessionActions, { getSignupEmail } from 'Redux/SessionRedux';
 import { getOneSignalToken } from 'Redux/OneSignalRedux';
-import { isEmailError, getGraphQLError, InAppNotification } from 'Lib';
+import {
+  isEmailError,
+  getGraphQLError,
+  InAppNotification,
+  moderateScale,
+  screenWidth,
+  screenHeight,
+} from 'Lib';
+import { ButtonSecondary } from 'Components';
 import Config from 'Config/AppConfig';
-import styles from './Styles'
+import styles from './Styles';
+import { Colors, Images } from 'Themes';
     
 class Signin extends Component {
   
@@ -121,45 +130,102 @@ class Signin extends Component {
   render () {
     const { email, error_email, password, error_password, loading } = this.state;
     return (
-      <View style={styles.container}>
-
-        <TextField
-          label="Email"
-          value={email || ''}
-          error={error_email || isEmailError(email)}
-          onChangeText={(text) => this.setState({ email: text })}
-          returnKeyType="next"
-          onSubmitEditing={() => this._password.focus()}
-        />
-      
-        <TextField
-          ref={(ref) => this._password = ref}
-          label="Password"
-          value={password || ''}
-          error={error_password}
-          secureTextEntry={true}
-          onChangeText={(text) => this.setState({ password: text })}
-          onSubmitEditing={this.onStartSignin}
-          returnKeyType="go"
-        />
-      
-        <TouchableOpacity
-          onPress={this.onStartSignin}
-          style={styles.button}>
-          {loading &&
-            <DotIndicator
-              count={4}
-              size={7}
-              color='white'
-              animationDuration={800}
-            />
-          }
-          {!loading && <Text style={styles.buttonTitle}>Signin</Text>}
-        </TouchableOpacity>
+      <View style={{ flex: 1 }}>
         
-        <Text onPress={this.openSignup}>
-          Daftar
-        </Text>
+        <Image
+          source={Images.mhi}
+          style={{
+            height: moderateScale((screenHeight / 3)),
+            width: moderateScale(screenWidth - 50),
+            resizeMode: 'contain',
+            alignSelf: 'center',
+            marginTop: moderateScale(30),
+          }}
+        />
+
+        <View
+          style={{
+            
+          }}
+        >
+          <TextField
+            label="Email"
+            value={email || ''}
+            error={error_email || isEmailError(email)}
+            onChangeText={(text) => this.setState({ email: text })}
+            returnKeyType="next"
+            onSubmitEditing={() => this._password.focus()}
+            tintColor={Colors.veggie_dark}
+            errorColor={Colors.red2}
+            containerStyle={{
+              marginHorizontal: moderateScale(40),
+            }}
+            labelTextStyle={{
+              fontFamily: 'CircularStd-Book',
+              fontSize: 14,
+              color: Colors.text
+            }}
+          />
+        
+          <TextField
+            ref={(ref) => this._password = ref}
+            label="Password"
+            value={password || ''}
+            error={error_password}
+            secureTextEntry={true}
+            onChangeText={(text) => this.setState({ password: text })}
+            onSubmitEditing={this.onStartSignin}
+            returnKeyType="go"
+            tintColor={Colors.veggie_dark}
+            errorColor={Colors.red2}
+            containerStyle={{
+              marginHorizontal: moderateScale(40),
+              marginBottom: moderateScale(25),
+            }}
+            labelTextStyle={{
+              fontFamily: 'CircularStd-Book',
+              fontSize: 14,
+              color: Colors.text
+            }}
+          />
+        
+          <ButtonSecondary
+            onPress={this.onStartSignin}
+            disabled={loading}
+            loading={loading}
+            title="Signin"
+            style={{ marginBottom: moderateScale(15) }}
+          />
+          
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}
+          >
+            <Text
+              onPress={this.openSignup}
+              style={{
+                fontFamily: 'CircularStd-Book',
+                fontSize: 14,
+                color: Colors.text,
+                marginRight: moderateScale(3)
+              }}
+            >
+              Belum punya akses, silahkan 
+            </Text>
+            <Text
+              onPress={this.openSignup}
+              style={{
+                fontFamily: 'CircularStd-Bold',
+                fontSize: 14,
+                color: Colors.fruit_dark,
+              }}
+            >
+              Daftar
+            </Text>
+          </View>
+        </View>
         
       </View>
     )

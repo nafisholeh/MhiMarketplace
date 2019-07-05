@@ -229,7 +229,16 @@ class Detail extends Component {
                     {getReadableCityState(shipping_address)}
                   </Text>
                 </ViewShadow>
-                <Text style={{ marginTop: 15, marginBottom: 10 }}>
+                <Text
+                  style={{
+                    fontFamily: 'CircularStd-Book',
+                    fontSize: 16,
+                    color: Colors.text,
+                    marginTop: moderateScale(20),
+                    marginHorizontal: moderateScale(20),
+                    marginBottom: moderateScale(10),
+                  }}
+                >
                   Detail Barang
                 </Text>
                 <OrderedProducts

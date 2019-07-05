@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { FlatList, View, Text, CheckBox, TouchableOpacity } from 'react-native';
 import { arrayOf, shape, string, number, bool, func } from 'prop-types';
 
-import { calcDiscount, parseToRupiah } from 'Lib';
+import { ViewShadow } from 'Components';
+import { calcDiscount, parseToRupiah, screenWidth, moderateScale } from 'Lib';
 import { Colors } from 'Themes';
 
 class OrderedProducts extends Component {
@@ -64,36 +65,79 @@ class OrderedProducts extends Component {
     } = item || {};
     const totalPrice = price - calcDiscount(price, discount) * qty;
     return (
-      <TouchableOpacity 
+      <ViewShadow
+        width={screenWidth - 60}
+        height={60}
+        borderRadius={10}
+        shadowBorderRadiusAndroid={10}
+        shadowRadiusAndroid={7}
+        shadowOpacityAndroid={0.09}
+        mainColor={Colors.white}
+        shadowColor={Colors.brown_light}
         style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          borderWidth: 0.5,
-          borderColor: Colors.brown_light,
-          padding: 5,
+          marginHorizontal: moderateScale(18),
+          marginTop: moderateScale(4),
+          marginBottom: moderateScale(4),
         }}
-        onPress={() => this.toggleSelect(index, !selected[index])}
+        styleChildren={{
+          justifyContent: 'center',
+        }}
       >
-        <Text>{title}</Text>
-        <View
+        <TouchableOpacity 
           style={{
             flexDirection: 'row',
             alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingHorizontal: moderateScale(10),
           }}
+          onPress={() => this.toggleSelect(index, !selected[index])}
         >
-          <View>
-            <Text style={{ textAlign: 'right' }}>{qty} {unit}</Text>
-            <Text style={{ textAlign: 'right' }}>{parseToRupiah(totalPrice)}</Text>
+          <Text
+            style={{
+              fontFamily: 'CircularStd-Book',
+              fontSize: 14,
+              color: Colors.text_dark,
+            }}
+          >
+            {title}
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
+            <View>
+              <Text
+                style={{
+                  textAlign: 'right',
+                  fontFamily: 'CircularStd-Book',
+                  fontSize: 14,
+                  color: Colors.text_light,
+                }}
+              >
+                {qty} {unit}
+              </Text>
+              <Text
+                style={{
+                  textAlign: 'right',
+                  fontFamily: 'CircularStd-Book',
+                  fontSize: 14,
+                  color: Colors.text_light,
+                }}
+              >
+                {parseToRupiah(totalPrice)}
+              </Text>
+            </View>
+            {selectable && (
+              <CheckBox
+                onValueChange={state => this.toggleSelect(index, state)}
+                value={selected[index]}
+              />
+            )}
           </View>
-          {selectable && (
-            <CheckBox
-              onValueChange={state => this.toggleSelect(index, state)}
-              value={selected[index]}
-            />
-          )}
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </ViewShadow>
     );
   };
 

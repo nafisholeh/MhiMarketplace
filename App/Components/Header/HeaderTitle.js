@@ -15,6 +15,7 @@ class HeaderTitle extends Component {
       isEnableRightNav,
       onRightNavigate,
       iconRightNav,
+      loading,
     } = this.props;
     return (
       <View
@@ -50,6 +51,7 @@ class HeaderTitle extends Component {
           <HeaderButton
             onPress={onRightNavigate}
             icon={iconRightNav}
+            loading={loading}
           />
         )}
       </View>

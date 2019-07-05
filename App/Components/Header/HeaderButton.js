@@ -1,20 +1,28 @@
 import React, { Component } from 'react';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { func, number, string, oneOfType } from 'prop-types';
+import { func, number, string, oneOfType, bool } from 'prop-types';
+import { SkypeIndicator } from 'react-native-indicators';
 
-import { Metrics } from 'Themes';
+import { Metrics, Colors } from 'Themes';
 import { moderateScale } from 'Lib';
 
 class HeaderButton extends Component {
   render() {
-    const { onPress, icon } = this.props;
+    const { onPress, icon, loading } = this.props;
     return (
       <TouchableOpacity
         onPress={onPress}
         style={styles.container}
         {...this.props}
       >
-        <Image source={icon} style={styles.icon} />
+        {!loading && <Image source={icon} style={styles.icon} />}
+        {loading && 
+          <SkypeIndicator
+            color={Colors.veggie_dark}
+            count={5}
+            size={moderateScale(20)}
+          />
+        }
       </TouchableOpacity>
     )
   }
@@ -33,6 +41,7 @@ const styles = StyleSheet.create({
 HeaderButton.propTypes = {
   onPress: func.isRequired,
   icon: oneOfType([ number, string ]).isRequired,
+  loading: bool,
 };
 
 export default HeaderButton;

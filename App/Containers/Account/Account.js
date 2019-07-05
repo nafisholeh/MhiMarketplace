@@ -84,6 +84,7 @@ class Account extends Component {
             <View>
               <HeaderTitle
                 title={`Halo, ${name}`}
+                loading={loading}
                 isEnableRightNav
                 iconRightNav={Images.logout}
                 onRightNavigate={() => this.signout(mutate)}

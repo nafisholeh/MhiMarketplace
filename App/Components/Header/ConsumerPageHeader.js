@@ -10,7 +10,8 @@ class ConsumerPageHeader extends Component {
   render() {
     const { onIconPress, onSearch, icon } = this.props;
     return (
-      <View style={{
+      <View
+        style={{
           flexDirection: 'row',
           justifyContent: 'space-around',
           alignItems: 'center',

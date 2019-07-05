@@ -27,6 +27,8 @@ import ConsumerSendingDetail from 'Containers/ConsumerOrder/Sending/Detail';
 const HomeNav = createStackNavigator({
   Home: { screen: Home },
   ProductDetail: { screen: Detail },
+  ConsumerOrder: { screen: ConsumerOrder},
+  ConsumerOrderDetail: { screen: ConsumerOrderDetail },
 }, {
   initialRouteName: 'Home',
   navigationOptions: {

@@ -60,6 +60,8 @@ class ItemHorizontal extends Component {
           style={{
             flex: 1,
             flexDirection: 'column',
+            justifyContent: userId ? 'flex-start' : 'space-around',
+            marginTop: userId ? 0 : moderateScale(5),
             marginHorizontal: moderateScale(10),
             marginBottom: moderateScale(5),
           }}
@@ -98,61 +100,63 @@ class ItemHorizontal extends Component {
             {stock ? `${stock} ${unit}` : `Stok sementara kosong`}
           </Text>
         </View>
-        <Mutation
-          mutation={UPDATE_CART_ITEM_SCHEMA}
-          variables={{ user_id: userId, product_id: productId, qty: null }}
-          update={(cache, data) => cacheUpdateCartItem(cache, data, productId)}
-          onError={(error) => {}}
-          ignoreResults={false}
-          errorPolicy='all'>
-          { (updateCartItem, {loading, error, data}) => {
-            return (
-              <LinearGradient
-                start={{x: 0, y: 0}} end={{x: 1, y: 0}}
-                colors={
-                  !isInsideCart ?
-                  ['#a8de1c', '#50ac02'] : 
-                  [Colors.brown_light, Colors.brown_dark]
-                }
-                style={{
-                  height: 35,
-                  borderBottomLeftRadius: 5,
-                  borderBottomRightRadius: 5,
-                }}
-              >
-                <TouchableOpacity
-                  onPress={() => updateCartItem()}
-                  disabled={isInsideCart}
+        {userId &&
+          <Mutation
+            mutation={UPDATE_CART_ITEM_SCHEMA}
+            variables={{ user_id: userId, product_id: productId, qty: null }}
+            update={(cache, data) => cacheUpdateCartItem(cache, data, productId)}
+            onError={(error) => {}}
+            ignoreResults={false}
+            errorPolicy='all'>
+            { (updateCartItem, {loading, error, data}) => {
+              return (
+                <LinearGradient
+                  start={{x: 0, y: 0}} end={{x: 1, y: 0}}
+                  colors={
+                    !isInsideCart ?
+                    ['#a8de1c', '#50ac02'] : 
+                    [Colors.brown_light, Colors.brown_dark]
+                  }
                   style={{
-                    flex: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center' 
+                    height: 35,
+                    borderBottomLeftRadius: 5,
+                    borderBottomRightRadius: 5,
                   }}
                 >
-                  {loading && (
-                    <DotIndicator
-                      count={4}
-                      size={7}
-                      color='white'
-                      animationDuration={800}
-                    />
-                  )}
-                  {!loading && (
-                    <Text
-                      style={{
-                        fontFamily: 'CircularStd-Medium',
-                        fontSize: 17,
-                        color: 'white'
-                      }}
-                    >
-                      {!isInsideCart ? `Beli` : `Terbeli`}
-                    </Text>
-                  )}
-                </TouchableOpacity> 
-              </LinearGradient>
-            );
-          }}
-        </Mutation>
+                  <TouchableOpacity
+                    onPress={() => updateCartItem()}
+                    disabled={isInsideCart}
+                    style={{
+                      flex: 1,
+                      alignItems: 'center',
+                      justifyContent: 'center' 
+                    }}
+                  >
+                    {loading && (
+                      <DotIndicator
+                        count={4}
+                        size={7}
+                        color='white'
+                        animationDuration={800}
+                      />
+                    )}
+                    {!loading && (
+                      <Text
+                        style={{
+                          fontFamily: 'CircularStd-Medium',
+                          fontSize: 17,
+                          color: 'white'
+                        }}
+                      >
+                        {!isInsideCart ? `Beli` : `Terbeli`}
+                      </Text>
+                    )}
+                  </TouchableOpacity> 
+                </LinearGradient>
+              );
+            }}
+          </Mutation>
+        }
       </ProductHorizontalWrapper>
     );
   }

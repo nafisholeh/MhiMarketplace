@@ -134,7 +134,7 @@ class Item extends Component {
             />
           </TouchableOpacity>
         }
-        { !isInsideCart && !isStokOpname &&
+        { !isInsideCart && !isStokOpname && userId &&
           <Mutation
             mutation={UPDATE_CART_ITEM_SCHEMA}
             variables={{ user_id: userId, product_id: productId, qty: null }}

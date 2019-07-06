@@ -209,7 +209,7 @@ class Detail extends Component {
                       </Text>
                     </View>
                   </ScrollView>
-                  {!isAdmin &&
+                  {!isAdmin && userId &&
                     <Mutation
                       mutation={UPDATE_CART_ITEM_SCHEMA}
                       variables={{ user_id: userId, product_id: productId, qty: null }}

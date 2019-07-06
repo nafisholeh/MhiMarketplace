@@ -93,7 +93,6 @@ class Footer extends Component {
   render() {
     const { grossTotal, isCheckoutValid, isCartFilled, isAnyCartItemSelected } = this.props;
     const { isInitiatingCheckout } = this.state;
-    if (!isCartFilled) return (<View/>);
     return (
       <View
         style={{
@@ -101,7 +100,7 @@ class Footer extends Component {
           borderTopWidth: 0.8,
           borderTopColor: Colors.border
         }}>
-        {isAnyCartItemSelected &&
+        {isCheckoutValid &&
           <View
             style={{
               flexDirection: 'row',

@@ -24,7 +24,7 @@ import Config from 'Config/AppConfig';
 import { FETCH_PRODUCT_DETAIL, FETCH_PRODUCT_LIST } from 'GraphQL/Product/Query';
 import { ADD_PRODUCT, EDIT_PRODUCT } from 'GraphQL/Product/Mutation';
 import { getEditedProduct } from 'Redux/ProductRedux';
-import { LoadingPage, StatePage, QueryEffectPage, ImagePicker, ImageRobust } from 'Components';
+import { LoadingPage, StatePage, QueryEffectPage, ImagePicker, ImageRobust, InputText } from 'Components';
 import { InAppNotification, getReadableDate, parseToRupiah } from 'Lib';
 import { getUserId } from 'Redux/SessionRedux';
 
@@ -43,6 +43,7 @@ class Form extends Component {
     description: '',
     stock: '',
     unit: '',
+    per_unit: '',
     price: '',
     price_parsed: '',
     discount: '',
@@ -53,6 +54,7 @@ class Form extends Component {
     error_description: null,
     error_stock: null,
     error_unit: null,
+    error_per_unit: null,
     error_price: null,
     error_discount: null,
     error_expired_date: null,
@@ -229,6 +231,7 @@ class Form extends Component {
       description,
       stock,
       unit,
+      per_unit,
       price,
       price_parsed,
       discount,
@@ -239,6 +242,7 @@ class Form extends Component {
       error_description,
       error_stock,
       error_unit,
+      error_per_unit,
       error_price,
       error_discount,
       error_expired_date,
@@ -290,38 +294,31 @@ class Form extends Component {
                     value={description}
                     error={error_description}
                     onChangeText={(text) => this.setState({ description: text })}
-                    returnKeyType="next"
-                    onSubmitEditing={() => this._stock.focus()}
+                    returnKeyType="done"
                   />
-                  <View style={{flexDirection: 'row'}}>
-                    <View style={{flex:1}}>
-                      <TextField
-                        ref={ref => this._stock = ref}
-                        label="Stok"
-                        value={stock}
-                        error={error_stock}
-                        onChangeText={this.onChangeStok}
-                        returnKeyType="next"
-                        keyboardType="numeric"
-                      />
-                    </View>
-                    <View style={{flex:1}}>
-                      <RNPickerSelect
-                        placeholder={{
-                          label: 'Pilih Unit',
-                          value: null,
-                        }}
-                        items={[{label: 'kg', value: 'kg'}, {label: 'gram', value: 'gram'}, {label: 'pcs', value: 'pcs'}]}
-                        onValueChange={(val, i) => this.setState({ unit: val})}
-                        value={unit}>
-                        <TextField
-                          label="Unit"
-                          value={unit}
-                          error={error_unit}
-                        />
-                      </RNPickerSelect>
-                    </View>
-                  </View>
+                  <RNPickerSelect
+                    placeholder={{
+                      label: 'Pilih Unit',
+                      value: null,
+                    }}
+                    items={[{label: 'kg', value: 'kg'}, {label: 'gram', value: 'gram'}, {label: 'pcs', value: 'pcs'}]}
+                    onValueChange={(val, i) => this.setState({ unit: val})}
+                    value={unit}>
+                    <TextField
+                      label="Unit"
+                      value={unit}
+                      error={error_unit}
+                    />
+                  </RNPickerSelect>
+                  <TextField
+                    label="Berapa unit satu bungkus"
+                    value={per_unit}
+                    error={error_per_unit}
+                    onChangeText={(text) => this.setState({ per_unit: text })}
+                    returnKeyType="next"
+                    keyboardType="numeric"
+                    onSubmitEditing={() => this._price.focus()}
+                  />
                   <TextField
                     ref={ref => this._price = ref}
                     label="Harga per unit"
@@ -333,6 +330,16 @@ class Form extends Component {
                       price: text.replace(/\D+/g, ''),
                       price_parsed: parseToRupiah(text, ' ') || '-',
                     })}
+                    returnKeyType="next"
+                    keyboardType="numeric"
+                    onSubmitEditing={() => this._stock.focus()}
+                  />
+                  <TextField
+                    ref={ref => this._stock = ref}
+                    label="Stok"
+                    value={stock}
+                    error={error_stock}
+                    onChangeText={this.onChangeStok}
                     returnKeyType="next"
                     keyboardType="numeric"
                     onSubmitEditing={() => this._discount.focus()}

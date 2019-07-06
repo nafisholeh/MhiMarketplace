@@ -24,7 +24,6 @@ class CheckoutList extends Component {
         keyExtractor={(item, id) => item._id.toString()}
         data={data} 
         renderItem={this.renderCheckoutItems}
-        // contentContainerStyle={{ paddingBottom: 100, backgroundColor: 'yellow' }}
       />
     )
   }

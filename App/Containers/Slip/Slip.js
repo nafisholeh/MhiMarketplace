@@ -5,6 +5,7 @@ import { string } from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import HTMLView from 'react-native-htmlview';
+import { StackActions, NavigationActions, withNavigation } from 'react-navigation';
 
 import { Metrics, Images, Colors } from 'Themes';
 import { ToolbarButton } from 'Components';
@@ -19,6 +20,17 @@ class Slip extends Component {
     return {
       header: null,
     }
+  };
+  
+  onComplete = () => {
+    const { navigation } = this.props;
+    const resetStack = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'Cart' })]
+    });
+    const goHome = NavigationActions.navigate({ routeName: 'Home' });
+    navigation.dispatch(resetStack);
+    navigation.dispatch(goHome);
   };
 
   render() {
@@ -42,7 +54,7 @@ class Slip extends Component {
           >
             Slip Pembayaran
           </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')} >
+          <TouchableOpacity onPress={this.onComplete} >
             <Image
               source={Images.check}
               style={{
@@ -174,4 +186,4 @@ const mapStateToProps = createStructuredSelector({
   checkoutId: getCheckoutId(),
 });
 
-export default connect(mapStateToProps, null)(Slip);
+export default connect(mapStateToProps, null)(withNavigation(Slip));

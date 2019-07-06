@@ -82,6 +82,7 @@ class Signin extends Component {
   
   onSignin = async () => {
     const { email, password } = this.state;
+    const emailLowerCase = email && email.toLowerCase();
     const { storeSession, storeSignupEmail, navigation } = this.props;
     storeSignupEmail(null);
     try {
@@ -89,7 +90,7 @@ class Signin extends Component {
       this.setState({ loading: true });
       const signinResult = await ApolloClientProvider.client.mutate({
         mutation: SIGNIN,
-        variables: { email, password, token },
+        variables: { email: emailLowerCase, password, token },
       });
       const { data: { signin } } = signinResult;
       const { _id: userId, user_type } = signin;

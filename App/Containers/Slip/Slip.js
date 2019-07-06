@@ -22,7 +22,7 @@ class Slip extends Component {
   };
 
   render() {
-    const { checkoutId } = this.props;
+    const { checkoutId, navigation } = this.props;
     return (
       <View style={{flex:1}}>
         <View

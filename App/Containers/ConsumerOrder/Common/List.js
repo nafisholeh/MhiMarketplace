@@ -59,7 +59,6 @@ class List extends Component {
         >
           {({ loading, error, data, refetch }) => {
             const items = data[Object.keys(data)[0]] || [];
-            console.tron.log('List', items, data)
             if (Array.isArray(items) && items.length) {
               return (
                 <FlatList

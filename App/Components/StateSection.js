@@ -15,7 +15,6 @@ class StateSection extends Component {
 
   render() {
     const { style, icon, title, buttonTitle } = this.props;
-    console.tron.log('StateSection/render', this.props)
     return (
       <View style={[ styles.container, style]}>
         <Image

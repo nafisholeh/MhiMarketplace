@@ -62,7 +62,6 @@ class Slip extends Component {
             if (!orderDetail) return (<View />);
             const { products, transaction_id, total_cost, payment_option } = orderDetail;
             const { how_to_pay = '' } = payment_option || {};
-            console.tron.log('Slip', how_to_pay);
             return (
               <ScrollView
                 style={{

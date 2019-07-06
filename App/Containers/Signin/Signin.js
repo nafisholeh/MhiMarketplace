@@ -123,7 +123,6 @@ class Signin extends Component {
         navigation.dispatch(goToHome);
       }
     } catch (error) {
-      console.tron.log('switch', error)
       this.setState({ loading: false });
       const message = getGraphQLError(error);
       if (message.toLowerCase().indexOf("email") >= 0) {

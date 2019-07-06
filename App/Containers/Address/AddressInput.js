@@ -90,7 +90,6 @@ class AddressInput extends Component {
       kelurahan,
       kodepos,
     } = this.state; 
-    console.tron.log('addressupload', this.state)
     const { userId } = this.props;
     addAddress({
       variables: {

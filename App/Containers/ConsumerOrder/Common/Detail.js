@@ -68,7 +68,6 @@ class Detail extends Component {
     const { listId: _ids, courierId } = this.props;
     const _id = '5d160bf5f63f263fb73e48be';
     const { timeline } = this.state;
-    console.tron.log('Detail', timeline);
     return (
       <View
         style={{

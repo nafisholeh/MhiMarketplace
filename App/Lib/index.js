@@ -15,6 +15,7 @@ import { InAppNotification } from './InAppNotification';
 import { calcTotalWeight, getAggregateProducts } from './Product';
 import { getUpcomingShippingSched, getReadableShippingSched } from './Shipping';
 import { filterObject } from './Object';
+import { reportSentryError, addToSentryLog, reportSentryLog } from './SentryUtils';
 
 export { 
   parseToRupiah, calcDiscount, isEmailValid, isEmailError, 
@@ -23,5 +24,5 @@ export {
   InAppNotification, calcTotalWeight, getReadableShippingSched,
   getUpcomingShippingSched, filterObject, getIntervalTimeToday,
   getAggregateProducts, screenWidth, screenHeight, graphqlToRNPickerSelect,
-  getIntervalDateToday
+  getIntervalDateToday, reportSentryError, addToSentryLog, reportSentryLog
 };

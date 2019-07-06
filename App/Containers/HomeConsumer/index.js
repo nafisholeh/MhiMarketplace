@@ -9,7 +9,7 @@ import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import CartActions from 'Redux/CartRedux';
 import { Images, Colors } from 'Themes';
-import { moderateScale} from 'Lib';
+import { moderateScale, reportSentryError } from 'Lib';
 import { ConsumerPageHeader, ListHeader, CategoryItem, AppTitle } from 'Components';
 import { getUserId, isKurir } from 'Redux/SessionRedux';
 import ProductList from 'Containers/Product/List';

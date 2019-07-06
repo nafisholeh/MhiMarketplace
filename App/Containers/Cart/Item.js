@@ -87,21 +87,22 @@ class Item extends Component {
           flexDirection: 'row',
           alignItems: 'center'
         }}
-        onPress={this.onItemClicked}
       >
         <CheckBox
           onValueChange={this.toggleSelect}
           value={selected} 
         />
-        <ProductImage
-          source={photo}
-          style={{
-            width: moderateScale(68),
-            height: moderateScale(68),
-            resizeMode: 'contain',
-            marginRight: moderateScale(12),
-          }}
-        />
+        <TouchableOpacity onPress={this.onItemClicked}>
+          <ProductImage
+            source={photo}
+            style={{
+              width: moderateScale(68),
+              height: moderateScale(68),
+              resizeMode: 'contain',
+              marginRight: moderateScale(12),
+            }}
+          />
+        </TouchableOpacity>
         <View style={styles.detail}>
           <View
             style={{

@@ -21,14 +21,14 @@ export const ADD_PRODUCT = gql`
   }
 `
 
-export const cacheAddProduct = (cache, { data }) => {
+export const cacheAddProduct = (cache, { data: { addProduct = {}} = {} }) => {
   const { products = [] } = cache.readQuery({ query: FETCH_PRODUCT_LIST });
   const newProducts =
     Array.isArray(products)
-    && [data].push(products);
+    && [addProduct].concat(products);
   cache.writeQuery({
     query: FETCH_PRODUCT_LIST,
-    data: newProducts
+    data: { products: newProducts }
   });
 };
 
@@ -65,7 +65,7 @@ export const cacheEditProduct = (cache, { data }) => {
     ]
     cache.writeQuery({
       query: FETCH_PRODUCT_LIST,
-      data: newProducts
+      data: { products: newProducts }
     });
   }
 };

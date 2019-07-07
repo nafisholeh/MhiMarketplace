@@ -33,12 +33,50 @@ class ItemHorizontal extends Component {
     if (!data) {
       return <View />
     }
-    const  { _id: productId, title, price, discount, photo, unit, stock } = data;
+    const {
+      _id: productId,
+      title,
+      price,
+      discount,
+      photo,
+      unit,
+      stock,
+      label,
+      category,
+      packaging
+    } = data;
     const isInsideCart = cartItemIds.indexOf(productId) > -1;
     return (
       <ProductHorizontalWrapper
         onPress={this.onNavigate}
       >
+        {discount ? (
+          <View
+            style={{
+              position: 'absolute',
+              right: 8,
+              bottom: 18.5,
+              height: moderateScale(30),
+              width: moderateScale(30),
+              borderRadius: moderateScale(15),
+              backgroundColor: Colors.fruit_dark,
+              alignItems: 'center',
+              justifyContent: 'center',
+              elevation: 5
+            }}
+          >
+            <Text 
+              style={{
+                fontFamily: 'CircularStd-Book',
+                fontSize: 12,
+                color: Colors.white,
+              }}
+              numberOfLines={1}
+            >
+              {discount}%
+            </Text>
+          </View>
+        ) : null}
         <View
           style={{
             marginTop: moderateScale(10),
@@ -66,19 +104,35 @@ class ItemHorizontal extends Component {
             marginBottom: moderateScale(5),
           }}
         >
-          <Text 
-            style={{
-              fontFamily: 'CircularStd-Book',
-              fontSize: 14,
-              color: 'rgba(0,0,0,0.68)',
-            }}
-            numberOfLines={1}
-          >
-            {discount ? 
-              parseToRupiah(price - calcDiscount(price, discount))
-              : parseToRupiah(price)
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text 
+              style={{
+                fontFamily: 'CircularStd-Book',
+                fontSize: 14,
+                color: 'rgba(0,0,0,0.68)',
+                marginRight: moderateScale(5),
+              }}
+              numberOfLines={1}
+            >
+              {discount ? 
+                parseToRupiah(price - calcDiscount(price, discount))
+                : parseToRupiah(price)
+              }
+            </Text>
+            { packaging ? (
+                <Text 
+                  style={{
+                    fontFamily: 'CircularStd-Book',
+                    fontSize: 14,
+                    color: Colors.text_light,
+                  }}
+                  numberOfLines={1}
+                >
+                  {`/${packaging} ${unit}`}
+                </Text>
+              ) : null
             }
-          </Text>
+          </View>
           <Text
             style={{
               fontFamily: 'CircularStd-Bold',

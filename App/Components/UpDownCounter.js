@@ -5,6 +5,7 @@ import { debounce } from 'throttle-debounce';
 
 import AppConfig from 'Config/AppConfig';
 import { Images } from 'Themes';
+import { moderateScale, InAppNotification } from 'Lib';
 import { CartAddButton, CartSubtractButton } from 'Components';
 
 const minAllowed = 0;
@@ -39,7 +40,8 @@ class UpDownCounter extends Component {
   
   descreaseCounter = () => {
     this.setState((prevState) => {
-      return { counter: prevState.counter > minAllowed ? prevState.counter - 1 : 0}
+      const counter = parseFloat(prevState.counter);
+      return { counter: counter > minAllowed ? counter - 1 : 0}
     }, () => {
       this.callbackCounterChange();
     });
@@ -47,16 +49,24 @@ class UpDownCounter extends Component {
   
   increaseCounter = () => {
     this.setState((prevState) => {
-      return { counter: prevState.counter + 1 }
+      const counter = parseFloat(prevState.counter);
+      return { counter: counter + 1 }
     }, () => {
       this.callbackCounterChange();
     });
   };
   
   overwriteCounter = number => {
-    this.setState({
-      counter: number
-    });
+    if (isNaN(number)) {
+      InAppNotification.errorLocal(
+        'Salah tipe data',
+        'Mohon isi total barang yg dibeli dgn benar'
+      );
+    } else {
+      this.setState({
+        counter: parseFloat(number)
+      });
+    }
   }
   
   onBlurOverwriteCounter = () => {
@@ -72,9 +82,7 @@ class UpDownCounter extends Component {
     const { unit } = this.props;
     return (
       <View style={styles.container}>
-        <TouchableOpacity
-          onPress={this.descreaseCounter}
-          style={styles.buttonLeftContainer}>
+        <TouchableOpacity onPress={this.descreaseCounter}>
           <CartSubtractButton />
         </TouchableOpacity>
         <TextInput
@@ -85,16 +93,25 @@ class UpDownCounter extends Component {
           value={counter.toString()}
           selectTextOnFocus
           keyboardType='numeric'
-          style={styles.input}
+          style={[ 
+            styles.input,
+            {
+              width: moderateScale(50),
+              marginHorizontal: moderateScale(5),
+            }
+          ]}
         />
-      <Text style={styles.input}>
-          {unit}
-        </Text>
-        <TouchableOpacity
-          onPress={this.increaseCounter}
-          style={styles.buttonRightContainer}>
+        <TouchableOpacity onPress={this.increaseCounter}>
           <CartAddButton />
         </TouchableOpacity>
+        <Text
+          style={[
+            styles.input,
+            { marginLeft: moderateScale(10) }
+          ]}
+        >
+          {unit}
+        </Text>
       </View>
     )
   }
@@ -105,21 +122,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  buttonLeftContainer: {
-    marginRight: 8,
-  },
-  buttonRightContainer: {
-    marginLeft: 8,
-  },
   button: {
-    width: 20,
-    height: 20,
+    width: moderateScale(20),
+    height: moderateScale(20),
   },
   input: {
     padding: 0,
     textAlign: 'center',
     fontFamily: 'CircularStd-Bold',
     fontSize: 16,
+    // backgroundColor: 'red'
   }
 });
 

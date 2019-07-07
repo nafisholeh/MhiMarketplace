@@ -18,15 +18,14 @@ class AddressList extends Component {
   static navigationOptions = ({navigation}) => {
     const {params = {}} = navigation.state
     return {
-      headerLeft: null,
-      headerRight: (
-        <ToolbarButton
-          icon={Images.add}
-          onPress={() => navigation.navigate('AddressInput')} 
-        />
-      ),
       header: (
-        <HeaderTitle title="Alamat Anda" isEnableBack />
+        <HeaderTitle
+          title="Alamat Anda"
+          isEnableBack
+          isEnableRightNav
+          iconRightNav={Images.add}
+          onRightNavigate={() => navigation.navigate('AddressInput')} 
+        />
       ),
     }
   }

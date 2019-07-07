@@ -22,10 +22,16 @@ import Item from '../Common/Item';
 import Title from '../Common/Title';
 import ListActions from 'Redux/ListRedux';
 import { getUserId } from 'Redux/SessionRedux';
+import ProductActions from 'Redux/ProductRedux';
 
 class List extends Component {
   renderItems = ({item, index}) => {
-    const { selectListItem, navigation } = this.props;
+    const {
+      selectListItem,
+      selectSendingItem,
+      isNeedConfirm,
+      navigation,
+    } = this.props;
     const {
       _id,
       products,
@@ -42,6 +48,7 @@ class List extends Component {
         subtitle={parseToRupiah(total_cost)}
         onSelectItem={id => {
           selectListItem(id);
+          selectSendingItem(isNeedConfirm ? true : false);
           navigation.navigate('ConsumerOrderDetail');
         }}
       />
@@ -98,6 +105,8 @@ List.propTypes = {
   selectListItem: func,
   userId: string,
   isPage: bool,
+  isNeedConfirm: bool,
+  selectSendingItem: func,
 }
 
 const mapStateToProps = createStructuredSelector({
@@ -106,6 +115,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
   selectListItem: selectedId => dispatch(ListActions.selectListItem(selectedId)),
+  selectSendingItem: is_sending_item => dispatch(ProductActions.selectSendingItem(is_sending_item)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(List));

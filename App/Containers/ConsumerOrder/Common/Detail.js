@@ -4,9 +4,10 @@ import { DotIndicator } from 'react-native-indicators';
 import { Query, Mutation } from 'react-apollo';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
-import { string } from 'prop-types';
+import { string, bool } from 'prop-types';
 import moment from 'moment';
 import Timeline from 'react-native-timeline-listview';
+import { withNavigation } from 'react-navigation';
 
 import { Colors } from 'Themes';
 import {
@@ -16,6 +17,7 @@ import {
   ProductDetailWrapper,
   ViewShadow,
   DayTimeline,
+  ButtonPrimary,
 } from 'Components';
 import OrderedProducts from './OrderedProducts';
 import {
@@ -29,8 +31,14 @@ import {
 } from 'Lib';
 import { getSelectedListId } from 'Redux/ListRedux';
 import { FETCH_ORDER_DETAIL } from 'GraphQL/Order/Query';
-import { SENDING_ORDER_PRODUCTS, cacheSendingOrderProducts } from 'GraphQL/Order/Mutation';
+import {
+  CONFIRM_ORDER_ARRIVAL,
+  SENDING_ORDER_PRODUCTS,
+  cacheSendingOrderProducts,
+  cacheOrderArrival
+} from 'GraphQL/Order/Mutation';
 import { getUserId } from 'Redux/SessionRedux';
+import { isSendingOrder } from 'Redux/ProductRedux';
 import AppConfig from 'Config/AppConfig';
 
 class Detail extends Component {
@@ -62,10 +70,22 @@ class Detail extends Component {
         isFetchComplete: true,
       }
     });
+  };  
+  
+  onConfirmOrder = mutate => {
+    const { listId } = this.props;
+    mutate({
+      variables: { order_id: listId }
+    });
+  };
+
+  onConfirmComplete = () => {
+    const { navigation } = this.props;
+    navigation.goBack();
   };
 
   render() {
-    const { listId: _ids, courierId } = this.props;
+    const { listId: _ids, courierId, isSendingOrder } = this.props;
     const _id = '5d160bf5f63f263fb73e48be';
     const { timeline } = this.state;
     return (
@@ -245,6 +265,25 @@ class Detail extends Component {
             );
           }}
         </Query>
+        {isSendingOrder ? (
+          <Mutation
+            mutation={CONFIRM_ORDER_ARRIVAL}
+            update={(cache, data) => cacheOrderArrival(cache, data, _id, courierId)}
+            onCompleted={this.onConfirmComplete}
+            ignoreResults={false}
+            errorPolicy='all' 
+          >
+            { (mutate, {loading, error, data}) => {
+              return (
+                <ButtonPrimary
+                  onPress={() => this.onConfirmOrder(mutate)}
+                  title="PESANAN SUDAH SAMPAI"
+                  loading={loading}
+                />
+              );
+            }}
+          </Mutation>
+        ) : null}
       </View>
     );
   }
@@ -253,11 +292,13 @@ class Detail extends Component {
 Detail.propTypes = {
   listId: string,
   courierId: string,
+  isSendingOrder: bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   listId: getSelectedListId(),
   courierId: getUserId(),
+  isSendingOrder: isSendingOrder(),
 });
 
-export default connect(mapStateToProps, null)(Detail);
+export default connect(mapStateToProps, null)(withNavigation(Detail));

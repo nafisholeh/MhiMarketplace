@@ -59,6 +59,7 @@ class ConsumerOrder extends Component {
         <List
           title="Sedang dikirim"
           query={FETCH_SENDING_LIST}
+          isNeedConfirm
         />
       </ScrollView>
     );

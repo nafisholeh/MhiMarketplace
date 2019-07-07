@@ -26,7 +26,7 @@ import {
   FETCH_PRODUCT_CATEGORY,
   FETCH_PRODUCT_PACKAGING
 } from 'GraphQL/Product/Query';
-import { ADD_PRODUCT, EDIT_PRODUCT } from 'GraphQL/Product/Mutation';
+import { ADD_PRODUCT, EDIT_PRODUCT, cacheAddProduct, cacheEditProduct } from 'GraphQL/Product/Mutation';
 import { getEditedProduct } from 'Redux/ProductRedux';
 import { KeyboardFriendlyView, LoadingPage, StatePage, QueryEffectPage, ImagePicker, ImageRobust, InputText } from 'Components';
 import { InAppNotification, getReadableDate, parseToRupiah, moderateScale } from 'Lib';
@@ -395,9 +395,8 @@ class Form extends Component {
         <Mutation
           mutation={isEdit ? EDIT_PRODUCT : ADD_PRODUCT}
           onCompleted={this.onUploadCompleted}
-          refetchQueries={[{
-            query: FETCH_PRODUCT_LIST
-          }]}
+          update={isEdit ? cacheEditProduct : cacheAddProduct}
+          awaitRefetchQueries={true}
           ignoreResults={false}
           errorPolicy='all'>
           { (mutate, {loading, error, data}) => {

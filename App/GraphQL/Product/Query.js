@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
 export const FETCH_PRODUCT_LIST = gql`
-  query fetchProductList($term: String, $limit: Int, $sort: SortType) {
-    products(term: $term, limit: $limit, sort: $sort) {
+  query fetchProductList($term: String, $category: String, $limit: Int, $sort: SortType) {
+    products(term: $term, category: $category, limit: $limit, sort: $sort) {
       _id
       title
       photo

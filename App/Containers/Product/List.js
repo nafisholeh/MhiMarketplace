@@ -26,6 +26,7 @@ class List extends Component {
   render() {
     const {
       searchTerm,
+      category,
       limit,
       sort,
       isSection,
@@ -44,6 +45,7 @@ class List extends Component {
           query={FETCH_PRODUCT_LIST}
           variables={{
             term: searchTerm,
+            category,
             limit,
             sort
           }}
@@ -110,6 +112,7 @@ class List extends Component {
 
 List.propTypes = {
   searchTerm: string,
+  category: string,
   limit: number,
   sort: object,
   isSection: bool,

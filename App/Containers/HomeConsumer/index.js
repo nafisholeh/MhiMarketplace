@@ -7,12 +7,15 @@ import { createStructuredSelector } from 'reselect';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
+import { FETCH_PRODUCT_CATEGORY } from 'GraphQL/Product/Query';
 import CartActions from 'Redux/CartRedux';
+import ProductActions from 'Redux/ProductRedux';
 import { Images, Colors } from 'Themes';
 import { moderateScale, reportSentryError } from 'Lib';
 import { ConsumerPageHeader, ListHeader, CategoryItem, AppTitle } from 'Components';
 import { getUserId, isKurir } from 'Redux/SessionRedux';
 import ProductList from 'Containers/Product/List';
+import AppConfig from 'Config/AppConfig';
 
 class HomeConsumer extends Component {
   static navigationOptions = ({navigation}) => {
@@ -26,12 +29,14 @@ class HomeConsumer extends Component {
     super(props);
     this.state = {
       searchTerm: '',
+      categories: [],
     };
   }
   
   componentDidMount() {
     const { navigation } = this.props;
     this.fetchInitCart();
+    this.setupCategory();
   }
   
   fetchInitCart = () => {
@@ -50,17 +55,33 @@ class HomeConsumer extends Component {
     .catch(err => {})
   }
   
+  setupCategory = () => {
+    const { productCategory = [] } = ApolloClientProvider.client.readQuery({
+      query: FETCH_PRODUCT_CATEGORY
+    });
+    if (Array.isArray(productCategory) && productCategory.length) {
+      this.setState({
+        categories: productCategory.map(({ _id, title }) => 
+          Object.assign({}, {id: _id}, AppConfig.category[title])
+          || Object.assign({}, {id: null}, AppConfig.category.default)
+        )
+      });
+    }
+  }
+  
   onSearch = term => {
     this.setState({ searchTerm: term });
   };
   
-  openStoreByCategory = category => {
-    const { navigation } = this.props;
+  openStoreByCategory = (categoryId, title) => {
+    const { navigation, selectCategory } = this.props;
+    selectCategory(categoryId, title);
     navigation.navigate('ProductList');
   };
 
   render() {
     const { isKurir, navigation } = this.props;
+    const { categories } = this.state;
     return (
       <ScrollView style={{ flex: 1 }}>
         <ConsumerPageHeader
@@ -76,24 +97,15 @@ class HomeConsumer extends Component {
             marginBottom: moderateScale(18),
           }}
         >
-          <CategoryItem
-            title="Sayuran"
-            icon={Images.veggie}
-            color={Colors.veggie_bg}
-            onPress={() => this.openStoreByCategory('veggie')}
-          />
-          <CategoryItem
-            title="Buah"
-            icon={Images.fruit}
-            color={Colors.fruit_bg}
-            onPress={() => this.openStoreByCategory('fruit')}
-          />
-          <CategoryItem
-            title="Hortikultura"
-            icon={Images.horti}
-            color={Colors.horti_bg}
-            onPress={() => this.openStoreByCategory('horti')}
-          />
+          {Array.isArray(categories) && categories.map(({ id, title, icon, color }, index) => 
+            <CategoryItem
+              key={index}
+              title={title}
+              icon={icon}
+              color={color}
+              onPress={() => this.openStoreByCategory(id, title)}
+            />
+          )}
         </View>
         <ListHeader
           title="STOK BARU"
@@ -124,6 +136,7 @@ class HomeConsumer extends Component {
 HomeConsumer.propTypes = {
   userId: string,
   isKurir: bool,
+  selectCategory: func,
 }
 
 const mapStateToProps = createStructuredSelector({
@@ -133,6 +146,8 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = (dispatch) => ({
   storeCart: cart => dispatch(CartActions.storeCart(cart)),
+  selectCategory: (category_id, category_title) =>
+    dispatch(ProductActions.selectCategory(category_id, category_title)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(HomeConsumer));

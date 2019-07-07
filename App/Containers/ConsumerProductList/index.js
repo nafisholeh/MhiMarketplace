@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Image } from 'react-native';
+import { View, TouchableOpacity, Image, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 import { func, string, bool } from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 
+import ProductActions from 'Redux/ProductRedux';
 import ProductList from 'Containers/Product/List';
+import FilterItem from './FilterItem';
 import { HeaderButton, SearchBar, ConsumerPageHeader } from 'Components';
 import { getUserId, isKurir } from 'Redux/SessionRedux';
+import { getProductTitle, getProductCategory } from 'Redux/ProductRedux';
 import { Images, Metrics } from 'Themes';
 import { moderateScale } from 'Lib';
     
@@ -36,8 +39,13 @@ class ConsumerProductList extends Component {
     this.setState({ searchTerm: term });
   };
   
+  clearFilter = () => {
+    const { selectCategory } = this.props;
+    selectCategory(null, null);
+  };
+  
   render() {
-    const { isKurir, navigation } = this.props;
+    const { isKurir, navigation, productTitle, productCategory } = this.props;
     const { searchTerm } = this.state;
     return (
       <View 
@@ -51,8 +59,15 @@ class ConsumerProductList extends Component {
           onIconPress={() => navigation.navigate(isKurir ? 'Cart' : 'ConsumerOrder')}
           onSearch={this.onSearch}
         />
+        {productTitle ? (
+          <FilterItem
+            title={productTitle}
+            onPress={this.clearFilter}
+          />
+        ) : null}
         <ProductList
           searchTerm={searchTerm}
+          category={productCategory}
         />
       </View>
     )
@@ -63,13 +78,21 @@ ConsumerProductList.propTypes = {
   userId: string,
   storeCart: func,
   isKurir: bool,
+  productTitle: string,
+  productCategory: string,
+  selectCategory: func,
 }
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
   isKurir: isKurir(),
+  productTitle: getProductTitle(),
+  productCategory: getProductCategory(),
 });
 
-const mapDispatchToProps = (dispatch) => ({ });
+const mapDispatchToProps = (dispatch) => ({
+  selectCategory: (category_id, category_title) =>
+    dispatch(ProductActions.selectCategory(category_id, category_title)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(ConsumerProductList));

@@ -1,3 +1,5 @@
+import { Colors, Images } from 'Themes';
+
 export default {
   // uri: 'http://app-dev.metodehayati.id:4001/graphql',
   uri: 'http://192.168.1.3:4001/graphql',
@@ -58,5 +60,27 @@ export default {
   },
   notifPurpose: {
     NEW_ORDER: 'newReadyToProcess',
+  },
+  category: {
+    sayuran: {
+      title: 'Sayuran',
+      icon: Images.veggie,
+      color: Colors.veggie_bg,
+    },
+    buah: {
+      title: 'Buah',
+      icon: Images.fruit,
+      color: Colors.fruit_bg,
+    },
+    hortikultura: {
+      title: 'Hortikultura',
+      icon: Images.horti,
+      color: Colors.horti_bg,
+    },
+    default: {
+      title: 'Lain-lain',
+      icon: Images.veggie,
+      color: Colors.veggie_bg,
+    },
   }
 }

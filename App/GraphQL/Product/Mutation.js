@@ -12,7 +12,6 @@ export const ADD_PRODUCT = gql`
       price
       discount
       expired_date
-      minimum_order
     }
   }
 `
@@ -29,7 +28,6 @@ export const EDIT_PRODUCT = gql`
       price
       discount
       expired_date
-      minimum_order
     }
   }
 `

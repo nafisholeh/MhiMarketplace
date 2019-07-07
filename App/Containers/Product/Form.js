@@ -199,7 +199,8 @@ class Form extends Component {
       expired_date,
       photos,
       kategori,
-      packaging
+      packaging_qty,
+      packaging_unit
     } = this.state;
     const dataSubmit = {
       title: (title || null),
@@ -210,7 +211,8 @@ class Form extends Component {
       label: (label || null),
       expired_date: (expired_date || null),
       kategori: (kategori || null),
-      packaging: (packaging || null),
+      packaging: (packaging_qty || null),
+      unit: (packaging_unit || null),
     };
     const id = { _id };
     let variables = {
@@ -236,7 +238,7 @@ class Form extends Component {
   
   onUploadCompleted = () => {
     const { navigation } = this.props;
-    navigation.navigate('Home');
+    navigation.navigate('HomeStockOpname');
   };
   
   onChangeStok = (text) => {
@@ -303,7 +305,8 @@ class Form extends Component {
     const { _id, qty, unit } = val;
     this.setState({
       packaging: _id,
-      packaging_string: `${qty} ${unit}`,
+      packaging_qty: qty,
+      packaging_unit: unit,
     });
   };
   
@@ -332,7 +335,8 @@ class Form extends Component {
       kategori_string,
       kategori_options,
       packaging,
-      packaging_string,
+      packaging_qty,
+      packaging_unit,
       packaging_options,
       error_title,
       error_description,
@@ -405,7 +409,11 @@ class Form extends Component {
                     <InputText
                       title="Kemasan"
                       placeholder="Pilih kemasan"
-                      value={packaging_string}
+                      value={
+                        packaging_qty && packaging_unit ?
+                          `${packaging_qty} ${packaging_unit}`
+                          : ''
+                      }
                       error={error_packaging}
                     />
                   </RNPickerSelect>
@@ -422,7 +430,7 @@ class Form extends Component {
                       }
                       : null
                     }
-                    suffix={packaging ? `/${packaging_string}` : ''}
+                    suffix={packaging ? `/${packaging_qty} ${packaging_unit}` : ''}
                     error={error_price}
                     onChangeText={(text) => this.setState({
                       price: text.replace(/\D+/g, ''),

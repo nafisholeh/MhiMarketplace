@@ -85,8 +85,7 @@ class Detail extends Component {
   };
 
   render() {
-    const { listId: _ids, courierId, isSendingOrder } = this.props;
-    const _id = '5d160bf5f63f263fb73e48be';
+    const { listId: _id, courierId, isSendingOrder } = this.props;
     const { timeline } = this.state;
     return (
       <View

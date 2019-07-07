@@ -20,7 +20,12 @@ import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { Mutation } from 'react-apollo';
 import { Colors, Metrics } from 'Themes';
 import Config from 'Config/AppConfig';
-import { FETCH_PRODUCT_DETAIL, FETCH_PRODUCT_LIST, FETCH_PRODUCT_CATEGORY } from 'GraphQL/Product/Query';
+import {
+  FETCH_PRODUCT_DETAIL,
+  FETCH_PRODUCT_LIST,
+  FETCH_PRODUCT_CATEGORY,
+  FETCH_PRODUCT_PACKAGING
+} from 'GraphQL/Product/Query';
 import { ADD_PRODUCT, EDIT_PRODUCT } from 'GraphQL/Product/Mutation';
 import { getEditedProduct } from 'Redux/ProductRedux';
 import { KeyboardFriendlyView, LoadingPage, StatePage, QueryEffectPage, ImagePicker, ImageRobust, InputText } from 'Components';
@@ -41,26 +46,21 @@ class Form extends Component {
     title: '',
     description: '',
     stock: '',
-    unit: '',
-    per_unit: '',
     price: '',
     price_parsed: '',
     discount: '',
     label: '',
     expired_date: '',
-    minimum_order: '',
     photos: null,
     kategori_options: [],
+    packaging_options: [],
     error_title: null,
     error_description: null,
     error_stock: null,
-    error_unit: null,
-    error_per_unit: null,
     error_price: null,
     error_discount: null,
     error_label: null,
     error_expired_date: null,
-    error_minimum_order: null,
     fetching_init: false,
     fetching_error: false,
     fetching_complete: false,
@@ -69,10 +69,11 @@ class Form extends Component {
   
   componentDidMount() {
     this.fetchInitData();
-    this.setupKategori();
+    this.setupKategoriOptions();
+    this.setupPackagingOptions();
   }
   
-  setupKategori = () => {
+  setupKategoriOptions = () => {
     try {
       const data = ApolloClientProvider.client.readQuery({
         query: FETCH_PRODUCT_CATEGORY
@@ -88,6 +89,25 @@ class Form extends Component {
       this.setState({ kategori_options: kategoriOptions });
     } catch (error) {
       InAppNotification.errorLocal('Gagal mendownload data', 'Kategori produk tidak dapat tampil');
+    }
+  };
+
+  setupPackagingOptions = () => {
+    try {
+      const data = ApolloClientProvider.client.readQuery({
+        query: FETCH_PRODUCT_PACKAGING
+      });
+      const { productPackaging = [] } = data || {};
+      const packagingOptions = productPackaging && productPackaging.map(item => {
+        const { _id, qty, unit } = item || {};
+        return {
+          label: `${qty} ${unit}`,
+          value: item,
+        }
+      })
+      this.setState({ packaging_options: packagingOptions });
+    } catch (error) {
+      InAppNotification.errorLocal('Gagal mendownload data', 'Pilihan kemasan produk tidak dapat tampil');
     }
   };
   
@@ -107,12 +127,10 @@ class Form extends Component {
           title = '',
           description = '',
           stock = '',
-          unit = '',
           photo = '',
           price = '',
           discount = '',
           expired_date = '',
-          minimum_order = '',
         }
       } = productData || {};
       this.setState({
@@ -120,12 +138,10 @@ class Form extends Component {
         title,
         description,
         stock: stock.toString(),
-        unit,
         price: price.toString(),
         price_parsed: parseToRupiah(price, ' '),
         discount: discount.toString(),
         expired_date,
-        minimum_order: minimum_order.toString(),
         fetching_init: false,
         fetching_complete: true,
       });
@@ -140,34 +156,28 @@ class Form extends Component {
       title,
       description,
       stock,
-      unit,
-      per_unit,
       price,
       label,
-      minimum_order,
-      kategori
+      kategori,
+      packaging
     } = this.state;
     this.setState({
       error_title: !title ? Config.warningMandatory : null,
       error_description: !description ? Config.warningMandatory : null,
       error_stock: !stock ? Config.warningMandatory : null,
-      error_unit: !unit ? Config.warningMandatory : null,
-      error_per_unit: !per_unit ? Config.warningMandatory : null,
       error_price: !price ? Config.warningMandatory : null,
       error_label: !label ? Config.warningMandatory : null,
-      error_minimum_order: !minimum_order ? Config.warningMandatory : null,
       error_kategori: !kategori ? Config.warningMandatory : null,
+      error_packaging: !packaging ? Config.warningMandatory : null,
     });
     return (
       title &&
       description &&
       stock &&
-      unit &&
-      per_unit &&
       price &&
       label &&
-      minimum_order &&
-      kategori
+      kategori &&
+      packaging
     ) ? true : false;
   };
   
@@ -183,28 +193,24 @@ class Form extends Component {
       title,
       description,
       stock,
-      unit,
-      per_unit,
       price,
       discount,
       label,
       expired_date,
-      minimum_order,
       photos,
       kategori,
+      packaging
     } = this.state;
     const dataSubmit = {
       title: (title || null),
       description: (description || null),
       stock: (parseFloat(stock) || null),
-      unit: (unit || null),
-      per_unit: (per_unit || null),
       price: (parseFloat(price) || null),
       discount: (parseFloat(discount) || null),
       label: (label || null),
       expired_date: (expired_date || null),
-      minimum_order: (parseFloat(minimum_order) || null),
       kategori: (kategori || null),
+      packaging: (packaging || null),
     };
     const id = { _id };
     let variables = {
@@ -279,12 +285,24 @@ class Form extends Component {
   }
   
   onKategoriChange = (val, i) => {
-    console.tron.log('onKategoriChange', val)
-    if (!val) return;
+    if (!val) {
+      return;
+    }
     const { _id, title } = val;
     this.setState({
       kategori: _id,
       kategori_string: title,
+    });
+  };
+
+  onPackagingChange = (val, i) => {
+    if (!val) {
+      return;
+    }
+    const { _id, qty, unit } = val;
+    this.setState({
+      packaging: _id,
+      packaging_string: `${qty} ${unit}`,
     });
   };
   
@@ -303,29 +321,27 @@ class Form extends Component {
       title,
       description,
       stock,
-      unit,
-      per_unit,
       price,
       price_parsed,
       discount,
       label,
       expired_date,
-      minimum_order,
       photos,
       kategori,
       kategori_string,
       kategori_options,
+      packaging,
+      packaging_string,
+      packaging_options,
       error_title,
       error_description,
       error_stock,
-      error_unit,
-      error_per_unit,
       error_price,
       error_discount,
       error_label,
       error_expired_date,
-      error_minimum_order,
       error_kategori,
+      error_packaging,
       fetching_init,
       fetching_complete,
       fetching_error,
@@ -379,44 +395,33 @@ class Form extends Component {
                   />
                   <RNPickerSelect
                     placeholder={{
-                      label: 'Pilih Unit',
+                      label: 'Pilih Kemasan',
                       value: null,
                     }}
-                    items={[{label: 'kg', value: 'kg'}, {label: 'gram', value: 'gram'}, {label: 'pcs', value: 'pcs'}]}
-                    onValueChange={(val, i) => this.setState({ unit: val})}
-                    value={unit}>
+                    items={packaging_options}
+                    onValueChange={this.onPackagingChange}
+                    value={packaging}>
                     <InputText
-                      title="Unit"
-                      placeholder="Pilih unit satuan"
-                      value={unit}
-                      error={error_unit}
+                      title="Kemasan"
+                      placeholder="Pilih kemasan"
+                      value={packaging_string}
+                      error={error_packaging}
                     />
                   </RNPickerSelect>
                   <InputText
-                    title="Jumlah Unit per Satu bungkus"
-                    placeholder="Berapa unit untuk satu bungkus"
-                    value={per_unit}
-                    error={error_per_unit}
-                    suffix={unit ? `/${unit}` : ''}
-                    onChangeText={(text) => this.setState({ per_unit: text })}
-                    returnKeyType="next"
-                    keyboardType="numeric"
-                    onSubmitEditing={() => this._price.focus()}
-                  />
-                  <InputText
                     refs={ref => this._price = ref}
-                    title="Harga per bungkus"
-                    placeholder="Harga per bungkus"
+                    title="Harga per kemasan"
+                    placeholder="Harga per kemasan"
                     value={price_parsed}
                     prefix="Rp"
-                    editable={per_unit && unit ? true : false}
+                    editable={packaging ? true : false}
                     styleInput={
-                      !per_unit || !unit ? {
+                      !packaging ? {
                         backgroundColor: Colors.border
                       }
                       : null
                     }
-                    suffix={per_unit && unit ? `/${per_unit} ${unit}` : ''}
+                    suffix={packaging ? `/${packaging_string}` : ''}
                     error={error_price}
                     onChangeText={(text) => this.setState({
                       price: text.replace(/\D+/g, ''),
@@ -424,26 +429,7 @@ class Form extends Component {
                     })}
                     returnKeyType="next"
                     keyboardType="numeric"
-                    onSubmitEditing={() => this._minimum_order.focus()}
-                  />
-                  <InputText
-                    refs={ref => this._minimum_order = ref}
-                    title="Minimal pemesanan"
-                    placeholder="Minimal pemesanan per order"
-                    value={minimum_order}
-                    editable={per_unit && unit ? true : false}
-                    suffix="bungkus"
-                    error={error_minimum_order}
-                    onChangeText={(text) => this.setState({ minimum_order: text })}
-                    returnKeyType="next"
-                    keyboardType="numeric"
                     onSubmitEditing={() => this._stock.focus()}
-                    styleInput={
-                      !per_unit || !unit ? {
-                        backgroundColor: Colors.border
-                      }
-                      : null
-                    }
                   />
                   <InputText
                     refs={ref => this._stock = ref}
@@ -451,14 +437,14 @@ class Form extends Component {
                     placeholder="Stok yang tersedia"
                     value={stock}
                     error={error_stock}
-                    suffix="bungkus"
-                    editable={per_unit && unit ? true : false}
+                    suffix="kemasan"
+                    editable={packaging ? true : false}
                     onChangeText={this.onChangeStok}
                     returnKeyType="next"
                     keyboardType="numeric"
                     onSubmitEditing={() => this._discount.focus()}
                     styleInput={
-                      !per_unit || !unit ? {
+                      !packaging ? {
                         backgroundColor: Colors.border
                       }
                       : null

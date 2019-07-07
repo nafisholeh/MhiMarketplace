@@ -43,11 +43,22 @@ export const FETCH_SOME_PRODUCT = gql`
     }
   }
 `
+
 export const FETCH_PRODUCT_CATEGORY = gql`
   query fetchProductCategory {
     productCategory {
       _id
       title
+    }
+  }
+`
+
+export const FETCH_PRODUCT_PACKAGING = gql`
+  query fetchProductPackaging {
+    productPackaging {
+      _id
+      qty
+      unit
     }
   }
 `

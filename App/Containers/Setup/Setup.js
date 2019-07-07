@@ -13,7 +13,7 @@ import { FETCH_ADDRESS } from 'GraphQL/Address/Query';
 import { FETCH_COURIER_COST } from 'GraphQL/CourierCost/Query';
 import { FETCH_PAYMENT_OPTION } from 'GraphQL/PaymentOption/Query';
 import { ADD_ONE_SIGNAL_TOKEN } from 'GraphQL/User/Mutation';
-import { FETCH_PRODUCT_CATEGORY } from 'GraphQL/Product/Query';
+import { FETCH_PRODUCT_CATEGORY, FETCH_PRODUCT_PACKAGING } from 'GraphQL/Product/Query';
 import { getUserId } from 'Redux/SessionRedux';
 import OneSignalActions, { getOneSignalToken } from 'Redux/OneSignalRedux';
 import CartActions, { isFetchingCart, isFetchingCartSuccess } from 'Redux/CartRedux';
@@ -39,6 +39,8 @@ class Setup extends Component {
       isTokenFinish: false,
       isFetchingProductCategory: false,
       isProductCategoryFinish: false,
+      isFetchingProductPackaging: false,
+      isProductPackagingFinish: false,
     };
   }
   
@@ -49,6 +51,7 @@ class Setup extends Component {
     this.prefecthCourierCost();
     this.prefecthPaymentOption();
     this.prefecthProductCategory();
+    this.prefecthProductPackaging();
   }
   
   componentDidUpdate(prevProps) {
@@ -59,10 +62,17 @@ class Setup extends Component {
   
   checkIfDone = () => {
     const { navigation, isFetchingCartSuccess, isKurir, isStokOpname, isKeuangan, isAdmin } = this.props;
-    const { isCourierCostFinish, isPaymentFinish, isTokenFinish, isProductCategoryFinish } = this.state;
+    const {
+      isCourierCostFinish,
+      isPaymentFinish,
+      isTokenFinish,
+      isProductCategoryFinish,
+      isProductPackagingFinish
+    } = this.state;
     if (
       isCourierCostFinish && isFetchingCartSuccess && 
-      isPaymentFinish && isTokenFinish && isProductCategoryFinish
+      isPaymentFinish && isTokenFinish && isProductCategoryFinish &&
+      isProductPackagingFinish
     ) {
       if (isKurir) navigation.navigate('CourierNav');
       else if (isStokOpname) navigation.navigate('StockOpnameNav');
@@ -182,19 +192,38 @@ class Setup extends Component {
     })
   };
   
+  prefecthProductPackaging = async () => {
+    this.setState({
+      isFetchingProductPackaging: true,
+      isProductPackagingFinish: false,
+    });
+    ApolloClientProvider.client.query({
+      query: FETCH_PRODUCT_PACKAGING
+    })
+    .finally(() => {
+      this.setState({
+        isFetchingProductPackaging: false,
+        isProductPackagingFinish: true,
+      });
+      this.checkIfDone();
+    })
+  };
+  
   render() {
     const { isFetchingCart } = this.props;
     const {
       isFetchingCourierCost,
       isFetchingPayment,
       isFetchingProductCategory,
+      isFetchingProductPackaging,
       isUploadingToken
     } = this.state;
     return (
       <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
         {(
           isFetchingCart || isFetchingCourierCost ||
-          isFetchingPayment || isUploadingToken || isFetchingProductCategory
+          isFetchingPayment || isUploadingToken || isFetchingProductCategory ||
+          isFetchingProductPackaging
         ) && (
           <BarIndicator
             color={Colors.green_dark}

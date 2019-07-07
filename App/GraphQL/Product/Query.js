@@ -30,8 +30,10 @@ export const FETCH_PRODUCT_DETAIL = gql`
       discount
       expired_date
       label
-      category
-      packaging
+      category {
+        title
+      }
+      packaging 
     }
   }
 `

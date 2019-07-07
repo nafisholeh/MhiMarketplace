@@ -104,6 +104,7 @@ class Detail extends Component {
                 category,
                 packaging
               } = product;
+              const { title: categoryTitle = ''  } = category || {};
               const priceRupiah = parseToRupiah(price);
               const discountRupiah = parseToRupiah(calcDiscount(price, discount));
               return (
@@ -202,7 +203,7 @@ class Detail extends Component {
                           marginHorizontal: moderateScale(30),
                         }}
                       >
-                        {stock} {unit}
+                        Stok tersedia: {stock} {unit}
                       </Text>
                     </ProductDetailWrapper>
                     
@@ -214,20 +215,23 @@ class Detail extends Component {
                         alignSelf: 'flex-start',
                       }}
                     >
+                      {categoryTitle ? (
+                        <Text 
+                          style={{
+                            fontFamily: 'CircularStd-Book',
+                            fontSize: 14,
+                            color: 'rgba(0,0,0,0.3)',
+                            marginBottom: moderateScale(5),
+                          }}
+                        >
+                          Kategori: {categoryTitle}
+                        </Text>
+                      ) : null }
                       <Text 
                         style={{
                           fontFamily: 'CircularStd-Book',
-                          fontSize: 13,
-                          color: 'rgba(0,0,0,0.5)',
-                        }}
-                      >
-                        Min pesan: {minimum_order} {unit}
-                      </Text>
-                      <Text 
-                        style={{
-                          fontFamily: 'CircularStd-Book',
-                          fontSize: 13,
-                          color: 'rgba(0,0,0,0.5)',
+                          fontSize: 14,
+                          color: 'rgba(0,0,0,0.3)',
                           marginBottom: moderateScale(15),
                         }}
                       >
@@ -236,7 +240,7 @@ class Detail extends Component {
                       <Text 
                         style={{
                           fontFamily: 'CircularStd-Book',
-                          fontSize: 13,
+                          fontSize: 14,
                           color: 'rgba(0,0,0,0.5)',
                         }}
                       >

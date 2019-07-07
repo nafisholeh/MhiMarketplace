@@ -47,6 +47,7 @@ class Form extends Component {
     price: '',
     price_parsed: '',
     discount: '',
+    label: '',
     expired_date: '',
     minimum_order: '',
     photos: null,
@@ -57,6 +58,7 @@ class Form extends Component {
     error_per_unit: null,
     error_price: null,
     error_discount: null,
+    error_label: null,
     error_expired_date: null,
     error_minimum_order: null,
     fetching_init: false,
@@ -235,6 +237,7 @@ class Form extends Component {
       price,
       price_parsed,
       discount,
+      label,
       expired_date,
       minimum_order,
       photos,
@@ -245,6 +248,7 @@ class Form extends Component {
       error_per_unit,
       error_price,
       error_discount,
+      error_label,
       error_expired_date,
       error_minimum_order,
       fetching_init,
@@ -357,7 +361,32 @@ class Form extends Component {
                     onChangeText={this.onChangeDiscount}
                     returnKeyType="next"
                     keyboardType="numeric"
+                    onSubmitEditing={() => this._minimum_order.focus()}
                   />
+                  <TextField
+                    ref={ref => this._minimum_order = ref}
+                    label="Minimal pemesanan"
+                    value={minimum_order}
+                    suffix={unit}
+                    error={error_minimum_order}
+                    onChangeText={(text) => this.setState({ minimum_order: text })}
+                    returnKeyType="done"
+                    keyboardType="numeric"
+                  />
+                  <RNPickerSelect
+                    placeholder={{
+                      label: 'Pilih label',
+                      value: null,
+                    }}
+                    items={[{label: 'MHI Bebas Peskim', value: 'mhi'}, {label: 'Umum', value: 'umum'}]}
+                    onValueChange={(val, i) => this.setState({ label: val})}
+                    value={label}>
+                    <TextField
+                      label="Label"
+                      value={label}
+                      error={error_label}
+                    />
+                  </RNPickerSelect>
                   <TouchableOpacity
                     onPress={this.selectKadaluarsa}>
                     <TextField
@@ -377,17 +406,6 @@ class Form extends Component {
                     titleBottomSheet='Pilih Foto'
                     isMultiplePick={true}
                     isShowCancelButton={false}
-                  />
-                  <TextField
-                    ref={ref => this._minimum_order = ref}
-                    label="Minimal pemesanan"
-                    value={minimum_order}
-                    suffix={unit}
-                    error={error_minimum_order}
-                    onChangeText={(text) => this.setState({ minimum_order: text })}
-                    returnKeyType="go"
-                    keyboardType="numeric"
-                    onSubmitEditing={() => this.submit(mutate)}
                   />
                 </ScrollView>
                 <TouchableOpacity

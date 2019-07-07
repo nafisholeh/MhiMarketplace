@@ -8,7 +8,6 @@ import {
   Picker
 } from 'react-native';
 import { bool, string } from 'prop-types';
-import { TextField } from 'react-native-material-textfield';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { withNavigation } from 'react-navigation';
@@ -283,17 +282,19 @@ class Form extends Component {
                   style={{flex:1}}
                   contentContainerStyle={{ padding: Metrics.baseMargin }}
                 >
-                  <TextField
-                    label="Judul"
+                  <InputText
+                    title="Judul"
+                    placeholder="Judul produk"
                     value={title}
                     error={error_title}
                     onChangeText={(text) => this.setState({ title: text })}
                     returnKeyType="next"
                     onSubmitEditing={() => this._description.focus()}
                   />
-                  <TextField
+                  <InputText
                     ref={ref => this._description = ref}
-                    label="Deskripsi"
+                    title="Deskripsi"
+                    placeholder="Deskripsi produk"
                     multiline={true}
                     value={description}
                     error={error_description}
@@ -308,14 +309,16 @@ class Form extends Component {
                     items={[{label: 'kg', value: 'kg'}, {label: 'gram', value: 'gram'}, {label: 'pcs', value: 'pcs'}]}
                     onValueChange={(val, i) => this.setState({ unit: val})}
                     value={unit}>
-                    <TextField
-                      label="Unit"
+                    <InputText
+                      title="Unit"
+                      placeholder="Pilih unit satuan"
                       value={unit}
                       error={error_unit}
                     />
                   </RNPickerSelect>
-                  <TextField
-                    label="Berapa unit satu bungkus"
+                  <InputText
+                    title="Unit per bungkus"
+                    placeholder="Berapa unit untuk satu bungkus"
                     value={per_unit}
                     error={error_per_unit}
                     onChangeText={(text) => this.setState({ per_unit: text })}
@@ -323,9 +326,10 @@ class Form extends Component {
                     keyboardType="numeric"
                     onSubmitEditing={() => this._price.focus()}
                   />
-                  <TextField
+                  <InputText
                     ref={ref => this._price = ref}
-                    label="Harga per unit"
+                    title="Harga per bungkus"
+                    placeholder="Harga per bungkus"
                     value={price_parsed}
                     prefix="Rp"
                     suffix={unit ? `/${unit}` : ''}
@@ -338,9 +342,10 @@ class Form extends Component {
                     keyboardType="numeric"
                     onSubmitEditing={() => this._stock.focus()}
                   />
-                  <TextField
+                  <InputText
                     ref={ref => this._stock = ref}
-                    label="Stok"
+                    title="Stok"
+                    placeholder="Stok yang tersedia"
                     value={stock}
                     error={error_stock}
                     onChangeText={this.onChangeStok}
@@ -348,9 +353,10 @@ class Form extends Component {
                     keyboardType="numeric"
                     onSubmitEditing={() => this._discount.focus()}
                   />
-                  <TextField
+                  <InputText
                     ref={ref => this._discount = ref}
-                    label="Diskon"
+                    title="Diskon"
+                    placeholder="Diskon dalam bentuk %"
                     value={discount}
                     suffix={
                       price && discount ?
@@ -363,9 +369,10 @@ class Form extends Component {
                     keyboardType="numeric"
                     onSubmitEditing={() => this._minimum_order.focus()}
                   />
-                  <TextField
+                  <InputText
                     ref={ref => this._minimum_order = ref}
-                    label="Minimal pemesanan"
+                    title="Minimal pemesanan"
+                    placeholder="Minimal pemesanan dari konsumen per order"
                     value={minimum_order}
                     suffix={unit}
                     error={error_minimum_order}
@@ -381,16 +388,18 @@ class Form extends Component {
                     items={[{label: 'MHI Bebas Peskim', value: 'mhi'}, {label: 'Umum', value: 'umum'}]}
                     onValueChange={(val, i) => this.setState({ label: val})}
                     value={label}>
-                    <TextField
-                      label="Label"
+                    <InputText
+                      title="Label"
+                      placeholder="Pilih apa item ini berlabel MHI atau Umum"
                       value={label}
                       error={error_label}
                     />
                   </RNPickerSelect>
                   <TouchableOpacity
                     onPress={this.selectKadaluarsa}>
-                    <TextField
-                      label="Tanggal Kadaluarsa"
+                    <InputText
+                      title="Tanggal Kadaluarsa"
+                      placeholder="Estimasi tanggal kadaluarsa"
                       value={
                         expired_date ?
                           getReadableDate(expired_date, 'DD-MM-YYYY', 'id', 'DD MMM YYYY') :

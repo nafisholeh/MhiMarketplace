@@ -11,7 +11,7 @@ class Item extends Component {
     const {
       data,
       data: {
-        product: { _id, title, photo, price, discount, unit }, 
+        product: { _id, title, photo, price, discount, unit, label }, 
         qty = 1
       },
       userId

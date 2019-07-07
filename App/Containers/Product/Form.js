@@ -23,7 +23,7 @@ import Config from 'Config/AppConfig';
 import { FETCH_PRODUCT_DETAIL, FETCH_PRODUCT_LIST } from 'GraphQL/Product/Query';
 import { ADD_PRODUCT, EDIT_PRODUCT } from 'GraphQL/Product/Mutation';
 import { getEditedProduct } from 'Redux/ProductRedux';
-import { LoadingPage, StatePage, QueryEffectPage, ImagePicker, ImageRobust, InputText } from 'Components';
+import { KeyboardFriendlyView, LoadingPage, StatePage, QueryEffectPage, ImagePicker, ImageRobust, InputText } from 'Components';
 import { InAppNotification, getReadableDate, parseToRupiah, moderateScale } from 'Lib';
 import { getUserId } from 'Redux/SessionRedux';
 
@@ -135,7 +135,7 @@ class Form extends Component {
       error_label: !label ? Config.warningMandatory : null,
       error_minimum_order: !minimum_order ? Config.warningMandatory : null,
     });
-    return
+    return (
       title &&
       description &&
       stock &&
@@ -143,7 +143,8 @@ class Form extends Component {
       per_unit &&
       price &&
       label &&
-      minimum_order;
+      minimum_order
+    ) ? true : false;
   };
   
   submit = mutate => {
@@ -179,21 +180,22 @@ class Form extends Component {
       expired_date: (expired_date || null),
       minimum_order: (parseFloat(minimum_order) || null),
     };
-    const images = photos.map((item, index) => 
-      new ReactNativeFile({
-        uri: item.path,
-        name: `${moment().format('YYYYMMDDHHmmss')}_${index}_${userId}`,
-        type: item.mime
-      })
-    );
-    const id = {
-      _id
+    const id = { _id };
+    let variables = {
+      data: isEdit ? {...dataSubmit, ...id} : dataSubmit
     };
+    if (Array.isArray(photos) && photos.length) {
+      const images = photos.map((item, index) => 
+        new ReactNativeFile({
+          uri: item.path,
+          name: `${moment().format('YYYYMMDDHHmmss')}_${index}_${userId}`,
+          type: item.mime
+        })
+      );
+      variables = Object.assign({}, variables, images);
+    }
     mutate({
-      variables: {
-        data: isEdit ? {...dataSubmit, ...id} : dataSubmit,
-        images,
-      },
+      variables,
       context: {
         hasUpload: true, // activate Upload link
       }
@@ -300,7 +302,7 @@ class Form extends Component {
       );
     }
     return (
-      <View style={{flex:1}}>
+      <KeyboardFriendlyView style={{flex:1}}>
         <Mutation
           mutation={isEdit ? EDIT_PRODUCT : ADD_PRODUCT}
           onCompleted={this.onUploadCompleted}
@@ -326,7 +328,7 @@ class Form extends Component {
                     onSubmitEditing={() => this._description.focus()}
                   />
                   <InputText
-                    ref={ref => this._description = ref}
+                    refs={ref => this._description = ref}
                     title="Deskripsi"
                     placeholder="Deskripsi produk"
                     multiline={true}
@@ -362,7 +364,7 @@ class Form extends Component {
                     onSubmitEditing={() => this._price.focus()}
                   />
                   <InputText
-                    ref={ref => this._price = ref}
+                    refs={ref => this._price = ref}
                     title="Harga per bungkus"
                     placeholder="Harga per bungkus"
                     value={price_parsed}
@@ -382,19 +384,20 @@ class Form extends Component {
                     })}
                     returnKeyType="next"
                     keyboardType="numeric"
-                    onSubmitEditing={() => this._stock.focus()}
+                    onSubmitEditing={() => this._minimum_order.focus()}
                   />
                   <InputText
-                    ref={ref => this._minimum_order = ref}
+                    refs={ref => this._minimum_order = ref}
                     title="Minimal pemesanan"
                     placeholder="Minimal pemesanan per order"
                     value={minimum_order}
                     editable={per_unit && unit ? true : false}
-                    suffix={per_unit && unit ? `/${per_unit} ${unit}` : ''}
+                    suffix="bungkus"
                     error={error_minimum_order}
                     onChangeText={(text) => this.setState({ minimum_order: text })}
-                    returnKeyType="done"
+                    returnKeyType="next"
                     keyboardType="numeric"
+                    onSubmitEditing={() => this._stock.focus()}
                     styleInput={
                       !per_unit || !unit ? {
                         backgroundColor: Colors.border
@@ -403,19 +406,26 @@ class Form extends Component {
                     }
                   />
                   <InputText
-                    ref={ref => this._stock = ref}
+                    refs={ref => this._stock = ref}
                     title="Stok"
                     placeholder="Stok yang tersedia"
                     value={stock}
                     error={error_stock}
-                    suffix={unit}
+                    suffix="bungkus"
+                    editable={per_unit && unit ? true : false}
                     onChangeText={this.onChangeStok}
                     returnKeyType="next"
                     keyboardType="numeric"
                     onSubmitEditing={() => this._discount.focus()}
+                    styleInput={
+                      !per_unit || !unit ? {
+                        backgroundColor: Colors.border
+                      }
+                      : null
+                    }
                   />
                   <InputText
-                    ref={ref => this._discount = ref}
+                    refs={ref => this._discount = ref}
                     title="Diskon"
                     placeholder="Diskon dalam bentuk %"
                     value={discount}
@@ -426,9 +436,8 @@ class Form extends Component {
                     }
                     error={error_discount}
                     onChangeText={this.onChangeDiscount}
-                    returnKeyType="next"
+                    returnKeyType="done"
                     keyboardType="numeric"
-                    onSubmitEditing={() => this._minimum_order.focus()}
                   />
                   <RNPickerSelect
                     placeholder={{
@@ -492,7 +501,7 @@ class Form extends Component {
                   onPress={() => this.submit(mutate)}
                   style={{
                     flex: 1,
-                    maxHeight: 50,
+                    height: 50,
                     backgroundColor: data_invalid ? Colors.brown_light : Colors.green_light,
                     justifyContent: 'center',
                     alignItems: 'center'
@@ -516,7 +525,7 @@ class Form extends Component {
             )
           }}
         </Mutation>
-      </View>
+      </KeyboardFriendlyView>
     )
   }
 }

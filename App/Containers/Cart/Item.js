@@ -78,6 +78,7 @@ class Item extends Component {
     }
     return (
       <ProductVerticalWrapper
+        disabled
         styleParent={{
           marginTop: index === 0 ? moderateScale(15) : 0,
           marginBottom: moderateScale(12),
@@ -162,7 +163,7 @@ class Item extends Component {
             }
             <UpDownCounter
               initCounter={qty}
-              unit={unit}
+              unit="pcs"
               onCounterChanged={this.onCounterChanged}
             />
           </View>

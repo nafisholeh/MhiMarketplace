@@ -90,7 +90,20 @@ class Detail extends Component {
               return <View></View>;
             } else {
               const { product } = data;
-              const { title, description, stock, unit, photo, price, discount, expired_date, minimum_order } = product;
+              const {
+                title,
+                description,
+                stock,
+                unit,
+                photo,
+                price,
+                discount,
+                expired_date,
+                minimum_order,
+                label,
+                category,
+                packaging
+              } = product;
               const priceRupiah = parseToRupiah(price);
               const discountRupiah = parseToRupiah(calcDiscount(price, discount));
               return (
@@ -102,6 +115,33 @@ class Detail extends Component {
                     showsVerticalScrollIndicator={false}
                   >
                     <ProductDetailWrapper>
+                      {discount ? (
+                        <View
+                          style={{
+                            position: 'absolute',
+                            right: moderateScale(10),
+                            top: moderateScale(10),
+                            height: moderateScale(40),
+                            width: moderateScale(40),
+                            borderRadius: moderateScale(20),
+                            backgroundColor: Colors.fruit_dark,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            elevation: 5
+                          }}
+                        >
+                          <Text 
+                            style={{
+                              fontFamily: 'CircularStd-Book',
+                              fontSize: 16,
+                              color: Colors.white,
+                            }}
+                            numberOfLines={1}
+                          >
+                            {discount}%
+                          </Text>
+                        </View>
+                      ) : null}
                       <ProductImage
                         source={photo}
                         style={{
@@ -119,33 +159,28 @@ class Detail extends Component {
                           marginBottom: moderateScale(3),
                         }}
                       >
-                        { discount &&
-                          <Fragment>
-                            <Text
-                              style={{
-                                fontFamily: 'CircularStd-Book',
-                                fontSize: 18,
-                                color: 'rgba(0,0,0,0.68)',
-                                marginRight: moderateScale(10),
-                              }}
-                            >
-                              {discountRupiah}
-                            </Text>
+                        <Text
+                          style={{
+                            fontFamily: 'CircularStd-Book',
+                            fontSize: 18,
+                            color: 'rgba(0,0,0,0.68)',
+                            marginRight: moderateScale(5),
+                          }}
+                        >
+                          {discount ? discountRupiah : priceRupiah}
+                        </Text>
+                        { packaging ? (
                             <Text 
                               style={{
                                 fontFamily: 'CircularStd-Book',
-                                fontSize: 14,
-                                color: 'rgba(0,0,0,0.3)',
-                                textDecorationLine: 'line-through', 
-                                textDecorationStyle: 'solid',
+                                fontSize: 16,
+                                color: Colors.text_light,
                               }}
+                              numberOfLines={1}
                             >
-                              {priceRupiah}
+                              {`/${packaging} ${unit}`}
                             </Text>
-                          </Fragment>
-                        }
-                        { !discount &&
-                          <Text style={{ fontWeight: 'bold' }}>{priceRupiah}</Text> 
+                          ) : null
                         }
                       </View>
                       <Text

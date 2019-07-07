@@ -274,9 +274,10 @@ class Form extends Component {
         minDate: new Date(),
         mode: 'calendar'
       });
+      const monthNormal = month + 1;
       if (action !== DatePickerAndroid.dismissedAction) {
         const days = day < 10 ? `0${day}` : day;
-        const months = month < 10 ? `0${month}` : month;
+        const months = monthNormal < 10 ? `0${monthNormal}` : month;
         this.setState({ expired_date: `${days}-${months}-${year}` });
       }
     } catch ({code, message}) {

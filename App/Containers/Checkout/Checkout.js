@@ -3,7 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Query, Mutation } from 'react-apollo';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { string, number, shape, arrayOf } from 'prop-types';
+import { string, number, shape, arrayOf, bool } from 'prop-types';
 import { DotIndicator } from 'react-native-indicators';
 
 import CheckoutTitle from './CheckoutTitle';
@@ -22,7 +22,8 @@ import {
   getCheckoutId,
   getPaymentDetails,
   getChosenShipment,
-  getSelectedShipmentAddress
+  getSelectedShipmentAddress,
+  isShipmentSelected
 } from 'Redux/CheckoutRedux';
 import { HeaderTitle, ButtonPrimary, QueryEffectSection } from 'Components';
 import { moderateScale } from 'Lib';
@@ -73,7 +74,7 @@ class Checkout extends Component {
   };
   
   render() {
-    const { userId, checkoutId, shippingDate } = this.props;
+    const { userId, checkoutId, shippingDate, isShipmentSelected } = this.props;
     return (
       <View style={{ flex: 1 }}>
         <ScrollView
@@ -130,6 +131,7 @@ class Checkout extends Component {
               <ButtonPrimary
                 onPress={() => this.onFinishCheckout(finishCheckout)}
                 loading={loading}
+                disabled={!isShipmentSelected}
                 title="Selesaikan Checkout"
               />
             );
@@ -156,6 +158,7 @@ Checkout.propTypes = {
     time_end: string,
   })),
   shipmentAddress: string,
+  isShipmentSelected: bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -165,6 +168,7 @@ const mapStateToProps = createStructuredSelector({
   paymentDetails: getPaymentDetails(),
   shippingDate: getChosenShipment(),
   shipmentAddress: getSelectedShipmentAddress(),
+  isShipmentSelected: isShipmentSelected(),
 });
 
 export default connect(mapStateToProps, null)(Checkout);

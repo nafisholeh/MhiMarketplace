@@ -57,6 +57,17 @@ export const getPaymentDetails = () =>
     courier: state.courier, 
     total: state.total, 
   }))
+  
+export const isShipmentSelected = () => 
+  createSelector(checkoutSelectors(), state => {
+    const { shipment_date } = state;
+    if (!shipment_date) return false;
+    for (const key of Object.keys(shipment_date)) {
+      const { selected } = shipment_date[key];
+      if (selected) return true;
+    }
+    return false;
+  })
 
 export const getChosenShipment = () =>
   createSelector(checkoutSelectors(), state => {

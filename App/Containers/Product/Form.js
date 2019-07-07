@@ -385,11 +385,30 @@ class Form extends Component {
                     onSubmitEditing={() => this._stock.focus()}
                   />
                   <InputText
+                    ref={ref => this._minimum_order = ref}
+                    title="Minimal pemesanan"
+                    placeholder="Minimal pemesanan per order"
+                    value={minimum_order}
+                    editable={per_unit && unit ? true : false}
+                    suffix={per_unit && unit ? `/${per_unit} ${unit}` : ''}
+                    error={error_minimum_order}
+                    onChangeText={(text) => this.setState({ minimum_order: text })}
+                    returnKeyType="done"
+                    keyboardType="numeric"
+                    styleInput={
+                      !per_unit || !unit ? {
+                        backgroundColor: Colors.border
+                      }
+                      : null
+                    }
+                  />
+                  <InputText
                     ref={ref => this._stock = ref}
                     title="Stok"
                     placeholder="Stok yang tersedia"
                     value={stock}
                     error={error_stock}
+                    suffix={unit}
                     onChangeText={this.onChangeStok}
                     returnKeyType="next"
                     keyboardType="numeric"
@@ -410,17 +429,6 @@ class Form extends Component {
                     returnKeyType="next"
                     keyboardType="numeric"
                     onSubmitEditing={() => this._minimum_order.focus()}
-                  />
-                  <InputText
-                    ref={ref => this._minimum_order = ref}
-                    title="Minimal pemesanan"
-                    placeholder="Minimal pemesanan dari konsumen per order"
-                    value={minimum_order}
-                    suffix={`${unit}`}
-                    error={error_minimum_order}
-                    onChangeText={(text) => this.setState({ minimum_order: text })}
-                    returnKeyType="done"
-                    keyboardType="numeric"
                   />
                   <RNPickerSelect
                     placeholder={{

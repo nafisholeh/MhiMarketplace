@@ -40,6 +40,7 @@ class Detail extends Component {
       minDate: null,
       maxDate: null,
       isFetchComplete: false,
+      isEligibleToProceed: false,
     }
   }
   
@@ -57,7 +58,14 @@ class Detail extends Component {
       ...markedDates,
       ...{ [selectedDay]: { marked: true, dotColor: 'red', selected } } 
     };
-    this.setState({ markedDates: updatedMarkedDates });
+    
+    let isEligibleToProceed = false;
+    Object.keys(updatedMarkedDates).forEach(key => {
+      const { selected = false } = updatedMarkedDates[key] || {};
+      if (selected) isEligibleToProceed = true;
+    });
+    
+    this.setState({ markedDates: updatedMarkedDates, isEligibleToProceed });
   };
   
   getRequestedDate = (data = []) => {
@@ -136,7 +144,8 @@ class Detail extends Component {
 
   render() {
     const { listId: _id, courierId } = this.props;
-    const { markedDates, minDate, maxDate } = this.state;
+    const { markedDates, minDate, maxDate, isEligibleToProceed } = this.state;
+    console.tron.log('Detail/render', markedDates, isEligibleToProceed)
     return (
       <Fragment>
         <Query
@@ -220,9 +229,10 @@ class Detail extends Component {
             return (
               <TouchableOpacity
                 onPress={() => this.takeThisOrder(takeOrder)}
+                disabled={!isEligibleToProceed}
                 style={{
                   height: 50,
-                  backgroundColor: Colors.green_light,
+                  backgroundColor: isEligibleToProceed ? Colors.green_light : Colors.brown_light,
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}

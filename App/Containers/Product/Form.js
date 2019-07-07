@@ -20,7 +20,7 @@ import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { Mutation } from 'react-apollo';
 import { Colors, Metrics } from 'Themes';
 import Config from 'Config/AppConfig';
-import { FETCH_PRODUCT_DETAIL, FETCH_PRODUCT_LIST } from 'GraphQL/Product/Query';
+import { FETCH_PRODUCT_DETAIL, FETCH_PRODUCT_LIST, FETCH_PRODUCT_CATEGORY } from 'GraphQL/Product/Query';
 import { ADD_PRODUCT, EDIT_PRODUCT } from 'GraphQL/Product/Mutation';
 import { getEditedProduct } from 'Redux/ProductRedux';
 import { KeyboardFriendlyView, LoadingPage, StatePage, QueryEffectPage, ImagePicker, ImageRobust, InputText } from 'Components';
@@ -50,6 +50,7 @@ class Form extends Component {
     expired_date: '',
     minimum_order: '',
     photos: null,
+    kategori_options: [],
     error_title: null,
     error_description: null,
     error_stock: null,
@@ -68,7 +69,27 @@ class Form extends Component {
   
   componentDidMount() {
     this.fetchInitData();
+    this.setupKategori();
   }
+  
+  setupKategori = () => {
+    try {
+      const data = ApolloClientProvider.client.readQuery({
+        query: FETCH_PRODUCT_CATEGORY
+      });
+      const { productCategory = [] } = data || {};
+      const kategoriOptions = productCategory && productCategory.map(item => {
+        const { _id, title } = item || {};
+        return {
+          label: title,
+          value: item,
+        }
+      })
+      this.setState({ kategori_options: kategoriOptions });
+    } catch (error) {
+      InAppNotification.errorLocal('Gagal mendownload data', 'Kategori produk tidak dapat tampil');
+    }
+  };
   
   fetchInitData = () => {
     const { editedProductId, isEdit } = this.props;
@@ -123,7 +144,8 @@ class Form extends Component {
       per_unit,
       price,
       label,
-      minimum_order
+      minimum_order,
+      kategori
     } = this.state;
     this.setState({
       error_title: !title ? Config.warningMandatory : null,
@@ -134,6 +156,7 @@ class Form extends Component {
       error_price: !price ? Config.warningMandatory : null,
       error_label: !label ? Config.warningMandatory : null,
       error_minimum_order: !minimum_order ? Config.warningMandatory : null,
+      error_kategori: !kategori ? Config.warningMandatory : null,
     });
     return (
       title &&
@@ -143,7 +166,8 @@ class Form extends Component {
       per_unit &&
       price &&
       label &&
-      minimum_order
+      minimum_order &&
+      kategori
     ) ? true : false;
   };
   
@@ -167,6 +191,7 @@ class Form extends Component {
       expired_date,
       minimum_order,
       photos,
+      kategori,
     } = this.state;
     const dataSubmit = {
       title: (title || null),
@@ -179,6 +204,7 @@ class Form extends Component {
       label: (label || null),
       expired_date: (expired_date || null),
       minimum_order: (parseFloat(minimum_order) || null),
+      kategori: (kategori || null),
     };
     const id = { _id };
     let variables = {
@@ -252,6 +278,16 @@ class Form extends Component {
     }
   }
   
+  onKategoriChange = (val, i) => {
+    console.tron.log('onKategoriChange', val)
+    if (!val) return;
+    const { _id, title } = val;
+    this.setState({
+      kategori: _id,
+      kategori_string: title,
+    });
+  };
+  
   onPhotoPicked = (raw, paths) => {
     const photos = paths.map((item, i) => {
       return {
@@ -276,6 +312,9 @@ class Form extends Component {
       expired_date,
       minimum_order,
       photos,
+      kategori,
+      kategori_string,
+      kategori_options,
       error_title,
       error_description,
       error_stock,
@@ -286,6 +325,7 @@ class Form extends Component {
       error_label,
       error_expired_date,
       error_minimum_order,
+      error_kategori,
       fetching_init,
       fetching_complete,
       fetching_error,
@@ -439,6 +479,21 @@ class Form extends Component {
                     returnKeyType="done"
                     keyboardType="numeric"
                   />
+                  <RNPickerSelect
+                    placeholder={{
+                      label: 'Pilih kategori',
+                      value: null,
+                    }}
+                    items={kategori_options}
+                    onValueChange={this.onKategoriChange}
+                    value={kategori}>
+                    <InputText
+                      title="Kategori"
+                      placeholder="Pilih kategori"
+                      value={kategori_string}
+                      error={error_kategori}
+                    />
+                  </RNPickerSelect>
                   <RNPickerSelect
                     placeholder={{
                       label: 'Pilih label',

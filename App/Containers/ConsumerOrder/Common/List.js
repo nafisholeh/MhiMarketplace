@@ -55,6 +55,7 @@ class List extends Component {
         {title && <Title>{title}</Title>}
         <Query
           query={query}
+          fetchPolicy="network-only"
           variables={{ courier_id: null, user_id: userId }}
         >
           {({ loading, error, data, refetch }) => {

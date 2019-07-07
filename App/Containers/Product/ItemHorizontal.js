@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { shape, number, string, func, arrayOf, bool } from 'prop-types';
 import { compose, Mutation } from 'react-apollo';
 import { connect } from 'react-redux';
@@ -8,7 +8,7 @@ import { withNavigation } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 import { DotIndicator } from 'react-native-indicators';
 
-import { Colors } from 'Themes';
+import { Colors, Images } from 'Themes';
 import {
   ProductHorizontalWrapper,
   ProductImage
@@ -211,6 +211,19 @@ class ItemHorizontal extends Component {
             }}
           </Mutation>
         }
+        {label === 'mhi' ? (
+          <Image
+            source={Images.bebas_peskim}
+            style={{
+              position: 'absolute',
+              top: moderateScale(5),
+              left: moderateScale(5),
+              height: moderateScale(30),
+              width: moderateScale(30),
+              resizeMode: 'contain',
+            }}
+          />
+        ) : null}
       </ProductHorizontalWrapper>
     );
   }

@@ -181,7 +181,7 @@ class Item extends Component {
             }}
           </Mutation>
         }
-        {label ? (
+        {label === 'mhi' ? (
           <Image
             source={Images.bebas_peskim}
             style={{

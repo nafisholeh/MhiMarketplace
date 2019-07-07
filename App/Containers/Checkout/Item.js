@@ -4,7 +4,7 @@ import { View, Image, Text } from 'react-native';
 import { parseToRupiah, isString, calcDiscount, moderateScale } from 'Lib';
 import styles from './Styles';
 import { ProductVerticalWrapper, ProductImage } from 'Components';
-import { Colors } from 'Themes';
+import { Colors, Images } from 'Themes';
 
 class Item extends Component {
   render() {
@@ -39,7 +39,7 @@ class Item extends Component {
           source={photo}
           style={{
             width: moderateScale(68),
-            height: moderateScale(68),
+            height: moderateScale(60),
             resizeMode: 'contain',
             marginRight: moderateScale(10),
           }}
@@ -87,9 +87,22 @@ class Item extends Component {
             }}
             numberOfLines={1}
           >
-            {qty} {unit}
+            {qty} pcs
           </Text>
         </View>
+        {label === 'mhi' ? (
+          <Image
+            source={Images.bebas_peskim}
+            style={{
+              position: 'absolute',
+              right: moderateScale(4),
+              bottom: moderateScale(4),
+              height: moderateScale(30),
+              width: moderateScale(30),
+              resizeMode: 'contain',
+            }}
+          />
+       ) : null}
       </ProductVerticalWrapper>
     );
   }

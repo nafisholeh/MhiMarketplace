@@ -181,6 +181,19 @@ class Item extends Component {
             }}
           </Mutation>
         }
+        {label ? (
+          <Image
+            source={Images.bebas_peskim}
+            style={{
+              position: 'absolute',
+              top: moderateScale(5),
+              left: moderateScale(5),
+              height: moderateScale(30),
+              width: moderateScale(30),
+              resizeMode: 'contain',
+            }}
+          />
+        ) : null}
       </ProductVerticalWrapper>
     )
   }

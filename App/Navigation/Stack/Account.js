@@ -12,7 +12,6 @@ import Signup from 'Containers/Signup/Signup';
 import ConsumerOrder from 'Containers/ConsumerOrder';
 import ConsumerCompleted from 'Containers/ConsumerOrder/Completed';
 import ConsumerOrderDetail from 'Containers/ConsumerOrder/Common/Detail';
-import ConsumerSendingDetail from 'Containers/ConsumerOrder/Sending/Detail';
 
 const AccountNav = createStackNavigator({
   Account: { screen: Account },
@@ -21,7 +20,6 @@ const AccountNav = createStackNavigator({
   ConsumerOrder: { screen: ConsumerOrder },
   ConsumerCompleted: { screen: ConsumerCompleted },
   ConsumerOrderDetail: { screen: ConsumerOrderDetail },
-  ConsumerSendingDetail: { screen: ConsumerSendingDetail },
 }, {
   initialRouteName: 'Account',
   navigationOptions: {

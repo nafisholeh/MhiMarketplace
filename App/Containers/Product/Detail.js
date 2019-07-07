@@ -116,33 +116,6 @@ class Detail extends Component {
                     showsVerticalScrollIndicator={false}
                   >
                     <ProductDetailWrapper>
-                      {discount ? (
-                        <View
-                          style={{
-                            position: 'absolute',
-                            right: moderateScale(10),
-                            top: moderateScale(10),
-                            height: moderateScale(40),
-                            width: moderateScale(40),
-                            borderRadius: moderateScale(20),
-                            backgroundColor: Colors.fruit_dark,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            elevation: 5
-                          }}
-                        >
-                          <Text 
-                            style={{
-                              fontFamily: 'CircularStd-Book',
-                              fontSize: 16,
-                              color: Colors.white,
-                            }}
-                            numberOfLines={1}
-                          >
-                            {discount}%
-                          </Text>
-                        </View>
-                      ) : null}
                       <ProductImage
                         source={photo}
                         style={{
@@ -183,6 +156,33 @@ class Detail extends Component {
                             </Text>
                           ) : null
                         }
+                        {discount ? (
+                          <View
+                            style={{
+                              position: 'absolute',
+                              right: moderateScale(-15),
+                              top: moderateScale(-10),
+                              height: moderateScale(35),
+                              width: moderateScale(35),
+                              borderRadius: moderateScale(17.5),
+                              backgroundColor: Colors.fruit_dark,
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              elevation: 5
+                            }}
+                          >
+                            <Text 
+                              style={{
+                                fontFamily: 'CircularStd-Book',
+                                fontSize: 14,
+                                color: Colors.white,
+                              }}
+                              numberOfLines={1}
+                            >
+                              {discount}%
+                            </Text>
+                          </View>
+                        ) : null}
                       </View>
                       <Text
                         style={{
@@ -205,6 +205,19 @@ class Detail extends Component {
                       >
                         Stok tersedia: {stock} {unit}
                       </Text>
+                      {label ? (
+                        <Image
+                          source={Images.bebas_peskim}
+                          style={{
+                            position: 'absolute',
+                            top: moderateScale(10),
+                            left: moderateScale(10),
+                            height: moderateScale(60),
+                            width: moderateScale(60),
+                            resizeMode: 'contain',
+                          }}
+                        />
+                      ) : null}
                     </ProductDetailWrapper>
                     
                     <View

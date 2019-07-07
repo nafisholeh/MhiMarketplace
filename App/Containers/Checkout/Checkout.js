@@ -24,7 +24,7 @@ import {
   getChosenShipment,
   getSelectedShipmentAddress
 } from 'Redux/CheckoutRedux';
-import { HeaderTitle, ButtonPrimary } from 'Components';
+import { HeaderTitle, ButtonPrimary, QueryEffectSection } from 'Components';
 import { moderateScale } from 'Lib';
 
 class Checkout extends Component {
@@ -88,20 +88,28 @@ class Checkout extends Component {
             query={FETCH_CHECKOUT_ITEMS}
             variables={{ user_id: userId, _id: checkoutId }}>
             {({ loading, error, data, refetch }) => {
-              if (loading) return (<View />);
-              else if (error) return (<View />);
-              const { checkout: checkoutItems } = data;
+              const items = data[Object.keys(data)[0]] || [];
+              if (Array.isArray(items) && items.length) {
+                return (
+                  <React.Fragment>
+                    <CheckoutTitle title="Pesanan Anda" />
+                    <CheckoutList data={items} />
+                    <CheckoutTitle title="Jadwal Pengiriman" />
+                    <DeliveryOptions />
+                    <CheckoutTitle title="Pembayaran" />
+                    <PaymentOptions />
+                    <PaymentDetails data={items} />
+                  </React.Fragment>
+                );
+              }
               return (
-                <React.Fragment>
-                  <CheckoutTitle title="Pesanan Anda" />
-                  <CheckoutList data={checkoutItems} />
-                  <CheckoutTitle title="Jadwal Pengiriman" />
-                  <DeliveryOptions />
-                  <CheckoutTitle title="Pembayaran" />
-                  <PaymentOptions />
-                  <PaymentDetails data={checkoutItems} />
-                </React.Fragment>
-              )
+                <QueryEffectSection
+                  isLoading={loading}
+                  isError={error}
+                  isEmpty={!items.length}
+                  onRefetch={refetch}
+                />
+              );
             }}
           </Query>
         </ScrollView>

@@ -30,7 +30,7 @@ import {
   parseToRupiah,
 } from 'Lib';
 import { getSelectedListId } from 'Redux/ListRedux';
-import { FETCH_ORDER_DETAIL } from 'GraphQL/Order/Query';
+import { FETCH_ORDER_DETAIL, FETCH_SENDING_LIST } from 'GraphQL/Order/Query';
 import {
   CONFIRM_ORDER_ARRIVAL,
   SENDING_ORDER_PRODUCTS,
@@ -119,7 +119,7 @@ class Detail extends Component {
               products = [],
               time_stamp
             } = orderDetail || {};
-            const { name } = user_id;
+            const { _id, name } = user_id;
             return (
               <ScrollView
                 contentContainerStyle={{ 
@@ -267,7 +267,14 @@ class Detail extends Component {
         {isSendingOrder ? (
           <Mutation
             mutation={CONFIRM_ORDER_ARRIVAL}
-            update={(cache, data) => cacheOrderArrival(cache, data, _id, courierId)}
+            refetchQueries={
+              mutationResult => [{
+                query: FETCH_SENDING_LIST,
+                variables: { courier_id: null, user_id: courierId }
+              }]
+            }
+            awaitRefetchQueries={true}
+            // update={(cache, data) => cacheOrderArrival(cache, data, _id, courierId)}
             onCompleted={this.onConfirmComplete}
             ignoreResults={false}
             errorPolicy='all' 

@@ -2,7 +2,14 @@ import ApolloClientProvider from 'Services/ApolloClientProvider'
 import { FETCH_READY_TO_PROCESS_LIST } from 'GraphQL/Order/Query';
 
 export const cacheNewOrder = (data) => {
-  const { _id: orderId, products = [], shipping_address = {}, requested_shipping_date = [] } = data;
+  const {
+    _id: orderId,
+    transaction_id,
+    total_cost,
+    products = [],
+    shipping_address = {},
+    requested_shipping_date = [],
+  } = data;
   const normalisedProducts = (Array.isArray(products) && products.length) ?
     products.map(item => {
       const { product } = item;
@@ -14,6 +21,8 @@ export const cacheNewOrder = (data) => {
     null;
   const normalisedData = {
     _id: orderId,
+    transaction_id,
+    total_cost,
     __typename: 'Order',
     products: normalisedProducts,
     requested_shipping_date: normalisedShippingDate,
@@ -37,6 +46,7 @@ export const cacheNewOrder = (data) => {
   } else {
     const { _id: newId } = normalisedData;
     const similarItem = readyToProcessOrders.findIndex(({ _id }) => _id === newId);
+    
     ApolloClientProvider.client.writeQuery({
       query: FETCH_READY_TO_PROCESS_LIST,
       data: {

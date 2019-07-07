@@ -26,6 +26,9 @@ export const FETCH_PRODUCT_DETAIL = gql`
       price
       discount
       expired_date
+      label
+      category
+      packaging
     }
   }
 `

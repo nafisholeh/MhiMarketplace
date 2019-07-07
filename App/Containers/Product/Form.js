@@ -52,7 +52,7 @@ class Form extends Component {
     label: '',
     expired_date: '',
     photos: null,
-    kategori_options: [],
+    category_options: [],
     packaging_options: [],
     error_title: null,
     error_description: null,
@@ -69,30 +69,36 @@ class Form extends Component {
   
   componentDidMount() {
     this.fetchInitData();
-    this.setupKategoriOptions();
-    this.setupPackagingOptions();
   }
   
-  setupKategoriOptions = () => {
+  setupKategoriOptions = editData => {
     try {
       const data = ApolloClientProvider.client.readQuery({
         query: FETCH_PRODUCT_CATEGORY
       });
       const { productCategory = [] } = data || {};
-      const kategoriOptions = productCategory && productCategory.map(item => {
+      const categoryOptions = productCategory && productCategory.map(item => {
         const { _id, title } = item || {};
         return {
           label: title,
           value: item,
         }
       })
-      this.setState({ kategori_options: kategoriOptions });
+      const editDataFound =
+        Array.isArray(productCategory) 
+        && productCategory.find(({ _id }) => _id === editData);
+      const { title: titleFound } = editDataFound || {};
+      this.setState({
+        category_options: categoryOptions,
+        category: editDataFound,
+        category_string: titleFound, 
+      });
     } catch (error) {
       InAppNotification.errorLocal('Gagal mendownload data', 'Kategori produk tidak dapat tampil');
     }
   };
 
-  setupPackagingOptions = () => {
+  setupPackagingOptions = editData => {
     try {
       const data = ApolloClientProvider.client.readQuery({
         query: FETCH_PRODUCT_PACKAGING
@@ -105,7 +111,16 @@ class Form extends Component {
           value: item,
         }
       })
-      this.setState({ packaging_options: packagingOptions });
+      const editDataFound = 
+        Array.isArray(productPackaging)
+        && productPackaging.find(({ qty }) => qty === editData);
+      const { qty, unit } = editDataFound || {};
+      this.setState({
+        packaging_options: packagingOptions,
+        packaging: editDataFound,
+        packaging_qty: qty,
+        packaging_unit: unit,
+      });
     } catch (error) {
       InAppNotification.errorLocal('Gagal mendownload data', 'Pilihan kemasan produk tidak dapat tampil');
     }
@@ -113,7 +128,11 @@ class Form extends Component {
   
   fetchInitData = () => {
     const { editedProductId, isEdit } = this.props;
-    if (!isEdit) return;
+    if (!isEdit) {
+      this.setupKategoriOptions();
+      this.setupPackagingOptions();
+      return;
+    }
     this.setState({ fetching_init: true, fetching_error: false, fetching_complete: false });
     ApolloClientProvider.client.query({
       query: FETCH_PRODUCT_DETAIL,
@@ -131,22 +150,31 @@ class Form extends Component {
           price = '',
           discount = '',
           expired_date = '',
+          unit = '',
+          packaging,
+          category,
+          label,
         }
       } = productData || {};
       this.setState({
         _id,
         title,
         description,
-        stock: stock.toString(),
-        price: price.toString(),
+        stock: stock ? stock.toString() : '',
+        price: price ? price.toString() : '',
         price_parsed: parseToRupiah(price, ' '),
-        discount: discount.toString(),
+        discount: discount ? discount.toString() : '',
         expired_date,
         fetching_init: false,
         fetching_complete: true,
+        label: label,
+      }, () => {
+        this.setupKategoriOptions(category);
+        this.setupPackagingOptions(packaging);
       });
     })
     .catch(error => {
+      InAppNotification.errorLocal('Gagal download data produk', 'Data tidak bisa ditampilkan');
       this.setState({ fetching_init: false, fetching_error: true });
     });
   };
@@ -158,7 +186,7 @@ class Form extends Component {
       stock,
       price,
       label,
-      kategori,
+      category,
       packaging
     } = this.state;
     this.setState({
@@ -167,7 +195,7 @@ class Form extends Component {
       error_stock: !stock ? Config.warningMandatory : null,
       error_price: !price ? Config.warningMandatory : null,
       error_label: !label ? Config.warningMandatory : null,
-      error_kategori: !kategori ? Config.warningMandatory : null,
+      error_category: !category ? Config.warningMandatory : null,
       error_packaging: !packaging ? Config.warningMandatory : null,
     });
     return (
@@ -176,7 +204,7 @@ class Form extends Component {
       stock &&
       price &&
       label &&
-      kategori &&
+      category &&
       packaging
     ) ? true : false;
   };
@@ -198,7 +226,7 @@ class Form extends Component {
       label,
       expired_date,
       photos,
-      kategori,
+      category,
       packaging_qty,
       packaging_unit
     } = this.state;
@@ -210,7 +238,7 @@ class Form extends Component {
       discount: (parseFloat(discount) || null),
       label: (label || null),
       expired_date: (expired_date || null),
-      kategori: (kategori || null),
+      category: (category || null),
       packaging: (packaging_qty || null),
       unit: (packaging_unit || null),
     };
@@ -293,8 +321,8 @@ class Form extends Component {
     }
     const { _id, title } = val;
     this.setState({
-      kategori: _id,
-      kategori_string: title,
+      category: _id,
+      category_string: title,
     });
   };
 
@@ -331,9 +359,9 @@ class Form extends Component {
       label,
       expired_date,
       photos,
-      kategori,
-      kategori_string,
-      kategori_options,
+      category,
+      category_string,
+      category_options,
       packaging,
       packaging_qty,
       packaging_unit,
@@ -345,7 +373,7 @@ class Form extends Component {
       error_discount,
       error_label,
       error_expired_date,
-      error_kategori,
+      error_category,
       error_packaging,
       fetching_init,
       fetching_complete,
@@ -479,14 +507,14 @@ class Form extends Component {
                       label: 'Pilih kategori',
                       value: null,
                     }}
-                    items={kategori_options}
+                    items={category_options}
                     onValueChange={this.onKategoriChange}
-                    value={kategori}>
+                    value={category}>
                     <InputText
                       title="Kategori"
                       placeholder="Pilih kategori"
-                      value={kategori_string}
-                      error={error_kategori}
+                      value={category_string}
+                      error={error_category}
                     />
                   </RNPickerSelect>
                   <RNPickerSelect

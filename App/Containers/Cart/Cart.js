@@ -53,7 +53,7 @@ class Cart extends Component {
   startBuying = () => {
     const { navigation, isKurir } = this.props;
     if (isKurir) navigation.navigate('CourierShop');
-    else navigation.navigate('Home');
+    else navigation.navigate('HomeConsumer');
   };
   
   onOpenSignin = () => {

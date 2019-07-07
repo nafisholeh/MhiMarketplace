@@ -14,6 +14,7 @@ export default class InputText extends Component {
       title,
       error,
       prefix,
+      suffix,
       isLoading,
       isShowIcon,
       icon,
@@ -21,6 +22,7 @@ export default class InputText extends Component {
       onRefetch,
       styleContainer,
       styleBorder,
+      styleInput,
       iconStyle,
     } = this.props;
     return (
@@ -29,8 +31,8 @@ export default class InputText extends Component {
         <View style={styles.input}>
           <View style={
             error ?
-            [ styles.inputContentError, styleBorder ] :
-            [ styles.inputContent, styleBorder ]
+            [ styles.inputContentError, styleBorder, styleInput ] :
+            [ styles.inputContent, styleBorder, styleInput ]
           }>
             { prefix &&
               <Text style={styles.prefix}>
@@ -45,6 +47,11 @@ export default class InputText extends Component {
               style={styles.inputValue}
               {...this.props}
             />
+            { suffix ? (
+              <Text style={styles.prefix}>
+                {suffix || ''}
+              </Text>
+            ) : null}
             { isLoading &&       // tampilkan UI loading ketika sedang fetching
               <SkypeIndicator
                 color={Colors.text_secondary}

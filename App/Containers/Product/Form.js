@@ -115,16 +115,35 @@ class Form extends Component {
   };
   
   isValid = () => {
-    const { title, description, stock, unit, price, minimum_order } = this.state;
+    const {
+      title,
+      description,
+      stock,
+      unit,
+      per_unit,
+      price,
+      label,
+      minimum_order
+    } = this.state;
     this.setState({
       error_title: !title ? Config.warningMandatory : null,
       error_description: !description ? Config.warningMandatory : null,
       error_stock: !stock ? Config.warningMandatory : null,
       error_unit: !unit ? Config.warningMandatory : null,
+      error_per_unit: !per_unit ? Config.warningMandatory : null,
       error_price: !price ? Config.warningMandatory : null,
+      error_label: !label ? Config.warningMandatory : null,
       error_minimum_order: !minimum_order ? Config.warningMandatory : null,
     });
-    return title && description && stock && unit && price && minimum_order;
+    return
+      title &&
+      description &&
+      stock &&
+      unit &&
+      per_unit &&
+      price &&
+      label &&
+      minimum_order;
   };
   
   submit = mutate => {
@@ -134,14 +153,29 @@ class Form extends Component {
       this.setState({ data_invalid: true });
       return;
     }
-    const { _id, title, description, photos, stock, unit, price, discount, expired_date, minimum_order } = this.state;
+    const {
+      _id,
+      title,
+      description,
+      stock,
+      unit,
+      per_unit,
+      price,
+      discount,
+      label,
+      expired_date,
+      minimum_order,
+      photos,
+    } = this.state;
     const dataSubmit = {
       title: (title || null),
       description: (description || null),
       stock: (parseFloat(stock) || null),
       unit: (unit || null),
+      per_unit: (per_unit || null),
       price: (parseFloat(price) || null),
       discount: (parseFloat(discount) || null),
+      label: (label || null),
       expired_date: (expired_date || null),
       minimum_order: (parseFloat(minimum_order) || null),
     };
@@ -317,10 +351,11 @@ class Form extends Component {
                     />
                   </RNPickerSelect>
                   <InputText
-                    title="Unit per bungkus"
+                    title="Jumlah Unit per Satu bungkus"
                     placeholder="Berapa unit untuk satu bungkus"
                     value={per_unit}
                     error={error_per_unit}
+                    suffix={unit ? `/${unit}` : ''}
                     onChangeText={(text) => this.setState({ per_unit: text })}
                     returnKeyType="next"
                     keyboardType="numeric"
@@ -332,7 +367,14 @@ class Form extends Component {
                     placeholder="Harga per bungkus"
                     value={price_parsed}
                     prefix="Rp"
-                    suffix={unit ? `/${unit}` : ''}
+                    editable={per_unit && unit ? true : false}
+                    styleInput={
+                      !per_unit || !unit ? {
+                        backgroundColor: Colors.border
+                      }
+                      : null
+                    }
+                    suffix={per_unit && unit ? `/${per_unit} ${unit}` : ''}
                     error={error_price}
                     onChangeText={(text) => this.setState({
                       price: text.replace(/\D+/g, ''),
@@ -374,7 +416,7 @@ class Form extends Component {
                     title="Minimal pemesanan"
                     placeholder="Minimal pemesanan dari konsumen per order"
                     value={minimum_order}
-                    suffix={unit}
+                    suffix={`${unit}`}
                     error={error_minimum_order}
                     onChangeText={(text) => this.setState({ minimum_order: text })}
                     returnKeyType="done"

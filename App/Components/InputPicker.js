@@ -61,9 +61,14 @@ class InputPicker extends Component {
     .then(data => {
       const { data: fetchData = {}} = data || {};
       const realData = fetchData[Object.keys(fetchData)[0]];
+      const normalizedData = graphqlToRNPickerSelect(realData, isKeyDisplayed)
       this.setState({
-        data: graphqlToRNPickerSelect(realData, isKeyDisplayed),
+        data: normalizedData,
         fetching: false,
+      }, () => {
+        if (Array.isArray(normalizedData) && normalizedData.length === 1) {
+          this.onSelectionChange(normalizedData[0].value, 0);
+        }
       })
     })
     .catch((error) => {
@@ -83,9 +88,11 @@ class InputPicker extends Component {
     const { data } = this.state;
     const { onSelectionChange } = this.props;
     if (!val) return;
+    const selectedData = data.find((n) => n.value === val);
+    const { label: selectedLabel } = selectedData || {};
     this.setState({
       selected: val,
-      selected_text: data.find((n) => n.value === val).label,
+      selected_text: selectedLabel,
     });
     if (onSelectionChange) {
       onSelectionChange(val);

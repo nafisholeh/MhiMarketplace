@@ -33,7 +33,18 @@ class Item extends Component {
     if (!data) {
       return <View />
     }
-    const  { _id: productId, title, price, discount, photo, unit, stock } = data;
+    const {
+      _id: productId,
+      title,
+      price,
+      discount,
+      photo,
+      unit,
+      stock,
+      label,
+      category,
+      packaging
+    } = data;
     const isInsideCart = cartItemIds.indexOf(productId) > -1;
     return (
       <ProductVerticalWrapper
@@ -44,6 +55,33 @@ class Item extends Component {
           alignItems: 'center'
         }}
       >
+        {discount ? (
+          <View
+            style={{
+              position: 'absolute',
+              right: 3,
+              top: moderateScale(5),
+              height: moderateScale(30),
+              width: moderateScale(30),
+              borderRadius: moderateScale(15),
+              backgroundColor: Colors.fruit_dark,
+              alignItems: 'center',
+              justifyContent: 'center',
+              elevation: 5
+            }}
+          >
+            <Text 
+              style={{
+                fontFamily: 'CircularStd-Book',
+                fontSize: 12,
+                color: Colors.white,
+              }}
+              numberOfLines={1}
+            >
+              {discount}%
+            </Text>
+          </View>
+        ) : null}
         <ProductImage
           source={photo}
           style={{
@@ -62,45 +100,30 @@ class Item extends Component {
           }}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            {discount && (
-              <Fragment>
-                <Text
-                  style={{
-                    fontFamily: 'CircularStd-Book',
-                    fontSize: 14,
-                    color: 'rgba(0,0,0,0.68)',
-                    marginRight: moderateScale(10),
-                  }}
-                  numberOfLines={1}
-                >
-                  {parseToRupiah(price - calcDiscount(price, discount))}
-                </Text>
+            <Text 
+              style={{
+                fontFamily: 'CircularStd-Book',
+                fontSize: 16,
+                color: Colors.text,
+                marginRight: moderateScale(5)
+              }}
+              numberOfLines={1}
+            >
+              {parseToRupiah(price)}
+            </Text>
+            { packaging ? (
                 <Text 
                   style={{
                     fontFamily: 'CircularStd-Book',
-                    fontSize: 12,
-                    color: 'rgba(0,0,0,0.3)',
-                    textDecorationLine: 'line-through', 
-                    textDecorationStyle: 'solid'
+                    fontSize: 14,
+                    color: Colors.text_light,
                   }}
                   numberOfLines={1}
                 >
-                  {parseToRupiah(price)}
+                  {`/${packaging} ${unit}`}
                 </Text>
-              </Fragment>                
-            )}
-            {!discount && (
-              <Text 
-                style={{
-                  fontFamily: 'CircularStd-Book',
-                  fontSize: 14,
-                  color: 'rgba(0,0,0,0.68)',
-                }}
-                numberOfLines={1}
-              >
-                {parseToRupiah(price)}
-              </Text>
-            )}
+              ) : null
+            }
           </View>
           <Text
             style={{
@@ -120,7 +143,7 @@ class Item extends Component {
             }}
             numberOfLines={1}
           >
-            {stock ? `${stock} ${unit}` : `Stok sementara kosong`}
+            {stock ? `${stock} pcs` : `Stok sementara kosong`}
           </Text>
         </View>
         { isStokOpname &&

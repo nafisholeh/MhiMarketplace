@@ -10,6 +10,9 @@ export const FETCH_PRODUCT_LIST = gql`
       unit
       stock
       discount
+      label
+      category
+      packaging
     }
   }
 `
@@ -42,6 +45,9 @@ export const FETCH_SOME_PRODUCT = gql`
       photo
       price
       discount
+      label
+      category
+      packaging
     }
   }
 `

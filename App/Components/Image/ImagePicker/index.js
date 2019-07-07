@@ -151,8 +151,8 @@ class ImagePicker extends PureComponent {
     let newImages = []
     let rawNewImages = []
     if(_.isArray(images)) {
-      images.map((item) => newImages.push(this._getImagePath(item)))
-      rawNewImages.concat(images);
+      newImages = images.map((item) => this._getImagePath(item))
+      rawNewImages = rawNewImages.concat(images);
     }
     else {
       newImages.push(this._getImagePath(images))

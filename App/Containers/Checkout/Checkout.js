@@ -74,7 +74,13 @@ class Checkout extends Component {
   };
   
   render() {
-    const { userId, checkoutId, shippingDate, isShipmentSelected } = this.props;
+    const {
+      userId,
+      checkoutId,
+      shippingDate,
+      isShipmentSelected,
+      shipmentAddress
+    } = this.props;
     return (
       <View style={{ flex: 1 }}>
         <ScrollView
@@ -131,7 +137,7 @@ class Checkout extends Component {
               <ButtonPrimary
                 onPress={() => this.onFinishCheckout(finishCheckout)}
                 loading={loading}
-                disabled={!isShipmentSelected}
+                disabled={!isShipmentSelected || !shipmentAddress}
                 title="Selesaikan Checkout"
               />
             );

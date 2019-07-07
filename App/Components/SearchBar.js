@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, TextInput, Image, TouchableOpacity } from 'react-native';
-import { func, bool } from 'prop-types';
+import { func, bool, string } from 'prop-types';
 
 import ViewShadow from './Shadow/ViewShadow';
 import { Colors, Images } from 'Themes';
@@ -13,7 +13,7 @@ class SearchBar extends Component {
       value: '',
     };
   }
-  
+
   onChangeText = value => {
     if (value === '' || !value) {
       const { onSearch } = this.props;
@@ -84,6 +84,7 @@ class SearchBar extends Component {
 SearchBar.propTypes = {
   onSearch: func,
   isFullWidth: bool,
+  initValue: string,
 };
 
 export default SearchBar;

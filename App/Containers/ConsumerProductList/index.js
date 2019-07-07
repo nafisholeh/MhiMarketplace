@@ -10,7 +10,7 @@ import ProductList from 'Containers/Product/List';
 import FilterItem from './FilterItem';
 import { HeaderButton, SearchBar, ConsumerPageHeader } from 'Components';
 import { getUserId, isKurir } from 'Redux/SessionRedux';
-import { getProductTitle, getProductCategory } from 'Redux/ProductRedux';
+import { getProductTitle, getProductCategory, getTermFilter } from 'Redux/ProductRedux';
 import { Images, Metrics } from 'Themes';
 import { moderateScale } from 'Lib';
     
@@ -35,14 +35,16 @@ class ConsumerProductList extends Component {
     navigation.setParams({ isKurir });
   }
   
-  onSearch = term => {
-    this.setState({ searchTerm: term });
-  };
-  
   clearFilter = () => {
     const { selectCategory } = this.props;
     selectCategory(null, null);
   };
+  
+  onSearch = value => {
+    this.setState({
+      searchTerm: value
+    });
+  }
   
   render() {
     const { isKurir, navigation, productTitle, productCategory } = this.props;

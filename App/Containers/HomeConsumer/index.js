@@ -69,8 +69,10 @@ class HomeConsumer extends Component {
     }
   }
   
-  onSearch = term => {
-    this.setState({ searchTerm: term });
+  onSearch = value => {
+    const { navigation, filterByTerm } = this.props;
+    filterByTerm(value);
+    navigation.navigate('ProductList');
   };
   
   openStoreByCategory = (categoryId, title) => {
@@ -88,6 +90,7 @@ class HomeConsumer extends Component {
           icon={isKurir ? Images.cart : Images.delivery}
           onIconPress={() => navigation.navigate(isKurir ? 'Cart' : 'ConsumerOrder')}
           onSearch={this.onSearch}
+          isResetUponSearch
         />
         <AppTitle />
         <View
@@ -137,6 +140,7 @@ HomeConsumer.propTypes = {
   userId: string,
   isKurir: bool,
   selectCategory: func,
+  filterByTerm: func,
 }
 
 const mapStateToProps = createStructuredSelector({
@@ -148,6 +152,7 @@ const mapDispatchToProps = (dispatch) => ({
   storeCart: cart => dispatch(CartActions.storeCart(cart)),
   selectCategory: (category_id, category_title) =>
     dispatch(ProductActions.selectCategory(category_id, category_title)),
+  filterByTerm: (term) => dispatch(ProductActions.filterByTerm(term)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(HomeConsumer));

@@ -7,6 +7,7 @@ import { createSelector } from 'reselect';
 const { Types, Creators } = createActions({
   storeEditedProduct: ['editedProduct'],
   selectCategory: ['category_id', 'category_title'],
+  filterByTerm: ['term'],
 })
 
 export const ProductTypes = Types
@@ -18,6 +19,7 @@ export const INITIAL_STATE = Immutable({
   editedProduct: null,
   category_id: null,
   category_title: null,
+  term: null,
 })
 
 /* ------------- Selectors ------------- */
@@ -33,6 +35,9 @@ export const getProductCategory = () =>
 export const getProductTitle = () =>
   createSelector(productSelectors(), state => state.category_title || null)
 
+export const getTermFilter = () =>
+  createSelector(productSelectors(), state => state.term || null)
+
 /* ------------- Reducers ------------- */
 
 export const storeEditedProduct = (state, { editedProduct }) =>
@@ -40,10 +45,14 @@ export const storeEditedProduct = (state, { editedProduct }) =>
 
 export const selectCategory = (state, { category_id, category_title }) =>
   state.merge({ category_id, category_title })
-  
+
+export const filterByTerm = (state, { term }) =>
+  state.merge({ term })
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.STORE_EDITED_PRODUCT]: storeEditedProduct,
   [Types.SELECT_CATEGORY]: selectCategory,
+  [Types.FILTER_BY_TERM]: filterByTerm,
 })

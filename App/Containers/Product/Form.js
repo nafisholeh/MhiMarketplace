@@ -24,7 +24,7 @@ import { FETCH_PRODUCT_DETAIL, FETCH_PRODUCT_LIST } from 'GraphQL/Product/Query'
 import { ADD_PRODUCT, EDIT_PRODUCT } from 'GraphQL/Product/Mutation';
 import { getEditedProduct } from 'Redux/ProductRedux';
 import { LoadingPage, StatePage, QueryEffectPage, ImagePicker, ImageRobust, InputText } from 'Components';
-import { InAppNotification, getReadableDate, parseToRupiah } from 'Lib';
+import { InAppNotification, getReadableDate, parseToRupiah, moderateScale } from 'Lib';
 import { getUserId } from 'Redux/SessionRedux';
 
 class Form extends Component {
@@ -459,12 +459,32 @@ class Form extends Component {
                       editable={false}
                     />
                   </TouchableOpacity>
+                  <Text 
+                    style={{
+                      color: 'rgba(0,0,0,0.68)',
+                      fontFamily: 'CircularStd-Book',
+                      fontSize: 14,
+                      letterSpacing: -0.34,
+                      marginBottom: moderateScale(6),
+                    }}
+                  >
+                    Foto Produk
+                  </Text>
                   <ImagePicker
                     onChange={this.onPhotoPicked}
                     data={photos}
                     titleBottomSheet='Pilih Foto'
                     isMultiplePick={true}
                     isShowCancelButton={false}
+                    isShowGallery
+                    styleButtonOk={{
+                      backgroundColor: Colors.fruit_dark,
+                      padding: moderateScale(8),
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: 5,
+                    }}
+                    styleTitleOk={{ color: Colors.white }}
                   />
                 </ScrollView>
                 <TouchableOpacity

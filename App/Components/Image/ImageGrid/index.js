@@ -191,7 +191,7 @@ class ImageGrid extends PureComponent {
           <Grid>
             {dataGrid.map((item, i) => {
               const columns = item.map(n => <Col>{this.renderItem(n)}</Col>);
-              return <Row>{columns}</Row>;
+              return <Row key={i}>{columns}</Row>;
             })}
           </Grid>
         }

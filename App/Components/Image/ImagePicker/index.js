@@ -196,16 +196,19 @@ class ImagePicker extends PureComponent {
 
   // render image gallery untuk multiple image
   _renderGallery = () => {
-    if(!this.props.isCustomComponent) {
-      if(this.props.isMultiplePick) {
+    const { image } = this.state;
+    const { isShowGallery, isCustomComponent, isMultiplePick } = this.props;
+    if(!isCustomComponent) {
+      if(isMultiplePick) {
         return (
           <View>
-            { this.props.isShowGallery &&
+            { (Array.isArray(image) && image.length && this.props.isShowGallery) ?
               <ImageGrid
-                data={this.state.image}
+                data={image}
                 onDeleteImage={this._onDeleteImage}
                 styleContainer={{flex:1}}
               />
+              : null
             }
             <View style={this.props.styleButtonContainer}>
               { this.props.isShowCancelButton &&
@@ -220,7 +223,7 @@ class ImagePicker extends PureComponent {
                 onPress={Platform.OS === 'ios' ? this._onOpenOptionIOS : () => this.bottomSheet.open()}
                 style={this.props.styleButtonOk}
               >
-                <Text>{this.props.titleButtonOk}</Text>
+                <Text style={this.props.styleTitleOk}>{this.props.titleButtonOk}</Text>
               </TouchableOpacity>
             </View>
           </View>

@@ -145,7 +145,6 @@ class Detail extends Component {
   render() {
     const { listId: _id, courierId } = this.props;
     const { markedDates, minDate, maxDate, isEligibleToProceed } = this.state;
-    console.tron.log('Detail/render', markedDates, isEligibleToProceed)
     return (
       <Fragment>
         <Query

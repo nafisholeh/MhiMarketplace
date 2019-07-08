@@ -38,11 +38,8 @@ export const cacheNewOrder = (data) => {
       !Array.isArray(readyToProcessOrders) ||
       !readyToProcessOrders.length
     ) {
-      ApolloClientProvider.client.writeQuery({
+      ApolloClientProvider.client.query({
         query: FETCH_READY_TO_PROCESS_LIST,
-        data: {
-          readyToProcessOrders: [normalisedData]
-        }
       });
     } else {
       const { _id: newId } = normalisedData;
@@ -63,11 +60,8 @@ export const cacheNewOrder = (data) => {
     }
   } catch (error) {
     if (normalisedData) {
-      ApolloClientProvider.client.writeQuery({
+      ApolloClientProvider.client.query({
         query: FETCH_READY_TO_PROCESS_LIST,
-        data: {
-          readyToProcessOrders: [normalisedData]
-        }
       });
     }
   }

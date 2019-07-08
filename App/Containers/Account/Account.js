@@ -16,6 +16,7 @@ import CartActions from 'Redux/CartRedux';
 import CheckoutActions from 'Redux/CheckoutRedux';
 import { SIGNOUT } from 'GraphQL/User/Mutation';
 import Menu from './Menu';
+import ApolloClientProvider from 'Services/ApolloClientProvider';
 
 class Account extends Component {
   
@@ -48,6 +49,7 @@ class Account extends Component {
   
   onSignoutComplete = async () => {
     const { reset: clearSession, resetCart, resetCheckout, navigation } = this.props;
+    ApolloClientProvider.client.resetStore();
     await clearSession();
     await resetCart();
     await resetCheckout();

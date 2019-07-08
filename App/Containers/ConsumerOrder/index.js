@@ -15,7 +15,7 @@ import {
   FETCH_READY_TO_PROCESS_LIST,
   FETCH_PROCESSING_LIST,
   FETCH_READY_TO_SEND_LIST,
-  FETCH_SENDING_LIST,
+  FETCH_SENDING_CONSUMER_LIST,
 } from 'GraphQL/Order/Query';
 import List from './Common/List';
 
@@ -58,7 +58,7 @@ class ConsumerOrder extends Component {
         />
         <List
           title="Sedang dikirim"
-          query={FETCH_SENDING_LIST}
+          query={FETCH_SENDING_CONSUMER_LIST}
           isNeedConfirm
         />
       </ScrollView>

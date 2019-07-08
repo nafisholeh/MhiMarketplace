@@ -29,35 +29,46 @@ export const cacheNewOrder = (data) => {
     shipping_address: { ...shipping_address, ...{__typename: 'Address'} },
   }
   
-  const { readyToProcessOrders } = ApolloClientProvider.client.cache.readQuery({
-    query: FETCH_READY_TO_PROCESS_LIST,  
-  });
-  if (
-    !readyToProcessOrders ||
-    !Array.isArray(readyToProcessOrders) ||
-    !readyToProcessOrders.length
-  ) {
-    ApolloClientProvider.client.writeQuery({
-      query: FETCH_READY_TO_PROCESS_LIST,
-      data: {
-        readyToProcessOrders: [normalisedData]
-      }
+  try {
+    const { readyToProcessOrders } = ApolloClientProvider.client.cache.readQuery({
+      query: FETCH_READY_TO_PROCESS_LIST,  
     });
-  } else {
-    const { _id: newId } = normalisedData;
-    const similarItem = readyToProcessOrders.findIndex(({ _id }) => _id === newId);
-    
-    ApolloClientProvider.client.writeQuery({
-      query: FETCH_READY_TO_PROCESS_LIST,
-      data: {
-        readyToProcessOrders: similarItem > -1 ? 
-          [
-            ...readyToProcessOrders.slice(0, similarItem),
-            normalisedData,
-            ...readyToProcessOrders.slice(similarItem + 1, readyToProcessOrders.length)
-          ] :
-          [].concat(normalisedData, readyToProcessOrders)
-      }
-    });
+    if (
+      !readyToProcessOrders ||
+      !Array.isArray(readyToProcessOrders) ||
+      !readyToProcessOrders.length
+    ) {
+      ApolloClientProvider.client.writeQuery({
+        query: FETCH_READY_TO_PROCESS_LIST,
+        data: {
+          readyToProcessOrders: [normalisedData]
+        }
+      });
+    } else {
+      const { _id: newId } = normalisedData;
+      const similarItem = readyToProcessOrders.findIndex(({ _id }) => _id === newId);
+      
+      ApolloClientProvider.client.writeQuery({
+        query: FETCH_READY_TO_PROCESS_LIST,
+        data: {
+          readyToProcessOrders: similarItem > -1 ? 
+            [
+              ...readyToProcessOrders.slice(0, similarItem),
+              normalisedData,
+              ...readyToProcessOrders.slice(similarItem + 1, readyToProcessOrders.length)
+            ] :
+            [].concat(normalisedData, readyToProcessOrders)
+        }
+      });
+    }
+  } catch (error) {
+    if (normalisedData) {
+      ApolloClientProvider.client.writeQuery({
+        query: FETCH_READY_TO_PROCESS_LIST,
+        data: {
+          readyToProcessOrders: [normalisedData]
+        }
+      });
+    }
   }
 };

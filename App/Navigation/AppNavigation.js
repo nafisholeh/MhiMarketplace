@@ -1,18 +1,26 @@
-import { createStackNavigator, createAppContainer } from 'react-navigation'
-import LaunchScreen from '../Containers/LaunchScreen'
+import React, { Component } from 'react';
+import { Image } from 'react-native';
+import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 
-import styles from './Styles/NavigationStyles'
+import ConsumerNavigation from './Tabs/ConsumerNavigation'
+import CourierNavigation from './Tabs/CourierNavigation';
+import FinanceNavigation from './Tabs/FinanceNavigation';
+import StockOpnameNavigation from './Tabs/StockOpnameNavigation';
 
-// Manifest of possible screens
-const PrimaryNav = createStackNavigator({
-  LaunchScreen: { screen: LaunchScreen }
-}, {
-  // Default config for all screens
-  headerMode: 'none',
-  initialRouteName: 'LaunchScreen',
-  navigationOptions: {
-    headerStyle: styles.header
+import { store } from 'Containers/App';
+import Setup from 'Containers/Setup/Setup';
+
+const PrimarySwitchNavigator = createSwitchNavigator(
+  {
+    Setup: { screen: Setup },
+    ConsumerNav: { screen: ConsumerNavigation },
+    CourierNav: { screen: CourierNavigation },
+    FinanceNav: { screen: FinanceNavigation },
+    StockOpnameNav: { screen: StockOpnameNavigation },
+  },
+  {
+    initialRouteName: 'Setup',
   }
-})
+)
 
-export default createAppContainer(PrimaryNav)
+export default createAppContainer(PrimarySwitchNavigator);

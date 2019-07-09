@@ -12,4 +12,4 @@ Sentry.setTagsContext({
   'react': true
 })
 
-AppRegistry.registerComponent('MhiMarketplace', () => App)
+AppRegistry.registerComponent('FreshFoodMHI', () => App)

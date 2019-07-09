@@ -23,7 +23,7 @@
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
-                                                      moduleName:@"MhiMarketplace"
+                                                      moduleName:@"FreshFoodMHI"
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
 

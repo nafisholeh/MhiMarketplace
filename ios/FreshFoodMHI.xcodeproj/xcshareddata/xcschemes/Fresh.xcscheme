@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "MhiMarketplace.app"
-               BlueprintName = "MhiMarketplace"
-               ReferencedContainer = "container:MhiMarketplace.xcodeproj">
+               BuildableName = "Fresh.app"
+               BlueprintName = "Fresh"
+               ReferencedContainer = "container:Fresh.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "MhiMarketplaceTests.xctest"
-               BlueprintName = "MhiMarketplaceTests"
-               ReferencedContainer = "container:MhiMarketplace.xcodeproj">
+               BuildableName = "FreshTests.xctest"
+               BlueprintName = "FreshTests"
+               ReferencedContainer = "container:Fresh.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -61,9 +61,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "MhiMarketplaceTests.xctest"
-               BlueprintName = "MhiMarketplaceTests"
-               ReferencedContainer = "container:MhiMarketplace.xcodeproj">
+               BuildableName = "FreshTests.xctest"
+               BlueprintName = "FreshTests"
+               ReferencedContainer = "container:Fresh.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -71,9 +71,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "MhiMarketplace.app"
-            BlueprintName = "MhiMarketplace"
-            ReferencedContainer = "container:MhiMarketplace.xcodeproj">
+            BuildableName = "Fresh.app"
+            BlueprintName = "Fresh"
+            ReferencedContainer = "container:Fresh.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -94,9 +94,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "MhiMarketplace.app"
-            BlueprintName = "MhiMarketplace"
-            ReferencedContainer = "container:MhiMarketplace.xcodeproj">
+            BuildableName = "Fresh.app"
+            BlueprintName = "Fresh"
+            ReferencedContainer = "container:Fresh.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -113,9 +113,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "MhiMarketplace.app"
-            BlueprintName = "MhiMarketplace"
-            ReferencedContainer = "container:MhiMarketplace.xcodeproj">
+            BuildableName = "Fresh.app"
+            BlueprintName = "Fresh"
+            ReferencedContainer = "container:Fresh.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

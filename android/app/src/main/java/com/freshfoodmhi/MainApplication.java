@@ -1,4 +1,4 @@
-package com.mhimarketplace;
+package com.freshfoodmhi;
 
 import android.app.Application;
 

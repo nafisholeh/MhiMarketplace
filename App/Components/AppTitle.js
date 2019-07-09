@@ -16,7 +16,7 @@ class AppTitle extends Component {
             marginBottom: moderateScale(15),
           }}
         >
-          MH.id
+          Fresh Food MHI
         </Text>
       </View>
     );

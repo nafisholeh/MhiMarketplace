@@ -14,11 +14,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React Native!"
 
-@interface MhiMarketplaceTests : XCTestCase
+@interface FreshTests : XCTestCase
 
 @end
 
-@implementation MhiMarketplaceTests
+@implementation FreshTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL(^)(UIView *view))test
 {

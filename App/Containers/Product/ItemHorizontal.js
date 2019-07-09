@@ -55,7 +55,7 @@ class ItemHorizontal extends Component {
             style={{
               position: 'absolute',
               right: 8,
-              bottom: 18.5,
+              bottom: userId ? 18.5 : 80,
               height: moderateScale(30),
               width: moderateScale(30),
               borderRadius: moderateScale(15),

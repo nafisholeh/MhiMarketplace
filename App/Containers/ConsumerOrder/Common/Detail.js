@@ -52,26 +52,10 @@ class Detail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isFetchComplete: false,
       timeline: [],
     }
   }
-  
-  onFetchComplete = data => {
-    const { orderDetail = {} } = data || {}; 
-    const {
-      requested_shipping_date: requested = [],
-      actual_shipping_date: actual = [],
-      time_stamp = {}
-    } = orderDetail || {};
-    
-    this.setState(prevState => {
-      return {
-        isFetchComplete: true,
-      }
-    });
-  };  
-  
+
   onConfirmOrder = mutate => {
     const { listId } = this.props;
     mutate({
@@ -98,7 +82,6 @@ class Detail extends Component {
         <Query
           query={FETCH_ORDER_DETAIL}
           variables={{ _id }}
-          onCompleted={this.onFetchComplete}
         >
           {({ loading, error, data, refetch }) => {
             if (loading || error || !data) {

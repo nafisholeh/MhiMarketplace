@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { FlatList, View, Text, CheckBox, TouchableOpacity } from 'react-native';
 import { arrayOf, shape, string, number, bool, func } from 'prop-types';
 
@@ -6,7 +6,7 @@ import { ViewShadow } from 'Components';
 import { calcDiscount, parseToRupiah, screenWidth, moderateScale } from 'Lib';
 import { Colors } from 'Themes';
 
-class OrderedProducts extends Component {
+class OrderedProducts extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {

@@ -87,23 +87,31 @@ class OrderedProducts extends Component {
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            justifyContent: 'space-between',
             paddingHorizontal: moderateScale(10),
           }}
           onPress={() => this.toggleSelect(index, !selected[index])}
         >
-          <Text
-            style={{
-              fontFamily: 'CircularStd-Book',
-              fontSize: 14,
-              color: Colors.text_dark,
-            }}
-          >
-            {title}
-          </Text>
           <View
             style={{
+              flex: 0.8,
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: 'CircularStd-Book',
+                fontSize: 14,
+                color: Colors.text_dark,
+              }}
+              numberOfLines={2}
+            >
+              {title}
+            </Text>
+          </View>
+          <View
+            style={{
+              flex: 0.2,
               flexDirection: 'row',
+              justifyContent: 'flex-end',
               alignItems: 'center',
             }}
           >
@@ -115,6 +123,7 @@ class OrderedProducts extends Component {
                   fontSize: 14,
                   color: Colors.text_light,
                 }}
+                numberOfLines={1}
               >
                 {qty} {unit}
               </Text>
@@ -125,8 +134,9 @@ class OrderedProducts extends Component {
                   fontSize: 14,
                   color: Colors.text_light,
                 }}
+                numberOfLines={1}
               >
-                {parseToRupiah(totalPrice)}
+                {parseToRupiah(totalPrice, null, true)}
               </Text>
             </View>
             {selectable && (

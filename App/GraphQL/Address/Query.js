@@ -28,6 +28,7 @@ export const FETCH_SELECTED_ADDRESS = gql`
       provinsi
       kodepos
       selected
+      location
     }
   }
 `

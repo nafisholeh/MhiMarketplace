@@ -1,6 +1,7 @@
 var _ = require('lodash');
 
 export function parseToRupiah(angka, prefix, isShort) {
+  if (!angka) return angka;
   let number_string = angka.toString().replace(/[^,\d]/g, '');
   let split = number_string.split(',');
   let sisa = split[0].length % 3;

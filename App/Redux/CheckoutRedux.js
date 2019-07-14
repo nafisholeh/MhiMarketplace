@@ -13,6 +13,7 @@ const { Types, Creators } = createActions({
   storeShipmentDate: ['shipment_date'],
   storeShipmentTime: ['shipment_time'],
   selectShipmentAddress: ['shipment_address'],
+  selectShipmentLocation: ['shipment_location'],
 })
 
 export const CheckoutTypes = Types
@@ -32,6 +33,7 @@ export const INITIAL_STATE = Immutable({
   shipment_date: null,
   shipment_time: null,
   shipment_address: null,
+  shipment_location: null,
 })
 
 /* ------------- Selectors ------------- */
@@ -93,6 +95,14 @@ export const getSelectedShipmentAddress = () =>
     const { shipment_address } = state;
     return shipment_address;
   })
+  
+export const getSelectedShipmentLocation = () =>
+  createSelector(checkoutSelectors(), state => {
+    const { shipment_location } = state;
+    if (!shipment_location) return null;
+    const [lat,lng] = shipment_location.split(',') || [null,null];
+    return { lat, lng };
+  })
 
 /* ------------- Reducers ------------- */
 
@@ -122,6 +132,9 @@ export const storeShipmentTime = (state, { shipment_time }) =>
   
 export const selectShipmentAddress = (state, { shipment_address }) =>
   state.merge({ shipment_address })
+  
+export const selectShipmentLocation = (state, { shipment_location }) =>
+  state.merge({ shipment_location })
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -133,4 +146,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.STORE_SHIPMENT_DATE]: storeShipmentDate,
   [Types.STORE_SHIPMENT_TIME]: storeShipmentTime,
   [Types.SELECT_SHIPMENT_ADDRESS]: selectShipmentAddress,
+  [Types.SELECT_SHIPMENT_LOCATION]: selectShipmentLocation,
 })

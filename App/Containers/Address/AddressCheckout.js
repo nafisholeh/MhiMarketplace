@@ -30,10 +30,11 @@ class AddressCheckout extends Component {
   };
   
   onFetchComplete = data => {
+    const { selectShipmentAddress, selectShipmentLocation } = this.props;
     const { selectedAddress } = data || {};
-    const { _id = '' } = selectedAddress || {};
-    const { selectShipmentAddress } = this.props;
+    const { _id = '', location = '' } = selectedAddress || {};
     selectShipmentAddress(_id);
+    selectShipmentLocation(location);
   }
   
   render() {
@@ -97,6 +98,7 @@ class AddressCheckout extends Component {
 AddressCheckout.propTypes = {
   userId: string,
   selectShipmentAddress: func,
+  selectShipmentLocation: func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -105,6 +107,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
   selectShipmentAddress: shipment_address => dispatch(CheckoutActions.selectShipmentAddress(shipment_address)),
+  selectShipmentLocation: shipment_location => dispatch(CheckoutActions.selectShipmentLocation(shipment_location)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(AddressCheckout));

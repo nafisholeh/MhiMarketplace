@@ -193,7 +193,6 @@ export const updateCartQty = (state, { product_id, qty }) => {
 
 export const toggleSelectItem = (state, { product_id, status = true }) => {
   const { selected } = state;
-  if (!Array.isArray(selected) || !selected.length) return;
   const isExist = selected.indexOf(product_id) > -1;
   if (status && !isExist) {
     return state.merge({

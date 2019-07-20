@@ -5,6 +5,7 @@ import { string, func } from 'prop-types';
 import { Query } from 'react-apollo';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { DotIndicator } from 'react-native-indicators';
 
 import Item from './Item';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
@@ -47,6 +48,16 @@ class AddressCheckout extends Component {
         variables={{ user_id: userId }}>
         {({ loading, error, data, refetch }) => {
           const { selectedAddress = {} } = data || {};
+          if (selectedAddress) {
+            return (
+              <Item
+                data={selectedAddress}
+                isDisabled
+                onPress={this.onOpenList}
+                index={1}
+              />
+            );
+          }
           return (
             <ViewShadow
               width={screenWidth - 35}
@@ -66,12 +77,15 @@ class AddressCheckout extends Component {
                   paddingHorizontal: moderateScale(5),
                   flexDirection: 'row',
                   alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
-                {!loading && selectedAddress && (
-                  <Item
-                    data={selectedAddress}
-                    isDisabled
+                {loading && (
+                  <DotIndicator
+                    count={4}
+                    size={10}
+                    color={Colors.veggie_dark}
+                    animationDuration={800}
                   />
                 )}
                 {!selectedAddress && (

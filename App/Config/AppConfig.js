@@ -51,6 +51,7 @@ export default {
     GRAM: 'gram',
     PIECES: 'pcs',
   },
+  MIN_WEIGHT_FREE_COURIER: 10, 
   timelineTitle: {
     incomplete: 'Checkout pesanan',
     ready_to_process: 'Konsumen konfirmasi pesanan',

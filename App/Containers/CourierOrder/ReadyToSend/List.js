@@ -10,7 +10,7 @@ import {
   getReadableAddress,
   getReadableSubdistrict,
   getUpcomingShippingSched,
-  calcTotalWeight
+  getReadableTotalWeight
 } from 'Lib';
 import { QueryEffectPage } from 'Components';
 import { Colors } from 'Themes';

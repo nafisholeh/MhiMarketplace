@@ -27,7 +27,7 @@ class Order extends Component {
           {item.product.title}
         </Text>
         <Text>
-          {qty ? qty : ''} {unit ? unit : ''}
+          {qty || ''} pcs
         </Text>
       </View>
     );

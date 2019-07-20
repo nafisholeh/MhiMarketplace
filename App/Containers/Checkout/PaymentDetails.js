@@ -2,14 +2,20 @@ import React, { Component, Fragment } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { string, arrayOf, shape, number, func } from 'prop-types';
+import { string, arrayOf, shape, number, func, bool } from 'prop-types';
 import { DotIndicator } from 'react-native-indicators';
 
 import { Colors, Metrics } from 'Themes';
-import { parseToRupiah, calcDiscount, moderateScale } from 'Lib';
+import {
+  parseToRupiah,
+  calcDiscount,
+  moderateScale,
+  getReadableTotalWeight,
+  getTotalWeight,
+} from 'Lib';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { FETCH_COURIER_COST } from 'GraphQL/CourierCost/Query';
-import { getUserId } from 'Redux/SessionRedux';
+import { getUserId, isReseller } from 'Redux/SessionRedux';
 import { getCartItemSelected } from 'Redux/CartRedux';
 import
   CheckoutActions,
@@ -24,6 +30,7 @@ class PaymentDetails extends Component {
     this.state = {
       grossPrice: 0,
       cleanPrice: 0,
+      totalWeight: 0,
       totalDiscount: 0,
       totalCost: 0,
       isCourierCostFetching: false,
@@ -156,16 +163,24 @@ class PaymentDetails extends Component {
   }
   
   calculateCourierCost = () => {
+    const { isReseller, data } = this.props;
+    const totalWeight = getTotalWeight(data);
+    if (isReseller && totalWeight >= AppConfig.MIN_WEIGHT_FREE_COURIER) {
+      this.setState({ totalWeight, courierCost: 0 });
+      return;
+    }
     const { courierCosts, distance } = this.state;
     if (!courierCosts || !Array.isArray(courierCosts) || !courierCosts.length || !distance) {
+      this.setState({ totalWeight });
       return;
     }
     const courierCostMatch = courierCosts
       .find(({ distance_min, distance_max }) => (distance >= distance_min && distance <= distance_max ))
     const { cost, is_per_km } = courierCostMatch || {};
-    const totalCourierCost = is_per_km ? cost * parseFloat(distance / 1000.0) : cost;
+    const totalCourierCost = is_per_km ? cost * Math.ceil(parseFloat(distance / 1000.0)) : cost;
     this.setState({
       courierCost: totalCourierCost,
+      totalWeight,
       totalCost: this.getTotalCost(totalCourierCost)
     }, () => {
       this.updateRedux();
@@ -174,6 +189,7 @@ class PaymentDetails extends Component {
   
   render() {
     const {
+      totalWeight,
       totalDiscount,
       courierCost = 0,
       totalCost,
@@ -193,6 +209,14 @@ class PaymentDetails extends Component {
           paddingTop: moderateScale(15),
         }}
       >
+        <View style={styles.paymentDetail}>
+          <Text style={styles.priceTitle}>
+            Berat Total
+          </Text>
+          <Text style={styles.priceValue}>
+            {`${totalWeight} kg` || '-'}
+          </Text>
+        </View>
         <View style={styles.paymentDetail}>
           <Text style={styles.priceTitle}>
             Harga Sebenarnya
@@ -216,7 +240,7 @@ class PaymentDetails extends Component {
             ) 
             : (
               <Text style={styles.priceValue}>
-                {parseToRupiah(courierCost) || '-'}
+                {courierCost === 0 ? 'Gratis' : (parseToRupiah(courierCost) || '-')}
               </Text>
             )
           }
@@ -298,11 +322,13 @@ PaymentDetails.propTypes = {
     lat: string,
     lng: string,
   }),
+  isReseller: bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
   selectedLocation: getSelectedShipmentLocation(),
+  isReseller: isReseller(),
 });
 
 const mapDispatchToProps = dispatch => ({

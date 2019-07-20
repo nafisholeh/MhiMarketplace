@@ -62,7 +62,7 @@ export const isReseller = () =>
       const { user } = state;
       if (!user) return false;
       const { user_type } = user;
-      if (user_type && user_type !== Config.userType.RESELLER) return true;
+      if (user_type && user_type === Config.userType.RESELLER) return true;
       return false;
     }
   )

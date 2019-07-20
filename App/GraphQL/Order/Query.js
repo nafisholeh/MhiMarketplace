@@ -70,6 +70,7 @@ export const FETCH_CHECKOUT_ITEMS = gql`
         price
         discount
         unit
+        packaging
       }
       qty
       selected

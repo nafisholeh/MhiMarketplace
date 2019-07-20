@@ -15,6 +15,7 @@ export const ADD_ADDRESS = gql`
      provinsi
      kodepos
      selected
+     location
     }
   }
 `

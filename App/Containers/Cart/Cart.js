@@ -13,7 +13,7 @@ import { UPDATE_CART_ITEM } from 'GraphQL/Cart/Mutation';
 import { FETCH_SOME_PRODUCT } from 'GraphQL/Product/Query';
 import { OptimizedList, StatePage, QueryEffectPage, HeaderTitle } from 'Components';
 import { getUserId, isKurir } from 'Redux/SessionRedux';
-import { getOutOfStock } from 'Redux/CartRedux';
+import CartActions, { getOutOfStock } from 'Redux/CartRedux';
 import CheckoutActions from 'Redux/CheckoutRedux';
 import { Images, Metrics, Colors } from 'Themes';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
@@ -84,6 +84,12 @@ class Cart extends Component {
       />
     );
   };
+  
+  onFetchCartCompleted = data => {
+    const { storeCart } = this.props;
+    const { cart } = data;
+    storeCart(cart);
+  };
 
   render() {
     const { refresh } = this.state;
@@ -105,6 +111,7 @@ class Cart extends Component {
       <View style={{flex:1}}>
         <Query 
           query={FETCH_CART}
+          onCompleted={this.onFetchCartCompleted}
           variables={{ user_id: userId }}>
           {({ loading, error, data, refetch }) => {
             const { cart = [] } = data;
@@ -166,6 +173,7 @@ Cart.propTypes = {
     _id: string,
     maxStock: number,
   })),
+  storeCart: func,
 }
 
 const mapStateToProps = createStructuredSelector({
@@ -176,6 +184,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
   storeCheckoutId: checkoutId => dispatch(CheckoutActions.storeCheckoutId(checkoutId)),
+  storeCart: cart => dispatch(CartActions.storeCart(cart)),
 });
 
 export default compose(

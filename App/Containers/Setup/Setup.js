@@ -5,6 +5,7 @@ import { createStructuredSelector } from 'reselect';
 import { bool, string, func } from 'prop-types';
 import { BarIndicator } from 'react-native-indicators';
 import OneSignal from 'react-native-onesignal';
+import SplashScreen from 'react-native-splash-screen';
 
 import { Colors } from 'Themes';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
@@ -45,6 +46,7 @@ class Setup extends Component {
   }
   
   componentDidMount() {
+    SplashScreen.hide();
     this.preUploadToken();
     this.checkIfDone();
     this.prefecthCart();

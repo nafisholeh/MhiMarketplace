@@ -77,11 +77,11 @@ class Setup extends Component {
       isPaymentFinish && isTokenFinish && isProductCategoryFinish &&
       isProductPackagingFinish
     ) {
-      // if (isKurir) navigation.navigate('CourierNav');
-      // else if (isStokOpname) navigation.navigate('StockOpnameNav');
-      // else if (isKeuangan) navigation.navigate('FinanceNav');
-      // else if (!isAdmin) navigation.navigate('ConsumerNav');
-      // else navigation.navigate('ConsumerNav');
+      if (isKurir) navigation.navigate('CourierNav');
+      else if (isStokOpname) navigation.navigate('StockOpnameNav');
+      else if (isKeuangan) navigation.navigate('FinanceNav');
+      else if (!isAdmin) navigation.navigate('ConsumerNav');
+      else navigation.navigate('ConsumerNav');
     }
   };
   
@@ -259,7 +259,7 @@ class Setup extends Component {
               style={{
                 fontFamily: 'CircularStd-Bold',
                 fontSize: 14,
-                color: 'rgba(0,0,0,0.8)',
+                color: 'rgba(0,0,0,0.4)',
               }}
               >
               menyiapkan aplikasi

@@ -85,7 +85,7 @@ class HomeConsumer extends Component {
     const { isKurir, navigation } = this.props;
     const { categories } = this.state;
     return (
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         <ConsumerPageHeader
           icon={isKurir ? Images.cart : Images.delivery}
           onIconPress={() => navigation.navigate(isKurir ? 'Cart' : 'ConsumerOrder')}

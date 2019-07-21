@@ -36,7 +36,7 @@ export default {
     NEED_CHECKOUT: 'cashier',
     NO_ACCOUNT: 'needLogin',
   },
-  debounceInterval: 1000,
+  debounceInterval: 0,
   defaulCourierCost: 25000,
   warningMandatory: 'Wajib diisi',
   userType: {

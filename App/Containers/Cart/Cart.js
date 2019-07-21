@@ -13,7 +13,7 @@ import { UPDATE_CART_ITEM } from 'GraphQL/Cart/Mutation';
 import { FETCH_SOME_PRODUCT } from 'GraphQL/Product/Query';
 import { OptimizedList, StatePage, QueryEffectPage, HeaderTitle } from 'Components';
 import { getUserId, isKurir } from 'Redux/SessionRedux';
-import { getCartTotalGrossPrice, getOutOfStock } from 'Redux/CartRedux';
+import { getOutOfStock } from 'Redux/CartRedux';
 import CheckoutActions from 'Redux/CheckoutRedux';
 import { Images, Metrics, Colors } from 'Themes';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
@@ -87,7 +87,7 @@ class Cart extends Component {
 
   render() {
     const { refresh } = this.state;
-    const { userId, grossPriceTotal, storeCheckoutId } = this.props;
+    const { userId, storeCheckoutId } = this.props;
     if (!userId) {
       return (
         <View style={{flex:1}}>
@@ -159,7 +159,6 @@ class Cart extends Component {
 
 Cart.propTypes = {
   userId: string,
-  grossPriceTotal: number,
   updateCartItem: func,
   storeCheckoutId: func,
   isKurir: bool,
@@ -171,7 +170,6 @@ Cart.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
-  grossPriceTotal: getCartTotalGrossPrice(),
   isKurir: isKurir(),
   outOfStock: getOutOfStock(),
 });

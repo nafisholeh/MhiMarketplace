@@ -78,7 +78,7 @@ export const getCartItemIds = () =>
     cartSelectors(),
     state => {
       const { cart } = state;
-      if (!cart) return [];
+      if (!Array.isArray(cart) || !cart.length) return [];
       return cart.map(item => {
         const { product } = item;
         if (!product) return '0';
@@ -107,8 +107,9 @@ export const getCartItemSelected = () =>
   createSelector(
     cartSelectors(),
     state => {
-      const { cart, selected } = state;
+      const { cart, selected = [] } = state;
       if (!cart) return [];
+      if (!Array.isArray(selected)) return [];
       return cart.filter(m => selected.some(n => n === m.product._id)) || [];
     }
   )

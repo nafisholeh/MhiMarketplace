@@ -50,12 +50,12 @@ export const SELECT_ADDRESS = gql`
 export const cacheSelectAddress = ( cache, { data }, addressId ) => {
   try {
     const { session: { user: { _id: userId } }} = store.getState();
-    const { address } = cache.readQuery({
+    const { address = [] } = cache.readQuery({
       query: FETCH_ADDRESS,
       variables: { user_id: userId } 
     });
     const newAddresses = 
-      address.map(item => {
+      Array.isArray(address) && address.map(item => {
           if (item.selected && item._id !== addressId) {
             return Object.assign({}, item, { selected: false })
           }

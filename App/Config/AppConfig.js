@@ -36,7 +36,7 @@ export default {
     NEED_CHECKOUT: 'cashier',
     NO_ACCOUNT: 'needLogin',
   },
-  debounceInterval: 1000,
+  debounceInterval: 0,
   defaulCourierCost: 25000,
   warningMandatory: 'Wajib diisi',
   userType: {
@@ -44,12 +44,14 @@ export default {
     STOK_OPNAME: 'stok opname',
     KEUANGAN: 'keuangan',
     KONSUMEN: 'user',
+    RESELLER: 'reseller',
   },
   weightType: {
     KILOGRAM: 'kg',
     GRAM: 'gram',
     PIECES: 'pcs',
   },
+  MIN_WEIGHT_FREE_COURIER: 10, 
   timelineTitle: {
     incomplete: 'Checkout pesanan',
     ready_to_process: 'Konsumen konfirmasi pesanan',

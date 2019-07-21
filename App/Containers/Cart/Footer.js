@@ -76,7 +76,7 @@ class Footer extends Component {
   };
   
   onStartSyncCart = syncCartItem => {
-    const { userId, cartItems, selectedCartItems } = this.props;
+    const { userId, cartItems = [], selectedCartItems = [] } = this.props;
     const cartItemUpload = cartItems.map(n => ({
       product_id: n.product._id,
       qty: n.qty,

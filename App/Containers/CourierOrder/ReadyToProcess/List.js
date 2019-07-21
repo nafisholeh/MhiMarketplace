@@ -9,7 +9,7 @@ import {
   getReadableAddress,
   getReadableSubdistrict,
   getUpcomingShippingSched,
-  calcTotalWeight
+  getReadableTotalWeight
 } from 'Lib';
 import { QueryEffectPage } from 'Components';
 import { Colors } from 'Themes';
@@ -24,7 +24,7 @@ class ReadyToProcessList extends Component {
     const district = getReadableSubdistrict(shipping_address);
     const address = getReadableAddress(shipping_address);
     const schedule = getUpcomingShippingSched(requested_shipping_date);
-    const totalWeight = calcTotalWeight(products);
+    const totalWeight = getReadableTotalWeight(products);
     return (
       <Item
         id={_id}

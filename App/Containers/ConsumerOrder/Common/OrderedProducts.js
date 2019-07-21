@@ -59,7 +59,6 @@ class OrderedProducts extends PureComponent {
         photo,
         price,
         discount = 0,
-        unit = 'kg'
       } = {},
       qty = 0,
     } = item || {};
@@ -125,7 +124,7 @@ class OrderedProducts extends PureComponent {
                 }}
                 numberOfLines={1}
               >
-                {qty} {unit}
+                {qty} pcs
               </Text>
               <Text
                 style={{

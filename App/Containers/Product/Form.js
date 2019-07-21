@@ -77,7 +77,7 @@ class Form extends Component {
         query: FETCH_PRODUCT_CATEGORY
       });
       const { productCategory = [] } = data || {};
-      const categoryOptions = productCategory && productCategory.map(item => {
+      const categoryOptions = Array.isArray(productCategory) && productCategory.map(item => {
         const { _id, title } = item || {};
         return {
           label: title,
@@ -104,7 +104,7 @@ class Form extends Component {
         query: FETCH_PRODUCT_PACKAGING
       });
       const { productPackaging = [] } = data || {};
-      const packagingOptions = productPackaging && productPackaging.map(item => {
+      const packagingOptions = Array.isArray(productPackaging) && productPackaging.map(item => {
         const { _id, qty, unit } = item || {};
         return {
           label: `${qty} ${unit}`,
@@ -338,7 +338,7 @@ class Form extends Component {
     });
   };
   
-  onPhotoPicked = (raw, paths) => {
+  onPhotoPicked = (raw, paths = []) => {
     const photos = paths.map((item, i) => {
       return {
         mime: raw[i][0].mime,

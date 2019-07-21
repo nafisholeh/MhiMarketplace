@@ -95,7 +95,7 @@ class DeliveryOptions extends Component {
           {({ loading, error, data, refetch }) => {
             if (loading) return (<View />);
             else if (error) return (<View />);
-            const { deliveries } = data;
+            const { deliveries = [] } = data;
             return (
               <View style={{ marginLeft: 25, marginRight: 15, flexDirection: 'row', alignItems: 'center' }}>
                 <Text
@@ -116,7 +116,7 @@ class DeliveryOptions extends Component {
                     color: 'red',
                   }}
                   onValueChange={this.onValueChange}>
-                  {deliveries.map(item => (
+                  {Array.isArray(deliveries) && deliveries.map(item => (
                     <Picker.Item
                       key={item._id}
                       label={`${item.time_start} - ${item.time_end}`}

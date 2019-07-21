@@ -157,7 +157,7 @@ class Item extends Component {
             />
           </TouchableOpacity>
         }
-        { !isInsideCart && !isStokOpname && userId &&
+        { !isInsideCart && !isStokOpname && userId && stock ? (
           <Mutation
             mutation={UPDATE_CART_ITEM_SCHEMA}
             variables={{ user_id: userId, product_id: productId, qty: null }}
@@ -180,7 +180,7 @@ class Item extends Component {
               );
             }}
           </Mutation>
-        }
+        ) : null}
         {label === 'mhi' ? (
           <Image
             source={Images.bebas_peskim}

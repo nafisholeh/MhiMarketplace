@@ -2,6 +2,8 @@ import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
 import { createSelector } from 'reselect'
 
+import Config from 'Config/AppConfig';
+
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
@@ -48,7 +50,19 @@ export const isAdmin = () =>
       const { user } = state;
       if (!user) return false;
       const { user_type } = user;
-      if (user_type && user_type !== 'user') return true;
+      if (user_type && user_type !== Config.userType.KONSUMEN) return true;
+      return false;
+    }
+  )
+  
+export const isReseller = () =>
+  createSelector(
+    sessionSelectors(),
+    state => {
+      const { user } = state;
+      if (!user) return false;
+      const { user_type } = user;
+      if (user_type && user_type === Config.userType.RESELLER) return true;
       return false;
     }
   )
@@ -60,7 +74,7 @@ export const isStokOpname = () =>
       const { user } = state;
       if (!user) return false;
       const { user_type } = user;
-      if (user_type && user_type === 'stok opname') return true;
+      if (user_type && user_type === Config.userType.STOK_OPNAME) return true;
       return false;
     }
   )
@@ -72,7 +86,7 @@ export const isKeuangan = () =>
       const { user } = state;
       if (!user) return false;
       const { user_type } = user;
-      if (user_type && user_type === 'keuangan') return true;
+      if (user_type && user_type === Config.userType.KEUANGAN) return true;
       return false;
     }
   )

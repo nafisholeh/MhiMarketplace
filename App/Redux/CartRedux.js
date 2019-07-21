@@ -78,7 +78,7 @@ export const getCartItemIds = () =>
     cartSelectors(),
     state => {
       const { cart } = state;
-      if (!cart) return [];
+      if (!Array.isArray(cart) || !cart.length) return [];
       return cart.map(item => {
         const { product } = item;
         if (!product) return '0';
@@ -107,8 +107,9 @@ export const getCartItemSelected = () =>
   createSelector(
     cartSelectors(),
     state => {
-      const { cart, selected } = state;
+      const { cart, selected = [] } = state;
       if (!cart) return [];
+      if (!Array.isArray(selected)) return [];
       return cart.filter(m => selected.some(n => n === m.product._id)) || [];
     }
   )
@@ -184,6 +185,7 @@ export const storeCart = (state, { cart }) => {
 
 export const updateCartQty = (state, { product_id, qty }) => {
   const cart = state.cart;
+  if (!Array.isArray(cart) || !cart.length) return;
   const updateIndex = cart.findIndex(n => n.product._id === product_id);
   return state.merge({
     cart: update(cart, { [updateIndex]: { qty: { $set: qty } } })
@@ -212,6 +214,7 @@ export const toggleSelectItem = (state, { product_id, status = true }) => {
 
 export const deleteCartItem = (state, { product_id }) => {
   const { cart, selected } = state;
+  if (!Array.isArray(cart) || !cart.length) return;
   const updateIndex = cart.findIndex(n => n.product._id === product_id);
   const removedSelectedIndex = selected.indexOf(product_id);
   return state.merge({ 

@@ -1,12 +1,14 @@
-import React, { Component } from 'react';
-import { View } from 'react-native';
+import React, { Component, Fragment } from 'react';
+import { View, Image, Text } from 'react-native';
 import { connect } from 'react-redux'; 
 import { createStructuredSelector } from 'reselect';
 import { bool, string, func } from 'prop-types';
 import { BarIndicator } from 'react-native-indicators';
 import OneSignal from 'react-native-onesignal';
+import SplashScreen from 'react-native-splash-screen';
 
-import { Colors } from 'Themes';
+import { screenWidth, moderateScale } from 'Lib';
+import { Colors, Images } from 'Themes';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
 import { FETCH_ADDRESS } from 'GraphQL/Address/Query';
@@ -45,6 +47,7 @@ class Setup extends Component {
   }
   
   componentDidMount() {
+    SplashScreen.hide();
     this.preUploadToken();
     this.checkIfDone();
     this.prefecthCart();
@@ -219,17 +222,49 @@ class Setup extends Component {
       isUploadingToken
     } = this.state;
     return (
-      <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
+      <View
+        style={{
+          flex:1,
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
+        <Image
+          source={Images.bebas_peskim}
+          style={{
+            width: screenWidth * 0.35,
+            height: screenWidth * 0.35,
+          }}
+        />
         {(
           isFetchingCart || isFetchingCourierCost ||
           isFetchingPayment || isUploadingToken || isFetchingProductCategory ||
           isFetchingProductPackaging
         ) && (
-          <BarIndicator
-            color={Colors.green_dark}
-            count={5}
-            size={50}
-          />
+          <View
+            style={{
+              flexDirection: 'column',
+              position: 'absolute',
+              bottom: '10%',
+            }}
+          >
+            <BarIndicator
+              color={Colors.green_dark}
+              count={5}
+              size={15}
+              style={{ marginBottom: moderateScale(5) }}
+            />
+            <Text
+              style={{
+                fontFamily: 'CircularStd-Bold',
+                fontSize: 14,
+                color: 'rgba(0,0,0,0.4)',
+              }}
+              >
+              menyiapkan aplikasi
+            </Text>
+          </View>
         )}
       </View>
     )

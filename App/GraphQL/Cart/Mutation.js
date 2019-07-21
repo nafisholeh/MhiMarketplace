@@ -123,6 +123,22 @@ export const cacheSelectCartItem = (productId, isSelected) => {
   });
 };
 
+export const cacheUpdateCartItemCounter = (product_id, qty) => {
+  const { session: { user: { _id: user_id } }} = store.getState();
+  const { cart } = ApolloClientProvider.client
+    .readQuery({ query: FETCH_CART, variables: { user_id } });
+  if (!Array.isArray(cart)) return;
+  const updateIndex = cart.findIndex(n => n.product._id === product_id);
+  if (updateIndex >= 0) {
+    const newCart = update(cart, {[updateIndex]: { $merge: { qty }}});
+    ApolloClientProvider.client.writeQuery({                                                          // ubah kuantitas item keranjang belanja di client cache
+      query: FETCH_CART,                                                    // trigger UI Query dari GET_CART_ITEMS utk re-render
+      variables: { user_id },
+      data: { cart: newCart }
+    });
+  }
+};
+
 // mutation props utk handle sinkronisasi dan mutasi ubah kuantitas item di keranjang belanja
 export const UPDATE_CART_ITEM = graphql(UPDATE_CART_ITEM_SCHEMA, {
   props: ({ ownProps, mutate }) => ({

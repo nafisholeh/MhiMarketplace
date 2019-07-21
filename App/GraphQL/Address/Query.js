@@ -12,6 +12,7 @@ export const FETCH_ADDRESS = gql`
       provinsi
       kodepos
       selected
+      location
     }
   }
 `
@@ -28,6 +29,7 @@ export const FETCH_SELECTED_ADDRESS = gql`
       provinsi
       kodepos
       selected
+      location
     }
   }
 `

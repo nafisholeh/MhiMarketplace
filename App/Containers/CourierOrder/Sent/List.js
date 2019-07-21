@@ -10,7 +10,7 @@ import {
   getReadableAddress,
   getReadableSubdistrict,
   getUpcomingShippingSched,
-  calcTotalWeight,
+  getReadableTotalWeight,
   getReadableDate,
   getIntervalTimeToday
 } from 'Lib';

@@ -114,7 +114,12 @@ class ImageGrid extends PureComponent {
   // cari dan simpan index image yang telah diselect
   _setSelectedIndex() {
     let temp = []
-    this.state.selected.filter((item, i) => {
+    const { selected = [] } = this.state;
+    if (!Array.isArray(selected) || !selected.length) {
+      this.setState({ selectedIndex: temp });
+      return temp;
+    }
+    selected.filter((item, i) => {
       if(item) {
         temp.push(i)
         return true

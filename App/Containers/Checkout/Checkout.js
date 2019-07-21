@@ -60,7 +60,7 @@ class Checkout extends Component {
         payment_option: paymentOptSelected,
         gross_price: gross,
         total_discount: discount,
-        courier_cost: courier,
+        courier_cost: courier || 0,
         total_cost: total,
         requested_shipping_date: shippingDate,
         shipping_address: shipmentAddress,

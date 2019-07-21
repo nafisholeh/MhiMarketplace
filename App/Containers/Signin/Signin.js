@@ -109,6 +109,9 @@ class Signin extends Component {
           case Config.userType.KEUANGAN:
             screenName = 'HomeFinance';
             break;
+          case Config.userType.RESELLER:
+            screenName = 'HomeConsumer';
+            break;
           default:
             screenName = 'HomeConsumer';
             break;

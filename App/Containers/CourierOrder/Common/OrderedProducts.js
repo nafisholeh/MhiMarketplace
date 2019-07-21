@@ -58,7 +58,6 @@ class OrderedProducts extends Component {
         photo,
         price,
         discount = 0,
-        unit = 'kg'
       } = {},
       qty = 0,
     } = item || {};
@@ -83,7 +82,7 @@ class OrderedProducts extends Component {
           }}
         >
           <View>
-            <Text style={{ textAlign: 'right' }}>{qty} {unit}</Text>
+            <Text style={{ textAlign: 'right' }}>{qty} pcs</Text>
             <Text style={{ textAlign: 'right' }}>{parseToRupiah(totalPrice)}</Text>
           </View>
           {selectable && (

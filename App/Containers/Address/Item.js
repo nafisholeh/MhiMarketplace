@@ -43,7 +43,8 @@ class AddressItem extends Component {
       data: { _id, selected },
       userId,
       isDisabled,
-      index
+      index,
+      onPress,
     } = this.props;
     return (
       <Mutation
@@ -76,8 +77,11 @@ class AddressItem extends Component {
                   alignItems: 'center',
                   padding: moderateScale(10),
                 }}
-                onPress={() => this.syncSelectedAddressOnAll(selectAddress)}
-                disabled={isDisabled}
+                onPress={() => {
+                  if (onPress) onPress();
+                  else this.syncSelectedAddressOnAll(selectAddress)
+                }}
+                disabled={onPress ? false : isDisabled}
               >
                 <View style={{
                     flexDirection: 'column',
@@ -140,6 +144,7 @@ AddressItem.propTypes = {
   userId: string,
   isDisabled: bool,
   selectShipmentAddress: func,
+  onPress: func,
 };
 
 AddressItem.defaultProps = {

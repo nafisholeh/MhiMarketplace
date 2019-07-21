@@ -2,15 +2,25 @@ import React, { Component, Fragment } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { string, arrayOf, shape, number, func } from 'prop-types';
+import { string, arrayOf, shape, number, func, bool } from 'prop-types';
+import { DotIndicator } from 'react-native-indicators';
 
 import { Colors, Metrics } from 'Themes';
-import { parseToRupiah, calcDiscount, moderateScale } from 'Lib';
+import {
+  parseToRupiah,
+  calcDiscount,
+  moderateScale,
+  getReadableTotalWeight,
+  getTotalWeight,
+} from 'Lib';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { FETCH_COURIER_COST } from 'GraphQL/CourierCost/Query';
-import { getUserId } from 'Redux/SessionRedux';
+import { getUserId, isReseller } from 'Redux/SessionRedux';
 import { getCartItemSelected } from 'Redux/CartRedux';
-import CheckoutActions from 'Redux/CheckoutRedux';
+import
+  CheckoutActions,
+  { getSelectedShipmentLocation }
+from 'Redux/CheckoutRedux';
 import AppConfig from 'Config/AppConfig';
 
 class PaymentDetails extends Component {
@@ -20,15 +30,29 @@ class PaymentDetails extends Component {
     this.state = {
       grossPrice: 0,
       cleanPrice: 0,
+      totalWeight: 0,
       totalDiscount: 0,
-      courierCost: AppConfig.defaulCourierCost,
       totalCost: 0,
+      isCourierCostFetching: false,
+      isCourierCostError: false,
+      courierCost: null,
+      courierCosts: null,
+      distance: null,
+      isDistanceFetching: false,
+      isDistanceError: false,
     };
   }
   
   componentDidMount() {
     this.setupData();
     this.setupCourierCost();
+    this.setupDistance();
+  }
+  
+  componentDidUpdate(prevProps) {
+    if (prevProps.selectedLocation !== this.props.selectedLocation) {
+      this.setupDistance();
+    }
   }
   
   updateRedux = () => {
@@ -44,9 +68,9 @@ class PaymentDetails extends Component {
       grossPrice: this.getGrossPrice(data),
       totalDiscount: this.getDiscount(data),
     }, () => {
-      const { totalDiscount, courierCost } = this.state;
+      const { totalDiscount } = this.state;
       this.setState({
-        totalCost: this.getTotalCost(data, courierCost)
+        totalCost: this.getTotalCost()
       }, () => {
         this.updateRedux();
       });
@@ -80,45 +104,99 @@ class PaymentDetails extends Component {
     return total;
   };
   
-  getTotalCost = (data, courier = 0) => {
+  getTotalCost = (courier = 0) => {
+    const { data } = this.props;
     if (!Array.isArray(data)) return 0;
     const total = this.getCleanPrice(data);
     return total + courier;
   }
   
-  setupCourierCost = async data => {
-    try {
-      const { courierCosts = [] } = ApolloClientProvider.client.cache.readQuery({
-        query: FETCH_COURIER_COST
-      });
-      this.setState({ courierCost: courierCosts[0].cost });
-    } catch (error) {
-      const result = await ApolloClientProvider.client.query({
-        query: FETCH_COURIER_COST
-      });
-      if (!result) return;
-      const { courierCosts = [] } = result;
-      this.setState({ 
-        courierCost: courierCosts[0].cost,
-      }, () => {
-        const { totalDiscount, courierCost } = this.state;
-        const { data } = this.props;
-        this.setState({
-          totalCost: this.getTotalCost(data, courierCost)
-        }, () => {
-          this.updateRedux();
-        })
-      });
+  setupCourierCost = async () => {
+    this.setState({ isCourierCostFetching: true, isCourierCostError: false });
+    const result = await ApolloClientProvider.client.query({
+      query: FETCH_COURIER_COST
+    });
+    if (!result) {
+      this.setState({ isCourierCostFetching: false, isCourierCostError: true });
+      return;
     }
+    const { data } = result || {};
+    const { courierCosts = [] } = data || {};
+    this.setState({ 
+      isCourierCostFetching: false,
+      courierCosts,
+    }, () => {
+      this.calculateCourierCost();
+    });
+  };
+  
+  setupDistance = async (
+    sourceLat = '-8.141080',
+    sourceLng = '113.731415'
+  ) => {
+    const { selectedLocation } = this.props;
+    if (!sourceLat || !sourceLng || !selectedLocation) return;
+    const { lat: destinationLat, lng: destinationLng } = selectedLocation || {};
+    if (!destinationLat || !destinationLng) return;
+    try {
+      this.setState({ isDistanceFetching: true, isDistanceError: false });
+      const routeCall =
+        await fetch(`https://routing.openstreetmap.de/routed-car/route/v1/driving/`
+          + `${destinationLng},${destinationLat};${sourceLng},${sourceLat}?`
+          + `overview=false&steps=false`)
+      const route = await routeCall.json();
+      const { routes, code } = route || {};
+      if (code === 'Ok') {
+        const [{ distance }] = routes || [];
+        this.setState({ distance, isDistanceFetching: false }, () => {
+          this.calculateCourierCost();
+        });
+      } else {
+        // calculate using geodistance
+        this.setState({ distance: 0, isDistanceFetching: false }, () => {
+          this.calculateCourierCost();
+        });
+      }
+    } catch (error) {
+      this.setState({ isDistanceError: true });
+    }
+  }
+  
+  calculateCourierCost = () => {
+    const { isReseller, data } = this.props;
+    const totalWeight = getTotalWeight(data);
+    if (isReseller && totalWeight >= AppConfig.MIN_WEIGHT_FREE_COURIER) {
+      this.setState({ totalWeight, courierCost: 0 });
+      return;
+    }
+    const { courierCosts, distance } = this.state;
+    if (!courierCosts || !Array.isArray(courierCosts) || !courierCosts.length || !distance) {
+      this.setState({ totalWeight });
+      return;
+    }
+    const courierCostMatch = courierCosts
+      .find(({ distance_min, distance_max }) => (distance >= distance_min && distance <= distance_max ))
+    const { cost, is_per_km } = courierCostMatch || {};
+    const totalCourierCost = is_per_km ? cost * Math.ceil(parseFloat(distance / 1000.0)) : cost;
+    this.setState({
+      courierCost: totalCourierCost,
+      totalWeight,
+      totalCost: this.getTotalCost(totalCourierCost)
+    }, () => {
+      this.updateRedux();
+    })
   };
   
   render() {
     const {
+      totalWeight,
       totalDiscount,
       courierCost = 0,
       totalCost,
       grossPrice,
-      cleanPrice
+      cleanPrice,
+      isCourierCostFetching,
+      isDistanceFetching
     } = this.state;
     return (
       <View
@@ -133,6 +211,14 @@ class PaymentDetails extends Component {
       >
         <View style={styles.paymentDetail}>
           <Text style={styles.priceTitle}>
+            Berat Total
+          </Text>
+          <Text style={styles.priceValue}>
+            {`${totalWeight} kg` || '-'}
+          </Text>
+        </View>
+        <View style={styles.paymentDetail}>
+          <Text style={styles.priceTitle}>
             Harga Sebenarnya
           </Text>
           <Text style={styles.priceValue}>
@@ -141,9 +227,23 @@ class PaymentDetails extends Component {
         </View>
         <View style={styles.paymentDetail}>
           <Text style={styles.priceTitle}>Harga Kurir</Text>
-          <Text style={styles.priceValue}>
-            {parseToRupiah(courierCost) || '-'}
-          </Text>
+          {(isCourierCostFetching || isDistanceFetching) ?
+            (
+              <View style={{ alignItems: 'flex-end' }}>
+                <DotIndicator
+                  count={3}
+                  size={6}
+                  color={Colors.veggie_dark}
+                  animationDuration={800}
+                />
+              </View>
+            ) 
+            : (
+              <Text style={styles.priceValue}>
+                {courierCost === 0 ? 'Gratis' : (parseToRupiah(courierCost) || '-')}
+              </Text>
+            )
+          }
         </View>
         {totalDiscount ? 
           (
@@ -218,10 +318,17 @@ PaymentDetails.propTypes = {
     })
   ),
   updatePaymentDetails: func,
+  selectedLocation: shape({
+    lat: string,
+    lng: string,
+  }),
+  isReseller: bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
+  selectedLocation: getSelectedShipmentLocation(),
+  isReseller: isReseller(),
 });
 
 const mapDispatchToProps = dispatch => ({

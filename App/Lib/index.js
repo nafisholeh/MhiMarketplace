@@ -12,7 +12,7 @@ import {
   graphqlToRNPickerSelect,
 } from './Address';
 import { InAppNotification } from './InAppNotification';
-import { calcTotalWeight, getAggregateProducts } from './Product';
+import { getReadableTotalWeight, getAggregateProducts, getTotalWeight } from './Product';
 import { getUpcomingShippingSched, getReadableShippingSched } from './Shipping';
 import { filterObject } from './Object';
 import { reportSentryError, addToSentryLog, reportSentryLog } from './SentryUtils';
@@ -21,8 +21,9 @@ export {
   parseToRupiah, calcDiscount, isEmailValid, isEmailError, 
   getGraphQLError, getReadableDate, setTabBarHide, moderateScale,
   isString, getReadableAddress, getReadableSubdistrict, getReadableCityState,
-  InAppNotification, calcTotalWeight, getReadableShippingSched,
+  InAppNotification, getReadableTotalWeight, getReadableShippingSched,
   getUpcomingShippingSched, filterObject, getIntervalTimeToday,
   getAggregateProducts, screenWidth, screenHeight, graphqlToRNPickerSelect,
-  getIntervalDateToday, reportSentryError, addToSentryLog, reportSentryLog
+  getIntervalDateToday, reportSentryError, addToSentryLog, reportSentryLog,
+  getTotalWeight
 };

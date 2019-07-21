@@ -38,7 +38,6 @@ class List extends Component {
           flex: 1,
           zIndex: 1,
           minHeight: moderateScale(215),
-          marginBottom: moderateScale(15),
         }}
       >
         <Query

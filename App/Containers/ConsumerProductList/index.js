@@ -51,10 +51,7 @@ class ConsumerProductList extends Component {
     const { searchTerm } = this.state;
     return (
       <View 
-        style={{
-          flex: 1,
-          paddingBottom: Metrics.baseMargin
-        }}
+        style={{ flex: 1 }}
       >
         <ConsumerPageHeader
           icon={isKurir ? Images.cart : Images.delivery}

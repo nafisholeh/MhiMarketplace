@@ -9,7 +9,7 @@ import { createStructuredSelector } from 'reselect';
 import { parseToRupiah, isString, calcDiscount, moderateScale } from 'Lib';
 import { UpDownCounter, ProductVerticalWrapper, ProductImage } from 'Components';
 import { FETCH_CART } from 'GraphQL/Cart/Query';
-import { cacheSelectCartItem } from 'GraphQL/Cart/Mutation';
+import { cacheSelectCartItem, cacheUpdateCartItemCounter } from 'GraphQL/Cart/Mutation';
 import { UPDATE_CART_ITEM, DELETE_CART_ITEM } from 'GraphQL/Cart/Mutation';
 import CartActions, { getCartItemIdSelected } from 'Redux/CartRedux';
 import { getUserId } from 'Redux/SessionRedux';
@@ -29,11 +29,7 @@ class Item extends Component {
   onCounterChanged = counter => {
     const { userId, updateCartItem, updateCartQty, data: { product: { _id: productId } } } = this.props;
     updateCartQty(productId, counter);
-    updateCartItem({
-      user_id: userId,
-      product_id: productId,
-      qty: counter,
-    });
+    cacheUpdateCartItemCounter(productId, counter);
   }
   
   onItemDeleted = (cache, { data }) => {

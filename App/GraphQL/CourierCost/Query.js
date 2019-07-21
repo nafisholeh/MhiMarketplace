@@ -7,6 +7,7 @@ export const FETCH_COURIER_COST = gql`
       distance_min
       distance_max
       cost
+      is_per_km
     }
   }
 `

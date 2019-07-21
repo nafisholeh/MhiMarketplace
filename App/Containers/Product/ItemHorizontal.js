@@ -128,7 +128,7 @@ class ItemHorizontal extends Component {
                   }}
                   numberOfLines={1}
                 >
-                  {`/${packaging} ${unit}`}
+                  {`/${packaging} pcs`}
                 </Text>
               ) : null
             }
@@ -167,7 +167,7 @@ class ItemHorizontal extends Component {
                 <LinearGradient
                   start={{x: 0, y: 0}} end={{x: 1, y: 0}}
                   colors={
-                    !isInsideCart ?
+                    !isInsideCart && stock ?
                     ['#a8de1c', '#50ac02'] : 
                     [Colors.brown_light, Colors.brown_dark]
                   }
@@ -179,22 +179,21 @@ class ItemHorizontal extends Component {
                 >
                   <TouchableOpacity
                     onPress={() => updateCartItem()}
-                    disabled={isInsideCart}
+                    disabled={isInsideCart || !stock}
                     style={{
                       flex: 1,
                       alignItems: 'center',
                       justifyContent: 'center' 
                     }}
                   >
-                    {loading && (
+                    {loading ? (
                       <DotIndicator
                         count={4}
                         size={7}
                         color='white'
                         animationDuration={800}
                       />
-                    )}
-                    {!loading && (
+                    ) : (
                       <Text
                         style={{
                           fontFamily: 'CircularStd-Medium',
@@ -202,7 +201,7 @@ class ItemHorizontal extends Component {
                           color: 'white'
                         }}
                       >
-                        {!isInsideCart ? `Beli` : `Terbeli`}
+                        {!stock ? 'Habis' : (!isInsideCart ? `Beli` : `Terbeli`)}
                       </Text>
                     )}
                   </TouchableOpacity> 

@@ -158,15 +158,15 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-fast-image')
+    implementation project(':react-native-gesture-handler')
+    implementation project(':react-native-image-crop-picker')
+    implementation project(':react-native-linear-gradient')
+    implementation project(':react-native-sentry')
     compile project(':react-native-splash-screen')
-    compile project(':react-native-sentry')
-    compile project(':react-native-linear-gradient')
     compile project(':react-native-view-overflow')
     compile project(':react-native-svg')
-    compile project(':react-native-fast-image')
-    compile project(':react-native-image-crop-picker')
     compile project(':react-native-onesignal')
-    compile project(':react-native-gesture-handler')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules

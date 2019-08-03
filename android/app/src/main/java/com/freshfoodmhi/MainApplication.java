@@ -3,15 +3,15 @@ package com.freshfoodmhi;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
-import io.sentry.RNSentryPackage;
+import com.dylanvann.fastimage.FastImageViewPackage;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
+import io.sentry.RNSentryPackage;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.entria.views.RNViewOverflowPackage;
 import com.horcrux.svg.SvgPackage;
-import com.dylanvann.fastimage.FastImageViewPackage;
-import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -32,15 +32,15 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new SplashScreenReactPackage(),
-            new RNSentryPackage(),
+            new FastImageViewPackage(),
+            new RNGestureHandlerPackage(),
+            new PickerPackage(),
             new LinearGradientPackage(),
+            new RNSentryPackage(),
+            new SplashScreenReactPackage(),
             new RNViewOverflowPackage(),
             new SvgPackage(),
-            new FastImageViewPackage(),
-            new PickerPackage(),
-            new ReactNativeOneSignalPackage(),
-            new RNGestureHandlerPackage()
+            new ReactNativeOneSignalPackage()
       );
     }
 

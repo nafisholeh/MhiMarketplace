@@ -6,6 +6,7 @@ import ConsumerNavigation from './Tabs/ConsumerNavigation'
 import CourierNavigation from './Tabs/CourierNavigation';
 import FinanceNavigation from './Tabs/FinanceNavigation';
 import StockOpnameNavigation from './Tabs/StockOpnameNavigation';
+import AdminNavigation from './Tabs/AdminNavigation';
 
 import { store } from 'Containers/App';
 import Setup from 'Containers/Setup/Setup';
@@ -17,6 +18,7 @@ const PrimarySwitchNavigator = createSwitchNavigator(
     CourierNav: { screen: CourierNavigation },
     FinanceNav: { screen: FinanceNavigation },
     StockOpnameNav: { screen: StockOpnameNavigation },
+    AdminNav: { screen: AdminNavigation },
   },
   {
     initialRouteName: 'Setup',

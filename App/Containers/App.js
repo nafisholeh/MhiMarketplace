@@ -30,7 +30,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     YellowBox.ignoreWarnings(
-        ['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader'
+        ['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader', 'Require cycle'
       ]);
     OneSignal.init(AppConfig.oneSignalKey);
     OneSignal.addEventListener('received', this.onReceived);

@@ -103,6 +103,9 @@ class Signin extends Component {
           case Config.userType.KURIR:
             screenName = 'HomeCourier';
             break;
+          case Config.userType.ADMIN:
+            screenName = 'HomeAdmin';
+            break;
           case Config.userType.STOK_OPNAME:
             screenName = 'HomeStockOpname';
             break;

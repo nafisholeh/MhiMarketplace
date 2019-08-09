@@ -50,7 +50,7 @@ export const isAdmin = () =>
       const { user } = state;
       if (!user) return false;
       const { user_type } = user;
-      if (user_type && user_type !== Config.userType.KONSUMEN) return true;
+      if (user_type && user_type === Config.userType.ADMIN) return true;
       return false;
     }
   )

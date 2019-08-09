@@ -23,7 +23,8 @@ export default {
     'SentDetail',
     'CompletedDetail',
     'ConsumerOrderDetail',
-    'ConsumerSendingDetail'
+    'ConsumerSendingDetail',
+    'EventInput'
   ],
   pageState: {
     ERROR: 'error',
@@ -45,6 +46,7 @@ export default {
     KEUANGAN: 'keuangan',
     KONSUMEN: 'user',
     RESELLER: 'reseller',
+    ADMIN: 'admin',
   },
   weightType: {
     KILOGRAM: 'kg',

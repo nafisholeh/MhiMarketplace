@@ -80,7 +80,7 @@ class Setup extends Component {
       if (isKurir) navigation.navigate('CourierNav');
       else if (isStokOpname) navigation.navigate('StockOpnameNav');
       else if (isKeuangan) navigation.navigate('FinanceNav');
-      else if (!isAdmin) navigation.navigate('ConsumerNav');
+      else if (isAdmin) navigation.navigate('AdminNav');
       else navigation.navigate('ConsumerNav');
     }
   };

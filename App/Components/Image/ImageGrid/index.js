@@ -71,7 +71,6 @@ class ImageGrid extends PureComponent {
       let gridTemp = output.splice(0, output.length > columnTotal ? columnTotal : output.length);
       gridData.push(gridTemp);
     }
-    console.log('generateGridData/data/gridData', data, gridData)
     return gridData;
   };
 

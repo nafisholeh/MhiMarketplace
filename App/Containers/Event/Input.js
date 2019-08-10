@@ -1,9 +1,9 @@
 import React, { PureComponent, Fragment } from 'react';
-import { ScrollView, Text } from 'react-native';
+import { ScrollView, Text, TimePickerAndroid, TouchableOpacity } from 'react-native';
 import { CalendarList } from 'react-native-calendars';
 import moment from 'moment';
 
-import { moderateScale, screenHeight, screenWidth } from 'Lib';
+import { moderateScale, screenHeight, screenWidth, InAppNotification } from 'Lib';
 import { InputText, ButtonPrimary } from 'Components';
 import styles from './Styles';
 
@@ -16,6 +16,25 @@ class Input extends PureComponent {
     detail: '',
     url: '',
     markedDates: {},
+    times: '',
+  };
+  
+  onOpenTimeInput = async () => {
+    try {
+      const {action, hour, minute} = await TimePickerAndroid.open({
+        hour: 12,
+        minute: 0,
+        is24Hour: false,
+      });
+      if (action !== TimePickerAndroid.dismissedAction) {
+        this.setState({ times: `${hour}:${minute}` })
+      }
+    } catch ({code, message}) {
+      InAppNotification.errorLocal(
+        'Error',
+        'Gagal membuka isian jam'
+      );
+    }
   };
   
   onDaySelect = day => {
@@ -32,7 +51,7 @@ class Input extends PureComponent {
   };
 
   render() {
-    const { title, detail, url, markedDates } = this.state;
+    const { title, detail, url, markedDates, times } = this.state;
     return (
       <Fragment>
         <ScrollView
@@ -82,6 +101,17 @@ class Input extends PureComponent {
             markedDates={markedDates}
             calendarWidth={moderateScale(screenWidth - 45)}
           />
+
+          <TouchableOpacity
+            onPress={this.onOpenTimeInput}
+          >
+            <InputText
+              title='Jam'
+              value={times}
+              placeholder='Jam'
+              editable={false}
+            />
+          </TouchableOpacity>
         </ScrollView>
         <ButtonPrimary
           onPress={this.uploadEvent}

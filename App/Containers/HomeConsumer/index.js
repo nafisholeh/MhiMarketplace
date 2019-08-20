@@ -56,7 +56,7 @@ class HomeConsumer extends Component {
   }
   
   setupCategory = () => {
-    const { productCategory = [] } = ApolloClientProvider.client.readQuery({
+    const { productCategory = [] } = ApolloClientProvider.client.query({
       query: FETCH_PRODUCT_CATEGORY
     });
     if (Array.isArray(productCategory) && productCategory.length) {

@@ -6,8 +6,10 @@ import { object, arrayOf, string, bool } from 'prop-types'
 import { Query, Mutation, compose } from 'react-apollo';
 import { DotIndicator } from 'react-native-indicators';
 
+import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { FETCH_PRODUCT_DETAIL } from 'GraphQL/Product/Query';
 import { UPDATE_CART_ITEM, UPDATE_CART_ITEM_SCHEMA, cacheUpdateCartItem } from 'GraphQL/Cart/Mutation';
+import { LOG_PRODUCT_VISIT } from 'GraphQL/Logs/Mutation';
 import { getUser, isAdmin } from 'Redux/SessionRedux';
 import { getCartItemIds } from 'Redux/CartRedux';
 
@@ -36,6 +38,27 @@ class Detail extends Component {
         />
       ),
     }
+  }
+  
+  componentDidMount() {
+    this.logProductVisit();
+  }
+  
+  logProductVisit = () => {
+    const { 
+      navigation: { state: { params: { data: { _id: productId } }}},
+      user: { _id: userId } = {},
+    } = this.props;
+    let variables = { product_id: productId };
+    if (userId) {
+      variables = { ...variables, ...{user_id: userId}};
+    }
+    ApolloClientProvider.client.mutate({
+      mutation: LOG_PRODUCT_VISIT,
+      variables,
+    })
+    .then(res => {})
+    .catch(err => {});
   }
   
   onAddToCart = (updateCartItem, isInsideCart) => {

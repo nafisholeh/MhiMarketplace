@@ -4,7 +4,9 @@ import { func, string, bool, oneOfType, number } from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
+import ApolloClientProvider from 'Services/ApolloClientProvider';
 import ViewShadow from '../Shadow/ViewShadow';
+import { LOG_PRODUCT_SEARCH } from 'GraphQL/Logs/Mutation';
 import { Images, Metrics, Colors } from 'Themes';
 import { moderateScale, screenWidth } from 'Lib';
 import { getUserId } from 'Redux/SessionRedux';
@@ -48,6 +50,7 @@ class ConsumerPageHeader extends Component {
   onSearch = () => {
     const { value } = this.state;
     const { onSearch, isResetUponSearch } = this.props;
+    this.logProductSearch(value);
     if (isResetUponSearch) {
       this.setState({ value: '' }, () => {
         onSearch(value);
@@ -55,6 +58,20 @@ class ConsumerPageHeader extends Component {
       return;
     }
     onSearch(value);
+  };
+  
+  logProductSearch = term => {
+    const { userId } = this.props;
+    let variables = { search_term: term };
+    if (userId) {
+      variables = { ...variables, ...{user_id: userId}};
+    }
+    ApolloClientProvider.client.mutate({
+      mutation: LOG_PRODUCT_SEARCH,
+      variables,
+    })
+    .then(res => {})
+    .catch(err => {});
   };
 
   render() {

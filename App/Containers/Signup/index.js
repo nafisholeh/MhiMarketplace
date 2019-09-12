@@ -16,6 +16,7 @@ class Signup extends Component {
   }
 
   render() {
+    const { navigation } = this.props;
     return (
       <View style={{ flex: 1 }}>
         <Header title="Saya ingin mendaftar sebagai..." />
@@ -27,6 +28,7 @@ class Signup extends Component {
           }}
         >
           <Option
+            onPress={() => navigation.navigate('SignupFarmer')}
             color={Colors.veggie_light}
             title="Petani"
             icon={Images.farmer}
@@ -36,6 +38,7 @@ class Signup extends Component {
             }}
           />
           <Option
+            onPress={() => navigation.navigate('SignupScholar')}
             color={Colors.horti_light}
             title="Akademisi"
             icon={Images.scholar}
@@ -45,6 +48,7 @@ class Signup extends Component {
             }}
           />
           <Option
+            onPress={() => navigation.navigate('SignupCustomer')}
             color={Colors.fruit_light}
             title="Pelanggan"
             icon={Images.customer}

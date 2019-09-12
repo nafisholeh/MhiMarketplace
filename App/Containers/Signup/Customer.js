@@ -19,7 +19,7 @@ import { Header } from './Common';
 import { Images } from 'Themes';
 import styles from './Styles';
     
-class NonFarmer extends Component {
+class Customer extends Component {
   
   static navigationOptions = ({navigation}) => {
     const {params = {}} = navigation.state
@@ -167,7 +167,7 @@ class NonFarmer extends Component {
   }
 }
 
-NonFarmer.propTypes = {
+Customer.propTypes = {
   storeSignupEmail: func,
 };
 
@@ -175,4 +175,4 @@ const mapDispatchToProps = dispatch => ({
   storeSignupEmail: email => dispatch(SessionActions.storeSignupEmail(email)),
 });
 
-export default connect(null, mapDispatchToProps)(withNavigation(NonFarmer));
+export default connect(null, mapDispatchToProps)(withNavigation(Customer));

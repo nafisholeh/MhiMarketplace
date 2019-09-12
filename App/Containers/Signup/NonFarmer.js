@@ -15,10 +15,11 @@ import {
   BackButton,
   KeyboardFriendlyView
 } from 'Components';
+import { Header } from './Common';
 import { Images } from 'Themes';
 import styles from './Styles';
     
-class Signup extends Component {
+class NonFarmer extends Component {
   
   static navigationOptions = ({navigation}) => {
     const {params = {}} = navigation.state
@@ -107,26 +108,7 @@ class Signup extends Component {
     return (
       <KeyboardFriendlyView style={styles.container}>
         
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginLeft: moderateScale(10),
-            marginTop: moderateScale(25),
-            marginBottom: moderateScale(20),
-          }}
-        >
-          <BackButton />
-          <Text
-            style={{
-              fontFamily: 'CircularStd-Bold',
-              fontSize: 20,
-              color: 'rgba(0,0,0,0.68)',
-            }}
-          >
-            Pendaftaran akun baru
-          </Text>
-        </View>
+        <Header title="Pendaftaran akun baru" />
       
         <InputTextAccount
           label="Name"
@@ -185,7 +167,7 @@ class Signup extends Component {
   }
 }
 
-Signup.propTypes = {
+NonFarmer.propTypes = {
   storeSignupEmail: func,
 };
 
@@ -193,4 +175,4 @@ const mapDispatchToProps = dispatch => ({
   storeSignupEmail: email => dispatch(SessionActions.storeSignupEmail(email)),
 });
 
-export default connect(null, mapDispatchToProps)(withNavigation(Signup));
+export default connect(null, mapDispatchToProps)(withNavigation(NonFarmer));

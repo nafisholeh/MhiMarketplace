@@ -34,6 +34,10 @@ const images = {
   logout: require(pathPrefix+'logout.png'),
   bebas_peskim: require(pathPrefix+'bebas_peskim.png'),
   cross: require(pathPrefix+'cross.png'),
+  farmer: require(pathPrefix+'farmer.png'),
+  non_farmer: require(pathPrefix+'non_farmer.png'),
+  customer: require(pathPrefix+'customer.png'),
+  scholar: require(pathPrefix+'scholar.png'),
 }
 
 export default images

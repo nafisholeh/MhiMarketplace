@@ -8,7 +8,9 @@ import styles from '../Styles/NavigationStyles';
 
 import Account from 'Containers/Account/Account';
 import Signin from 'Containers/Signin/Signin';
-import Signup from 'Containers/Signup/Signup';
+import Signup from 'Containers/Signup';
+import SignupFarmer from 'Containers/Signup/Farmer';
+import SignupNonFarmer from 'Containers/Signup/NonFarmer';
 import ConsumerOrder from 'Containers/ConsumerOrder';
 import ConsumerCompleted from 'Containers/ConsumerOrder/Completed';
 import ConsumerOrderDetail from 'Containers/ConsumerOrder/Common/Detail';
@@ -17,11 +19,13 @@ const AccountNav = createStackNavigator({
   Account: { screen: Account },
   Signin: { screen: Signin },
   Signup: { screen: Signup },
+  SignupFarmer: { screen: SignupFarmer },
+  SignupNonFarmer: { screen: SignupNonFarmer },
   ConsumerOrder: { screen: ConsumerOrder },
   ConsumerCompleted: { screen: ConsumerCompleted },
   ConsumerOrderDetail: { screen: ConsumerOrderDetail },
 }, {
-  initialRouteName: 'Account',
+  initialRouteName: 'Signup',
   navigationOptions: {
     headerStyle: styles.header
   }

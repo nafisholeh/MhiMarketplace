@@ -111,7 +111,7 @@ class Customer extends Component {
         <Header title="Pendaftaran akun baru" />
       
         <InputTextAccount
-          label="Name"
+          label="Nama"
           value={name || ''}
           error={error_name}
           onChangeText={(text) => this.setState({ name: text })}

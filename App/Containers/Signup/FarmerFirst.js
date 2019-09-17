@@ -11,7 +11,7 @@ import { SIGNUP } from 'GraphQL/User/Mutation';
 import { isEmailError, getGraphQLError, moderateScale } from 'Lib';
 import {
   InputTextAccount,
-  ButtonSecondary,
+  ButtonPrimary,
   BackButton,
   KeyboardFriendlyView
 } from 'Components';
@@ -79,54 +79,56 @@ class Farmer extends Component {
     } = this.state;
     const { navigation } = this.props;
     return (
-      <KeyboardFriendlyView style={styles.container}>
+      <View style={{ flex: 1 }}>
+        <KeyboardFriendlyView style={styles.container}>
+          
+          <Header title="Pendaftaran akun baru" />
         
-        <Header title="Pendaftaran akun baru" />
-      
-        <InputTextAccount
-          refs={(ref) => this._phone = ref}
-          label="Nomor HP"
-          value={phone || ''}
-          error={error_phone}
-          onChangeText={(text) => this.setState({ phone: text })}
-          returnKeyType="next"
-          onSubmitEditing={() => this._password.focus()}
-        />
+          <InputTextAccount
+            refs={(ref) => this._phone = ref}
+            label="Nomor HP"
+            value={phone || ''}
+            error={error_phone}
+            onChangeText={(text) => this.setState({ phone: text })}
+            returnKeyType="next"
+            onSubmitEditing={() => this._password.focus()}
+          />
+          
+          <InputTextAccount
+            refs={(ref) => this._password = ref}
+            label="Password"
+            value={password || ''}
+            error={error_password}
+            secureTextEntry={true}
+            onChangeText={(text) => this.setState({ password: text })}
+            onSubmitEditing={() => this._password_repeat.focus()}
+            returnKeyType="next"
+          />
         
-        <InputTextAccount
-          refs={(ref) => this._password = ref}
-          label="Password"
-          value={password || ''}
-          error={error_password}
-          secureTextEntry={true}
-          onChangeText={(text) => this.setState({ password: text })}
-          onSubmitEditing={() => this._password_repeat.focus()}
-          returnKeyType="next"
-        />
+          <InputTextAccount
+            refs={(ref) => this._password_repeat = ref}
+            label="Ulangi Password"
+            value={password_repeat || ''}
+            error={error_password_repeat}
+            secureTextEntry={true}
+            onChangeText={(text) => this.setState({ password_repeat: text })}
+            onSubmitEditing={this.onStartSignup}
+            returnKeyType="go"
+            containerStyle={{
+              marginHorizontal: moderateScale(40),
+              marginBottom: moderateScale(25),
+            }}
+          />
+          
+        </KeyboardFriendlyView>
       
-        <InputTextAccount
-          refs={(ref) => this._password_repeat = ref}
-          label="Ulangi Password"
-          value={password_repeat || ''}
-          error={error_password_repeat}
-          secureTextEntry={true}
-          onChangeText={(text) => this.setState({ password_repeat: text })}
-          onSubmitEditing={this.onStartSignup}
-          returnKeyType="go"
-          containerStyle={{
-            marginHorizontal: moderateScale(40),
-            marginBottom: moderateScale(25),
-          }}
-        />
-      
-        <ButtonSecondary
-          onPress={this.onStartSignup}
+        <ButtonPrimary
+          onPress={this.onSignup}
           disabled={loading}
           loading={loading}
           title="Selanjutnya"
         />
-        
-      </KeyboardFriendlyView>
+      </View>
     )
   }
 }

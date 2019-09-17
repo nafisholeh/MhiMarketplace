@@ -11,7 +11,7 @@ import { SIGNUP } from 'GraphQL/User/Mutation';
 import { isEmailError, getGraphQLError, moderateScale } from 'Lib';
 import {
   InputTextAccount,
-  ButtonSecondary,
+  ButtonPrimary,
   BackButton,
   KeyboardFriendlyView
 } from 'Components';
@@ -37,10 +37,12 @@ class Farmer extends Component {
     error_birth_place: null,
     birth_date: null,
     error_birth_date: null,
+    loading: false,
   };
   
-  onStartSignup = async () => {
-    this.onSignup();
+  onSubmit = async () => {
+    const { navigation } = this.props;
+    navigation.navigate('SignupFarmerThird');
   }
   
   onSignup = () => {
@@ -57,53 +59,56 @@ class Farmer extends Component {
       error_birth_place,
       birth_date,
       error_birth_date,
+      loading,
     } = this.state;
     const { navigation } = this.props;
     return (
-      <KeyboardFriendlyView style={styles.container}>
+      <View style={{ flex: 1 }}>
+        <KeyboardFriendlyView style={styles.container}>
+          
+          <Header title="Pendaftaran akun baru" />
         
-        <Header title="Pendaftaran akun baru" />
-      
-        <InputTextAccount
-          refs={(ref) => this._nik = ref}
-          label="NIK"
-          value={nik || ''}
-          error={error_nik}
-          onChangeText={(text) => this.setState({ nik: text })}
-          onSubmitEditing={() => this._name.focus()}
-          returnKeyType="next"
-        />
+          <InputTextAccount
+            refs={(ref) => this._nik = ref}
+            label="NIK"
+            value={nik || ''}
+            error={error_nik}
+            onChangeText={(text) => this.setState({ nik: text })}
+            onSubmitEditing={() => this._name.focus()}
+            returnKeyType="next"
+          />
+          
+          <InputTextAccount
+            refs={(ref) => this._name = ref}
+            label="Nama"
+            value={name || ''}
+            error={error_name}
+            secureTextEntry={true}
+            onChangeText={(text) => this.setState({ name: text })}
+            onSubmitEditing={() => this._birth_place.focus()}
+            returnKeyType="next"
+          />
         
-        <InputTextAccount
-          refs={(ref) => this._name = ref}
-          label="Nama"
-          value={name || ''}
-          error={error_name}
-          secureTextEntry={true}
-          onChangeText={(text) => this.setState({ name: text })}
-          onSubmitEditing={() => this._birth_place.focus()}
-          returnKeyType="next"
-        />
-      
-        <InputTextAccount
-          refs={(ref) => this._name = ref}
-          label="Tempat"
-          value={name || ''}
-          error={error_name}
-          secureTextEntry={true}
-          onChangeText={(text) => this.setState({ name: text })}
-          onSubmitEditing={() => this._birth_place.focus()}
-          returnKeyType="next"
-        />
-      
-        <ButtonSecondary
-          onPress={this.onStartSignup}
+          <InputTextAccount
+            refs={(ref) => this._name = ref}
+            label="Tempat"
+            value={name || ''}
+            error={error_name}
+            secureTextEntry={true}
+            onChangeText={(text) => this.setState({ name: text })}
+            onSubmitEditing={() => this._birth_place.focus()}
+            returnKeyType="next"
+          />
+          
+        </KeyboardFriendlyView>
+
+        <ButtonPrimary
+          onPress={this.onSubmit}
           disabled={loading}
           loading={loading}
           title="Selanjutnya"
         />
-        
-      </KeyboardFriendlyView>
+      </View>
     )
   }
 }

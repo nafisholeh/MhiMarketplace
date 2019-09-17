@@ -17,6 +17,7 @@ const images = {
   user: require(pathPrefix+'user.png'),
   needLogin: require(pathPrefix+'need-login.png'),
   edit: require(pathPrefix+'edit.png'),
+  edit_small: require(pathPrefix+'edit_small.png'),
   history: require(pathPrefix+'history.png'),
   courier_shop: require(pathPrefix+'courier_shop.png'),
   shipping: require(pathPrefix+'shipping.png'),
@@ -38,6 +39,8 @@ const images = {
   non_farmer: require(pathPrefix+'non_farmer.png'),
   customer: require(pathPrefix+'customer.png'),
   scholar: require(pathPrefix+'scholar.png'),
+  map: require(pathPrefix+'map.png'),
+  map_disabled: require(pathPrefix+'map_gray.png'),
 }
 
 export default images

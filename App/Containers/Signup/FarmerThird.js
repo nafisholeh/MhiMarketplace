@@ -10,12 +10,13 @@ import SessionActions from 'Redux/SessionRedux';
 import { SIGNUP } from 'GraphQL/User/Mutation';
 import { isEmailError, getGraphQLError, moderateScale } from 'Lib';
 import {
+  ProductVerticalWrapper,
   InputTextAccount,
-  ButtonSecondary,
+  ButtonPrimary,
   BackButton,
   KeyboardFriendlyView
 } from 'Components';
-import { Header } from './Common';
+import { Header, AreaDrawItem, AreaDrawListHeader } from './Common';
 import { Images } from 'Themes';
 import styles from './Styles';
     
@@ -60,50 +61,26 @@ class Farmer extends Component {
     } = this.state;
     const { navigation } = this.props;
     return (
-      <KeyboardFriendlyView style={styles.container}>
+      <View style={{ flex: 1 }}>
+        <KeyboardFriendlyView style={styles.container}>
+          
+          <Header title="Pendaftaran akun baru" />
+          
+          <AreaDrawListHeader title="Sawah" />
+          <AreaDrawItem inputLabel="Luas dimiliki:"/>
+          <AreaDrawItem inputLabel="Luas disewa:"/>
+          
+          <AreaDrawListHeader title="Tegal" />
+          <AreaDrawItem inputLabel="Luas dimiliki:"/>
+          <AreaDrawItem inputLabel="Luas disewa:"/>
+          
+        </KeyboardFriendlyView>
         
-        <Header title="Pendaftaran akun baru" />
-      
-        <InputTextAccount
-          refs={(ref) => this._nik = ref}
-          label="NIK"
-          value={nik || ''}
-          error={error_nik}
-          onChangeText={(text) => this.setState({ nik: text })}
-          onSubmitEditing={() => this._name.focus()}
-          returnKeyType="next"
-        />
-        
-        <InputTextAccount
-          refs={(ref) => this._name = ref}
-          label="Nama"
-          value={name || ''}
-          error={error_name}
-          secureTextEntry={true}
-          onChangeText={(text) => this.setState({ name: text })}
-          onSubmitEditing={() => this._birth_place.focus()}
-          returnKeyType="next"
-        />
-      
-        <InputTextAccount
-          refs={(ref) => this._name = ref}
-          label="Tempat"
-          value={name || ''}
-          error={error_name}
-          secureTextEntry={true}
-          onChangeText={(text) => this.setState({ name: text })}
-          onSubmitEditing={() => this._birth_place.focus()}
-          returnKeyType="next"
-        />
-      
-        <ButtonSecondary
+        <ButtonPrimary
           onPress={this.onStartSignup}
-          disabled={loading}
-          loading={loading}
-          title="Selanjutnya"
+          title="Selesai"
         />
-        
-      </KeyboardFriendlyView>
+      </View>
     )
   }
 }

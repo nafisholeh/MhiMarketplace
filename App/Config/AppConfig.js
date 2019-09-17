@@ -27,6 +27,8 @@ export default {
     'EventInput',
     'Signup',
     'SignupFarmerFirst',
+    'SignupFarmerSecond',
+    'SignupFarmerThird',
     'SignupCustomer',
     'SignupScholar'
   ],

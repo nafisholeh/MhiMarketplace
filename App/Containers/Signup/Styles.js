@@ -7,6 +7,7 @@ export default StyleSheet.create({
     flex: 1,
     paddingLeft: Metrics.baseMargin,
     paddingRight: Metrics.baseMargin,
+    paddingBottom: Metrics.baseMargin,
   },
   button: {
     height: 50,

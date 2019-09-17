@@ -63,7 +63,8 @@ class Farmer extends Component {
   }
   
   onSignup = () => {
-    
+    const { navigation } = this.props;
+    navigation.navigate('SignupFarmerSecond');
   }
   
   render () {

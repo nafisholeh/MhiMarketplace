@@ -9,7 +9,9 @@ import styles from '../Styles/NavigationStyles';
 import Account from 'Containers/Account/Account';
 import Signin from 'Containers/Signin/Signin';
 import Signup from 'Containers/Signup';
-import SignupFarmer from 'Containers/Signup/Farmer';
+import SignupFarmerFirst from 'Containers/Signup/FarmerFirst';
+import SignupFarmerSecond from 'Containers/Signup/FarmerSecond';
+import SignupFarmerThird from 'Containers/Signup/FarmerThird';
 import SignupCustomer from 'Containers/Signup/Customer';
 import SignupScholar from 'Containers/Signup/Scholar';
 import ConsumerOrder from 'Containers/ConsumerOrder';
@@ -20,7 +22,9 @@ const AccountNav = createStackNavigator({
   Account: { screen: Account },
   Signin: { screen: Signin },
   Signup: { screen: Signup },
-  SignupFarmer: { screen: SignupFarmer },
+  SignupFarmerFirst: { screen: SignupFarmerFirst },
+  SignupFarmerSecond: { screen: SignupFarmerSecond },
+  SignupFarmerThird: { screen: SignupFarmerThird },
   SignupCustomer: { screen: SignupCustomer },
   SignupScholar: { screen: SignupScholar },
   ConsumerOrder: { screen: ConsumerOrder },

@@ -28,7 +28,7 @@ class Signup extends Component {
           }}
         >
           <Option
-            onPress={() => navigation.navigate('SignupFarmer')}
+            onPress={() => navigation.navigate('SignupFarmerFirst')}
             color={Colors.veggie_light}
             title="Petani"
             icon={Images.farmer}

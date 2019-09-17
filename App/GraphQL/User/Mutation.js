@@ -30,6 +30,18 @@ export const SIGNUP = gql`
   }
 `
 
+export const SIGNUP_FARMER = gql`
+  mutation signupFarmer($email: String, $phone: String!, $password: String!, $name: String!) {
+    signupFarmer(email: $email, phone: $phone, password: $password, name: $name) {
+      _id
+      email
+      name
+      phone
+      user_type
+    }
+  }
+`
+
 export const ADD_ONE_SIGNAL_TOKEN = gql`
   mutation addOneSignalToken($user_id: String!, $token: String!) {
     addOneSignalToken(user_id: $user_id, token: $token) {

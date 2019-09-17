@@ -25,7 +25,10 @@ export default {
     'ConsumerOrderDetail',
     'ConsumerSendingDetail',
     'EventInput',
-    'Signup'
+    'Signup',
+    'SignupFarmerFirst',
+    'SignupCustomer',
+    'SignupScholar'
   ],
   pageState: {
     ERROR: 'error',

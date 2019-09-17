@@ -13,7 +13,7 @@ class AreaDrawItem extends Component {
 
   render() {
     const { value } = this.state;
-    const { inputLabel, title, isFilled } = this.props;
+    const { inputLabel, title, isFilled, onPress } = this.props;
     return (
       <View
         style={{
@@ -83,6 +83,7 @@ class AreaDrawItem extends Component {
           }}
           height={40}
           shadowRadiusAndroid={8}
+          onPress={onPress}
         >
           <Text
             style={{

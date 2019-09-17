@@ -30,7 +30,8 @@ export default {
     'SignupFarmerSecond',
     'SignupFarmerThird',
     'SignupCustomer',
-    'SignupScholar'
+    'SignupScholar',
+    'AreaDraw'
   ],
   pageState: {
     ERROR: 'error',

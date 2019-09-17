@@ -48,6 +48,11 @@ class Farmer extends Component {
     
   }
   
+  onOpenDrawer = title => {
+    const { navigation } = this.props;
+    navigation.navigate('AreaDraw');
+  };
+  
   render () {
     const {
       nik,
@@ -67,7 +72,10 @@ class Farmer extends Component {
           <Header title="Pendaftaran akun baru" />
           
           <AreaDrawListHeader title="Sawah" />
-          <AreaDrawItem inputLabel="Luas dimiliki:"/>
+          <AreaDrawItem
+            inputLabel="Luas dimiliki:"
+            onPress={() => this.onOpenDrawer('sawah_milik')}
+          />
           <AreaDrawItem inputLabel="Luas disewa:"/>
           
           <AreaDrawListHeader title="Tegal" />

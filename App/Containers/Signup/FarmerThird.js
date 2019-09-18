@@ -67,21 +67,37 @@ class Farmer extends Component {
     const { navigation } = this.props;
     return (
       <View style={{ flex: 1 }}>
-        <KeyboardFriendlyView style={styles.container}>
+        <KeyboardFriendlyView style={{ flex: 1, marginHorizontal: moderateScale(10) }}>
           
           <Header title="Pendaftaran akun baru" />
           
           <AreaDrawListHeader title="Sawah" />
-          <AreaDrawItem
-            inputLabel="Luas dimiliki:"
-            onPress={() => this.onOpenDrawer('sawah_milik')}
-          />
-          <AreaDrawItem inputLabel="Luas disewa:"/>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around'
+            }}
+          >
+            <AreaDrawItem
+              title="Dimiliki"
+              onPress={() => this.onOpenDrawer('sawah_milik')}
+              isFilled
+            />
+            <AreaDrawItem title="Disewa"/>
+          </View>
           
           <AreaDrawListHeader title="Tegal" />
-          <AreaDrawItem inputLabel="Luas dimiliki:"/>
-          <AreaDrawItem inputLabel="Luas disewa:"/>
-          
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              marginBottom: moderateScale(40),
+            }}
+          >
+            <AreaDrawItem title="Dimiliki" isFilled/>
+            <AreaDrawItem title="Disewa"/>
+          </View>
+
         </KeyboardFriendlyView>
         
         <ButtonPrimary

@@ -7,11 +7,11 @@ import { moderateScale } from 'Lib';
 
 class BackButton extends Component {
   render() {
-    const { navigation, color } = this.props;
+    const { navigation, color, isShowShadow } = this.props;
     return (
       <TouchableOpacity onPress={() => navigation.goBack(null)}>
         <Image
-          source={Images.back}
+          source={isShowShadow ? Images.back_shadow : Images.back}
           style={{
             width: moderateScale(20),
             height: moderateScale(20),

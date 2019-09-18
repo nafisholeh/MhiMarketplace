@@ -18,12 +18,15 @@ class Header extends Component {
           marginBottom: moderateScale(20),
         }}
       >
-        <BackButton />
+        <BackButton color={Colors.white} isShowShadow />
         <Text
           style={{
             fontFamily: 'CircularStd-Bold',
             fontSize: 20,
-            color: 'rgba(0,0,0,0.68)',
+            color: Colors.white,
+            textShadowColor: 'rgba(255, 255, 255, 0.8)',
+            textShadowOffset: {width: -2, height: 2},
+            textShadowRadius: 10
           }}
         >
           {title}

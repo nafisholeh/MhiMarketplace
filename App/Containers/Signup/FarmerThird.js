@@ -7,6 +7,7 @@ import { withNavigation } from 'react-navigation';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import SessionActions from 'Redux/SessionRedux';
+import ListActions from 'Redux/ListRedux';
 import { SIGNUP } from 'GraphQL/User/Mutation';
 import { isEmailError, getGraphQLError, moderateScale } from 'Lib';
 import {
@@ -49,7 +50,8 @@ class Farmer extends Component {
   }
   
   onOpenDrawer = title => {
-    const { navigation } = this.props;
+    const { navigation, selectListItem } = this.props;
+    selectListItem(title);
     navigation.navigate('AreaDraw');
   };
   
@@ -80,10 +82,13 @@ class Farmer extends Component {
           >
             <AreaDrawItem
               title="Dimiliki"
-              onPress={() => this.onOpenDrawer('sawah_milik')}
+              onPress={() => this.onOpenDrawer('Lahan sawah dimiliki')}
               isFilled
             />
-            <AreaDrawItem title="Disewa"/>
+            <AreaDrawItem
+              title="Disewa"
+              onPress={() => this.onOpenDrawer('Lahan sawah disewa')}
+            />
           </View>
           
           <AreaDrawListHeader title="Tegal" />
@@ -94,8 +99,15 @@ class Farmer extends Component {
               marginBottom: moderateScale(40),
             }}
           >
-            <AreaDrawItem title="Dimiliki" isFilled/>
-            <AreaDrawItem title="Disewa"/>
+            <AreaDrawItem
+              title="Dimiliki"
+              onPress={() => this.onOpenDrawer('Lahan tegal dimiliki')}
+              isFilled
+            />
+            <AreaDrawItem
+              title="Disewa"
+              onPress={() => this.onOpenDrawer('Lahan tegal disewa')}
+            />
           </View>
 
         </KeyboardFriendlyView>
@@ -111,10 +123,12 @@ class Farmer extends Component {
 
 Farmer.propTypes = {
   storeSignupEmail: func,
+  selectListItem: func,
 };
 
 const mapDispatchToProps = dispatch => ({
   storeSignupEmail: email => dispatch(SessionActions.storeSignupEmail(email)),
+  selectListItem: selectedId => dispatch(ListActions.selectListItem(selectedId)),
 });
 
 export default connect(null, mapDispatchToProps)(withNavigation(Farmer));

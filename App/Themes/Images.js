@@ -10,6 +10,7 @@ const images = {
   add: require(pathPrefix+'add.png'),
   syncFailed: require(pathPrefix+'sync_failed.png'),
   back: require(pathPrefix+'left_arrow.png'),
+  back_shadow: require(pathPrefix+'left_arrow_shadow.png'),
   mhi: require(pathPrefix+'logo_mhi.png'),
   check: require(pathPrefix+'check.png'),
   cashier: require(pathPrefix+'cashier.png'),

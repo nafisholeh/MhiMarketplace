@@ -6,12 +6,19 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-
 import MapView, {
   MAP_TYPES,
   Polygon,
   ProviderPropType,
 } from 'react-native-maps';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import { string } from 'prop-types';
+
+import { moderateScale } from 'Lib';
+import { Colors } from 'Themes';
+import { HeaderWhite } from './Common';
+import { getSelectedListId } from 'Redux/ListRedux';
 
 const { width, height } = Dimensions.get('window');
 
@@ -23,6 +30,14 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 let id = 0;
 
 class AreaDraw extends Component {
+  
+  static navigationOptions = ({navigation}) => {
+    const {params = {}} = navigation.state
+    return {
+      header: null,
+    }
+  }
+
   constructor(props) {
     super(props);
 
@@ -108,6 +123,7 @@ class AreaDraw extends Component {
   }
 
   render() {
+    const { listId: title } = this.props;
     const mapOptions = {
       scrollEnabled: true,
     };
@@ -148,6 +164,15 @@ class AreaDraw extends Component {
             />
           )}
         </MapView>
+        <View
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: moderateScale(10),
+          }}
+        >
+          <HeaderWhite title={title} />
+        </View>
         <View style={styles.buttonContainer}>
           {this.state.editing && (
             <TouchableOpacity
@@ -199,4 +224,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AreaDraw;
+AreaDraw.propTypes = {
+  listId: string,
+};
+
+const mapStateToProps = createStructuredSelector({
+  listId: getSelectedListId(),
+});
+
+export default connect(mapStateToProps, null)(AreaDraw);

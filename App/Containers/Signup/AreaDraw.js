@@ -16,6 +16,7 @@ import MapView, {
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { string } from 'prop-types';
+import { pointInPolygon } from 'geojson-utils';
 
 import { moderateScale } from 'Lib';
 import { Colors, Images } from 'Themes';
@@ -63,6 +64,7 @@ class AreaDraw extends Component {
       },
       isAllowedZoom: false,
       isMapReady: false,
+      selectedPolygonIndex: null,
     };
   }
 
@@ -161,6 +163,21 @@ class AreaDraw extends Component {
       creatingHole: false,
     });
   };
+  
+  onMapPress = e => {
+    
+  };
+  
+  onPolygonPress = e => {
+    const { latitude: pivotLat, longitude: pivotLng } = e.nativeEvent.coordinate;
+    const { polygons } = this.state;
+    const selectedPolygonIndex = polygons.findIndex(({ coordinates }) =>
+      coordinates.findIndex(({ latitude, longitude}) =>
+        pivotLat === latitude && pivotLng === longitude
+      ) > -1
+    );
+    this.setState({ selectedPolygonIndex });
+  };
 
   render() {
     const {
@@ -173,12 +190,12 @@ class AreaDraw extends Component {
       isMapReady,
       polygons,
       editing,
+      selectedPolygonIndex,
     } = this.state;
     const { listId: title } = this.props;
     const mapOptions = {
       scrollEnabled: true,
     };
-
     return (
       <View style={styles.container}>
         <MapView
@@ -189,17 +206,23 @@ class AreaDraw extends Component {
           mapType={MAP_TYPES.HYBRID}
           initialRegion={region}
           onRegionChange={this.onRegionChange}
-          onPress={e => this.onPress(e)}
+          onPress={this.onMapPress}
           {...mapOptions}
         >
-          {polygons.map(polygon => (
+          {polygons.map((polygon, index) => (
             <Polygon
               key={polygon.id}
               coordinates={polygon.coordinates}
               holes={polygon.holes}
               strokeColor={Colors.polygon_border}
-              fillColor={Colors.polygon_fill_dark}
-              strokeWidth={1}
+              fillColor={
+                selectedPolygonIndex === index
+                  ? Colors.polygon_fill_light
+                  : Colors.polygon_fill_dark
+              }
+              strokeWidth={selectedPolygonIndex === index ? 4 : 1}
+              tappable
+              onPress={this.onPolygonPress}
             />
           ))}
           {editing && (

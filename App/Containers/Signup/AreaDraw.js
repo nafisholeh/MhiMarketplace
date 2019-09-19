@@ -29,6 +29,7 @@ const LATITUDE = -8.209091;
 const LONGITUDE = 113.696251;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+const ZOOM_THRESHOLD = 19;
 let id = 0;
 
 class AreaDraw extends Component {
@@ -54,9 +55,10 @@ class AreaDraw extends Component {
       editing: null,
       creatingHole: false,
       pivotMarkerLoc: {
-        latitude: -8.209091,
-        longitude: 113.696251,
+        latitude: null,
+        longitude: null,
       },
+      isAllowedZoom: false,
     };
   }
 
@@ -129,8 +131,19 @@ class AreaDraw extends Component {
   }
   
   onRegionChange = region => {
-    const { latitude, longitude } = region || {};
-    this.setState({ pivotMarkerLoc: { latitude, longitude } });
+    const { latitude, longitude, longitudeDelta } = region || {};
+    const currentZoom = Math.round(Math.log(360 / longitudeDelta) / Math.LN2);
+    if (currentZoom >= ZOOM_THRESHOLD) {
+      this.setState({
+        isAllowedZoom: true,
+        pivotMarkerLoc: { latitude, longitude },
+      });
+    } else {
+      this.setState({
+        isAllowedZoom: false,
+        pivotMarkerLoc: { latitude: null, longitude: null },
+      });
+    }
   };
 
   render() {
@@ -139,7 +152,8 @@ class AreaDraw extends Component {
       pivotMarkerLoc: {
         latitude: pivotLat,
         longitude: pivotLng,
-      } = {}
+      } = {},
+      isAllowedZoom,
     } = this.state;
     const { listId: title } = this.props;
     const mapOptions = {
@@ -182,24 +196,26 @@ class AreaDraw extends Component {
               strokeWidth={1}
             />
           )}
-          <Marker
-            key='pivot-marker'
-            coordinate={{
-              latitude: pivotLat,
-              longitude: pivotLng,
-            }}
-            trackViewChanges={false}
-            anchor={{x: 0.4, y: 1.05}}
-            centerOffset={{x: 0, y: -40}}
-          >
-            <Image
-              source={Images.pin_marker}
-              style={{
-                width: moderateScale(50),
-                height: moderateScale(50),
+          {isAllowedZoom && (
+            <Marker.Animated
+              key='pivot-marker'
+              coordinate={{
+                latitude: pivotLat,
+                longitude: pivotLng,
               }}
-            />
-          </Marker>
+              trackViewChanges={false}
+              anchor={{x: 0.4, y: 1.05}}
+              centerOffset={{x: 0, y: -40}}
+            >
+              <Image
+                source={Images.pin_marker}
+                style={{
+                  width: moderateScale(50),
+                  height: moderateScale(50),
+                }}
+              />
+            </Marker.Animated>
+          )}
         </MapView>
         <View
           style={{

@@ -6,6 +6,7 @@ const images = {
   minus: require(pathPrefix+'minus.png'),
   plus: require(pathPrefix+'plus.png'),
   delete: require(pathPrefix+'delete.png'),
+  delete_flat: require(pathPrefix+'delete_flat.png'),
   location: require(pathPrefix+'location.png'),
   add: require(pathPrefix+'add.png'),
   syncFailed: require(pathPrefix+'sync_failed.png'),

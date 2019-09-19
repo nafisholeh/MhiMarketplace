@@ -16,7 +16,6 @@ import MapView, {
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { string } from 'prop-types';
-import { pointInPolygon } from 'geojson-utils';
 
 import { moderateScale } from 'Lib';
 import { Colors, Images } from 'Themes';
@@ -64,7 +63,7 @@ class AreaDraw extends Component {
       },
       isAllowedZoom: false,
       isMapReady: false,
-      selectedPolygonIndex: null,
+      selectedPolygonIndex: -1,
     };
   }
 
@@ -177,6 +176,18 @@ class AreaDraw extends Component {
       ) > -1
     );
     this.setState({ selectedPolygonIndex });
+  };
+  
+  removePolygon = () => {
+    const { polygons, selectedPolygonIndex } = this.state;
+    if (selectedPolygonIndex < 0) return;
+    this.setState({ 
+      polygons: [
+        ...polygons.slice(0, selectedPolygonIndex),
+        ...polygons.slice(selectedPolygonIndex+1)
+      ],
+      selectedPolygonIndex: -1,
+    });
   };
 
   render() {
@@ -329,15 +340,27 @@ class AreaDraw extends Component {
                   alignItems: 'center',
                 }}
               >
-                <ButtonCircle 
-                  onPress={() => this.handleDrawing()}
-                  icon={Images.pinned}
-                />
-                <ButtonCircle 
-                  onPress={() => this.handleDrawingFinish()}
-                  icon={Images.check_flat}
-                  colors={[ Colors.red_light, Colors.red ]}
-                />
+                {selectedPolygonIndex >= 0
+                  ? (
+                    <ButtonCircle 
+                      onPress={() => this.removePolygon()}
+                      icon={Images.delete_flat}
+                    />
+                  ) 
+                  : (
+                    <Fragment>
+                      <ButtonCircle 
+                        onPress={() => this.handleDrawing()}
+                        icon={Images.pinned}
+                      />
+                      <ButtonCircle 
+                        onPress={() => this.handleDrawingFinish()}
+                        icon={Images.check_flat}
+                        colors={[ Colors.red_light, Colors.red ]}
+                      />
+                    </Fragment>
+                  )
+                }
               </View>
             </AreaDrawInfoWrapper>
           )}

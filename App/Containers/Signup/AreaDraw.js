@@ -31,6 +31,8 @@ const LONGITUDE = 113.696251;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const ZOOM_THRESHOLD = 19;
+const LAT_DELTA_THRESHOLD = 0.0014199398322549683;
+const LNG_DELTA_THRESHOLD = 0.0009096041321754456;
 let id = 0;
 
 class AreaDraw extends Component {
@@ -55,11 +57,12 @@ class AreaDraw extends Component {
       polygons: [],
       editing: null,
       creatingHole: false,
-      pivotMarkerLoc: {
-        latitude: null,
-        longitude: null,
+      centerPos: {
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
       },
       isAllowedZoom: false,
+      isMapReady: false,
     };
   }
 
@@ -132,29 +135,42 @@ class AreaDraw extends Component {
   }
   
   onRegionChange = region => {
-    const { latitude, longitude, longitudeDelta } = region || {};
+    const { latitude, longitude, longitudeDelta, latitudeDelta } = region || {};
+    console.tron.log('latitudeDelta, longitudeDelta',latitudeDelta, longitudeDelta)
     const currentZoom = Math.round(Math.log(360 / longitudeDelta) / Math.LN2);
-    if (currentZoom >= ZOOM_THRESHOLD) {
-      this.setState({
-        isAllowedZoom: true,
-        pivotMarkerLoc: { latitude, longitude },
-      });
-    } else {
-      this.setState({
-        isAllowedZoom: false,
-        pivotMarkerLoc: { latitude: null, longitude: null },
-      });
-    }
+    this.setState({
+      isAllowedZoom: currentZoom >= ZOOM_THRESHOLD,
+      centerPos: { latitude, longitude },
+    });
   };
+  
+  onMapReady = () => {
+    this.setState({ isMapReady: true });
+  };
+  
+  autoZoomIn = () => {
+    if (!this.map) return;
+    const { centerPos: { latitude, longitude } } = this.state;
+    this.map.animateToRegion(
+      {
+        latitude,
+        longitude,
+        latitudeDelta: LAT_DELTA_THRESHOLD,
+        longitudeDelta: LNG_DELTA_THRESHOLD,
+      },
+      1000
+    );
+  }
 
   render() {
     const {
       region,
-      pivotMarkerLoc: {
+      centerPos: {
         latitude: pivotLat,
         longitude: pivotLng,
       } = {},
       isAllowedZoom,
+      isMapReady,
     } = this.state;
     const { listId: title } = this.props;
     const mapOptions = {
@@ -169,6 +185,8 @@ class AreaDraw extends Component {
     return (
       <View style={styles.container}>
         <MapView
+          ref={map => { this.map = map }}
+          onMapReady={() => setTimeout(() => this.onMapReady())}
           provider={this.props.provider}
           style={styles.map}
           mapType={MAP_TYPES.HYBRID}
@@ -269,7 +287,7 @@ class AreaDraw extends Component {
                 }}
               >
                 <ButtonPrimary 
-                  onPress={() => {}}
+                  onPress={() => this.autoZoomIn()}
                   title="Zoom-in Otomatis"
                   style={{
                     height: 45,

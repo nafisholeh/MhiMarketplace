@@ -30,6 +30,7 @@ const images = {
   cart_add: require(pathPrefix+'cart_add.png'),
   product_list: require(pathPrefix+'product_list.png'),
   error: require(pathPrefix+'error.png'),
+  warning: require(pathPrefix+'warning.png'),
   veggie: require(pathPrefix+'veggie.png'),
   fruit: require(pathPrefix+'fruit.png'),
   horti: require(pathPrefix+'horti.png'),

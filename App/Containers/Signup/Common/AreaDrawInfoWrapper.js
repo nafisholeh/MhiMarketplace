@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { func } from 'prop-types';
 
 import { ViewShadow } from 'Components';
@@ -15,20 +15,30 @@ class AreaDrawInfoWrapper extends Component {
       shadowBorderRadiusAndroid,
       shadowRadiusAndroid,
       children,
+      styleWrapper,
     } = this.props;
     return (
       <ViewShadow
         width={screenWidth - moderateScale(marginHorizontal || 25)}
-        height={height || 150}
+        height={height || 130}
         borderRadius={borderRadius || 4}
         shadowBorderRadiusAndroid={shadowBorderRadiusAndroid || 3}
         shadowRadiusAndroid={shadowRadiusAndroid || 18}
         shadowOpacityAndroid={0.1}
         mainColor={Colors.white}
         shadowColor={Colors.brown_light}
-        style={{ alignSelf: 'flex-start' }}
       >
-        {children}
+        <View
+          style={{
+            ...{
+              flex: 1,
+              flexDirection: 'column',
+            },
+            ...styleWrapper
+          }}
+        >
+          {children}
+        </View>
       </ViewShadow>
     );
   }

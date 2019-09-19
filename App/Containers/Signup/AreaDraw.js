@@ -4,20 +4,22 @@ import {
   View,
   Text,
   Dimensions,
+  Image,
   TouchableOpacity,
 } from 'react-native';
 import MapView, {
   MAP_TYPES,
   Polygon,
   ProviderPropType,
+  Marker,
 } from 'react-native-maps';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { string } from 'prop-types';
 
 import { moderateScale } from 'Lib';
-import { Colors } from 'Themes';
-import { HeaderWhite } from './Common';
+import { Colors, Images } from 'Themes';
+import { HeaderWhite, AreaDrawInfoWrapper } from './Common';
 import { getSelectedListId } from 'Redux/ListRedux';
 
 const { width, height } = Dimensions.get('window');
@@ -51,6 +53,10 @@ class AreaDraw extends Component {
       polygons: [],
       editing: null,
       creatingHole: false,
+      pivotMarkerLoc: {
+        latitude: -8.209091,
+        longitude: 113.696251,
+      },
     };
   }
 
@@ -121,8 +127,20 @@ class AreaDraw extends Component {
       });
     }
   }
+  
+  onRegionChange = region => {
+    const { latitude, longitude } = region || {};
+    this.setState({ pivotMarkerLoc: { latitude, longitude } });
+  };
 
   render() {
+    const {
+      region,
+      pivotMarkerLoc: {
+        latitude: pivotLat,
+        longitude: pivotLng,
+      } = {}
+    } = this.state;
     const { listId: title } = this.props;
     const mapOptions = {
       scrollEnabled: true,
@@ -139,7 +157,8 @@ class AreaDraw extends Component {
           provider={this.props.provider}
           style={styles.map}
           mapType={MAP_TYPES.HYBRID}
-          initialRegion={this.state.region}
+          initialRegion={region}
+          onRegionChange={this.onRegionChange}
           onPress={e => this.onPress(e)}
           {...mapOptions}
         >
@@ -163,6 +182,24 @@ class AreaDraw extends Component {
               strokeWidth={1}
             />
           )}
+          <Marker
+            key='pivot-marker'
+            coordinate={{
+              latitude: pivotLat,
+              longitude: pivotLng,
+            }}
+            trackViewChanges={false}
+            anchor={{x: 0.4, y: 1.05}}
+            centerOffset={{x: 0, y: -40}}
+          >
+            <Image
+              source={Images.pin_marker}
+              style={{
+                width: moderateScale(50),
+                height: moderateScale(50),
+              }}
+            />
+          </Marker>
         </MapView>
         <View
           style={{
@@ -172,6 +209,15 @@ class AreaDraw extends Component {
           }}
         >
           <HeaderWhite title={title} />
+        </View>
+        <View
+          style={{
+            position: 'absolute',
+            bottom: moderateScale(15),
+          }}
+        >
+          <AreaDrawInfoWrapper>
+          </AreaDrawInfoWrapper>
         </View>
         <View style={styles.buttonContainer}>
           {this.state.editing && (

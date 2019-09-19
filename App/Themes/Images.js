@@ -42,6 +42,7 @@ const images = {
   scholar: require(pathPrefix+'scholar.png'),
   map: require(pathPrefix+'map.png'),
   map_disabled: require(pathPrefix+'map_gray.png'),
+  pin_marker: require(pathPrefix+'pin_marker.png'),
 }
 
 export default images

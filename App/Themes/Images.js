@@ -44,6 +44,9 @@ const images = {
   map: require(pathPrefix+'map.png'),
   map_disabled: require(pathPrefix+'map_gray.png'),
   pin_marker: require(pathPrefix+'pin_marker.png'),
+  check_flat: require(pathPrefix+'check_flat.png'),
+  pinned: require(pathPrefix+'pinned.png'),
+  undo: require(pathPrefix+'undo.png'),
 }
 
 export default images

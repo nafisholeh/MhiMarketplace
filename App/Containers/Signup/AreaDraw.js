@@ -19,7 +19,7 @@ import { string } from 'prop-types';
 
 import { moderateScale } from 'Lib';
 import { Colors, Images } from 'Themes';
-import { ButtonPrimary } from 'Components';
+import { ButtonPrimary, ButtonCircle } from 'Components';
 import { HeaderWhite, AreaDrawInfoWrapper } from './Common';
 import { getSelectedListId } from 'Redux/ListRedux';
 
@@ -66,15 +66,6 @@ class AreaDraw extends Component {
     };
   }
 
-  finish() {
-    const { polygons, editing } = this.state;
-    this.setState({
-      polygons: [...polygons, editing],
-      editing: null,
-      creatingHole: false,
-    });
-  }
-
   createHole() {
     const { editing, creatingHole } = this.state;
     if (!creatingHole) {
@@ -99,44 +90,9 @@ class AreaDraw extends Component {
       this.setState({ creatingHole: false });
     }
   }
-
-  onPress(e) {
-    const { editing, creatingHole } = this.state;
-    if (!editing) {
-      this.setState({
-        editing: {
-          id: id++,
-          coordinates: [e.nativeEvent.coordinate],
-          holes: [],
-        },
-      });
-    } else if (!creatingHole) {
-      this.setState({
-        editing: {
-          ...editing,
-          coordinates: [...editing.coordinates, e.nativeEvent.coordinate],
-        },
-      });
-    } else {
-      const holes = [...editing.holes];
-      holes[holes.length - 1] = [
-        ...holes[holes.length - 1],
-        e.nativeEvent.coordinate,
-      ];
-      this.setState({
-        editing: {
-          ...editing,
-          id: id++, // keep incrementing id to trigger display refresh
-          coordinates: [...editing.coordinates],
-          holes,
-        },
-      });
-    }
-  }
   
   onRegionChange = region => {
     const { latitude, longitude, longitudeDelta, latitudeDelta } = region || {};
-    console.tron.log('latitudeDelta, longitudeDelta',latitudeDelta, longitudeDelta)
     const currentZoom = Math.round(Math.log(360 / longitudeDelta) / Math.LN2);
     this.setState({
       isAllowedZoom: currentZoom >= ZOOM_THRESHOLD,
@@ -160,7 +116,51 @@ class AreaDraw extends Component {
       },
       1000
     );
-  }
+  };
+  
+  handleDrawing = () => {
+    const { centerPos, isAllowedZoom, editing, creatingHole } = this.state;
+    if (!isAllowedZoom) return;
+    if (!editing) {
+      this.setState({
+        editing: {
+          id: id++,
+          coordinates: [centerPos],
+          holes: [],
+        },
+      });
+    } else if (!creatingHole) {
+      this.setState({
+        editing: {
+          ...editing,
+          coordinates: [...editing.coordinates, centerPos],
+        },
+      });
+    } else {
+      const holes = [...editing.holes];
+      holes[holes.length - 1] = [
+        ...holes[holes.length - 1],
+        centerPos,
+      ];
+      this.setState({
+        editing: {
+          ...editing,
+          id: id++, // keep incrementing id to trigger display refresh
+          coordinates: [...editing.coordinates],
+          holes,
+        },
+      });
+    }
+  };
+  
+  handleDrawingFinish = () => {
+    const { polygons, editing } = this.state;
+    this.setState({
+      polygons: [...polygons, editing],
+      editing: null,
+      creatingHole: false,
+    });
+  };
 
   render() {
     const {
@@ -171,16 +171,13 @@ class AreaDraw extends Component {
       } = {},
       isAllowedZoom,
       isMapReady,
+      polygons,
+      editing,
     } = this.state;
     const { listId: title } = this.props;
     const mapOptions = {
       scrollEnabled: true,
     };
-
-    if (this.state.editing) {
-      mapOptions.scrollEnabled = false;
-      mapOptions.onPanDrag = e => this.onPress(e);
-    }
 
     return (
       <View style={styles.container}>
@@ -195,23 +192,23 @@ class AreaDraw extends Component {
           onPress={e => this.onPress(e)}
           {...mapOptions}
         >
-          {this.state.polygons.map(polygon => (
+          {polygons.map(polygon => (
             <Polygon
               key={polygon.id}
               coordinates={polygon.coordinates}
               holes={polygon.holes}
-              strokeColor="#F00"
-              fillColor="rgba(255,0,0,0.5)"
+              strokeColor={Colors.polygon_border}
+              fillColor={Colors.polygon_fill_dark}
               strokeWidth={1}
             />
           ))}
-          {this.state.editing && (
+          {editing && (
             <Polygon
-              key={this.state.editing.id}
-              coordinates={this.state.editing.coordinates}
-              holes={this.state.editing.holes}
-              strokeColor="#000"
-              fillColor="rgba(255,0,0,0.5)"
+              key={editing.id}
+              coordinates={editing.coordinates}
+              holes={editing.holes}
+              strokeColor={Colors.polygon_border}
+              fillColor={Colors.polygon_fill_light}
               strokeWidth={1}
             />
           )}
@@ -297,15 +294,29 @@ class AreaDraw extends Component {
               </View>
             </AreaDrawInfoWrapper>
           )}
-        </View>
-        <View style={styles.buttonContainer}>
-          {this.state.editing && (
-            <TouchableOpacity
-              onPress={() => this.finish()}
-              style={[styles.bubble, styles.button]}
+          {isAllowedZoom && (
+            <AreaDrawInfoWrapper
+              height={110}
             >
-              <Text>Selesai</Text>
-            </TouchableOpacity>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                  alignItems: 'center',
+                }}
+              >
+                <ButtonCircle 
+                  onPress={() => this.handleDrawing()}
+                  icon={Images.pinned}
+                />
+                <ButtonCircle 
+                  onPress={() => this.handleDrawingFinish()}
+                  icon={Images.check_flat}
+                  colors={[ Colors.red_light, Colors.red ]}
+                />
+              </View>
+            </AreaDrawInfoWrapper>
           )}
         </View>
       </View>

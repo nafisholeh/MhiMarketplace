@@ -22,6 +22,7 @@ import CartAddButton from './Product/CartAddButton';
 import CartSubtractButton from './Product/CartSubtractButton';
 import ButtonPrimary from './ButtonPrimary';
 import ButtonSecondary from './ButtonSecondary';
+import ButtonCircle from './ButtonCircle';
 import ConsumerPageHeader from './Header/ConsumerPageHeader';
 import ProductImage from './Product/ProductImage';
 import ListHeader from './Header/ListHeader';
@@ -45,5 +46,6 @@ export {
   CartAddButton, ProductDetailWrapper, ButtonPrimary, ButtonSecondary, 
   ConsumerPageHeader, ProductImage, ListHeader, CategoryItem, AppTitle,
   HeaderTitle, CartSubtractButton, ViewShadow, InputText, InputPicker, 
-  KeyboardFriendlyView, InputTextAccount, BackButton, CustomHeader, DayTimeline
+  KeyboardFriendlyView, InputTextAccount, BackButton, CustomHeader, DayTimeline,
+  ButtonCircle
 };

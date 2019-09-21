@@ -93,5 +93,10 @@ export default {
       icon: Images.veggie,
       color: Colors.veggie_bg,
     },
-  }
+  },
+  location: {
+    timeout: 900000,        // expired time to obtain location, in millisecond
+    maximumAge: 900000,     // maximum expired time for last location cache, in millisecond
+    distanceFilter: 10,  // minimum distance from the previous location to exceed before returning a new location, in meters
+  },
 }

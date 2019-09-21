@@ -3,6 +3,9 @@ package com.freshfoodmhi;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
+import com.reactnativecommunity.rnpermissions.RNPermissionsPackage;
+import br.com.dopaminamob.gpsstate.GPSStatePackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import io.sentry.RNSentryPackage;
@@ -17,6 +20,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.airbnb.android.react.maps.MapsPackage;
+import com.devfd.RNGeocoder.RNGeocoderPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,6 +37,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new AsyncStoragePackage(),
+            new RNPermissionsPackage(),
+            new GPSStatePackage(),
             new RNGestureHandlerPackage(),
             new PickerPackage(),
             new RNSentryPackage(),
@@ -42,7 +49,8 @@ public class MainApplication extends Application implements ReactApplication {
             new RNViewOverflowPackage(),
             new SvgPackage(),
             new ReactNativeOneSignalPackage(),
-            new MapsPackage()
+            new MapsPackage(),
+            new RNGeocoderPackage()
       );
     }
 

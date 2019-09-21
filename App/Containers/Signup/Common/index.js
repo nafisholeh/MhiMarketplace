@@ -4,6 +4,7 @@ import Option from './Option';
 import AreaDrawItem from './AreaDrawItem';
 import AreaDrawListHeader from './AreaDrawListHeader';
 import AreaDrawInfoWrapper from './AreaDrawInfoWrapper';
+import withLocationListener from './withLocationListener';
 
 export {
   Header,
@@ -12,4 +13,5 @@ export {
   AreaDrawItem,
   AreaDrawListHeader,
   AreaDrawInfoWrapper,
+  withLocationListener,
 };

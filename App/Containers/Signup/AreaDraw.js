@@ -15,12 +15,16 @@ import MapView, {
 } from 'react-native-maps';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
-import { string } from 'prop-types';
+import { string, bool, object, oneOfType, array } from 'prop-types';
 
-import { moderateScale } from 'Lib';
+import { moderateScale, calcPolygonSize } from 'Lib';
 import { Colors, Images } from 'Themes';
 import { ButtonPrimary, ButtonCircle } from 'Components';
-import { HeaderWhite, AreaDrawInfoWrapper } from './Common';
+import {
+  HeaderWhite,
+  AreaDrawInfoWrapper,
+  withLocationListener
+} from './Common';
 import { getSelectedListId } from 'Redux/ListRedux';
 
 const { width, height } = Dimensions.get('window');
@@ -64,6 +68,7 @@ class AreaDraw extends Component {
       isAllowedZoom: false,
       isMapReady: false,
       selectedPolygonIndex: -1,
+      polygonAreaSize: -1,
     };
   }
 
@@ -128,6 +133,7 @@ class AreaDraw extends Component {
           id: id++,
           coordinates: [centerPos],
           holes: [],
+          polygonAreaSize: -1,
         },
       });
     } else if (!creatingHole) {
@@ -135,6 +141,7 @@ class AreaDraw extends Component {
         editing: {
           ...editing,
           coordinates: [...editing.coordinates, centerPos],
+          polygonAreaSize: calcPolygonSize([...editing.coordinates, centerPos]),
         },
       });
     } else {
@@ -149,6 +156,7 @@ class AreaDraw extends Component {
           id: id++, // keep incrementing id to trigger display refresh
           coordinates: [...editing.coordinates],
           holes,
+          polygonAreaSize: calcPolygonSize([...editing.coordinates]),
         },
       });
     }
@@ -207,6 +215,7 @@ class AreaDraw extends Component {
     const mapOptions = {
       scrollEnabled: true,
     };
+    console.tron.log('AreaDraw/props', this.props)
     return (
       <View style={styles.container}>
         <MapView
@@ -244,7 +253,26 @@ class AreaDraw extends Component {
               strokeColor={Colors.polygon_border}
               fillColor={Colors.polygon_fill_light}
               strokeWidth={1}
-            />
+            >
+              <Marker
+                identifier="marker-edit"
+                key="marker-edit1"
+                coordinate={{
+                  latitude: parseFloat(this.props.location.latitude),
+                  longitude: parseFloat(this.props.location.longitude)
+                }}
+                trackViewChanges={false}
+                image={this.props.icon}
+                anchor={{x: 0.4, y: 1.05}}
+                centerOffset={{x: 0, y: -40}}
+                >
+                <Text
+                  style={[ styles.title, this.props.styleTitle ]}
+                  numberOfLines={2}>
+                  {this.props.title}
+                </Text>
+              </Marker>
+            </Polygon>
           )}
           {isAllowedZoom && (
             <Marker.Animated
@@ -408,10 +436,16 @@ const styles = StyleSheet.create({
 
 AreaDraw.propTypes = {
   listId: string,
+  appState: string,
+  locationEnabled: bool,
+  locationCurrent: object,
+  locationError: string,
+  locationName: oneOfType([ string, array ]),
+  isListening: bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   listId: getSelectedListId(),
 });
 
-export default connect(mapStateToProps, null)(AreaDraw);
+export default connect(mapStateToProps, null)(withLocationListener(AreaDraw));

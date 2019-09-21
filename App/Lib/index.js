@@ -16,6 +16,9 @@ import { getReadableTotalWeight, getAggregateProducts, getTotalWeight } from './
 import { getUpcomingShippingSched, getReadableShippingSched } from './Shipping';
 import { filterObject } from './Object';
 import { reportSentryError, addToSentryLog, reportSentryLog } from './SentryUtils';
+import { calcPolygonSize } from './Map';
+import { extractAdministrativeName } from './LocationUtils';
+import { getStateFromAsyncStorage, setStateFromAsyncStorage  } from './AsyncStorage';
 
 export { 
   parseToRupiah, calcDiscount, isEmailValid, isEmailError, 
@@ -25,5 +28,6 @@ export {
   getUpcomingShippingSched, filterObject, getIntervalTimeToday,
   getAggregateProducts, screenWidth, screenHeight, graphqlToRNPickerSelect,
   getIntervalDateToday, reportSentryError, addToSentryLog, reportSentryLog,
-  getTotalWeight
+  getTotalWeight, calcPolygonSize, extractAdministrativeName,
+  getStateFromAsyncStorage, setStateFromAsyncStorage
 };

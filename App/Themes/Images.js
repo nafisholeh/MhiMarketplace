@@ -48,6 +48,7 @@ const images = {
   check_flat: require(pathPrefix+'check_flat.png'),
   pinned: require(pathPrefix+'pinned.png'),
   undo: require(pathPrefix+'undo.png'),
+  gps: require(pathPrefix+'gps.png'),
 }
 
 export default images

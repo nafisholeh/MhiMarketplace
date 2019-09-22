@@ -15,7 +15,7 @@ import MapView, {
 } from 'react-native-maps';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
-import { string, bool, object, oneOfType, array } from 'prop-types';
+import { string, bool, object, oneOfType, array, func } from 'prop-types';
 
 import { moderateScale, calcPolygonSize } from 'Lib';
 import { Colors, Images } from 'Themes';
@@ -110,9 +110,22 @@ class AreaDraw extends Component {
     this.setState({ isMapReady: true });
   };
   
+  zoomToLocation = (latitude, longitude, latitudeDelta, longitudeDelta) => {
+    if (!this.map || !latitude || !longitude) return;
+    this.map.animateToRegion(
+      {
+        latitude,
+        longitude,
+        latitudeDelta: latitudeDelta || LAT_DELTA_THRESHOLD,
+        longitudeDelta: longitudeDelta || LNG_DELTA_THRESHOLD,
+      },
+      1000
+    );
+  };
+  
   autoZoomIn = () => {
-    if (!this.map) return;
     const { centerPos: { latitude, longitude } } = this.state;
+    if (!this.map) return;
     this.map.animateToRegion(
       {
         latitude,
@@ -211,11 +224,11 @@ class AreaDraw extends Component {
       editing,
       selectedPolygonIndex,
     } = this.state;
-    const { listId: title } = this.props;
+    const { listId: title, refreshLocation, locationCurrent } = this.props;
+    const { latitude: userLat, longitude: userLng } = locationCurrent || {};
     const mapOptions = {
       scrollEnabled: true,
     };
-    console.tron.log('AreaDraw/props', this.props)
     return (
       <View style={styles.container}>
         <MapView
@@ -254,24 +267,6 @@ class AreaDraw extends Component {
               fillColor={Colors.polygon_fill_light}
               strokeWidth={1}
             >
-              <Marker
-                identifier="marker-edit"
-                key="marker-edit1"
-                coordinate={{
-                  latitude: parseFloat(this.props.location.latitude),
-                  longitude: parseFloat(this.props.location.longitude)
-                }}
-                trackViewChanges={false}
-                image={this.props.icon}
-                anchor={{x: 0.4, y: 1.05}}
-                centerOffset={{x: 0, y: -40}}
-                >
-                <Text
-                  style={[ styles.title, this.props.styleTitle ]}
-                  numberOfLines={2}>
-                  {this.props.title}
-                </Text>
-              </Marker>
             </Polygon>
           )}
           {isAllowedZoom && (
@@ -378,6 +373,11 @@ class AreaDraw extends Component {
                   : (
                     <Fragment>
                       <ButtonCircle 
+                        onPress={() => this.zoomToLocation(userLat, userLng)}
+                        icon={Images.gps}
+                        colors={[ Colors.disabled_light, Colors.disabled_dark ]}
+                      />
+                      <ButtonCircle 
                         onPress={() => this.handleDrawing()}
                         icon={Images.pinned}
                       />
@@ -442,6 +442,7 @@ AreaDraw.propTypes = {
   locationError: string,
   locationName: oneOfType([ string, array ]),
   isListening: bool,
+  refreshLocation: func,
 };
 
 const mapStateToProps = createStructuredSelector({

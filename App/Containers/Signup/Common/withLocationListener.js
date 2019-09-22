@@ -46,7 +46,6 @@ export default function withLocationListener(
         locationName: null,
         isListening: false,
       }
-      console.tron.log('withLocationListener/constructor');
       this._checkLocationPermission()
       this._onLocationProviderChange()
     }
@@ -73,13 +72,10 @@ export default function withLocationListener(
     // cek apa user sudah mengijinkan akses ke location provider atau belum
     async _checkLocationPermission() {
       let locationPermission = await getStateFromAsyncStorage('location_permission');
-      console.tron.log('withLocationListener/_checkLocationPermission', locationPermission);
       
       check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION)
       .then(response => {
-        console.tron.log('withLocationListener/check/response', response);
         if(!_.isNil(locationPermission) && response === RESULTS.GRANTED){
-          console.tron.log('withLocationListener/check/granted');
           this.setState({ locationEnabled: true })
           this._checkLocationProviderStatus()         // minta user utk menghidupkan gps/location service
         } else if (
@@ -161,27 +157,22 @@ export default function withLocationListener(
       GPSState
       .getStatus()
       .then(status => {
-        console.tron.log('withLocationListener/_checkLocationProviderStatus', status);
         switch(status) {
           case GPSState.AUTHORIZED:             // akses location provider diijinkan Android
           case GPSState.AUTHORIZED_ALWAYS:      // akses location provider diijinkan iOS
           case GPSState.AUTHORIZED_WHENINUSE:   // akses location provider diijinkan iOS
-            console.tron.log('withLocationListener/_checkLocationProviderStatus/1');
             this.setState({ locationEnabled: true })
             this._startListeningLocationUpdate()
             break
           case GPSState.RESTRICTED:              // location provider dinonaktifkan
-            console.tron.log('withLocationListener/_checkLocationProviderStatus/2');
             this.setState({ locationEnabled: false })
             this._requestLocationProviderEnabled()
             break
           case GPSState.NOT_DETERMINED:          // user belum memberi kepastian apakah diberi ijin utk akses location provider atau tidak
-            console.tron.log('withLocationListener/_checkLocationProviderStatus/3');
             this.setState({ locationEnabled: false })
             this._requestLocationAccessPermission()
             break
           default:
-            console.tron.log('withLocationListener/_checkLocationProviderStatus/4');
             this._useDefaultLocation()
             break
         }
@@ -216,7 +207,6 @@ export default function withLocationListener(
           : navigator.geolocation.getCurrentPosition
       this.watchId = geolocation(
         (position) => {
-          console.tron.log('_startListeningLocationUpdate/position', position)
           this.setState({
             locationCurrent: {
               latitude: position.coords.latitude,

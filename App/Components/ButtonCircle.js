@@ -6,8 +6,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import { screenWidth, moderateScale } from 'Lib';
 import { Colors } from 'Themes';
 
-const WIDTH = 60;
-const WIDTH_ICON = 30;
+const WIDTH = 55;
+const WIDTH_ICON = WIDTH / 2;
 const RADIUS = WIDTH / 2;
 
 const ButtonCircle = ({ style, onPress, loading, disabled, title, colors, icon }) => (

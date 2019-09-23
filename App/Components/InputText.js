@@ -31,7 +31,7 @@ export default class InputText extends Component {
         <View style={styles.input}>
           <View style={
             error ?
-            [ styles.inputContentError, styleBorderError, styleInput ] :
+            [ styles.inputContentError, styleBorder, styleInput ] :
             [ styles.inputContent, styleBorder, styleInput ]
           }>
             { prefix &&
@@ -97,7 +97,7 @@ export default class InputText extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: moderateScale(15),
+    marginBottom: moderateScale(24),
     marginHorizontal: moderateScale(40),
   },
   prefix: {
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   title: {
     color: Colors.veggie_dark,
     fontFamily: 'CircularStd-Book',
-    fontSize: 12,
+    fontSize: 13,
   },
   inputContent: {
     flexDirection: 'row',
@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.brown_light,
     backgroundColor: Colors.white,
     borderRadius: 3,
+    paddingLeft: 0,
   },
   inputContentError: {
     flexDirection: 'row',
@@ -127,18 +128,24 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.red2,
     backgroundColor: Colors.white,
     borderRadius: 3,
-    paddingTop: moderateScale(5),
+    paddingLeft: 0,
   },
   inputValue: {
     flex: 1,
     color: Colors.text,
     fontFamily: 'CircularStd-Book',
     fontSize: 14,
+    paddingBottom: moderateScale(4),
+    paddingTop: moderateScale(4),
+    paddingLeft: 0,
   },
   inputError: {
+    position: 'absolute',
+    bottom: -15,
+    left: 0,
     color: Colors.red2,
     fontFamily: 'CircularStd-Book',
-    fontSize: 10,
+    fontSize: 12,
   },
   image: {
     width: moderateScale(20),

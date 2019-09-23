@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { bool } from 'prop-types';
 
+import { moderateScale } from 'Lib';
 import InputText from './InputText';
 import { InAppNotification, graphqlToRNPickerSelect } from 'Lib';
 import { Images, Colors } from 'Themes';
@@ -122,7 +123,14 @@ class InputPicker extends Component {
         items={data ? data : dummy}
         onValueChange={this.onSelectionChange}
         value={selected}
-        disabled={data ? false : true}>
+        disabled={data ? false : true}
+        style={{
+          marginHorizontal: moderateScale(40),
+        }}
+        modalProps={{
+          marginHorizontal: moderateScale(40),
+        }}
+      >
         <InputText
           title={title}
           value={selected_text}
@@ -135,6 +143,7 @@ class InputPicker extends Component {
           icon={Images.arrow_thin}
           isLoading={fetching}
           isShowIcon={data ? true : false}
+          withBorder={false}
         />
       </RNPickerSelect>
     );

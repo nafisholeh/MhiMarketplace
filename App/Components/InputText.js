@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
-import PropTypes from 'prop-types';
+import { bool } from 'prop-types';
 import { SkypeIndicator } from 'react-native-indicators';
 
 import { Colors, Images, Servers, Strings, Fonts } from 'Themes';
@@ -31,7 +31,7 @@ export default class InputText extends Component {
         <View style={styles.input}>
           <View style={
             error ?
-            [ styles.inputContentError, styleBorder, styleInput ] :
+            [ styles.inputContentError, styleBorderError, styleInput ] :
             [ styles.inputContent, styleBorder, styleInput ]
           }>
             { prefix &&
@@ -43,7 +43,7 @@ export default class InputText extends Component {
               ref={refs ? refs : (ref) => this._input = ref}
               underlineColorAndroid='transparent'
               inputColorPlaceholder={Colors.border}
-              placeholderTextColor={Colors.border}
+              placeholderTextColor={Colors.disabled_light}
               style={styles.inputValue}
               {...this.props}
             />
@@ -98,59 +98,47 @@ export default class InputText extends Component {
 const styles = StyleSheet.create({
   container: {
     marginBottom: moderateScale(15),
+    marginHorizontal: moderateScale(40),
   },
   prefix: {
-    color: 'rgba(0,0,0,0.68)',
+    color: Colors.text,
     fontFamily: 'CircularStd-Book',
     fontSize: 14,
-    fontWeight: Platform.OS === 'ios' ? '300' : null,
-    letterSpacing: -0.34,
     marginBottom: 2,
     marginRight: moderateScale(5),
   },
   title: {
-    color: 'rgba(0,0,0,0.68)',
+    color: Colors.veggie_dark,
     fontFamily: 'CircularStd-Book',
-    fontSize: 14,
-    fontWeight: Platform.OS === 'ios' ? '300' : null,
-    letterSpacing: -0.34,
-    marginBottom: moderateScale(6),
+    fontSize: 12,
   },
   inputContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 0.5,
-    borderColor: Colors.brown_light,
+    borderBottomWidth: 0.5,
+    borderBottomColor: Colors.brown_light,
     backgroundColor: Colors.white,
     borderRadius: 3,
-    paddingVertical: Platform.OS === 'ios' ? moderateScale(14) : 0,
-    paddingLeft: moderateScale(17),
-    paddingRight: moderateScale(14),
   },
   inputContentError: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: Colors.red2,
+    borderBottomWidth: 0.5,
+    borderBottomColor: Colors.red2,
     backgroundColor: Colors.white,
     borderRadius: 3,
-    paddingVertical: Platform.OS === 'ios' ? moderateScale(14) : 0,
-    paddingHorizontal: moderateScale(20),
+    paddingTop: moderateScale(5),
   },
   inputValue: {
     flex: 1,
     color: Colors.text,
     fontFamily: 'CircularStd-Book',
     fontSize: 14,
-    fontWeight: Platform.OS === 'ios' ? '300' : null,
-    letterSpacing: -0.34,
   },
   inputError: {
     color: Colors.red2,
     fontFamily: 'CircularStd-Book',
     fontSize: 10,
-    fontWeight: Platform.OS === 'ios' ? '300' : null,
-    letterSpacing: -0.34,
   },
   image: {
     width: moderateScale(20),
@@ -165,7 +153,7 @@ const styles = StyleSheet.create({
 })
 
 InputText.propTypes = {
-
+  withBorder: bool,
 }
 
 InputText.defaultProps = {

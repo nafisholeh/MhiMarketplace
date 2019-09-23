@@ -124,11 +124,7 @@ class AutoAddressInput extends Component {
     } = this.state; 
     const { onRtRwChanged, onAddressDetailChanged } = this.props;
     return (
-      <KeyboardFriendlyView
-        style={{
-          paddingVertical: moderateScale(20),
-        }}
-      >
+      <KeyboardFriendlyView>
         
         <InputPicker
           title="Provinsi"

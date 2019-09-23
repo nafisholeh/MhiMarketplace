@@ -4,7 +4,9 @@ import { DotIndicator } from 'react-native-indicators';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
+import moment from 'moment';
 
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { AutoAddressInput } from 'Containers/Address/Common';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import SessionActions from 'Redux/SessionRedux';
@@ -36,7 +38,7 @@ class Farmer extends Component {
     name_error: null,
     birth_place: null,
     birth_place_error: null,
-    birth_date: null,
+    birth_date: new Date('1990-01-01'),
     birth_date_error: null,
     
     gender: null,
@@ -73,6 +75,7 @@ class Farmer extends Component {
     provinsi: null,
     provinsi_error: null,
     
+    show_date_modal: false,
     loading: false,
   };
   
@@ -84,6 +87,22 @@ class Farmer extends Component {
   onSignup = () => {
     
   }
+  
+  setBirthDate = (event, date) => {
+    date = date || this.state.date;
+    this.setState({
+      show_date_modal: false,
+      date,
+    });
+  };
+  
+  openBirthDate = () => {
+    this.setState(prevState => {
+      return ({
+        show_date_modal: !prevState.show_date_modal
+      });
+    });
+  };
   
   render () {
     const {
@@ -104,6 +123,7 @@ class Farmer extends Component {
       kecamatan_id,
       kabupaten,
       provinsi,
+      show_date_modal,
     } = this.state;
     const { navigation } = this.props;
     return (
@@ -134,8 +154,7 @@ class Farmer extends Component {
             value={name || ''}
             error={name_error}
             onChangeText={(text) => this.setState({ name: text })}
-            onSubmitEditing={() => this._birth_place.focus()}
-            returnKeyType="next"
+            returnKeyType="done"
           />
         
           <AutoAddressInput
@@ -149,6 +168,48 @@ class Farmer extends Component {
             onProvinsiChanged={text => this.setState({ provinsi: text})}
           />
           
+          <View
+            style={{
+              flexDirection: 'row',
+              marginHorizontal: moderateScale(40),
+            }}
+          >
+            <InputText
+              refs={(ref) => this._birth_place = ref}
+              title="Tempat"
+              placeholder="Tempat"
+              value={birth_place || ''}
+              error={birth_place_error}
+              onChangeText={(text) => this.setState({ birth_place: text })}
+              returnKeyType="done"
+              styleContainer={{
+                flex: 1,
+                marginHorizontal: 0,
+                marginRight: moderateScale(5),
+              }}
+            />
+            
+            <TouchableOpacity
+              onPress={this.openBirthDate}
+              style={{
+                flex: 1,
+              }}
+            >
+              <InputText
+                title="Tanggal Lahir"
+                placeholder="Tanggal Lahir"
+                value={moment(birth_date).format('DD MMM YYYY') || ''}
+                error={birth_date_error}
+                onChangeText={(text) => this.setState({ birth_date: text })}
+                styleContainer={{
+                  flex: 1,
+                  marginHorizontal: 0
+                }}
+                editable={false}
+              />
+            </TouchableOpacity>
+          </View>
+          
         </KeyboardFriendlyView>
 
         <ButtonPrimary
@@ -157,6 +218,15 @@ class Farmer extends Component {
           loading={loading}
           title="Selanjutnya"
         />
+      
+        {show_date_modal && (
+          <DateTimePicker
+            value={birth_date}
+            mode='date'
+            display="default"
+            onChange={this.setBirthDate}
+          />
+        )}
       </View>
     )
   }

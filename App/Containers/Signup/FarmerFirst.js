@@ -31,6 +31,8 @@ class Farmer extends Component {
   state = {
     phone: null,
     error_phone: null,
+    email: null,
+    error_email: null,
     password: null,
     error_password: null,
     password_repeat: null,
@@ -39,11 +41,24 @@ class Farmer extends Component {
   };
   
   onStartSignup = async () => {
-    const { phone, error_phone, password, error_password, password_repeat, error_password_repeat } = this.state;
+    const {
+      phone,
+      error_phone,
+      email,
+      error_email,
+      password,
+      error_password,
+      password_repeat,
+      error_password_repeat,
+    } = this.state;
     await this.setState({ error_phone: null, error_password: null, error_password_repeat: null });
     let isValid = true;
     if (!phone) {
       await this.setState({ error_phone: 'Nomor HP harus diisi' });
+      isValid = false;
+    }
+    if (!email || email === 0) {
+      await this.setState({ error_email: 'Email harus diisi' });
       isValid = false;
     }
     if (password && password_repeat && password !== password_repeat) {
@@ -71,6 +86,8 @@ class Farmer extends Component {
     const {
       phone,
       error_phone,
+      email,
+      error_email,
       password,
       error_password,
       password_repeat,
@@ -83,7 +100,7 @@ class Farmer extends Component {
         <KeyboardFriendlyView style={styles.container}>
           
           <Header title="Pendaftaran akun baru" />
-        
+          
           <InputTextAccount
             refs={(ref) => this._phone = ref}
             label="Nomor HP"
@@ -91,6 +108,18 @@ class Farmer extends Component {
             error={error_phone}
             onChangeText={(text) => this.setState({ phone: text })}
             returnKeyType="next"
+            keyboardType="numeric"
+            onSubmitEditing={() => this._email.focus()}
+          />
+        
+          <InputTextAccount
+            refs={(ref) => this._email = ref}
+            label="Email"
+            value={email || ''}
+            error={error_email || isEmailError(email)}
+            onChangeText={(text) => this.setState({ email: text })}
+            returnKeyType="next"
+            keyboardType="email-address"
             onSubmitEditing={() => this._password.focus()}
           />
           

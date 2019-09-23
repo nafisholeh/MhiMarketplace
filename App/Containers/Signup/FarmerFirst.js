@@ -10,7 +10,7 @@ import SessionActions from 'Redux/SessionRedux';
 import { SIGNUP } from 'GraphQL/User/Mutation';
 import { isEmailError, getGraphQLError, moderateScale } from 'Lib';
 import {
-  InputTextAccount,
+  InputText,
   ButtonPrimary,
   BackButton,
   KeyboardFriendlyView
@@ -101,9 +101,10 @@ class Farmer extends Component {
           
           <Header title="Pendaftaran akun baru" />
           
-          <InputTextAccount
+          <InputText
             refs={(ref) => this._phone = ref}
-            label="Nomor HP"
+            title="Nomor HP"
+            placeholder="HP yang aktif"
             value={phone || ''}
             error={error_phone}
             onChangeText={(text) => this.setState({ phone: text })}
@@ -112,9 +113,10 @@ class Farmer extends Component {
             onSubmitEditing={() => this._email.focus()}
           />
         
-          <InputTextAccount
+          <InputText
             refs={(ref) => this._email = ref}
-            label="Email"
+            title="Email"
+            placeholder="Email yang aktif"
             value={email || ''}
             error={error_email || isEmailError(email)}
             onChangeText={(text) => this.setState({ email: text })}
@@ -123,9 +125,10 @@ class Farmer extends Component {
             onSubmitEditing={() => this._password.focus()}
           />
           
-          <InputTextAccount
+          <InputText
             refs={(ref) => this._password = ref}
-            label="Password"
+            title="Password"
+            placeholder="Password"
             value={password || ''}
             error={error_password}
             secureTextEntry={true}
@@ -134,9 +137,10 @@ class Farmer extends Component {
             returnKeyType="next"
           />
         
-          <InputTextAccount
+          <InputText
             refs={(ref) => this._password_repeat = ref}
-            label="Ulangi Password"
+            title="Ulangi Password"
+            placeholder="Ulangi Password"
             value={password_repeat || ''}
             error={error_password_repeat}
             secureTextEntry={true}

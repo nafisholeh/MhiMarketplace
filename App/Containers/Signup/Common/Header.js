@@ -7,16 +7,20 @@ import { Colors } from 'Themes';
 
 class Header extends Component {
   render() {
-    const { title } = this.props;
+    const { title, style } = this.props;
     return (
       <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginLeft: moderateScale(10),
-          marginTop: moderateScale(25),
-          marginBottom: moderateScale(20),
-        }}
+        style=
+        {[
+          {
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginLeft: moderateScale(10),
+            marginTop: moderateScale(25),
+            marginBottom: moderateScale(20),
+          },
+          style
+        ]}
       >
         <BackButton />
         <Text

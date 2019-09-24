@@ -109,4 +109,22 @@ export default {
       value: 'P',
     }
   ],
+  bloodType: [
+    {
+      label: 'A',
+      value: 'A',
+    },
+    {
+      label: 'B',
+      value: 'B',
+    },
+    {
+      label: 'AB',
+      value: 'AB',
+    },
+    {
+      label: 'O',
+      value: 'O',
+    }
+  ],
 }

@@ -110,6 +110,10 @@ class Farmer extends Component {
     this.setState({ gender });
   };
   
+  onBloodTypeChange = blood => {
+    this.setState({ blood_type: blood });
+  };
+  
   render () {
     const {
       nik,
@@ -221,6 +225,13 @@ class Farmer extends Component {
             placeholder="Pilih jenis kelamin"
             dataLocal={AppConfig.gender}
             onSelectionChange={this.onGenderChange}
+          />
+        
+          <InputPicker
+            title="Gol Darah"
+            placeholder="Pilih golongan darah"
+            dataLocal={AppConfig.bloodType}
+            onSelectionChange={this.onBloodTypeChange}
           />
           
         </KeyboardFriendlyView>

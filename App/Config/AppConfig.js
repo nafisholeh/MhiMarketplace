@@ -260,4 +260,15 @@ export default {
       showManualInput: true,
     }
   ],
+  citizenship: [
+    {
+      label: 'WNI',
+      value: 'WHI',
+    },
+    {
+      label: 'Lainnya',
+      value: 'Lainnya',
+      showManualInput: true,
+    }
+  ],
 }

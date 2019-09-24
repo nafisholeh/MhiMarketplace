@@ -48,11 +48,11 @@ class Farmer extends Component {
     blood_type_error: null,
     religion: null,
     religion_error: null,
-    
     marriage_status: null,
     marriage_status_error: null,
     occupation: null,
     occupation_error: null,
+    
     citizenship: null,
     citizenship_error: null,
     expired_date: null,
@@ -257,6 +257,14 @@ class Farmer extends Component {
             title="Jenis Pekerjaan"
             placeholder="Pilih pekerjaan"
             dataLocal={AppConfig.occupation}
+            onSelectionChange={this.onSelectionChange}
+          />
+        
+          <InputPicker
+            name="citizenship"
+            title="Kewarganegaraan"
+            placeholder="Pilih kewarganegaraan"
+            dataLocal={AppConfig.citizenship}
             onSelectionChange={this.onSelectionChange}
           />
           

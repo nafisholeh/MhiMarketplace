@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
-import { bool } from 'prop-types';
+import { bool, arrayOf, shape, string, object } from 'prop-types';
 
 import { moderateScale } from 'Lib';
 import InputText from './InputText';
@@ -24,8 +24,9 @@ class InputPicker extends Component {
   }
   
   componentDidMount() {
-    const { isInitialFetching } = this.props;
+    const { isInitialFetching, dataLocal } = this.props;
     if (isInitialFetching) this.onFetchData();
+    if (Array.isArray(dataLocal) && dataLocal.length > 0) this.setupData(dataLocal);
   }
   
   componentDidUpdate(prevProps) {
@@ -36,6 +37,10 @@ class InputPicker extends Component {
       this.resetData();
     }
   }
+  
+  setupData = dataLocal => {
+    this.setState({ data: dataLocal });
+  };
   
   resetData = () => {
     this.setState({
@@ -153,6 +158,24 @@ class InputPicker extends Component {
 InputPicker.propTypes = {
   isInitialFetching: bool,
   isKeyDisplayed: bool,
+  /*
+  ** enable the picker to use constant data
+  ** if set, no data fetch
+  */
+  dataLocal: arrayOf(
+    shape({
+      value: string,
+      label: string,
+    })
+  ),
+  /*
+  ** enable the picker to fetch data through GraphQL query
+  ** if dataLocal is not set and query is set, then fetch data
+  */
+  query: object,
+  queryVariables: object,
+  triggerFetch: bool,   // trigger fetch. is a must if query props is set
+  triggerReset: bool,   // trigger clear out data
 };
 
 InputPicker.defaultProps = {

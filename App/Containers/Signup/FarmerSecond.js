@@ -52,7 +52,6 @@ class Farmer extends Component {
     marriage_status_error: null,
     occupation: null,
     occupation_error: null,
-    
     citizenship: null,
     citizenship_error: null,
     expired_date: null,
@@ -165,17 +164,6 @@ class Farmer extends Component {
             returnKeyType="done"
           />
         
-          <AutoAddressInput
-            onAddressDetailChanged={text => this.setState({ address_detail: text})}
-            onRtRwChanged={text => this.setState({ rtrw: text})}
-            onKodeposChanged={text => this.setState({ kodepos: text})}
-            onKelurahanChanged={text => this.setState({ kelurahan: text})}
-            onKecamatanChanged={text => this.setState({ kecamatan: text})}
-            onKecamatanIdChanged={text => this.setState({ kecamatan_id: text})}
-            onKabupatenChanged={text => this.setState({ kabupaten: text})}
-            onProvinsiChanged={text => this.setState({ provinsi: text})}
-          />
-          
           <View
             style={{
               flexDirection: 'row',
@@ -234,6 +222,17 @@ class Farmer extends Component {
             placeholder="Pilih golongan darah"
             dataLocal={AppConfig.bloodType}
             onSelectionChange={this.onSelectionChange}
+          />
+        
+          <AutoAddressInput
+            onAddressDetailChanged={text => this.setState({ address_detail: text})}
+            onRtRwChanged={text => this.setState({ rtrw: text})}
+            onKodeposChanged={text => this.setState({ kodepos: text})}
+            onKelurahanChanged={text => this.setState({ kelurahan: text})}
+            onKecamatanChanged={text => this.setState({ kecamatan: text})}
+            onKecamatanIdChanged={text => this.setState({ kecamatan_id: text})}
+            onKabupatenChanged={text => this.setState({ kabupaten: text})}
+            onProvinsiChanged={text => this.setState({ provinsi: text})}
           />
         
           <InputPicker

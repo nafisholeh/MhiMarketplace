@@ -197,7 +197,13 @@ class ImagePicker extends PureComponent {
   // render image gallery untuk multiple image
   _renderGallery = () => {
     const { image } = this.state;
-    const { isShowGallery, isCustomComponent, isMultiplePick } = this.props;
+    const {
+      isShowGallery,
+      isCustomComponent,
+      isMultiplePick,
+      singlePhotoButtonStyle,
+    } = this.props;
+    console.tron.log('_renderGallery', this.state);
     if(!isCustomComponent) {
       if(isMultiplePick) {
         return (
@@ -231,8 +237,9 @@ class ImagePicker extends PureComponent {
       } else {
         return (
           <ImageFlexible
-            path={this.state.image[0]}
-            urlDefault={Images.add_image}
+            path={image[0]}
+            urlDefault={Images.photo_add_button}
+            style={singlePhotoButtonStyle}
             onPress={Platform.OS === 'ios' ? this._onOpenOptionIOS : () => this.bottomSheet.open()}
           />
         )

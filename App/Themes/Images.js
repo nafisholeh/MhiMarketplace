@@ -50,6 +50,7 @@ const images = {
   undo: require(pathPrefix+'undo.png'),
   gps: require(pathPrefix+'gps.png'),
   dropdown: require(pathPrefix+'dropdown.png'),
+  photo_add_button: require(pathPrefix+'photo_add_button.jpg'),
 }
 
 export default images

@@ -23,6 +23,12 @@ export default class ImageFlexible extends PureComponent {
   componentWillMount() {
     this._showMainImage()
   }
+  
+  componentDidUpdate(prevProps) {
+    if (prevProps.path !== this.props.path) {
+      this._showMainImage();
+    }
+  }
 
   _showMainImage() {
     const { path, urlNormalizer, urlBase } = this.props;

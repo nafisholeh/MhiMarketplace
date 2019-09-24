@@ -127,4 +127,40 @@ export default {
       value: 'O',
     }
   ],
+  religion: [
+    {
+      label: 'Islam',
+      value: 'Islam',
+    },
+    {
+      label: 'Kristen',
+      value: 'Kristen',
+    },
+    {
+      label: 'Katholik',
+      value: 'Katholik',
+    },
+    {
+      label: 'Hindu',
+      value: 'Hindu',
+    },
+    {
+      label: 'Budha',
+      value: 'Budha',
+    },
+    {
+      label: 'Khong Hucu',
+      value: 'Khong Hucu',
+    },
+    {
+      label: 'Penghayat Kepercayaan',
+      value: 'Penghayat Kepercayaan',
+      showManualInput: true,
+    },
+    {
+      label: 'Lainnya',
+      value: 'Lainnya',
+      showManualInput: true,
+    },
+  ],
 }

@@ -106,12 +106,8 @@ class Farmer extends Component {
     });
   };
   
-  onGenderChange = gender => {
-    this.setState({ gender });
-  };
-  
-  onBloodTypeChange = blood => {
-    this.setState({ blood_type: blood });
+  onSelectionChange = (value, stateName) => {
+    this.setState({ [stateName]: value });
   };
   
   render () {
@@ -221,17 +217,27 @@ class Farmer extends Component {
           </View>
           
           <InputPicker
+            name="gender"
             title="Jenis Kelamin"
             placeholder="Pilih jenis kelamin"
             dataLocal={AppConfig.gender}
-            onSelectionChange={this.onGenderChange}
+            onSelectionChange={this.onSelectionChange}
           />
         
           <InputPicker
+            name="blood_type"
             title="Gol Darah"
             placeholder="Pilih golongan darah"
             dataLocal={AppConfig.bloodType}
-            onSelectionChange={this.onBloodTypeChange}
+            onSelectionChange={this.onSelectionChange}
+          />
+        
+          <InputPicker
+            name="religion"
+            title="Agama"
+            placeholder="Pilih agama yang dianut"
+            dataLocal={AppConfig.religion}
+            onSelectionChange={this.onSelectionChange}
           />
           
         </KeyboardFriendlyView>

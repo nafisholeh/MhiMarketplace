@@ -147,7 +147,7 @@ class InputPicker extends Component {
           onRefetch={this.onFetchData}
           icon={Images.arrow_thin}
           isLoading={fetching}
-          isShowIcon={data ? true : false}
+          isShowIcon
           withBorder={false}
         />
       </RNPickerSelect>

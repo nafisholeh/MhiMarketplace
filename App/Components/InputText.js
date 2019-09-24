@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
-import { bool } from 'prop-types';
+import { bool, object, number, string, oneOfType } from 'prop-types';
 import { SkypeIndicator } from 'react-native-indicators';
 
 import { Colors, Images, Servers, Strings, Fonts } from 'Themes';
@@ -54,7 +54,7 @@ export default class InputText extends Component {
             ) : null}
             { isLoading &&       // tampilkan UI loading ketika sedang fetching
               <SkypeIndicator
-                color={Colors.text_secondary}
+                color={Colors.veggie_light}
                 count={5}
                 size={20}
                 style={styles.loading}
@@ -151,8 +151,7 @@ const styles = StyleSheet.create({
     width: moderateScale(20),
     height: moderateScale(14),
     alignSelf: 'center',
-    tintColor: Colors.google,
-    transform: [{rotate: '90 deg'}],
+    tintColor: Colors.veggie_light,
   },
   loading: {
     flex: 0,
@@ -161,10 +160,15 @@ const styles = StyleSheet.create({
 
 InputText.propTypes = {
   withBorder: bool,
+  error: object,
+  isLoading: bool,
+  isShowIcon: bool,
+  icon: oneOfType([ number, string ]),
 }
 
 InputText.defaultProps = {
   error: null,
   isLoading: false,
-  isShowIcon: true,
+  isShowIcon: false,
+  icon: Images.dropdown,
 }

@@ -49,6 +49,7 @@ const images = {
   pinned: require(pathPrefix+'pinned.png'),
   undo: require(pathPrefix+'undo.png'),
   gps: require(pathPrefix+'gps.png'),
+  dropdown: require(pathPrefix+'dropdown.png'),
 }
 
 export default images

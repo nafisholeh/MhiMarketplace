@@ -17,12 +17,15 @@ import {
   InputPicker,
   ButtonPrimary,
   BackButton,
-  KeyboardFriendlyView
+  KeyboardFriendlyView,
+  RadioButton,
 } from 'Components';
 import { Header } from './Common';
-import { Images } from 'Themes';
+import { Images, Colors } from 'Themes';
 import styles from './Styles';
 import AppConfig from 'Config/AppConfig';
+
+const LIFETIME = new Date('3000-01-01');
     
 class Farmer extends Component {
   
@@ -54,11 +57,11 @@ class Farmer extends Component {
     occupation_error: null,
     citizenship: null,
     citizenship_error: null,
-    expired_date: null,
+    expired_date_lifetime: true,
+    expired_date: LIFETIME,
     expired_date_error: null,
     photo: null,
     photo_error: null,
-    
     address_detail: null,
     address_detail_error: null,
     rtrw: null,
@@ -76,6 +79,7 @@ class Farmer extends Component {
     provinsi: null,
     provinsi_error: null,
     
+    show_expired_modal: false,
     show_date_modal: false,
     loading: false,
   };
@@ -89,11 +93,19 @@ class Farmer extends Component {
     
   }
   
-  setBirthDate = (event, date) => {
+  openExpiredDate = () => {
+    this.setState(prevState => {
+      return ({
+        show_expired_modal: !prevState.show_expired_modal
+      });
+    });
+  };
+  
+  setExpiredDate = (event, date) => {
     date = date || this.state.date;
     this.setState({
-      show_date_modal: false,
-      birth_date: date,
+      show_expired_modal: false,
+      expired_date: date,
     });
   };
   
@@ -102,6 +114,14 @@ class Farmer extends Component {
       return ({
         show_date_modal: !prevState.show_date_modal
       });
+    });
+  };
+
+  setBirthDate = (event, date) => {
+    date = date || this.state.date;
+    this.setState({
+      show_date_modal: false,
+      birth_date: date,
     });
   };
   
@@ -128,7 +148,11 @@ class Farmer extends Component {
       kecamatan_id,
       kabupaten,
       provinsi,
+      show_expired_modal,
       show_date_modal,
+      expired_date,
+      expired_date_error,
+      expired_date_lifetime,
     } = this.state;
     const { navigation } = this.props;
     return (
@@ -267,6 +291,65 @@ class Farmer extends Component {
             onSelectionChange={this.onSelectionChange}
           />
           
+          <Text
+            style={{
+              color: Colors.veggie_dark,
+              fontFamily: 'CircularStd-Book',
+              fontSize: 13,
+              marginHorizontal: moderateScale(40),
+              marginBottom: moderateScale(8),
+            }}
+          >
+            Masa Berlaku
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginHorizontal: moderateScale(40),
+              marginBottom: moderateScale(expired_date_lifetime ? 30 : 5),
+            }}
+          >
+            <RadioButton
+              title="Seumur hidup"
+              isSelected={expired_date_lifetime}
+              onPress={() => this.setState({
+                expired_date: LIFETIME,
+                expired_date_lifetime: true,
+              })}
+            />
+            <RadioButton
+              title="Tanggal..."
+              isSelected={!expired_date_lifetime}
+              onPress={() =>
+                this.setState({
+                  expired_date: new Date(),
+                  expired_date_lifetime: false,
+                })
+              }
+            />
+          </View>
+          
+          {!expired_date_lifetime
+            ? (
+              <TouchableOpacity
+                onPress={this.openExpiredDate}
+                style={{ flex: 1 }}
+              >
+                <InputText
+                  name="expired_date"
+                  placeholder="Pilih tanggal habis berlaku"
+                  value={moment(expired_date).format('DD MMM YYYY') || ''}
+                  error={expired_date_error}
+                  onChangeText={this.onSelectionChange}
+                  editable={false}
+                />
+              </TouchableOpacity>
+            ) : (
+              <View />
+            )
+          }
+
         </KeyboardFriendlyView>
 
         <ButtonPrimary
@@ -276,14 +359,27 @@ class Farmer extends Component {
           title="Selanjutnya"
         />
       
-        {show_date_modal && (
-          <DateTimePicker
-            value={birth_date}
-            mode='date'
-            display="default"
-            onChange={this.setBirthDate}
-          />
-        )}
+        {show_expired_modal
+          ? (
+            <DateTimePicker
+              value={expired_date}
+              mode='date'
+              display="default"
+              onChange={this.setExpiredDate}
+            />
+          ) : (<View />)
+        }
+      
+        {show_date_modal
+          ? (
+            <DateTimePicker
+              value={birth_date}
+              mode='date'
+              display="default"
+              onChange={this.setBirthDate}
+            />
+          ) : (<View />)
+        }
       </View>
     )
   }

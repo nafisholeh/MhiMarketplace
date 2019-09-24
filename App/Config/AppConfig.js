@@ -166,7 +166,7 @@ export default {
   marriageStatus: [
     {
       label: 'Belum kawin',
-      value: 'Belum Kawin',
+      value: 'Belum kawin',
     },
     {
       label: 'Kawin',
@@ -174,11 +174,90 @@ export default {
     },
     {
       label: 'Cerai hidup',
-      value: 'Cerai Hidup',
+      value: 'Cerai hidup',
     },
     {
       label: 'Cerai mati',
-      value: 'Cerai Mati',
+      value: 'Cerai mati',
+    }
+  ],
+  occupation: [
+    {
+      label: 'Petani/Pekebun',
+      value: 'Petani/Pekebun',
+    },
+    {
+      label: 'Peternak',
+      value: 'Peternak',
+    },
+    {
+      label: 'Nelayan/Perikanan',
+      value: 'Nelayan/Perikanan',
+    },
+    {
+      label: 'Karyawan swasta',
+      value: 'Karyawan swasta',
+    },
+    {
+      label: 'Karyawan BUMN',
+      value: 'Karyawan BUMN',
+    },
+    {
+      label: 'Karyawan BUMD',
+      value: 'Karyawan BUMD',
+    },
+    {
+      label: 'Karyawan honorer',
+      value: 'Karyawan honorer',
+    },
+    {
+      label: 'Buruh harian lepas',
+      value: 'Buruh harian lepas',
+    },
+    {
+      label: 'Buruh tani/perkebunan',
+      value: 'Buruh tani/perkebunan',
+    },
+    {
+      label: 'Buruh nelayan/perikanan',
+      value: 'Buruh nelayan/perikanan',
+    },
+    {
+      label: 'Buruh peternakan',
+      value: 'Buruh peternakan',
+    },
+    {
+      label: 'Dosen',
+      value: 'Dosen',
+    },
+    {
+      label: 'Guru',
+      value: 'Guru',
+    },
+    {
+      label: 'Pelaut',
+      value: 'Pelaut',
+    },
+    {
+      label: 'Pedagang',
+      value: 'Pedagang',
+    },
+    {
+      label: 'Perangkat desa',
+      value: 'Perangkat desa',
+    },
+    {
+      label: 'Kepala desa',
+      value: 'Kepala desa',
+    },
+    {
+      label: 'Wiraswasta',
+      value: 'Wiraswasta',
+    },
+    {
+      label: 'Lainnya',
+      value: 'Lainnya',
+      showManualInput: true,
     }
   ],
 }

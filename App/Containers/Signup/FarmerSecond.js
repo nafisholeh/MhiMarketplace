@@ -251,6 +251,14 @@ class Farmer extends Component {
             dataLocal={AppConfig.marriageStatus}
             onSelectionChange={this.onSelectionChange}
           />
+        
+          <InputPicker
+            name="occupation"
+            title="Jenis Pekerjaan"
+            placeholder="Pilih pekerjaan"
+            dataLocal={AppConfig.occupation}
+            onSelectionChange={this.onSelectionChange}
+          />
           
         </KeyboardFriendlyView>
 

@@ -93,7 +93,7 @@ class Farmer extends Component {
     date = date || this.state.date;
     this.setState({
       show_date_modal: false,
-      date,
+      birth_date: date,
     });
   };
   

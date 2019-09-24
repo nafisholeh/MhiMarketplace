@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import { StyleSheet, TouchableOpacity, Text } from 'react-native'
 import { View } from 'react-native-animatable'
-import PropTypes from 'prop-types'
+import { number, string, bool, func, object} from 'prop-types'
 
 import { Colors } from 'Themes';
+import { moderateScale } from 'Lib';
 
 const DEFAULT_SIZE_MULTIPLIER = 0.7
 const DEFAULT_OUTER_BORDER_WIDTH_MULTIPLIER = 0.2
@@ -15,7 +16,16 @@ export default class RadioButton extends Component {
   }
 
   render () {
-    const { size, innerColor, outerColor, isSelected, onPress } = this.props
+    const {
+      size,
+      innerColor,
+      outerColor,
+      isSelected,
+      onPress,
+      styleContainer,
+      title,
+      styleTitle,
+    } = this.props
     const outerStyle = {
       borderColor: outerColor,
       width: size + size * DEFAULT_SIZE_MULTIPLIER,
@@ -23,20 +33,35 @@ export default class RadioButton extends Component {
       borderRadius: (size + size * DEFAULT_SIZE_MULTIPLIER) / 2,
       borderWidth: size * DEFAULT_OUTER_BORDER_WIDTH_MULTIPLIER,
     }
-
     const innerStyle = {
       width: size,
       height: size,
       borderRadius: size / 2,
       backgroundColor: innerColor,
     }
-
     return (
       <TouchableOpacity
-        style={[styles.radio, outerStyle, this.props.styleContainer]}
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}
         onPress={onPress}
       >
-        {isSelected ? <View style={innerStyle} {...this.props} /> : null}
+        <View style={[styles.radio, outerStyle, styleContainer]}>
+          {isSelected ? <View style={innerStyle} {...this.props} /> : null}
+        </View>
+        <Text
+          style={[
+            {
+              color: Colors.text,
+              fontFamily: 'CircularStd-Book',
+              fontSize: 14,
+            },
+            styleTitle
+          ]}
+        >
+          {title}
+        </Text>
       </TouchableOpacity>
     )
   }
@@ -47,16 +72,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
+    marginRight: moderateScale(7),
   }
 })
 
 RadioButton.propTypes = {
-  size: PropTypes.number,
-  innerColor: PropTypes.string,
-  outerColor: PropTypes.string,
-  isSelected: PropTypes.bool,
-  onPress: PropTypes.func,
-  styleContainer: PropTypes.object,
+  size: number,
+  innerColor: string,
+  outerColor: string,
+  isSelected: bool,
+  onPress: func,
+  styleContainer: object,
+  title: string,
+  styleTitle: object,
 }
 
 RadioButton.defaultProps = {

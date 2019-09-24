@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
-import { bool, object, number, string, oneOfType } from 'prop-types';
+import { bool, object, func, number, string, oneOfType } from 'prop-types';
 import { SkypeIndicator } from 'react-native-indicators';
 
 import { Colors, Images, Servers, Strings, Fonts } from 'Themes';
@@ -11,6 +11,7 @@ export default class InputText extends Component {
   render() {
     const {
       refs,
+      name,
       title,
       error,
       prefix,
@@ -24,6 +25,7 @@ export default class InputText extends Component {
       styleBorder,
       styleInput,
       iconStyle,
+      onChangeText,
     } = this.props;
     return (
       <View style={[ styles.container, styleContainer ]}>
@@ -46,6 +48,7 @@ export default class InputText extends Component {
               placeholderTextColor={Colors.disabled_light}
               style={styles.inputValue}
               {...this.props}
+              onChangeText={text => onChangeText(text, name)}
             />
             { suffix ? (
               <Text style={styles.prefix}>
@@ -162,6 +165,8 @@ InputText.propTypes = {
   isLoading: bool,
   isShowIcon: bool,
   icon: oneOfType([ number, string ]),
+  name: string,
+  onChangeText: func,
 }
 
 InputText.defaultProps = {

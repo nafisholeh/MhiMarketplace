@@ -42,13 +42,13 @@ class Farmer extends Component {
     birth_place_error: null,
     birth_date: new Date('1990-01-01'),
     birth_date_error: null,
-    
     gender: null,
     gender_error: null,
     blood_type: null,
     blood_type_error: null,
     religion: null,
     religion_error: null,
+    
     marriage_status: null,
     marriage_status_error: null,
     occupation: null,
@@ -143,11 +143,12 @@ class Farmer extends Component {
         
           <InputText
             refs={(ref) => this._nik = ref}
+            name="nik"
             title="NIK"
             placeholder="Nomor KTP"
             value={nik || ''}
             error={nik_error}
-            onChangeText={(text) => this.setState({ nik: text })}
+            onChangeText={this.onSelectionChange}
             onSubmitEditing={() => this._name.focus()}
             keyboardType="numeric"
             returnKeyType="next"
@@ -155,11 +156,12 @@ class Farmer extends Component {
           
           <InputText
             refs={(ref) => this._name = ref}
+            name="name"
             title="Nama"
             placeholder="Nama sesuai KTP"
             value={name || ''}
             error={name_error}
-            onChangeText={(text) => this.setState({ name: text })}
+            onChangeText={this.onSelectionChange}
             returnKeyType="done"
           />
         
@@ -182,11 +184,12 @@ class Farmer extends Component {
           >
             <InputText
               refs={(ref) => this._birth_place = ref}
+              name="birth_place"
               title="Tempat"
               placeholder="Tempat"
               value={birth_place || ''}
               error={birth_place_error}
-              onChangeText={(text) => this.setState({ birth_place: text })}
+              onChangeText={this.onSelectionChange}
               returnKeyType="done"
               styleContainer={{
                 flex: 1,
@@ -203,10 +206,11 @@ class Farmer extends Component {
             >
               <InputText
                 title="Tanggal Lahir"
+                name="birth_date"
                 placeholder="Tanggal lahir"
                 value={moment(birth_date).format('DD MMM YYYY') || ''}
                 error={birth_date_error}
-                onChangeText={(text) => this.setState({ birth_date: text })}
+                onChangeText={this.onSelectionChange}
                 styleContainer={{
                   flex: 1,
                   marginHorizontal: 0

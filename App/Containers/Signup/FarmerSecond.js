@@ -19,6 +19,7 @@ import {
   BackButton,
   KeyboardFriendlyView,
   RadioButton,
+  ImagePicker,
 } from 'Components';
 import { Header } from './Common';
 import { Images, Colors } from 'Themes';
@@ -60,8 +61,10 @@ class Farmer extends Component {
     expired_date_lifetime: true,
     expired_date: LIFETIME,
     expired_date_error: null,
-    photo: null,
-    photo_error: null,
+    photo_face: null,
+    photo_face_error: null,
+    photo_ktp: null,
+    photo_ktp_error: null,
     address_detail: null,
     address_detail_error: null,
     rtrw: null,
@@ -153,6 +156,10 @@ class Farmer extends Component {
       expired_date,
       expired_date_error,
       expired_date_lifetime,
+      photo_face,
+      photo_face_error,
+      photo_ktp,
+      photo_ktp_error,
     } = this.state;
     const { navigation } = this.props;
     return (
@@ -307,7 +314,7 @@ class Farmer extends Component {
               flexDirection: 'row',
               justifyContent: 'space-between',
               marginHorizontal: moderateScale(40),
-              marginBottom: moderateScale(expired_date_lifetime ? 30 : 5),
+              marginBottom: moderateScale(expired_date_lifetime ? 20 : 5),
             }}
           >
             <RadioButton
@@ -349,6 +356,70 @@ class Farmer extends Component {
               <View />
             )
           }
+          
+          <Text
+            style={{
+              color: Colors.veggie_dark,
+              fontFamily: 'CircularStd-Book',
+              fontSize: 13,
+              marginHorizontal: moderateScale(40),
+              marginBottom: moderateScale(8),
+            }}
+          >
+            Ambil Foto KTP
+          </Text>
+          <ImagePicker
+            onChange={(raw = [], paths = []) => {
+              const photos = raw.map((item, i) => {
+                const { mime, path } = raw[i];
+                return { mime, path };
+              })
+              this.setState({ photo_ktp: photos });
+            }}
+            data={photo_ktp}
+            titleBottomSheet='Ambil foto KTP'
+            isMultiplePick={false}
+            isShowCancelButton={false}
+            isShowGallery
+            singlePhotoButtonStyle={{
+              marginHorizontal: moderateScale(40),
+            }}
+            styleContainer={{
+              marginBottom: moderateScale(10),
+            }}
+          />
+        
+          <Text
+            style={{
+              color: Colors.veggie_dark,
+              fontFamily: 'CircularStd-Book',
+              fontSize: 13,
+              marginHorizontal: moderateScale(40),
+              marginBottom: moderateScale(8),
+            }}
+          >
+            Ambil Foto Muka
+          </Text>
+          <ImagePicker
+            onChange={(raw = [], paths = []) => {
+              const photos = raw.map((item, i) => {
+                const { mime, path } = raw[i];
+                return { mime, path };
+              })
+              this.setState({ photo_face: photos });
+            }}
+            data={photo_face}
+            titleBottomSheet='Ambil foto muka'
+            isMultiplePick={false}
+            isShowCancelButton={false}
+            isShowGallery
+            singlePhotoButtonStyle={{
+              marginHorizontal: moderateScale(40),
+            }}
+            styleContainer={{
+              marginBottom: moderateScale(30),
+            }}
+          />
 
         </KeyboardFriendlyView>
 

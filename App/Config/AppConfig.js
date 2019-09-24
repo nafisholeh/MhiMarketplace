@@ -99,4 +99,14 @@ export default {
     maximumAge: 900000,     // maximum expired time for last location cache, in millisecond
     distanceFilter: 10,  // minimum distance from the previous location to exceed before returning a new location, in meters
   },
+  gender: [
+    {
+      label: 'Laki-Laki',
+      value: 'L',
+    },
+    {
+      label: 'Perempuan',
+      value: 'P',
+    }
+  ],
 }

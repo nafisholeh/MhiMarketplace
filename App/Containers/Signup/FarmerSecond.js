@@ -14,6 +14,7 @@ import { SIGNUP } from 'GraphQL/User/Mutation';
 import { isEmailError, getGraphQLError, moderateScale } from 'Lib';
 import {
   InputText,
+  InputPicker,
   ButtonPrimary,
   BackButton,
   KeyboardFriendlyView
@@ -21,6 +22,7 @@ import {
 import { Header } from './Common';
 import { Images } from 'Themes';
 import styles from './Styles';
+import AppConfig from 'Config/AppConfig';
     
 class Farmer extends Component {
   
@@ -102,6 +104,10 @@ class Farmer extends Component {
         show_date_modal: !prevState.show_date_modal
       });
     });
+  };
+  
+  onGenderChange = gender => {
+    this.setState({ gender });
   };
   
   render () {
@@ -197,7 +203,7 @@ class Farmer extends Component {
             >
               <InputText
                 title="Tanggal Lahir"
-                placeholder="Tanggal Lahir"
+                placeholder="Tanggal lahir"
                 value={moment(birth_date).format('DD MMM YYYY') || ''}
                 error={birth_date_error}
                 onChangeText={(text) => this.setState({ birth_date: text })}
@@ -209,6 +215,13 @@ class Farmer extends Component {
               />
             </TouchableOpacity>
           </View>
+          
+          <InputPicker
+            title="Jenis Kelamin"
+            placeholder="Pilih jenis kelamin"
+            dataLocal={AppConfig.gender}
+            onSelectionChange={this.onGenderChange}
+          />
           
         </KeyboardFriendlyView>
 

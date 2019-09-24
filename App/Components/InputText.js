@@ -27,7 +27,7 @@ export default class InputText extends Component {
     } = this.props;
     return (
       <View style={[ styles.container, styleContainer ]}>
-        <Text style={styles.title}>{title}</Text>
+        {title ? (<Text style={styles.title}>{title}</Text>) : (<View></View>)}
         <View style={styles.input}>
           <View style={
             error ?
@@ -118,7 +118,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: Colors.brown_light,
     backgroundColor: Colors.white,
-    borderRadius: 3,
     paddingLeft: 0,
   },
   inputContentError: {
@@ -127,7 +126,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: Colors.red2,
     backgroundColor: Colors.white,
-    borderRadius: 3,
     paddingLeft: 0,
   },
   inputValue: {

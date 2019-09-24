@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { View } from 'react-native';
+import React, { Component, Fragment } from 'react';
+import { View, Image } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
-import { bool, arrayOf, shape, string, object } from 'prop-types';
+import { bool, arrayOf, shape, string, object, func } from 'prop-types';
 
 import { moderateScale } from 'Lib';
 import InputText from './InputText';
@@ -20,6 +20,7 @@ class InputPicker extends Component {
       error: null,
       error_fetch: null,
       dummy: [{label: 'loading', value: 0}],
+      showManualInput: false,
     };
   }
   
@@ -92,16 +93,25 @@ class InputPicker extends Component {
   
   onSelectionChange = (val, i) => {
     const { data } = this.state;
-    const { onSelectionChange } = this.props;
+    const { onSelectionChange, name } = this.props;
     if (!val) return;
     const selectedData = data.find((n) => n.value === val);
-    const { label: selectedLabel } = selectedData || {};
+    const { label: selectedLabel, showManualInput } = selectedData || {};
     this.setState({
       selected: val,
       selected_text: selectedLabel,
+      showManualInput,
     });
     if (onSelectionChange) {
-      onSelectionChange(val);
+      onSelectionChange(showManualInput ? null : val, name);
+    }
+  };
+  
+  onManualTextChange = text => {
+    const { onSelectionChange, name } = this.props;
+    this.setState({ manual_text: text });
+    if (onSelectionChange) {
+      onSelectionChange(text, name);
     }
   };
 
@@ -111,46 +121,98 @@ class InputPicker extends Component {
       dummy,
       selected,
       selected_text,
+      manual_text,
       fetching,
       error,
-      error_fetch
+      error_fetch,
+      showManualInput,
     } = this.state;
     const {
       title,
       placeholder
     } = this.props;
     return (
-      <RNPickerSelect
-        placeholder={{
-          label: placeholder,
-          value: null,
-        }}
-        items={data ? data : dummy}
-        onValueChange={this.onSelectionChange}
-        value={selected}
-        disabled={data ? false : true}
-        style={{
-          marginHorizontal: moderateScale(40),
-        }}
-        modalProps={{
-          marginHorizontal: moderateScale(40),
-        }}
-      >
-        <InputText
-          title={title}
-          value={selected_text}
-          placeholder={placeholder}
-          editable={false}
-          selectTextOnFocus={false}
-          error={error}
-          errorFetching={error_fetch}
-          onRefetch={this.onFetchData}
-          icon={Images.arrow_thin}
-          isLoading={fetching}
-          isShowIcon
-          withBorder={false}
-        />
-      </RNPickerSelect>
+      <Fragment>
+        <RNPickerSelect
+          placeholder={{
+            label: placeholder,
+            value: null,
+          }}
+          items={data ? data : dummy}
+          onValueChange={this.onSelectionChange}
+          value={selected}
+          disabled={data ? false : true}
+          style={{
+            marginHorizontal: moderateScale(40),
+          }}
+          modalProps={{
+            marginHorizontal: moderateScale(40),
+          }}
+        >
+          <InputText
+            title={title}
+            value={selected_text}
+            placeholder={placeholder}
+            editable={false}
+            selectTextOnFocus={false}
+            error={error}
+            errorFetching={error_fetch}
+            onRefetch={this.onFetchData}
+            icon={Images.arrow_thin}
+            isLoading={fetching}
+            isShowIcon
+            withBorder={false}
+            styleContainer={
+              showManualInput
+              ? {
+                marginBottom: 0,
+              }
+              : {}
+            }
+          />
+        </RNPickerSelect>
+        {showManualInput
+          ? (
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: moderateScale(10),
+                marginBottom: moderateScale(24),
+                marginHorizontal: moderateScale(40),
+              }}
+            >
+              <Image
+                source={Images.edit_small}
+                style={{
+                  width: moderateScale(28),
+                  height: moderateScale(25),
+                  marginRight: moderateScale(7),
+                  marginBottom: 0,
+                  alignSelf: 'flex-end',
+                  tintColor: Colors.disabled_light,
+                }}
+              />
+              <InputText
+                value={manual_text}
+                onChangeText={this.onManualTextChange}
+                placeholder="Isi disini"
+                withBorder={false}
+                error={error}
+                styleContainer={{
+                  flex: 1,
+                  marginBottom: 0,
+                  marginHorizontal: 0,
+                  backgroundColor: 'blue'
+                }}
+              />
+            </View>
+          ) : (
+            <View></View>
+          )
+        }
+      </Fragment>
     );
   }
 }
@@ -158,6 +220,7 @@ class InputPicker extends Component {
 InputPicker.propTypes = {
   isInitialFetching: bool,
   isKeyDisplayed: bool,
+  name: string,         // align with the parent's state title
   /*
   ** enable the picker to use constant data
   ** if set, no data fetch
@@ -166,6 +229,7 @@ InputPicker.propTypes = {
     shape({
       value: string,
       label: string,
+      showManualInput: bool,  // show manual input
     })
   ),
   /*
@@ -176,6 +240,7 @@ InputPicker.propTypes = {
   queryVariables: object,
   triggerFetch: bool,   // trigger fetch. is a must if query props is set
   triggerReset: bool,   // trigger clear out data
+  onSelectionChange: func,
 };
 
 InputPicker.defaultProps = {

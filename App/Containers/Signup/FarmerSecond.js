@@ -243,6 +243,14 @@ class Farmer extends Component {
             dataLocal={AppConfig.religion}
             onSelectionChange={this.onSelectionChange}
           />
+        
+          <InputPicker
+            name="marriage_status"
+            title="Status Perkawinan"
+            placeholder="Pilih status"
+            dataLocal={AppConfig.marriageStatus}
+            onSelectionChange={this.onSelectionChange}
+          />
           
         </KeyboardFriendlyView>
 

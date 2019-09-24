@@ -101,7 +101,7 @@ export default {
   },
   gender: [
     {
-      label: 'Laki-Laki',
+      label: 'Laki-laki',
       value: 'L',
     },
     {
@@ -153,7 +153,7 @@ export default {
       value: 'Khong Hucu',
     },
     {
-      label: 'Penghayat Kepercayaan',
+      label: 'Penghayat kepercayaan',
       value: 'Penghayat Kepercayaan',
       showManualInput: true,
     },
@@ -162,5 +162,23 @@ export default {
       value: 'Lainnya',
       showManualInput: true,
     },
+  ],
+  marriageStatus: [
+    {
+      label: 'Belum kawin',
+      value: 'Belum Kawin',
+    },
+    {
+      label: 'Kawin',
+      value: 'Kawin',
+    },
+    {
+      label: 'Cerai hidup',
+      value: 'Cerai Hidup',
+    },
+    {
+      label: 'Cerai mati',
+      value: 'Cerai Mati',
+    }
   ],
 }

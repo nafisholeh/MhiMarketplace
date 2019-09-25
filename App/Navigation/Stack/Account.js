@@ -9,16 +9,17 @@ import styles from '../Styles/NavigationStyles';
 import Account from 'Containers/Account/Account';
 import Signin from 'Containers/Signin/Signin';
 import Signup from 'Containers/Signup';
-import SignupFarmerFirst from 'Containers/Signup/FarmerFirst';
-import SignupFarmerSecond from 'Containers/Signup/FarmerSecond';
-import SignupFarmerThird from 'Containers/Signup/FarmerThird';
 import SignupCustomer from 'Containers/Signup/Customer';
 import SignupScholar from 'Containers/Signup/Scholar';
 import ConsumerOrder from 'Containers/ConsumerOrder';
 import ConsumerCompleted from 'Containers/ConsumerOrder/Completed';
 import ConsumerOrderDetail from 'Containers/ConsumerOrder/Common/Detail';
+
 import AreaDraw from 'SubApp/Farmer/Containers/AreaDraw';
 import AreaList from 'SubApp/Farmer/Containers/AreaList';
+import SignupFarmerFirst from 'SubApp/Farmer/Containers/Signup/First';
+import SignupFarmerSecond from 'SubApp/Farmer/Containers/Signup/Second';
+import SignupFarmerThird from 'SubApp/Farmer/Containers/Signup/Third';
 
 const AccountNav = createStackNavigator({
   Account: { screen: Account },

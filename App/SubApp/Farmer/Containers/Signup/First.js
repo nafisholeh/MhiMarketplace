@@ -15,9 +15,8 @@ import {
   BackButton,
   KeyboardFriendlyView
 } from 'Components';
-import { Header } from './Common';
+import { Header } from 'CommonFarmer';
 import { Images } from 'Themes';
-import styles from './Styles';
     
 class Farmer extends Component {
   
@@ -97,7 +96,7 @@ class Farmer extends Component {
     const { navigation } = this.props;
     return (
       <View style={{ flex: 1 }}>
-        <KeyboardFriendlyView style={styles.container}>
+        <KeyboardFriendlyView style={{ flex: 1 }}>
           
           <Header title="Pendaftaran akun baru" />
           

@@ -17,9 +17,8 @@ import {
   BackButton,
   KeyboardFriendlyView
 } from 'Components';
-import { Header, AreaDrawItem, AreaDrawListHeader } from './Common';
+import { Header, AreaDrawItem, AreaDrawListHeader } from 'CommonFarmer';
 import { Images } from 'Themes';
-import styles from './Styles';
     
 class Farmer extends Component {
   

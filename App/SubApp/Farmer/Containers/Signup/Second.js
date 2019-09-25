@@ -21,9 +21,8 @@ import {
   RadioButton,
   ImagePicker,
 } from 'Components';
-import { Header } from './Common';
+import { Header } from 'CommonFarmer';
 import { Images, Colors } from 'Themes';
-import styles from './Styles';
 import AppConfig from 'Config/AppConfig';
 
 const LIFETIME = new Date('3000-01-01');
@@ -164,7 +163,7 @@ class Farmer extends Component {
     const { navigation } = this.props;
     return (
       <View style={{ flex: 1 }}>
-        <KeyboardFriendlyView style={styles.container}>
+        <KeyboardFriendlyView style={{ flex: 1 }}>
           
           <Header
             title="Pendaftaran akun baru"

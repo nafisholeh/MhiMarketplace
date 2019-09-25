@@ -89,7 +89,7 @@ class Farmer extends Component {
   
   onSubmit = async () => {
     const { navigation } = this.props;
-    navigation.navigate('SignupFarmerThird');
+    navigation.navigate('AreaList');
   }
   
   onSignup = () => {

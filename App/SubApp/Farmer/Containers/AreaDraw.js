@@ -24,7 +24,7 @@ import {
   HeaderWhite,
   AreaDrawInfoWrapper,
   withLocationListener
-} from './Common';
+} from 'CommonFarmer';
 import { getSelectedListId } from 'Redux/ListRedux';
 
 const { width, height } = Dimensions.get('window');

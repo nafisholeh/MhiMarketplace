@@ -17,7 +17,7 @@ import SignupScholar from 'Containers/Signup/Scholar';
 import ConsumerOrder from 'Containers/ConsumerOrder';
 import ConsumerCompleted from 'Containers/ConsumerOrder/Completed';
 import ConsumerOrderDetail from 'Containers/ConsumerOrder/Common/Detail';
-import AreaDraw from 'Containers/Signup/AreaDraw';
+import AreaDraw from 'SubApp/Farmer/Containers/AreaDraw';
 import AreaList from 'SubApp/Farmer/Containers/AreaList';
 
 const AccountNav = createStackNavigator({

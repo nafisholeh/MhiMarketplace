@@ -9,18 +9,20 @@ import { Colors } from 'Themes';
 class ProductVerticalWrapper extends Component {
   render() {
     const {
+      width,
       height,
       marginHorizontal,
       borderRadius,
       shadowBorderRadiusAndroid,
       shadowRadiusAndroid,
       children,
+      style,
       styleChildren,
       onPress
     } = this.props;
     return (
       <ViewShadow
-        width={(screenWidth / 2) - moderateScale(marginHorizontal || 25)}
+        width={width || ((screenWidth / 2) - moderateScale(marginHorizontal || 25))}
         height={height || 220}
         borderRadius={borderRadius || 4}
         shadowBorderRadiusAndroid={shadowBorderRadiusAndroid || 3}
@@ -28,7 +30,10 @@ class ProductVerticalWrapper extends Component {
         shadowOpacityAndroid={0.1}
         mainColor={Colors.white}
         shadowColor={Colors.brown_light}
-        style={{ alignSelf: 'flex-start' }}
+        style={{
+          ...{ alignSelf: 'flex-start' },
+          ...style
+        }}
       >
         <TouchableOpacity
           style={{

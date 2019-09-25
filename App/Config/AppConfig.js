@@ -31,7 +31,8 @@ export default {
     'SignupFarmerThird',
     'SignupCustomer',
     'SignupScholar',
-    'AreaDraw'
+    'AreaDraw',
+    'AreaList',
   ],
   pageState: {
     ERROR: 'error',

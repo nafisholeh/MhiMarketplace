@@ -1,11 +1,30 @@
 import React, { PureComponent, Fragment } from 'react';
-import { View } from 'react-native';
+import { View, Alert } from 'react-native';
 
 import { ButtonCircle } from 'Components';
 import { Images, Colors } from 'Themes';
 import AreaDrawInfoWrapper from './AreaDrawInfoWrapper';
 
 class AreaDrawControl extends PureComponent {
+  
+  handleDrawingFinish = () => {
+    Alert.alert(
+      'Konfirmasi',
+      'Apa Anda telah selesai menggambar area?',
+      [
+        {
+          text: 'Belum',
+          style: 'cancel',
+        },
+        {text: 'Iya', onPress: () => {
+          const { handleDrawingFinish } = this.props;
+          handleDrawingFinish();
+        }},
+      ],
+      {cancelable: false},
+    );
+  };
+
   render() {
     const {
       isVisible,
@@ -13,7 +32,6 @@ class AreaDrawControl extends PureComponent {
       removePolygon,
       zoomToLocation,
       handleDrawing,
-      handleDrawingFinish
     } = this.props;
     if (!isVisible) return (<View />);
     return (
@@ -47,7 +65,7 @@ class AreaDrawControl extends PureComponent {
                   icon={Images.pinned}
                 />
                 <ButtonCircle 
-                  onPress={() => handleDrawingFinish()}
+                  onPress={() => this.handleDrawingFinish()}
                   icon={Images.check_flat}
                   colors={[ Colors.red_light, Colors.red ]}
                 />

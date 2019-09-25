@@ -1,13 +1,13 @@
 
-function calculateAreaInSquareMeters(x1, x2, y1, y2) {
+export function calculateAreaInSquareMeters(x1, x2, y1, y2) {
   return (y1 * x2 - x1 * y2) / 2;
 }
 
-function calculateYSegment(latitudeRef, latitude, circumference) {
+export function calculateYSegment(latitudeRef, latitude, circumference) {
   return (latitude - latitudeRef) * circumference / 360.0;
 }
 
-function calculateXSegment(longitudeRef, longitude, latitude, circumference) {
+export function calculateXSegment(longitudeRef, longitude, latitude, circumference) {
   return (longitude - longitudeRef) * circumference * Math.cos((latitude * (Math.PI / 180))) / 360.0;
 }
 
@@ -32,10 +32,8 @@ export function calcPolygonSize(locations) {
   for (let i = 1; i < locations.length; i++) {
     let latitude = locations[i].latitude;
     let longitude = locations[i].longitude;
-    listY.push(this.calculateYSegment(latitudeRef, latitude, circumference));
-
-    listX.push(this.calculateXSegment(longitudeRef, longitude, latitude, circumference));
-
+    listY.push(exports.calculateYSegment(latitudeRef, latitude, circumference));
+    listX.push(exports.calculateXSegment(longitudeRef, longitude, latitude, circumference));
   }
 
   // calculate areas for each triangle segment
@@ -44,14 +42,12 @@ export function calcPolygonSize(locations) {
     let y1 = listY[i - 1];
     let x2 = listX[i];
     let y2 = listY[i];
-    listArea.push(this.calculateAreaInSquareMeters(x1, x2, y1, y2));
-
+    listArea.push(exports.calculateAreaInSquareMeters(x1, x2, y1, y2));
   }
 
   // sum areas of all triangle segments
   let areasSum = 0;
   listArea.forEach(area => areasSum = areasSum + area)
-
 
   // get abolute value of area, it can't be negative
   let areaCalc = Math.abs(areasSum);// Math.sqrt(areasSum * areasSum);  

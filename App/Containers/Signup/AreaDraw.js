@@ -60,41 +60,16 @@ class AreaDraw extends Component {
       },
       polygons: [],
       editing: null,
-      creatingHole: false,
       centerPos: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
       },
       isAllowedZoom: false,
       isMapReady: false,
+      isFinished: false,
       selectedPolygonIndex: -1,
       polygonAreaSize: -1,
     };
-  }
-
-  createHole() {
-    const { editing, creatingHole } = this.state;
-    if (!creatingHole) {
-      this.setState({
-        creatingHole: true,
-        editing: {
-          ...editing,
-          holes: [...editing.holes, []],
-        },
-      });
-    } else {
-      const holes = [...editing.holes];
-      if (holes[holes.length - 1].length === 0) {
-        holes.pop();
-        this.setState({
-          editing: {
-            ...editing,
-            holes,
-          },
-        });
-      }
-      this.setState({ creatingHole: false });
-    }
   }
   
   onRegionChange = region => {
@@ -138,41 +113,26 @@ class AreaDraw extends Component {
   };
   
   handleDrawing = () => {
-    const { centerPos, isAllowedZoom, editing, creatingHole } = this.state;
-    if (!isAllowedZoom) return;
+    const { centerPos, isAllowedZoom, editing, isFinished } = this.state;
+    if (!isAllowedZoom || isFinished) return;
     if (!editing) {
       this.setState({
         editing: {
           id: id++,
           coordinates: [centerPos],
-          holes: [],
-          polygonAreaSize: -1,
         },
+        polygonAreaSize: -1,
       });
-    } else if (!creatingHole) {
-      this.setState({
-        editing: {
-          ...editing,
-          coordinates: [...editing.coordinates, centerPos],
-          polygonAreaSize: calcPolygonSize([...editing.coordinates, centerPos]),
-        },
-      });
-    } else {
-      const holes = [...editing.holes];
-      holes[holes.length - 1] = [
-        ...holes[holes.length - 1],
-        centerPos,
-      ];
-      this.setState({
-        editing: {
-          ...editing,
-          id: id++, // keep incrementing id to trigger display refresh
-          coordinates: [...editing.coordinates],
-          holes,
-          polygonAreaSize: calcPolygonSize([...editing.coordinates]),
-        },
-      });
+      return;
     }
+    const newCoordinates = editing.coordinates.concat(centerPos);
+    this.setState({
+      editing: {
+        ...editing,
+        coordinates: newCoordinates,
+      },
+      polygonAreaSize: calcPolygonSize(newCoordinates),
+    });
   };
   
   handleDrawingFinish = () => {
@@ -180,7 +140,7 @@ class AreaDraw extends Component {
     this.setState({
       polygons: [...polygons, editing],
       editing: null,
-      creatingHole: false,
+      isFinished: true,
     });
   };
   
@@ -223,6 +183,7 @@ class AreaDraw extends Component {
       polygons,
       editing,
       selectedPolygonIndex,
+      polygonAreaSize,
     } = this.state;
     const { listId: title, refreshLocation, locationCurrent } = this.props;
     const { latitude: userLat, longitude: userLng } = locationCurrent || {};
@@ -246,7 +207,6 @@ class AreaDraw extends Component {
             <Polygon
               key={polygon.id}
               coordinates={polygon.coordinates}
-              holes={polygon.holes}
               strokeColor={Colors.polygon_border}
               fillColor={
                 selectedPolygonIndex === index
@@ -262,12 +222,10 @@ class AreaDraw extends Component {
             <Polygon
               key={editing.id}
               coordinates={editing.coordinates}
-              holes={editing.holes}
               strokeColor={Colors.polygon_border}
               fillColor={Colors.polygon_fill_light}
               strokeWidth={1}
-            >
-            </Polygon>
+            />
           )}
           {isAllowedZoom && (
             <Marker.Animated

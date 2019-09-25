@@ -10,7 +10,13 @@ const CIRCLE_RADIUS = Metrics.deviceWidth;
 
 class HillHeaderWrapper extends Component {
   render() {
-    const { children, title, navigation, contentContainerStyle } = this.props;
+    const {
+      children,
+      ChildrenBottom,
+      title,
+      navigation,
+      contentContainerStyle
+    } = this.props;
     return (
       <View
         style={{
@@ -70,6 +76,7 @@ class HillHeaderWrapper extends Component {
         >
           {children}
         </ScrollView>
+        <ChildrenBottom />
       </View>
     );
   }

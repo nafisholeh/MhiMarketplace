@@ -4,15 +4,15 @@ import HeaderWhite from './HeaderWhite';
 import Header from './Header';
 import withLocationListener from './withLocationListener';
 
-import AreaDrawInfo from './AreaDrawInfo/AreaDrawInfo';
-import AreaDrawInfoWrapper from './AreaDrawInfo/AreaDrawInfoWrapper';
-import AreaDrawItem from './AreaDrawInfo/AreaDrawItem';
-import AreaDrawListHeader from './AreaDrawInfo/AreaDrawListHeader';
+import AreaDrawControl from './MapBottomInfo/AreaDrawControl';
+import AreaDrawInfoWrapper from './MapBottomInfo/AreaDrawInfoWrapper';
+import AreaDrawItem from './MapBottomInfo/AreaDrawItem';
+import AreaDrawListHeader from './MapBottomInfo/AreaDrawListHeader';
 
 export {
   HillHeaderWrapper,
   AreaItem,
-  AreaDrawInfo,
+  AreaDrawControl,
   AreaDrawInfoWrapper,
   AreaDrawItem,
   AreaDrawListHeader,

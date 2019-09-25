@@ -5,7 +5,7 @@ import { ButtonCircle } from 'Components';
 import { Images, Colors } from 'Themes';
 import AreaDrawInfoWrapper from './AreaDrawInfoWrapper';
 
-class AreaDrawInfo extends PureComponent {
+class AreaDrawControl extends PureComponent {
   render() {
     const {
       isVisible,
@@ -60,4 +60,4 @@ class AreaDrawInfo extends PureComponent {
   }
 }
 
-export default AreaDrawInfo;
+export default AreaDrawControl;

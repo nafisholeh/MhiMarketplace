@@ -22,7 +22,7 @@ import { Colors, Images } from 'Themes';
 import { ButtonPrimary, ButtonCircle } from 'Components';
 import {
   HeaderWhite,
-  AreaDrawInfo,
+  AreaDrawControl,
   AreaDrawInfoWrapper,
   withLocationListener
 } from 'CommonFarmer';
@@ -310,7 +310,7 @@ class AreaDraw extends Component {
               </View>
             </AreaDrawInfoWrapper>
           )}
-          <AreaDrawInfo
+          <AreaDrawControl
             isVisible={isAllowedZoom}
             isPolygonSelected={selectedPolygonIndex >= 0}
             removePolygon={() => this.removePolygon()}

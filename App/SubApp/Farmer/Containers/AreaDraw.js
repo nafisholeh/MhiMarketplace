@@ -220,35 +220,41 @@ class AreaDraw extends Component {
               onPress={this.onPolygonPress}
             />
           ))}
-          {editing && (
-            <Polygon
-              key={editing.id}
-              coordinates={editing.coordinates}
-              strokeColor={Colors.polygon_border}
-              fillColor={Colors.polygon_fill_light}
-              strokeWidth={1}
-            />
-          )}
-          {isAllowedZoom && (
-            <Marker.Animated
-              key='pivot-marker'
-              coordinate={{
-                latitude: pivotLat,
-                longitude: pivotLng,
-              }}
-              trackViewChanges={false}
-              anchor={{x: 0.4, y: 1.05}}
-              centerOffset={{x: 0, y: -40}}
-            >
-              <Image
-                source={Images.pin_marker}
-                style={{
-                  width: moderateScale(50),
-                  height: moderateScale(50),
-                }}
+          {editing
+            ? (
+              <Polygon
+                key={editing.id}
+                coordinates={editing.coordinates}
+                strokeColor={Colors.polygon_border}
+                fillColor={Colors.polygon_fill_light}
+                strokeWidth={1}
               />
-            </Marker.Animated>
-          )}
+            )
+            : (<View />)
+          }
+          {isAllowedZoom
+            ? (
+              <Marker
+                key='pivot-marker'
+                coordinate={{
+                  latitude: pivotLat,
+                  longitude: pivotLng,
+                }}
+                trackViewChanges={false}
+                anchor={{x: 0.4, y: 1.05}}
+                centerOffset={{x: 0, y: -40}}
+              >
+                <Image
+                  source={Images.pin_marker}
+                  style={{
+                    width: moderateScale(50),
+                    height: moderateScale(50),
+                  }}
+                />
+              </Marker>
+            )
+            : (<View />)
+          }
         </MapView>
         <View
           style={{

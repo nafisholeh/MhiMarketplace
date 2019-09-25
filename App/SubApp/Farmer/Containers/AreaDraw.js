@@ -22,6 +22,7 @@ import { Colors, Images } from 'Themes';
 import { ButtonPrimary, ButtonCircle } from 'Components';
 import {
   HeaderWhite,
+  AreaDrawInfo,
   AreaDrawInfoWrapper,
   withLocationListener
 } from 'CommonFarmer';
@@ -309,47 +310,14 @@ class AreaDraw extends Component {
               </View>
             </AreaDrawInfoWrapper>
           )}
-          {isAllowedZoom && (
-            <AreaDrawInfoWrapper
-              height={110}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                  alignItems: 'center',
-                }}
-              >
-                {selectedPolygonIndex >= 0
-                  ? (
-                    <ButtonCircle 
-                      onPress={() => this.removePolygon()}
-                      icon={Images.delete_flat}
-                    />
-                  ) 
-                  : (
-                    <Fragment>
-                      <ButtonCircle 
-                        onPress={() => this.zoomToLocation(userLat, userLng)}
-                        icon={Images.gps}
-                        colors={[ Colors.disabled_light, Colors.disabled_dark ]}
-                      />
-                      <ButtonCircle 
-                        onPress={() => this.handleDrawing()}
-                        icon={Images.pinned}
-                      />
-                      <ButtonCircle 
-                        onPress={() => this.handleDrawingFinish()}
-                        icon={Images.check_flat}
-                        colors={[ Colors.red_light, Colors.red ]}
-                      />
-                    </Fragment>
-                  )
-                }
-              </View>
-            </AreaDrawInfoWrapper>
-          )}
+          <AreaDrawInfo
+            isVisible={isAllowedZoom}
+            isPolygonSelected={selectedPolygonIndex >= 0}
+            removePolygon={() => this.removePolygon()}
+            zoomToLocation={() => this.zoomToLocation()}
+            handleDrawing={() => this.handleDrawing()}
+            handleDrawingFinish={() => this.handleDrawingFinish()}
+          />
         </View>
       </View>
     );

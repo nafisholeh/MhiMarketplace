@@ -22,6 +22,7 @@ import { Colors, Images } from 'Themes';
 import { ButtonPrimary, ButtonCircle } from 'Components';
 import {
   HeaderWhite,
+  AreaDrawInfo,
   AreaDrawControl,
   AreaDrawInfoWrapper,
   withLocationListener
@@ -264,52 +265,10 @@ class AreaDraw extends Component {
             bottom: moderateScale(15),
           }}
         >
-          {!isAllowedZoom && (
-            <AreaDrawInfoWrapper>
-              <View
-                style={{
-                  flex: 2,
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginHorizontal: moderateScale(15),
-                }}
-              >
-                <Image
-                  source={Images.warning}
-                  style={{
-                    width: moderateScale(35),
-                    height: moderateScale(35),
-                    marginBottom: moderateScale(4),
-                  }}
-                />
-                <Text
-                  style={{
-                    fontFamily: 'CircularStd-Book',
-                    fontSize: 14,
-                    color: 'rgba(0,0,0,0.68)',
-                    textAlign: 'center',
-                  }}
-                >
-                  posisi kamera peta kurang dekat
-                </Text>
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                }}
-              >
-                <ButtonPrimary 
-                  onPress={() => this.autoZoomIn()}
-                  title="Zoom-in Otomatis"
-                  style={{
-                    height: 45,
-                    width: '100%'
-                  }}
-                />
-              </View>
-            </AreaDrawInfoWrapper>
-          )}
+          <AreaDrawInfo 
+            isVisible={!isAllowedZoom}
+            autoZoomIn={() => this.autoZoomIn()}
+          />
           <AreaDrawControl
             isVisible={isAllowedZoom}
             isPolygonSelected={selectedPolygonIndex >= 0}

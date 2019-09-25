@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Image } from 'react-native';
+import { withNavigation } from 'react-navigation';
 
 import { Images, Colors } from 'Themes';
 import { moderateScale } from 'Lib';
@@ -27,6 +28,7 @@ class AreaList extends Component {
   );
 
   render() {
+    const { navigation } = this.props;
     return (
       <HillHeaderWrapper
         title="Area Lahan"
@@ -37,6 +39,7 @@ class AreaList extends Component {
             justifyContent: 'center',
             alignItems: 'center',
           }}
+          onPress={() => navigation.navigate('AreaDraw')}
         >
           <Image
             source={Images.plus}
@@ -55,4 +58,4 @@ class AreaList extends Component {
   }
 }
 
-export default AreaList;
+export default withNavigation(AreaList);

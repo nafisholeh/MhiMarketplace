@@ -3,6 +3,7 @@ import AreaItem from './AreaItem';
 import HeaderWhite from './HeaderWhite';
 import Header from './Header';
 import withLocationListener from './withLocationListener';
+import SignupBottomButton from './SignupBottomButton';
 
 import AreaDrawInfo from './MapBottomInfo/AreaDrawInfo';
 import AreaDrawControl from './MapBottomInfo/AreaDrawControl';
@@ -21,4 +22,5 @@ export {
   Header,
   HeaderWhite,
   withLocationListener,
+  SignupBottomButton,
 };

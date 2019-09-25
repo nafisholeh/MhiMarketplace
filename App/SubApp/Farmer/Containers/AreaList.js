@@ -5,7 +5,7 @@ import { withNavigation } from 'react-navigation';
 import { Images, Colors } from 'Themes';
 import { moderateScale } from 'Lib';
 import { ProductHorizontalWrapper } from 'Components';
-import { HillHeaderWrapper, AreaItem } from 'CommonFarmer';
+import { HillHeaderWrapper, AreaItem, SignupBottomButton } from 'CommonFarmer';
 
 class AreaList extends Component {
   static navigationOptions = ({navigation}) => {
@@ -16,15 +16,10 @@ class AreaList extends Component {
   }
   
   renderBottom = () => (
-    <View
-      style={{
-        backgroundColor: 'red',
-        width: 20,
-        height: 20,
-      }}
-    >
-      
-    </View>
+    <SignupBottomButton
+      onPressSkip={() => {}}
+      onPressNext={() => {}}
+    />
   );
 
   render() {

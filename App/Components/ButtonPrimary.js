@@ -6,7 +6,16 @@ import LinearGradient from 'react-native-linear-gradient';
 import { screenWidth } from 'Lib';
 import { Colors } from 'Themes';
 
-const ButtonMain = ({ style, onPress, loading, disabled, title, colors }) => (
+const ButtonMain = ({
+  style,
+  styleChild,
+  styleTitle,
+  onPress,
+  loading,
+  disabled,
+  title,
+  colors
+}) => (
   <LinearGradient
     start={{x: 0, y: 0}} end={{x: 1, y: 0}}
     colors={
@@ -23,9 +32,12 @@ const ButtonMain = ({ style, onPress, loading, disabled, title, colors }) => (
       onPress={() => onPress()}
       disabled={disabled}
       style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center' 
+        ...{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center' 
+        },
+        ...styleChild
       }}
     >
       {loading && (
@@ -39,9 +51,12 @@ const ButtonMain = ({ style, onPress, loading, disabled, title, colors }) => (
       {!loading && (
         <Text
           style={{
-            fontFamily: 'CircularStd-Bold',
-            fontSize: 16,
-            color: 'white'
+            ...{
+              fontFamily: 'CircularStd-Bold',
+              fontSize: 16,
+              color: 'white',
+            },
+            ...styleTitle
           }}
         >
           {title}

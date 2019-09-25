@@ -33,6 +33,7 @@ export default {
     'SignupScholar',
     'AreaDraw',
     'AreaList',
+    'AreaType'
   ],
   pageState: {
     ERROR: 'error',

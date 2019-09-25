@@ -22,6 +22,7 @@ export default class RadioButton extends Component {
       outerColor,
       isSelected,
       onPress,
+      style,
       styleContainer,
       title,
       styleTitle,
@@ -42,8 +43,11 @@ export default class RadioButton extends Component {
     return (
       <TouchableOpacity
         style={{
-          flexDirection: 'row',
-          alignItems: 'center',
+          ...{
+            flexDirection: 'row',
+            alignItems: 'center',
+          },
+          ...style
         }}
         onPress={onPress}
       >

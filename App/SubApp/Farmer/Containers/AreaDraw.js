@@ -138,12 +138,14 @@ class AreaDraw extends Component {
   };
   
   handleDrawingFinish = () => {
-    const { polygons, editing } = this.state;
-    this.setState({
-      polygons: [...polygons, editing],
-      editing: null,
-      isFinished: true,
-    });
+    const { navigation } = this.props;
+    navigation.navigate('AreaType');
+    // const { polygons, editing } = this.state;
+    // this.setState({
+    //   polygons: [...polygons, editing],
+    //   editing: null,
+    //   isFinished: true,
+    // });
   };
   
   onMapPress = e => {

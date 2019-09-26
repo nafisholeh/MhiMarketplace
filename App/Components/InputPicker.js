@@ -117,9 +117,9 @@ class InputPicker extends Component {
     if (onSelectionChange) {
       onSelectionChange(showManualInput ? null : val, name);
       if (showManualInput) {
-        onShowManualInput();
+        if (onShowManualInput) onShowManualInput();
       } else {
-        onHideManualInput();
+        if (onHideManualInput) onHideManualInput();
       }
     }
   };

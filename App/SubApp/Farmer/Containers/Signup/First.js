@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
-import SessionActions from 'Redux/SessionRedux';
+import FarmerSignupActions from 'Redux/FarmerSignupRedux';
 import { SIGNUP } from 'GraphQL/User/Mutation';
 import { isEmailError, getGraphQLError, moderateScale } from 'Lib';
 import {
@@ -77,7 +77,14 @@ class Farmer extends Component {
   }
   
   onSignup = () => {
-    const { navigation } = this.props;
+    const { navigation, storeFarmerCreds } = this.props;
+    const {
+      phone,
+      email,
+      password
+    } = this.state;
+    console.tron.log('onSignup', this.state, this.props)
+    storeFarmerCreds(phone, email, password);
     navigation.navigate('SignupFarmerSecond');
   }
   
@@ -173,11 +180,12 @@ class Farmer extends Component {
 }
 
 Farmer.propTypes = {
-  storeSignupEmail: func,
+  storeFarmerCreds: func,
 };
 
 const mapDispatchToProps = dispatch => ({
-  storeSignupEmail: email => dispatch(SessionActions.storeSignupEmail(email)),
+  storeFarmerCreds: (phone, email, password) =>
+    dispatch(FarmerSignupActions.storeFarmerCreds(phone, email, password)),
 });
 
 export default connect(null, mapDispatchToProps)(withNavigation(Farmer));

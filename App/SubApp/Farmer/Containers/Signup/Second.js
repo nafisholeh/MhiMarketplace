@@ -21,7 +21,7 @@ import {
   RadioButton,
   ImagePicker,
 } from 'Components';
-import { Header } from 'CommonFarmer';
+import { Header, HillHeaderWrapper, SignupBoxWrapper } from 'CommonFarmer';
 import { Images, Colors } from 'Themes';
 import AppConfig from 'Config/AppConfig';
 
@@ -80,6 +80,8 @@ class Farmer extends Component {
     kabupaten_error: null,
     provinsi: null,
     provinsi_error: null,
+    heightBox1: 325,
+    heightBox2: 85,
     
     show_expired_modal: false,
     show_date_modal: false,
@@ -131,6 +133,18 @@ class Farmer extends Component {
     this.setState({ [stateName]: value });
   };
   
+  renderBottom = () => {
+    const { loading } = this.state;
+    return (
+      <ButtonPrimary
+        onPress={this.onSubmit}
+        disabled={loading}
+        loading={loading}
+        title="Selanjutnya"
+      />
+    );
+  }
+  
   render () {
     const {
       nik,
@@ -159,21 +173,17 @@ class Farmer extends Component {
       photo_face_error,
       photo_ktp,
       photo_ktp_error,
+      heightBox1,
+      heightBox2,
     } = this.state;
     const { navigation } = this.props;
     return (
-      <View style={{ flex: 1 }}>
-        <Header
-          title="Pendaftaran akun baru"
-          style={{ marginBottom: moderateScale(40) }}
-        />
-        <KeyboardFriendlyView 
-          style={{ 
-            flex: 1,
-            paddingHorizontal: moderateScale(40)
-          }}
-        >
+      <HillHeaderWrapper
+        title="Pendaftaran akun baru"
+        ChildrenBottom={this.renderBottom}
+      >
         
+        <SignupBoxWrapper height={395}>
           <InputText
             refs={(ref) => this._nik = ref}
             name="nik"
@@ -256,7 +266,9 @@ class Farmer extends Component {
             dataLocal={AppConfig.bloodType}
             onSelectionChange={this.onSelectionChange}
           />
-        
+        </SignupBoxWrapper>
+      
+        <SignupBoxWrapper height={610}>
           <AutoAddressInput
             onAddressDetailChanged={text => this.setState({ address_detail: text})}
             onRtRwChanged={text => this.setState({ rtrw: text})}
@@ -267,13 +279,17 @@ class Farmer extends Component {
             onKabupatenChanged={text => this.setState({ kabupaten: text})}
             onProvinsiChanged={text => this.setState({ provinsi: text})}
           />
-        
+        </SignupBoxWrapper>
+      
+        <SignupBoxWrapper height={heightBox1}>
           <InputPicker
             name="religion"
             title="Agama"
             placeholder="Pilih agama yang dianut"
             dataLocal={AppConfig.religion}
             onSelectionChange={this.onSelectionChange}
+            onShowManualInput={() => this.setState({ heightBox1: heightBox1 + 50 })}
+            onHideManualInput={() => this.setState({ heightBox1: heightBox1 - 50 })}
           />
         
           <InputPicker
@@ -290,6 +306,8 @@ class Farmer extends Component {
             placeholder="Pilih pekerjaan"
             dataLocal={AppConfig.occupation}
             onSelectionChange={this.onSelectionChange}
+            onShowManualInput={() => this.setState({ heightBox1: heightBox1 + 50 })}
+            onHideManualInput={() => this.setState({ heightBox1: heightBox1 - 50 })}
           />
         
           <InputPicker
@@ -298,8 +316,12 @@ class Farmer extends Component {
             placeholder="Pilih kewarganegaraan"
             dataLocal={AppConfig.citizenship}
             onSelectionChange={this.onSelectionChange}
+            onShowManualInput={() => this.setState({ heightBox1: heightBox1 + 50 })}
+            onHideManualInput={() => this.setState({ heightBox1: heightBox1 - 50 })}
           />
-          
+        </SignupBoxWrapper>
+        
+        <SignupBoxWrapper height={heightBox2}>
           <Text
             style={{
               color: Colors.veggie_dark,
@@ -323,6 +345,7 @@ class Farmer extends Component {
               onPress={() => this.setState({
                 expired_date: LIFETIME,
                 expired_date_lifetime: true,
+                heightBox2: heightBox2 - 50,
               })}
             />
             <RadioButton
@@ -332,6 +355,7 @@ class Farmer extends Component {
                 this.setState({
                   expired_date: new Date(),
                   expired_date_lifetime: false,
+                  heightBox2: heightBox2 + 50,
                 })
               }
             />
@@ -341,7 +365,11 @@ class Farmer extends Component {
             ? (
               <TouchableOpacity
                 onPress={this.openExpiredDate}
-                style={{ flex: 1 }}
+                style={{
+                  marginTop: moderateScale(10),
+                  marginBottom: moderateScale(24),
+                  marginHorizontal: 0,
+                }}
               >
                 <InputText
                   name="expired_date"
@@ -350,76 +378,79 @@ class Farmer extends Component {
                   error={expired_date_error}
                   onChangeText={this.onSelectionChange}
                   editable={false}
+                  withBorder={false}
+                  prefixIcon={Images.edit_small}
+                  prefixIconStyle={{
+                    tintColor: Colors.disabled_light,
+                  }}
                 />
               </TouchableOpacity>
             ) : (
               <View />
             )
           }
-          
-          <Text
-            style={{
-              color: Colors.veggie_dark,
-              fontFamily: 'CircularStd-Book',
-              fontSize: 13,
-              marginBottom: moderateScale(8),
-            }}
-          >
-            Ambil Foto KTP
-          </Text>
-          <ImagePicker
-            onChange={(raw = [], paths = []) => {
-              const photos = raw.map((item, i) => {
-                const { mime, path } = raw[i];
-                return { mime, path };
-              })
-              this.setState({ photo_ktp: photos });
-            }}
-            data={photo_ktp}
-            titleBottomSheet='Ambil foto KTP'
-            isMultiplePick={false}
-            isShowCancelButton={false}
-            isShowGallery
-            styleContainer={{
-              marginBottom: moderateScale(10),
-            }}
-          />
+        </SignupBoxWrapper>
         
-          <Text
-            style={{
-              color: Colors.veggie_dark,
-              fontFamily: 'CircularStd-Book',
-              fontSize: 13,
-              marginBottom: moderateScale(8),
-            }}
-          >
-            Ambil Foto Muka
-          </Text>
-          <ImagePicker
-            onChange={(raw = [], paths = []) => {
-              const photos = raw.map((item, i) => {
-                const { mime, path } = raw[i];
-                return { mime, path };
-              })
-              this.setState({ photo_face: photos });
-            }}
-            data={photo_face}
-            titleBottomSheet='Ambil foto muka'
-            isMultiplePick={false}
-            isShowCancelButton={false}
-            isShowGallery
-            styleContainer={{
-              marginBottom: moderateScale(30),
-            }}
-          />
-
-        </KeyboardFriendlyView>
-
-        <ButtonPrimary
-          onPress={this.onSubmit}
-          disabled={loading}
-          loading={loading}
-          title="Selanjutnya"
+        <Text
+          style={{
+            color: Colors.veggie_dark,
+            fontFamily: 'CircularStd-Book',
+            fontSize: 13,
+            marginTop: moderateScale(20),
+            marginHorizontal: moderateScale(40),
+            marginBottom: moderateScale(8),
+          }}
+        >
+          Ambil Foto KTP
+        </Text>
+        <ImagePicker
+          onChange={(raw = [], paths = []) => {
+            const photos = raw.map((item, i) => {
+              const { mime, path } = raw[i];
+              return { mime, path };
+            })
+            this.setState({ photo_ktp: photos });
+          }}
+          data={photo_ktp}
+          titleBottomSheet='Ambil foto KTP'
+          isMultiplePick={false}
+          isShowCancelButton={false}
+          isShowGallery
+          styleContainer={{
+            marginHorizontal: moderateScale(40),
+            marginBottom: moderateScale(10),
+          }}
+        />
+      
+        <Text
+          style={{
+            color: Colors.veggie_dark,
+            fontFamily: 'CircularStd-Book',
+            fontSize: 13,
+            marginHorizontal: moderateScale(40),
+            marginBottom: moderateScale(8),
+            marginTop: moderateScale(10),
+          }}
+        >
+          Ambil Foto Muka
+        </Text>
+        <ImagePicker
+          onChange={(raw = [], paths = []) => {
+            const photos = raw.map((item, i) => {
+              const { mime, path } = raw[i];
+              return { mime, path };
+            })
+            this.setState({ photo_face: photos });
+          }}
+          data={photo_face}
+          titleBottomSheet='Ambil foto muka'
+          isMultiplePick={false}
+          isShowCancelButton={false}
+          isShowGallery
+          styleContainer={{
+            marginHorizontal: moderateScale(40),
+            marginBottom: moderateScale(30),
+          }}
         />
       
         {show_expired_modal
@@ -443,7 +474,7 @@ class Farmer extends Component {
             />
           ) : (<View />)
         }
-      </View>
+      </HillHeaderWrapper>
     )
   }
 }

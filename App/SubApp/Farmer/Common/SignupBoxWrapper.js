@@ -18,10 +18,10 @@ class SignupBoxWrapper extends Component {
           marginHorizontal: moderateScale(10),
         }}
         styleChildren={{
-          flexDirection: 'column',
           paddingHorizontal: moderateScale(15),
           paddingVertical: moderateScale(15),
         }}
+        touchDisabled
       >
         {children}
       </ProductHorizontalWrapper>

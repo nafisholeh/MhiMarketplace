@@ -99,7 +99,7 @@ class InputPicker extends Component {
   };
   
   onSelectionChange = (val, i) => {
-    const { data } = this.state;
+    const { data, showManualInput: prevShowManualInput } = this.state;
     const {
       onSelectionChange,
       onShowManualInput,
@@ -118,7 +118,7 @@ class InputPicker extends Component {
       onSelectionChange(showManualInput ? null : val, name);
       if (showManualInput) {
         if (onShowManualInput) onShowManualInput();
-      } else {
+      } else if(prevShowManualInput && !showManualInput) {
         if (onHideManualInput) onHideManualInput();
       }
     }
@@ -189,33 +189,22 @@ class InputPicker extends Component {
         </RNPickerSelect>
         {showManualInput
           ? (
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'row',
-                alignItems: 'flex-end',
+            <InputText
+              value={manual_text}
+              onChangeText={this.onManualTextChange}
+              placeholder="Isi disini"
+              withBorder={false}
+              error={error}
+              styleContainer={{
                 marginTop: moderateScale(10),
                 marginBottom: moderateScale(24),
+                marginHorizontal: 0,
               }}
-            >
-              <InputText
-                value={manual_text}
-                onChangeText={this.onManualTextChange}
-                placeholder="Isi disini"
-                withBorder={false}
-                error={error}
-                styleContainer={{
-                  flex: 1,
-                  marginBottom: 0,
-                  marginHorizontal: 0,
-                  backgroundColor: 'blue'
-                }}
-                prefixIcon={Images.edit_small}
-                prefixIconStyle={{
-                  tintColor: Colors.disabled_light,
-                }}
-              />
-            </View>
+              prefixIcon={Images.edit_small}
+              prefixIconStyle={{
+                tintColor: Colors.disabled_light,
+              }}
+            />
           ) : (
             <View></View>
           )

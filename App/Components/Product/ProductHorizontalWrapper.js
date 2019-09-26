@@ -18,7 +18,8 @@ class ProductVerticalWrapper extends Component {
       children,
       style,
       styleChildren,
-      onPress
+      onPress,
+      touchDisabled
     } = this.props;
     return (
       <ViewShadow
@@ -40,6 +41,7 @@ class ProductVerticalWrapper extends Component {
             ...{ flex: 1 },
             ...styleChildren
           }}
+          disabled={touchDisabled}
           onPress={() => {
             const { onPress } = this.props;
             if (onPress) onPress();

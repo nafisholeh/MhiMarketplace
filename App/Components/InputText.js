@@ -30,85 +30,83 @@ export default class InputText extends Component {
       onChangeText,
     } = this.props;
     return (
-      <View style={[ styles.container, styleContainer ]}>
+      <View style={{ ...styles.container, ...styleContainer }}>
         {title ? (<Text style={styles.title}>{title}</Text>) : (<View></View>)}
-        <View style={styles.input}>
-          <View style={
-            error ?
-            [ styles.inputContentError, styleBorder, styleInput ] :
-            [ styles.inputContent, styleBorder, styleInput ]
-          }>
-            { prefixIcon ? (
-                <Image
-                  source={prefixIcon}
-                  style={{
-                    ...{
-                      width: moderateScale(20),
-                      height: moderateScale(20),
-                      marginRight: moderateScale(10),
-                    },
-                    ...prefixIconStyle
-                  }}
-                />
-              ) : null
-            }
-            { prefix ? (
-                <Text style={styles.prefix}>
-                  {prefix}
-                </Text>
-              ) : null
-            }
-            <TextInput
-              ref={refs ? refs : (ref) => this._input = ref}
-              underlineColorAndroid='transparent'
-              inputColorPlaceholder={Colors.border}
-              placeholderTextColor={Colors.disabled_light}
-              style={styles.inputValue}
-              {...this.props}
-              onChangeText={text => onChangeText(text, name)}
-            />
-            { suffix ? (
-              <Text style={styles.prefix}>
-                {suffix || ''}
-              </Text>
-            ) : null}
-            { isLoading &&       // tampilkan UI loading ketika sedang fetching
-              <SkypeIndicator
-                color={Colors.veggie_light}
-                count={5}
-                size={20}
-                style={styles.loading}
-              />
-            }
-            { !isLoading &&      // tampilkan icon 'penghias' di pojok kanan inputan
-              isShowIcon &&
-              icon &&
-              !errorFetching &&
+        <View style={
+          error ?
+          [ styles.inputContentError, styleBorder, styleInput ] :
+          [ styles.inputContent, styleBorder, styleInput ]
+        }>
+          { prefixIcon ? (
               <Image
-                source={icon}
-                style={[ styles.image, iconStyle ]}
+                source={prefixIcon}
+                style={{
+                  ...{
+                    width: moderateScale(20),
+                    height: moderateScale(20),
+                    marginRight: moderateScale(10),
+                  },
+                  ...prefixIconStyle
+                }}
+              />
+            ) : null
+          }
+          { prefix ? (
+              <Text style={styles.prefix}>
+                {prefix}
+              </Text>
+            ) : null
+          }
+          <TextInput
+            ref={refs ? refs : (ref) => this._input = ref}
+            underlineColorAndroid='transparent'
+            inputColorPlaceholder={Colors.border}
+            placeholderTextColor={Colors.disabled_light}
+            style={styles.inputValue}
+            {...this.props}
+            onChangeText={text => onChangeText(text, name)}
+          />
+          { suffix ? (
+            <Text style={styles.prefix}>
+              {suffix || ''}
+            </Text>
+          ) : null}
+          { isLoading &&       // tampilkan UI loading ketika sedang fetching
+            <SkypeIndicator
+              color={Colors.veggie_light}
+              count={5}
+              size={20}
+              style={styles.loading}
+            />
+          }
+          { !isLoading &&      // tampilkan icon 'penghias' di pojok kanan inputan
+            isShowIcon &&
+            icon &&
+            !errorFetching &&
+            <Image
+              source={icon}
+              style={[ styles.image, iconStyle ]}
+              resizeMode='contain'
+            />
+          }
+          { !isLoading &&      // tampilkan tombol refetch, ktk gagal fetching
+            icon &&
+            errorFetching &&
+            <TouchableOpacity onPress={onRefetch}>
+              <Image
+                source={Images.refresh}
+                style={styles.image}
                 resizeMode='contain'
               />
-            }
-            { !isLoading &&      // tampilkan tombol refetch, ktk gagal fetching
-              icon &&
-              errorFetching &&
-              <TouchableOpacity onPress={onRefetch}>
-                <Image
-                  source={Images.refresh}
-                  style={styles.image}
-                  resizeMode='contain'
-                />
-              </TouchableOpacity>
-            }
-          </View>
-          { error &&
-            <Text
-              style={styles.inputError}>
-              {error}
-            </Text>
+            </TouchableOpacity>
           }
         </View>
+        { error &&
+          <Text
+            style={styles.inputError}>
+            {error}
+          </Text>
+        }
       </View>
     )
   }

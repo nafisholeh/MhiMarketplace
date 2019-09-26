@@ -15,6 +15,7 @@ import ConsumerOrder from 'Containers/ConsumerOrder';
 import ConsumerCompleted from 'Containers/ConsumerOrder/Completed';
 import ConsumerOrderDetail from 'Containers/ConsumerOrder/Common/Detail';
 
+import AreaCommodity from 'SubApp/Farmer/Containers/AreaCommodity';
 import AreaType from 'SubApp/Farmer/Containers/AreaType';
 import AreaDraw from 'SubApp/Farmer/Containers/AreaDraw';
 import AreaList from 'SubApp/Farmer/Containers/AreaList';
@@ -37,8 +38,9 @@ const AccountNav = createStackNavigator({
   AreaDraw: { screen: AreaDraw },
   AreaList: { screen: AreaList },
   AreaType: { screen: AreaType },
+  AreaCommodity: { screen: AreaCommodity },
 }, {
-  initialRouteName: 'AreaType',
+  initialRouteName: 'SignupFarmerFirst',
   navigationOptions: {
     headerStyle: styles.header
   }

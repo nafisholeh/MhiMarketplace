@@ -33,7 +33,8 @@ export default {
     'SignupScholar',
     'AreaDraw',
     'AreaList',
-    'AreaType'
+    'AreaType',
+    'AreaCommodity',
   ],
   pageState: {
     ERROR: 'error',
@@ -323,4 +324,19 @@ export default {
       value: '12',
     },
   ],
+  commodity: [
+    {
+      label: 'Lombok',
+      value: 'lombok',
+    },
+    {
+      label: 'Padi',
+      value: 'padi',
+    },
+    {
+      label: 'Lainnya',
+      value: 'lainnya',
+      showManualInput: true,
+    }
+  ]
 }

@@ -114,119 +114,116 @@ class AreaType extends Component {
             })}
           />
         </ProductHorizontalWrapper>
-        <ProductHorizontalWrapper
-          width={screenWidth - moderateScale(20)}
-          height={moderateScale(250)}
-          borderRadius={10}
-          shadowRadiusAndroid={13}
-          style={{
-            marginBottom: moderateScale(5),
-            marginBottom: moderateScale(10),
-            marginHorizontal: moderateScale(10),
-          }}
-          styleChildren={{
-            flexDirection: 'column',
-            justifyContent: 'space-around',
-            alignItems: 'stretch',
-            paddingHorizontal: moderateScale(15),
-            paddingTop: moderateScale(20),
-            paddingBottom: moderateScale(5),
-          }}
-        >
-          {!type_own
-            ? (
-              <View>
+        {!type_own
+          ? (
+            <ProductHorizontalWrapper
+              width={screenWidth - moderateScale(20)}
+              height={moderateScale(250)}
+              borderRadius={10}
+              shadowRadiusAndroid={13}
+              style={{
+                marginBottom: moderateScale(5),
+                marginBottom: moderateScale(10),
+                marginHorizontal: moderateScale(10),
+              }}
+              styleChildren={{
+                flexDirection: 'column',
+                justifyContent: 'space-around',
+                alignItems: 'stretch',
+                paddingHorizontal: moderateScale(15),
+                paddingTop: moderateScale(20),
+                paddingBottom: moderateScale(5),
+              }}
+            >
+              <InputText
+                name="name"
+                title={type_rent ? "Nama pemilik" : "Nama penyewa"}
+                placeholder="Nama sesuai KTP"
+                value={name || ''}
+                error={name_error}
+                onChangeText={this.onSelectionChange}
+                returnKeyType="next"
+                styleContainer={{
+                  marginHorizontal: 0,
+                }}
+              />
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}
+              >
+                <View style={{ flex: 2, marginRight: moderateScale(10) }}>
+                  <InputPicker
+                    name="month_start"
+                    title="Bulan (Mulai)"
+                    placeholder="Pilih jenis kelamin"
+                    dataLocal={AppConfig.month}
+                    onSelectionChange={this.onSelectionChange}
+                    styleContainer={{
+                      flex: 2,
+                      marginHorizontal: 0,
+                    }}
+                    styleText={{
+                      marginHorizontal: 0,
+                    }}
+                  />
+                </View>
                 <InputText
-                  name="name"
-                  title={type_rent ? "Nama pemilik" : "Nama penyewa"}
-                  placeholder="Nama sesuai KTP"
-                  value={name || ''}
-                  error={name_error}
+                  name="year_start"
+                  title="Tahun"
+                  value={year_start || ''}
+                  error={year_start_error}
                   onChangeText={this.onSelectionChange}
-                  returnKeyType="next"
                   styleContainer={{
+                    flex: 1,
                     marginHorizontal: 0,
+                    marginBottom: 0,
                   }}
+                  keyboardType="numeric"
                 />
-                <View
-                  style={{
-                    flexDirection: 'row',
-                  }}
-                >
-                  <View style={{ flex: 2, marginRight: moderateScale(10) }}>
-                    <InputPicker
-                      name="month_start"
-                      title="Bulan (Mulai)"
-                      placeholder="Pilih jenis kelamin"
-                      dataLocal={AppConfig.month}
-                      onSelectionChange={this.onSelectionChange}
-                      styleContainer={{
-                        flex: 2,
-                        marginHorizontal: 0,
-                      }}
-                      styleText={{
-                        marginHorizontal: 0,
-                      }}
-                    />
-                  </View>
-                  <InputText
-                    name="year_start"
-                    title="Tahun"
-                    value={year_start || ''}
-                    error={year_start_error}
-                    onChangeText={this.onSelectionChange}
-                    styleContainer={{
-                      flex: 1,
-                      marginHorizontal: 0,
-                      marginBottom: 0,
-                    }}
-                    keyboardType="numeric"
-                  />
-                </View>
-                
-                <View
-                  style={{
-                    flexDirection: 'row',
-                  }}
-                >
-                  <View style={{ flex: 2, marginRight: moderateScale(10) }}>
-                    <InputPicker
-                      name="month_end"
-                      title="Bulan (Selesai)"
-                      placeholder="Pilih jenis kelamin"
-                      dataLocal={AppConfig.month}
-                      onSelectionChange={this.onSelectionChange}
-                      styleContainer={{
-                        flex: 2,
-                        marginHorizontal: 0,
-                      }}
-                      styleText={{
-                        marginHorizontal: 0,
-                      }}
-                    />
-                  </View>
-                  <InputText
-                    name="year_end"
-                    title="Tahun"
-                    value={year_end || ''}
-                    error={year_end_error}
-                    onChangeText={this.onSelectionChange}
-                    styleContainer={{
-                      flex: 1,
-                      marginHorizontal: 0,
-                      marginBottom: 0,
-                    }}
-                    keyboardType="numeric"
-                  />
-                </View>
-                
               </View>
-            )
-            : (
-              <View />
-            )
-          }
-        </ProductHorizontalWrapper>
+              
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}
+              >
+                <View style={{ flex: 2, marginRight: moderateScale(10) }}>
+                  <InputPicker
+                    name="month_end"
+                    title="Bulan (Selesai)"
+                    placeholder="Pilih jenis kelamin"
+                    dataLocal={AppConfig.month}
+                    onSelectionChange={this.onSelectionChange}
+                    styleContainer={{
+                      flex: 2,
+                      marginHorizontal: 0,
+                    }}
+                    styleText={{
+                      marginHorizontal: 0,
+                    }}
+                  />
+                </View>
+                <InputText
+                  name="year_end"
+                  title="Tahun"
+                  value={year_end || ''}
+                  error={year_end_error}
+                  onChangeText={this.onSelectionChange}
+                  styleContainer={{
+                    flex: 1,
+                    marginHorizontal: 0,
+                    marginBottom: 0,
+                  }}
+                  keyboardType="numeric"
+                />
+              </View>
+            </ProductHorizontalWrapper>
+          )
+        : (
+            <View />
+        )
+      }
       </HillHeaderWrapper>
     );
   }

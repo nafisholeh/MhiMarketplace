@@ -1,6 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { View, ScrollView } from 'react-native';
+import { connect } from 'react-redux';
+import { func } from 'prop-types';
 
+import FarmerSignupActions from 'Redux/FarmerSignupRedux';
 import {
   ButtonPrimary,
   RadioButton,
@@ -21,9 +24,7 @@ class AreaType extends Component {
   }
 
   state = {
-    type_own: false,
-    type_rent: true,
-    type_rented: false,
+    type_name: 'rent', // oneOf [own, rent, rented]
     name: '',
     name_error: null,
     month_start: null,
@@ -35,14 +36,32 @@ class AreaType extends Component {
     year_end: null,
     year_end_error: null,
   };
+  
+  onSubmit = () => {
+    const { navigation, storeFarmerType } = this.props;
+    const {
+      type_name,
+      name,
+      month_start,
+      year_start,
+      month_end,
+      year_end
+    } = this.state;
+    storeFarmerType({
+      type: type_name,
+      name,
+      date_start: `${year_start}-${month_start}-01`,
+      date_end: `${year_end}-${month_end}-01`
+    });
+    navigation.navigate('AreaCommodity');
+  };
 
   renderBottom = () => {
-    const { type_rented } = this.state;
-    const { navigation } = this.props;
+    const { type_name } = this.state;
     return (
       <ButtonPrimary
-        title={type_rented ? "Selesai" : "Lanjut"}
-        onPress={() => navigation.navigate('AreaCommodity')}
+        title={type_name === AppConfig.areaType.RENTED ? "Selesai" : "Lanjut"}
+        onPress={this.onSubmit}
       />
     );
   };
@@ -53,9 +72,7 @@ class AreaType extends Component {
 
   render() {
     const {
-      type_own,
-      type_rent,
-      type_rented,
+      type_name,
       name,
       name_error,
       year_start,
@@ -88,33 +105,21 @@ class AreaType extends Component {
         >
           <RadioButton
             title="Milik sendiri"
-            isSelected={type_own}
-            onPress={() => this.setState({
-              type_own: true,
-              type_rent: false,
-              type_rented: false,
-            })}
+            isSelected={type_name === AppConfig.areaType.OWN}
+            onPress={() => this.setState({ type_name: AppConfig.areaType.OWN })}
           />
           <RadioButton
             title="Sewa"
-            isSelected={type_rent}
-            onPress={() => this.setState({
-              type_own: false,
-              type_rent: true,
-              type_rented: false,
-            })}
+            isSelected={type_name === AppConfig.areaType.RENT}
+            onPress={() => this.setState({ type_name: AppConfig.areaType.RENT })}
           />
           <RadioButton
             title="Disewakan"
-            isSelected={type_rented}
-            onPress={() => this.setState({
-              type_own: false,
-              type_rent: false,
-              type_rented: true,
-            })}
+            isSelected={type_name === AppConfig.areaType.RENTED}
+            onPress={() => this.setState({ type_name: AppConfig.areaType.RENTED })}
           />
         </ProductHorizontalWrapper>
-        {!type_own
+        {type_name !== AppConfig.areaType.OWN
           ? (
             <ProductHorizontalWrapper
               width={screenWidth - moderateScale(20)}
@@ -137,7 +142,7 @@ class AreaType extends Component {
             >
               <InputText
                 name="name"
-                title={type_rent ? "Nama pemilik" : "Nama penyewa"}
+                title={type_name !== AppConfig.areaType.RENT ? "Nama pemilik" : "Nama penyewa"}
                 placeholder="Nama sesuai KTP"
                 value={name || ''}
                 error={name_error}
@@ -229,4 +234,15 @@ class AreaType extends Component {
   }
 }
 
-export default AreaType;
+AreaType.propTypes = {
+  storeFarmerType: func,
+}
+
+const mapDispatchToProps = dispatch => ({
+  storeFarmerType: area => 
+    dispatch(
+      FarmerSignupActions.storeFarmerType(area)
+    )
+});
+
+export default connect(null, mapDispatchToProps)(AreaType);

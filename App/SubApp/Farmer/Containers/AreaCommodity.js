@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { View, ScrollView } from 'react-native';
+import { Query } from 'react-apollo';
 
 import {
   ButtonPrimary,
@@ -7,10 +8,12 @@ import {
   ProductHorizontalWrapper,
   InputText,
   InputPicker,
+  QueryEffectSection,
 } from 'Components';
 import AppConfig from 'Config/AppConfig';
 import { moderateScale, screenWidth } from 'Lib';
 import { HillHeaderWrapper, AreaItem } from 'CommonFarmer';
+import { FETCH_COMMODITIES } from 'SubApp/Farmer/GraphQL/Commodity/Query';
 
 class AreaCommodity extends Component {
   static navigationOptions = ({navigation}) => {
@@ -22,6 +25,17 @@ class AreaCommodity extends Component {
   
   state = {
     commodity: null,
+    trigger_fetch_commodity: false,
+    trigger_reset_commodity: false,
+    height: moderateScale(100),
+  };
+  
+  componentDidMount = () => {
+    this.setState(prevState => {
+      return ({
+        trigger_fetch_commodity: !prevState.trigger_fetch_commodity
+      });
+    });
   };
 
   renderBottom = () => {
@@ -33,9 +47,18 @@ class AreaCommodity extends Component {
       />
     );
   };
+  
+  onSelectionChange = (value, stateName) => {
+    this.setState({ [stateName]: value });
+  };
 
   render() {
-    const { commodity } = this.state;
+    const {
+      commodity,
+      trigger_fetch_commodity,
+      trigger_reset_commodity,
+      height,
+    } = this.state;
     return (
       <HillHeaderWrapper
         title="Komoditas yang ditanam"
@@ -43,7 +66,7 @@ class AreaCommodity extends Component {
       >
         <ProductHorizontalWrapper
           width={screenWidth - moderateScale(20)}
-          height={moderateScale(100)}
+          height={height}
           borderRadius={10}
           shadowRadiusAndroid={13}
           style={{
@@ -62,13 +85,17 @@ class AreaCommodity extends Component {
             title="Komoditas"
             placeholder="Pilih komoditas"
             onSelectionChange={this.onSelectionChange}
-            dataLocal={AppConfig.commodity}
+            query={FETCH_COMMODITIES}
+            triggerFetch={trigger_fetch_commodity}
             styleContainer={{
               marginHorizontal: 0,
             }}
             styleText={{
               marginHorizontal: 0,
             }}
+            isManualInputDisplayed
+            onShowManualInput={() => this.setState({ height: moderateScale(150) })}
+            onHideManualInput={() => this.setState({ height: moderateScale(100) })}
           />
         </ProductHorizontalWrapper>
       </HillHeaderWrapper>

@@ -56,7 +56,13 @@ class InputPicker extends Component {
   };
   
   onFetchData = () => {
-    const { query, queryVariables, title, isKeyDisplayed } = this.props;
+    const {
+      query,
+      queryVariables,
+      title,
+      isKeyDisplayed,
+      isManualInputDisplayed
+    } = this.props;
     this.setState({
       fetching: true,
       error: null,
@@ -68,7 +74,8 @@ class InputPicker extends Component {
     .then(data => {
       const { data: fetchData = {}} = data || {};
       const realData = fetchData[Object.keys(fetchData)[0]];
-      const normalizedData = graphqlToRNPickerSelect(realData, isKeyDisplayed)
+      const normalizedData = 
+        graphqlToRNPickerSelect(realData, isKeyDisplayed, isManualInputDisplayed);
       this.setState({
         data: normalizedData,
         fetching: false,
@@ -93,7 +100,12 @@ class InputPicker extends Component {
   
   onSelectionChange = (val, i) => {
     const { data } = this.state;
-    const { onSelectionChange, name } = this.props;
+    const {
+      onSelectionChange,
+      onShowManualInput,
+      onHideManualInput,
+      name,
+    } = this.props;
     if (!val) return;
     const selectedData = data.find((n) => n.value === val);
     const { label: selectedLabel, showManualInput } = selectedData || {};
@@ -104,6 +116,11 @@ class InputPicker extends Component {
     });
     if (onSelectionChange) {
       onSelectionChange(showManualInput ? null : val, name);
+      if (showManualInput) {
+        onShowManualInput();
+      } else {
+        onHideManualInput();
+      }
     }
   };
   
@@ -144,13 +161,7 @@ class InputPicker extends Component {
           onValueChange={this.onSelectionChange}
           value={selected}
           disabled={data ? false : true}
-          style={{
-            ...{ marginHorizontal: moderateScale(40) },
-            ...styleContainer
-          }}
-          modalProps={{
-            marginHorizontal: moderateScale(40),
-          }}
+          style={styleContainer}
         >
           <InputText
             title={title}
@@ -166,11 +177,13 @@ class InputPicker extends Component {
             isShowIcon
             withBorder={false}
             styleContainer={
-              showManualInput
-              ? {
-                marginBottom: 0,
-              }
-              : styleText
+              Object.assign(
+                {}, 
+                showManualInput ? {
+                  marginBottom: 0,
+                } : {},
+                styleText
+              )
             }
           />
         </RNPickerSelect>
@@ -180,10 +193,9 @@ class InputPicker extends Component {
               style={{
                 flex: 1,
                 flexDirection: 'row',
-                alignItems: 'center',
+                alignItems: 'flex-end',
                 marginTop: moderateScale(10),
                 marginBottom: moderateScale(24),
-                marginHorizontal: moderateScale(40),
               }}
             >
               <Image
@@ -223,6 +235,9 @@ class InputPicker extends Component {
 InputPicker.propTypes = {
   isInitialFetching: bool,
   isKeyDisplayed: bool,
+  isManualInputDisplayed: bool, // show manual input upon clicking `Lainnya` 
+  onShowManualInput: func,
+  onHideManualInput: func,
   name: string,         // align with the parent's state title
   /*
   ** enable the picker to use constant data

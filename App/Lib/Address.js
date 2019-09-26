@@ -21,7 +21,11 @@ export const getReadableCityState = data => {
 };
 
 // konversi format data dari graphql response ke picker
-export const graphqlToRNPickerSelect = (input = [], isKeyDisplayed) => {
+export const graphqlToRNPickerSelect = (
+    input = [],
+    isKeyDisplayed,
+    isManualInputDisplayed
+  ) => {
   if (!Array.isArray(input) || !input.length) return null;
   let output = [];
   const keyMap = new Map();
@@ -31,11 +35,21 @@ export const graphqlToRNPickerSelect = (input = [], isKeyDisplayed) => {
     if (!keyMap.has(key)) {
       keyMap.set(key, true); 
       let temp = {};
+      let value = key;
+      if (isKeyDisplayed) value = `${_id}||${key}||${kelurahan}||${nama}`;
+      else if (key !== nama) value = `${key}||${nama}`;
       temp['label'] = isKeyDisplayed ? `(${key}) - ${nama}` : nama;
-      temp['value'] = isKeyDisplayed ? `${_id}||${key}||${kelurahan}||${nama}` : `${key}||${nama}`;
+      temp['value'] = value;
       output.push(temp);
     }
   });
+  if (isManualInputDisplayed) {
+    output.push({
+      label: 'Lainnya',
+      value: 'Lainnya',
+      showManualInput: true,
+    })
+  }
   return output;
 }
   

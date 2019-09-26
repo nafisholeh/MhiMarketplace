@@ -17,6 +17,7 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { string, bool, object, oneOfType, array, func } from 'prop-types';
 
+import FarmerSignupActions from 'Redux/FarmerSignupRedux';
 import { moderateScale, calcPolygonSize } from 'Lib';
 import { Colors, Images } from 'Themes';
 import { ButtonPrimary, ButtonCircle } from 'Components';
@@ -138,14 +139,20 @@ class AreaDraw extends Component {
   };
   
   handleDrawingFinish = () => {
-    const { navigation } = this.props;
-    navigation.navigate('AreaType');
-    // const { polygons, editing } = this.state;
-    // this.setState({
-    //   polygons: [...polygons, editing],
-    //   editing: null,
-    //   isFinished: true,
-    // });
+    const { polygons, editing, polygonAreaSize } = this.state;
+    const { storeFarmerArea } = this.props;
+    storeFarmerArea({
+      polygon: editing.coordinates,
+      size: polygonAreaSize,
+    });
+    this.setState({
+      polygons: [...polygons, editing],
+      editing: null,
+      isFinished: true,
+    }, () => {
+      const { navigation } = this.props;
+      navigation.navigate('AreaType');
+    });
   };
   
   onMapPress = e => {
@@ -189,7 +196,7 @@ class AreaDraw extends Component {
       selectedPolygonIndex,
       polygonAreaSize,
     } = this.state;
-    const { listId: title, refreshLocation, locationCurrent } = this.props;
+    const { refreshLocation, locationCurrent } = this.props;
     const { latitude: userLat, longitude: userLng } = locationCurrent || {};
     const mapOptions = {
       scrollEnabled: true,
@@ -265,7 +272,7 @@ class AreaDraw extends Component {
             left: moderateScale(10),
           }}
         >
-          <HeaderWhite title={title} />
+          <HeaderWhite />
         </View>
         <View
           style={{
@@ -328,7 +335,6 @@ const styles = StyleSheet.create({
 });
 
 AreaDraw.propTypes = {
-  listId: string,
   appState: string,
   locationEnabled: bool,
   locationCurrent: object,
@@ -336,10 +342,13 @@ AreaDraw.propTypes = {
   locationName: oneOfType([ string, array ]),
   isListening: bool,
   refreshLocation: func,
+  storeFarmerArea: func,
 };
 
-const mapStateToProps = createStructuredSelector({
-  listId: getSelectedListId(),
+const mapDispatchToProps = dispatch => ({
+  storeFarmerArea: area => dispatch(
+    FarmerSignupActions.storeFarmerArea(area)
+  ),
 });
 
-export default connect(mapStateToProps, null)(withLocationListener(AreaDraw));
+export default connect(null, mapDispatchToProps)(withLocationListener(AreaDraw));

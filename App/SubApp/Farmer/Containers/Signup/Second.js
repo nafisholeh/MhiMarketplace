@@ -9,7 +9,7 @@ import moment from 'moment';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { AutoAddressInput } from 'Containers/Address/Common';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
-import SessionActions from 'Redux/SessionRedux';
+import FarmerSignupActions from 'Redux/FarmerSignupRedux';
 import { SIGNUP } from 'GraphQL/User/Mutation';
 import { isEmailError, getGraphQLError, moderateScale } from 'Lib';
 import {
@@ -89,12 +89,22 @@ class Farmer extends Component {
   };
   
   onSubmit = async () => {
-    const { navigation } = this.props;
+    const { navigation, storeFarmerKtp } = this.props;
+    const {
+      nik, name, birth_place, birth_date, gender,
+      blood_type, religion, marriage_status, occupation,
+      citizenship, expired_date, photo_face, photo_ktp,
+      address_detail, rtrw, kodepos, kelurahan,
+      kecamatan, kecamatan_id, kabupaten, provinsi
+    } = this.state;
+    storeFarmerKtp({
+      nik, name, birth_place, birth_date, gender,
+      blood_type, religion, marriage_status, occupation,
+      citizenship, expired_date, photo_face, photo_ktp,
+      address_detail, rtrw, kodepos, kelurahan,
+      kecamatan, kecamatan_id, kabupaten, provinsi
+    });
     navigation.navigate('AreaList');
-  }
-  
-  onSignup = () => {
-    
   }
   
   openExpiredDate = () => {
@@ -480,11 +490,13 @@ class Farmer extends Component {
 }
 
 Farmer.propTypes = {
-  storeSignupEmail: func,
+  storeFarmerKtp: func,
 };
 
 const mapDispatchToProps = dispatch => ({
-  storeSignupEmail: email => dispatch(SessionActions.storeSignupEmail(email)),
+  storeFarmerKtp: ktp => dispatch(
+    FarmerSignupActions.storeFarmerKtp(ktp)
+  ),
 });
 
 export default connect(null, mapDispatchToProps)(withNavigation(Farmer));

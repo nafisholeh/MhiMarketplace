@@ -15,6 +15,8 @@ export default class InputText extends Component {
       title,
       error,
       prefix,
+      prefixIcon,
+      prefixIconStyle,
       suffix,
       isLoading,
       isShowIcon,
@@ -36,10 +38,25 @@ export default class InputText extends Component {
             [ styles.inputContentError, styleBorder, styleInput ] :
             [ styles.inputContent, styleBorder, styleInput ]
           }>
-            { prefix &&
-              <Text style={styles.prefix}>
-                {prefix}
-              </Text>
+            { prefixIcon ? (
+                <Image
+                  source={prefixIcon}
+                  style={{
+                    ...{
+                      width: moderateScale(20),
+                      height: moderateScale(20),
+                      marginRight: moderateScale(10),
+                    },
+                    ...prefixIconStyle
+                  }}
+                />
+              ) : null
+            }
+            { prefix ? (
+                <Text style={styles.prefix}>
+                  {prefix}
+                </Text>
+              ) : null
             }
             <TextInput
               ref={refs ? refs : (ref) => this._input = ref}
@@ -165,6 +182,7 @@ InputText.propTypes = {
   isLoading: bool,
   isShowIcon: bool,
   icon: oneOfType([ number, string ]),
+  prefixIcon: oneOfType([ number, string ]),
   name: string,
   onChangeText: func,
 }

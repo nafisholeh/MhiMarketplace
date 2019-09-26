@@ -198,17 +198,6 @@ class InputPicker extends Component {
                 marginBottom: moderateScale(24),
               }}
             >
-              <Image
-                source={Images.edit_small}
-                style={{
-                  width: moderateScale(28),
-                  height: moderateScale(25),
-                  marginRight: moderateScale(7),
-                  marginBottom: 0,
-                  alignSelf: 'flex-end',
-                  tintColor: Colors.disabled_light,
-                }}
-              />
               <InputText
                 value={manual_text}
                 onChangeText={this.onManualTextChange}
@@ -220,6 +209,10 @@ class InputPicker extends Component {
                   marginBottom: 0,
                   marginHorizontal: 0,
                   backgroundColor: 'blue'
+                }}
+                prefixIcon={Images.edit_small}
+                prefixIconStyle={{
+                  tintColor: Colors.disabled_light,
                 }}
               />
             </View>

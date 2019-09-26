@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { View, ScrollView } from 'react-native';
 import { Query } from 'react-apollo';
+import { connect } from 'react-redux';
+import { func } from 'prop-types';
 
 import {
   ButtonPrimary,
@@ -10,6 +12,7 @@ import {
   InputPicker,
   QueryEffectSection,
 } from 'Components';
+import FarmerSignupActions from 'Redux/FarmerSignupRedux';
 import AppConfig from 'Config/AppConfig';
 import { moderateScale, screenWidth } from 'Lib';
 import { HillHeaderWrapper, AreaItem } from 'CommonFarmer';
@@ -37,18 +40,30 @@ class AreaCommodity extends Component {
       });
     });
   };
+  
+  onSubmit = () => {
+    const { navigation, storeFarmerCommodity } = this.props;
+    const { commodity } = this.state;
+    const [commodity_id, commodity_name] = commodity.split('||');
+    storeFarmerCommodity({
+      commodity_id,
+      commodity_name
+    });
+    navigation.navigate('Home');
+  }
 
   renderBottom = () => {
     const { navigation } = this.props;
     return (
       <ButtonPrimary
         title="Selesai"
-        onPress={() => navigation.navigate('Home')}
+        onPress={this.onSubmit}
       />
     );
   };
   
   onSelectionChange = (value, stateName) => {
+    console.tron.log('onSelectionChange', value, stateName)
     this.setState({ [stateName]: value });
   };
 
@@ -103,4 +118,14 @@ class AreaCommodity extends Component {
   }
 }
 
-export default AreaCommodity;
+AreaCommodity.propTypes = {
+  storeFarmerCommodity: func,
+}
+
+const mapDispatchToProps = dispatch => ({
+  storeFarmerCommodity: area => 
+    dispatch(FarmerSignupActions.storeFarmerCommodity(area))
+});
+
+export default connect(null, mapDispatchToProps)(AreaCommodity);
+

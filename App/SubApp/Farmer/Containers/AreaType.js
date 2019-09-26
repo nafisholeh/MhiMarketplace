@@ -240,9 +240,7 @@ AreaType.propTypes = {
 
 const mapDispatchToProps = dispatch => ({
   storeFarmerType: area => 
-    dispatch(
-      FarmerSignupActions.storeFarmerType(area)
-    )
+    dispatch(FarmerSignupActions.storeFarmerType(area))
 });
 
 export default connect(null, mapDispatchToProps)(AreaType);

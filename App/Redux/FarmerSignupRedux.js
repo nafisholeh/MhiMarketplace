@@ -10,6 +10,7 @@ const { Types, Creators } = createActions({
   storeFarmerKtp: ['ktp'],
   storeFarmerArea: ['area'],
   storeFarmerType: ['area'],
+  storeFarmerCommodity: ['area'],
 })
 
 export const FarmerSignupTypes = Types
@@ -66,6 +67,23 @@ export const storeFarmerType = (state, { area }) => {
   return state;
 }
 
+export const storeFarmerCommodity = (state, { area }) => {
+  const { commodity_id, commodity_name } = area;
+  const currentArea = state.area || [];
+  if (Array.isArray(currentArea) && currentArea.length > 0) {
+    const updatedIndex = currentArea.length - 1;
+    const lastArea = currentArea[updatedIndex];
+    return state.merge({
+      area: [
+        ...state.area.slice(0, updatedIndex),
+        Object.assign({}, lastArea, { commodity_id, commodity_name }),
+        ...state.area.slice(updatedIndex + 1)
+      ]
+    });
+  }
+  return state;
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -73,4 +91,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.STORE_FARMER_KTP]: storeFarmerKtp,
   [Types.STORE_FARMER_AREA]: storeFarmerArea,
   [Types.STORE_FARMER_TYPE]: storeFarmerType,
+  [Types.STORE_FARMER_COMMODITY]: storeFarmerCommodity,
 })

@@ -1,8 +1,8 @@
 import { Colors, Images } from 'Themes';
 
 export default {
-  uri: 'http://app-dev.metodehayati.id:4001/graphql',
-  // uri: 'http://192.168.1.2:4001/graphql',
+  // uri: 'http://app-dev.metodehayati.id:4001/graphql',
+  uri: 'http://192.168.1.4:4001/graphql',
   oneSignalKey: "63d5eb55-3ba8-4489-bfba-ce4d74c3bd40",
   sentryKey: 'https://acfc9528eb164f6d8cb3c02a5294b6cd@sentry.io/1498313',
   allowTextFontScaling: true,
@@ -324,19 +324,9 @@ export default {
       value: '12',
     },
   ],
-  commodity: [
-    {
-      label: 'Lombok',
-      value: 'lombok',
-    },
-    {
-      label: 'Padi',
-      value: 'padi',
-    },
-    {
-      label: 'Lainnya',
-      value: 'lainnya',
-      showManualInput: true,
-    }
-  ]
+  areaType: {
+    OWN: 'own',
+    RENT: 'rent',
+    RENTED: 'rented',
+  }
 }

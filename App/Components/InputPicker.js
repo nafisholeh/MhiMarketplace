@@ -129,7 +129,9 @@ class InputPicker extends Component {
     } = this.state;
     const {
       title,
-      placeholder
+      placeholder,
+      styleContainer,
+      styleText,
     } = this.props;
     return (
       <Fragment>
@@ -143,7 +145,8 @@ class InputPicker extends Component {
           value={selected}
           disabled={data ? false : true}
           style={{
-            marginHorizontal: moderateScale(40),
+            ...{ marginHorizontal: moderateScale(40) },
+            ...styleContainer
           }}
           modalProps={{
             marginHorizontal: moderateScale(40),
@@ -167,7 +170,7 @@ class InputPicker extends Component {
               ? {
                 marginBottom: 0,
               }
-              : {}
+              : styleText
             }
           />
         </RNPickerSelect>

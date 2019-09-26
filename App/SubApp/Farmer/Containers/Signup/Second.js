@@ -163,12 +163,16 @@ class Farmer extends Component {
     const { navigation } = this.props;
     return (
       <View style={{ flex: 1 }}>
-        <KeyboardFriendlyView style={{ flex: 1 }}>
-          
-          <Header
-            title="Pendaftaran akun baru"
-            style={{ marginBottom: moderateScale(40) }}
-            />
+        <Header
+          title="Pendaftaran akun baru"
+          style={{ marginBottom: moderateScale(40) }}
+        />
+        <KeyboardFriendlyView 
+          style={{ 
+            flex: 1,
+            paddingHorizontal: moderateScale(40)
+          }}
+        >
         
           <InputText
             refs={(ref) => this._nik = ref}
@@ -197,7 +201,6 @@ class Farmer extends Component {
           <View
             style={{
               flexDirection: 'row',
-              marginHorizontal: moderateScale(40),
             }}
           >
             <InputText
@@ -302,7 +305,6 @@ class Farmer extends Component {
               color: Colors.veggie_dark,
               fontFamily: 'CircularStd-Book',
               fontSize: 13,
-              marginHorizontal: moderateScale(40),
               marginBottom: moderateScale(8),
             }}
           >
@@ -312,7 +314,6 @@ class Farmer extends Component {
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
-              marginHorizontal: moderateScale(40),
               marginBottom: moderateScale(expired_date_lifetime ? 20 : 5),
             }}
           >
@@ -361,7 +362,6 @@ class Farmer extends Component {
               color: Colors.veggie_dark,
               fontFamily: 'CircularStd-Book',
               fontSize: 13,
-              marginHorizontal: moderateScale(40),
               marginBottom: moderateScale(8),
             }}
           >
@@ -380,9 +380,6 @@ class Farmer extends Component {
             isMultiplePick={false}
             isShowCancelButton={false}
             isShowGallery
-            singlePhotoButtonStyle={{
-              marginHorizontal: moderateScale(40),
-            }}
             styleContainer={{
               marginBottom: moderateScale(10),
             }}
@@ -393,7 +390,6 @@ class Farmer extends Component {
               color: Colors.veggie_dark,
               fontFamily: 'CircularStd-Book',
               fontSize: 13,
-              marginHorizontal: moderateScale(40),
               marginBottom: moderateScale(8),
             }}
           >
@@ -412,9 +408,6 @@ class Farmer extends Component {
             isMultiplePick={false}
             isShowCancelButton={false}
             isShowGallery
-            singlePhotoButtonStyle={{
-              marginHorizontal: moderateScale(40),
-            }}
             styleContainer={{
               marginBottom: moderateScale(30),
             }}

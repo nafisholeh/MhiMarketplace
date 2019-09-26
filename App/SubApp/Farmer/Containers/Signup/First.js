@@ -15,7 +15,7 @@ import {
   BackButton,
   KeyboardFriendlyView
 } from 'Components';
-import { Header } from 'CommonFarmer';
+import { Header, HillHeaderWrapper, SignupBoxWrapper } from 'CommonFarmer';
 import { Images } from 'Themes';
     
 class Farmer extends Component {
@@ -81,6 +81,18 @@ class Farmer extends Component {
     navigation.navigate('SignupFarmerSecond');
   }
   
+  renderBottom = () => {
+    const { loading } = this.state;
+    return (
+      <ButtonPrimary
+        onPress={this.onSignup}
+        disabled={loading}
+        loading={loading}
+        title="Selanjutnya"
+      />
+    );
+  };
+  
   render () {
     const {
       phone,
@@ -95,11 +107,11 @@ class Farmer extends Component {
     } = this.state;
     const { navigation } = this.props;
     return (
-      <View style={{ flex: 1 }}>
-        <KeyboardFriendlyView style={{ flex: 1 }}>
-          
-          <Header title="Pendaftaran akun baru" />
-          
+      <HillHeaderWrapper
+        title="Pendaftaran akun baru"
+        ChildrenBottom={this.renderBottom}
+      >
+        <SignupBoxWrapper height={165}>
           <InputText
             refs={(ref) => this._phone = ref}
             title="Nomor HP"
@@ -123,7 +135,9 @@ class Farmer extends Component {
             keyboardType="email-address"
             onSubmitEditing={() => this._password.focus()}
           />
-          
+        </SignupBoxWrapper>
+        
+        <SignupBoxWrapper height={165}>
           <InputText
             refs={(ref) => this._password = ref}
             title="Password"
@@ -151,16 +165,9 @@ class Farmer extends Component {
               marginBottom: moderateScale(25),
             }}
           />
-          
-        </KeyboardFriendlyView>
-      
-        <ButtonPrimary
-          onPress={this.onSignup}
-          disabled={loading}
-          loading={loading}
-          title="Selanjutnya"
-        />
-      </View>
+        </SignupBoxWrapper>
+
+      </HillHeaderWrapper>
     )
   }
 }

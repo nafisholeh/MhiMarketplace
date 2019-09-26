@@ -118,7 +118,6 @@ export default class InputText extends Component {
 const styles = StyleSheet.create({
   container: {
     marginBottom: moderateScale(24),
-    marginHorizontal: moderateScale(40),
   },
   prefix: {
     color: Colors.text,

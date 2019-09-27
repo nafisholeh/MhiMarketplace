@@ -7,7 +7,13 @@ import { Metrics, Colors } from 'Themes';
 
 class SignupBottomButton extends Component {
   render() {
-    const { onPressSkip, onPressNext } = this.props;
+    const {
+      isShowSkip = true,
+      onPressSkip,
+      isShowNext = true,
+      onPressNext,
+      nextTitle
+    } = this.props;
     return (
       <View
         style={{
@@ -16,31 +22,41 @@ class SignupBottomButton extends Component {
           height: moderateScale(50),
         }}
       >
-        <ButtonPrimary
-          onPress={() => onPressSkip()}
-          title="Lewati"
-          colors={[ Colors.white, Colors.white ]}
-          style={{
-            width: Metrics.deviceWidth / 2,
-            height: moderateScale(50),
-            borderTopColor: Colors.disabled_light,
-            borderTopWidth: 0.5,
-          }}
-          styleTitle={{
-            fontFamily: 'CircularStd-Book',
-            color: Colors.disabled_dark,
-          }}
-        />
-        <ButtonPrimary
-          onPress={() => onPressNext()}
-          title="Lanjut"
-          style={{
-            width: Metrics.deviceWidth / 2,
-            height: moderateScale(50),
-            borderTopColor: Colors.veggie_dark,
-            borderTopWidth: 0.5,
-          }}
-        />
+        {isShowSkip
+          ? (
+            <ButtonPrimary
+              onPress={() => onPressSkip()}
+              title="Lewati"
+              colors={[ Colors.white, Colors.white ]}
+              style={{
+                width: isShowNext ? Metrics.deviceWidth / 2 : Metrics.deviceWidth,
+                height: moderateScale(50),
+                borderTopColor: Colors.disabled_light,
+                borderTopWidth: 0.5,
+              }}
+              styleTitle={{
+                fontFamily: 'CircularStd-Book',
+                color: Colors.disabled_dark,
+              }}
+            />
+          ) 
+          : null
+        }
+        {isShowNext
+          ? (
+            <ButtonPrimary
+              onPress={() => onPressNext()}
+              title={nextTitle || "Lanjut"}
+              style={{
+                width: isShowSkip ? Metrics.deviceWidth / 2 : Metrics.deviceWidth,
+                height: moderateScale(50),
+                borderTopColor: Colors.veggie_dark,
+                borderTopWidth: 0.5,
+              }}
+            />
+          )
+          : null
+        }
       </View>
     );
   }

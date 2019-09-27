@@ -18,12 +18,19 @@ class AreaList extends Component {
     }
   }
   
-  renderBottom = () => (
-    <SignupBottomButton
-      onPressSkip={() => {}}
-      onPressNext={() => {}}
-    />
-  );
+  renderBottom = () => {
+    const { navigation, areas } = this.props;
+    const isAreasDrawn = Array.isArray(areas) && areas.length > 0;
+    return (
+      <SignupBottomButton
+        isShowSkip={!isAreasDrawn}
+        isShowNext={isAreasDrawn}
+        onPressSkip={() => navigation.navigate('FarmerFinalConfirm')}
+        onPressNext={() => navigation.navigate('FarmerFinalConfirm')}
+        nextTitle="Selesai"
+      />
+    );
+  };
 
   render() {
     const { navigation, areas } = this.props;

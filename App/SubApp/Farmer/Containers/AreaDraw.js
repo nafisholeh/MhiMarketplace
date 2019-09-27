@@ -18,8 +18,13 @@ import { connect } from 'react-redux';
 import { string, bool, object, oneOfType, array, func } from 'prop-types';
 
 import FarmerSignupActions from 'Redux/FarmerSignupRedux';
-import { moderateScale, calcPolygonSize } from 'Lib';
-import { Colors, Images } from 'Themes';
+import {
+  moderateScale,
+  calcPolygonSize,
+  calcPolygonCenter,
+  normalizeAreaSize
+} from 'Lib';
+import { Colors, Images, Fonts } from 'Themes';
 import { ButtonPrimary, ButtonCircle } from 'Components';
 import {
   HeaderWhite,
@@ -72,6 +77,7 @@ class AreaDraw extends Component {
       isFinished: false,
       selectedPolygonIndex: -1,
       polygonAreaSize: -1,
+      polygonCenterPoint: null,
     };
   }
   
@@ -129,12 +135,16 @@ class AreaDraw extends Component {
       return;
     }
     const newCoordinates = editing.coordinates.concat(centerPos);
+    const polygonCenterPoint = calcPolygonCenter(newCoordinates);
     this.setState({
       editing: {
         ...editing,
         coordinates: newCoordinates,
       },
-      polygonAreaSize: calcPolygonSize(newCoordinates),
+      polygonAreaSize: normalizeAreaSize(
+        calcPolygonSize(newCoordinates), 'm2', 'ha'
+      ) || '',
+      polygonCenterPoint,
     });
   };
   
@@ -195,6 +205,7 @@ class AreaDraw extends Component {
       editing,
       selectedPolygonIndex,
       polygonAreaSize,
+      polygonCenterPoint,
     } = this.state;
     const { refreshLocation, locationCurrent } = this.props;
     const { latitude: userLat, longitude: userLng } = locationCurrent || {};
@@ -231,6 +242,7 @@ class AreaDraw extends Component {
           ))}
           {editing
             ? (
+              <Fragment>
               <Polygon
                 key={editing.id}
                 coordinates={editing.coordinates}
@@ -238,6 +250,31 @@ class AreaDraw extends Component {
                 fillColor={Colors.polygon_fill_light}
                 strokeWidth={1}
               />
+              {polygonCenterPoint && (
+                <Marker
+                  coordinate={{
+                    latitude: polygonCenterPoint.latitude,
+                    longitude: polygonCenterPoint.longitude
+                  }}
+                  trackViewChanges={false}
+                  anchor={{x: 0.4, y: 1.05}}
+                  centerOffset={{x: 0, y: -40}}
+                  >
+                  <Text
+                    style={{
+                      ...Fonts.TITLE_HEADER__BOLD,
+                      color: Colors.white,
+                      textShadowColor: 'rgba(0, 0, 0, 0.5)',
+                      textShadowOffset: {width: -3, height: 3},
+                      textShadowRadius: 3,
+                      elevation: 10,
+                    }}
+                    numberOfLines={2}>
+                    {polygonAreaSize}
+                  </Text>
+                </Marker>
+              )}
+              </Fragment>
             )
             : (<View />)
           }

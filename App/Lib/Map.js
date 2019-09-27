@@ -1,3 +1,4 @@
+import convert from 'convert-units';
 
 export function calculateAreaInSquareMeters(x1, x2, y1, y2) {
   return (y1 * x2 - x1 * y2) / 2;
@@ -69,4 +70,11 @@ export function calcPolygonCenter(coordinates) {
 		latitude: (minX + maxX) / 2,
 		longitude: (minY + maxY) / 2,
 	}
+}
+
+export function normalizeAreaSize(size, fromUnit = 'm2', toUnit = 'ha') {
+  if (size <= 0) return size;
+  let outputSize = Math.round(convert(size).from(fromUnit).to(toUnit) * 10) / 10;
+  outputSize = outputSize === 0 ? `${Math.round(size * 10) / 10} ${fromUnit}` : `${outputSize} ${toUnit}`;
+  return outputSize;
 }

@@ -33,6 +33,12 @@ export const farmerSignupSelectors = () => state => state.farmerSignup
 export const getAreas = () =>
   createSelector(farmerSignupSelectors(), state => state.area || [])
 
+export const isAnyAreaDrawn = () =>
+  createSelector(farmerSignupSelectors(), state => {
+    const areas = state.area || [];
+    return Array.isArray(areas) && areas.length > 0;
+  })
+
 /* ------------- Reducers ------------- */
 
 export const storeFarmerCreds = (state, { phone, email, password }) =>

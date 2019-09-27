@@ -30,5 +30,13 @@ export default {
     fontFamily: 'CircularStd-Book',
     fontSize: 12,
     color: 'rgba(0,0,0,0.3)',
+  },
+  INSTRUCTION: {
+    fontFamily: 'CircularStd-Book',
+    fontSize: 18,
+    color: Colors.disabled_light,
+    textAlign: 'center',
+    lineHeight: 30,
+    letterSpacing: 1.5
   }
 }

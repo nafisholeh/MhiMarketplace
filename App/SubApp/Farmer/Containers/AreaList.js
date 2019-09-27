@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, Text } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 
-import { getAreas } from 'Redux/FarmerSignupRedux';
-import { Images, Colors } from 'Themes';
+import { getAreas, isAnyAreaDrawn } from 'Redux/FarmerSignupRedux';
+import { Images, Colors, Fonts } from 'Themes';
 import { moderateScale } from 'Lib';
 import { ProductHorizontalWrapper } from 'Components';
 import { HillHeaderWrapper, AreaItem, SignupBottomButton } from 'CommonFarmer';
@@ -19,12 +19,11 @@ class AreaList extends Component {
   }
   
   renderBottom = () => {
-    const { navigation, areas } = this.props;
-    const isAreasDrawn = Array.isArray(areas) && areas.length > 0;
+    const { navigation, areas, isAnyAreaDrawn } = this.props;
     return (
       <SignupBottomButton
-        isShowSkip={!isAreasDrawn}
-        isShowNext={isAreasDrawn}
+        isShowSkip={!isAnyAreaDrawn}
+        isShowNext={isAnyAreaDrawn}
         onPressSkip={() => navigation.navigate('FarmerFinalConfirm')}
         onPressNext={() => navigation.navigate('FarmerFinalConfirm')}
         nextTitle="Selesai"
@@ -33,7 +32,7 @@ class AreaList extends Component {
   };
 
   render() {
-    const { navigation, areas } = this.props;
+    const { navigation, areas, isAnyAreaDrawn } = this.props;
     return (
       <HillHeaderWrapper
         title="Area Lahan"
@@ -56,19 +55,33 @@ class AreaList extends Component {
           />
         </AreaItem>
         
-        {Array.isArray(areas)
-          && areas.map((item, index) => {
-            const { polygon, size, commodity_name } = item;
-            return (
-              <AreaItem
-                title={`Lahan ${index + 1}`}
-                polygon={polygon}
-                size={size}
-                commodity={commodity_name}
-              />
-            );
-          })
+        {isAnyAreaDrawn
+          ? ( 
+            areas.map((item, index) => {
+              const { polygon, size, commodity_name } = item;
+              return (
+                <AreaItem
+                  title={`Lahan ${index + 1}`}
+                  polygon={polygon}
+                  size={size}
+                  commodity={commodity_name}
+                />
+              );
+            })
+          )
+          : (
+            <Text
+              style={{
+                ...Fonts.INSTRUCTION,
+                marginHorizontal: moderateScale(5),
+                marginTop: moderateScale(10),
+              }}
+            >
+              Tekan tombol diatas untuk menambahkan area lahan
+            </Text>
+          )
         }
+        
       </HillHeaderWrapper>
     );
   }
@@ -76,6 +89,7 @@ class AreaList extends Component {
 
 const mapStateToProps = createStructuredSelector({
   areas: getAreas(),
+  isAnyAreaDrawn: isAnyAreaDrawn(),
 });
 
 export default connect(mapStateToProps, null)(withNavigation(AreaList));

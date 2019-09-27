@@ -30,7 +30,7 @@ export const INITIAL_STATE = Immutable({
 
 export const farmerSignupSelectors = () => state => state.farmerSignup
 
-export const getArea = () =>
+export const getAreas = () =>
   createSelector(farmerSignupSelectors(), state => state.area || [])
 
 /* ------------- Reducers ------------- */

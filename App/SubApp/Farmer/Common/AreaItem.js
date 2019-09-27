@@ -1,30 +1,75 @@
 import React, { Component, Fragment } from 'react';
 import { Text, View, Image, TouchableOpacity } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { Polygon, MAP_TYPES } from 'react-native-maps';
+import ViewOverflow from 'react-native-view-overflow';
+import convert from 'convert-units';
 
+import AppConfig from 'Config/AppConfig';
 import { moderateScale, screenWidth } from 'Lib';
 import { Fonts, Images, Colors } from 'Themes';
 import { ProductHorizontalWrapper } from 'Components';
 
+const EDGE_PADDING = {
+  top: 1000,
+  right: 0,
+  bottom: 1000,
+  left: screenWidth - moderateScale(20),
+};
+
 class AreaItem extends Component {
+  state = {
+    sizeInUnit: '-',
+  };
+  
+  componentDidMount() {
+    this.convertSize();
+  }
+  
+  componentDidUpdate(prevProps) {
+    if (prevProps.size !== this.props.size) {
+      this.convertSize();
+    }
+  }
+  
+  convertSize = () => {
+    const { size } = this.props;
+    if (!size) return;
+    let outputSize = Math.round(convert(size).from('m2').to('ha') * 10) / 10;
+    outputSize = outputSize === 0 ? `${Math.round(size * 10) / 10} m2` : `${outputSize} ha`;
+    this.setState({
+      sizeInUnit: outputSize
+    });
+  };
+  
+  onMapReady = () => {
+    const { polygon } = this.props;
+    const options = {
+      edgePadding: EDGE_PADDING,
+      animated: false,
+    }
+    if (Array.isArray(polygon)) {
+      this.map.fitToCoordinates(polygon, options);
+    }
+  };
+  
   render() {
     const {
       children,
       title,
       commodity,
-      size,
+      polygon,
       onDelete = () => {},
       onPress = () => {},
       style,
     } = this.props;
+    const { sizeInUnit } = this.state;
     return (
       <ProductHorizontalWrapper
         width={screenWidth - moderateScale(20)}
-        height={moderateScale(100)}
+        height={moderateScale(110)}
         borderRadius={10}
         shadowRadiusAndroid={13}
         style={{
-          marginBottom: moderateScale(5),
           marginBottom: moderateScale(10),
           marginHorizontal: moderateScale(10),
         }}
@@ -42,27 +87,39 @@ class AreaItem extends Component {
           : (
             <Fragment>
               <MapView
+                ref={map => { this.map = map }}
+                onMapReady={() => setTimeout(() => this.onMapReady())}
                 style={{
-                  width: moderateScale(70),
-                  height: moderateScale(70),
-                  borderRadius: moderateScale(5),
-                  marginRight: moderateScale(13),
-                  marginLeft: moderateScale(15),
+                  marginLeft: screenWidth * 0.25,
+                  width: screenWidth - moderateScale(screenWidth * 0.35),
+                  height: moderateScale(85),
                 }}
+                customMapStyle={AppConfig.mapStyle}
                 liteMode
-              />
+              >
+                <Polygon
+                  coordinates={polygon}
+                  strokeColor={Colors.polygon_fill_dark}
+                  strokeWidth={5}
+                />
+              </MapView>
               <View
                 style={{
-                  flex: 3,
+                  height: moderateScale(85),
+                  width: screenWidth / 2 + moderateScale(20),
+                  position: 'absolute',
+                  left: 0,
                   flexDirection: 'column',
                   justifyContent: 'space-around',
-                  alignSelf: 'stretch',
-                  marginVertical: moderateScale(15),
+                  backgroundColor: 'white',
+                  marginVertical: moderateScale(10),
+                  paddingLeft: moderateScale(20),
+                  paddingVertical: moderateScale(15),
                 }}
               >
                 <Text
                   style={{
-                    ...Fonts.TITLE_NORMAL,
+                    ...Fonts.TITLE_SMALL,
                   }}
                 >
                   {title || '-'}
@@ -76,32 +133,12 @@ class AreaItem extends Component {
                 </Text>
                 <Text
                   style={{
-                    ...Fonts.TITLE_SMALL,
+                    ...Fonts.TITLE_NORMAL,
                   }}
                 >
-                  {size || '- ha'}
+                  {sizeInUnit || '-'}
                 </Text>
               </View>
-              <TouchableOpacity
-                style={{
-                  flex: 1,
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  alignSelf: 'stretch',
-                  marginVertical: moderateScale(10),
-                }}
-                onPress={onDelete}
-              >
-                <Image
-                  source={Images.delete_flat}
-                  style={{
-                    width: moderateScale(20),
-                    height: moderateScale(30),
-                    tintColor: Colors.disabled_light,
-                  }}
-                />
-              </TouchableOpacity>
             </Fragment>
           )
         }

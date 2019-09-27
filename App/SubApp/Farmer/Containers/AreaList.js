@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { View, Image } from 'react-native';
 import { withNavigation } from 'react-navigation';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
 
+import { getAreas } from 'Redux/FarmerSignupRedux';
 import { Images, Colors } from 'Themes';
 import { moderateScale } from 'Lib';
 import { ProductHorizontalWrapper } from 'Components';
@@ -23,7 +26,7 @@ class AreaList extends Component {
   );
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, areas } = this.props;
     return (
       <HillHeaderWrapper
         title="Area Lahan"
@@ -45,12 +48,27 @@ class AreaList extends Component {
             }}
           />
         </AreaItem>
-        <AreaItem />
-          
-        <AreaItem /><AreaItem /><AreaItem /><AreaItem /><AreaItem />
+        
+        {Array.isArray(areas)
+          && areas.map((item, index) => {
+            const { polygon, size, commodity_name } = item;
+            return (
+              <AreaItem
+                title={`Lahan ${index + 1}`}
+                polygon={polygon}
+                size={size}
+                commodity={commodity_name}
+              />
+            );
+          })
+        }
       </HillHeaderWrapper>
     );
   }
 }
 
-export default withNavigation(AreaList);
+const mapStateToProps = createStructuredSelector({
+  areas: getAreas(),
+});
+
+export default connect(mapStateToProps, null)(withNavigation(AreaList));

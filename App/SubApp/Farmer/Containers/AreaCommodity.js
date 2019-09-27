@@ -63,7 +63,6 @@ class AreaCommodity extends Component {
   };
   
   onSelectionChange = (value, stateName) => {
-    console.tron.log('onSelectionChange', value, stateName)
     this.setState({ [stateName]: value });
   };
 

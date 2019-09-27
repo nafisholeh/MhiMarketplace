@@ -82,11 +82,17 @@ class AreaDraw extends Component {
   }
   
   onRegionChange = region => {
-    const { latitude, longitude, longitudeDelta, latitudeDelta } = region || {};
+    const { latitude, longitude } = region || {};
+    this.setState({
+      centerPos: { latitude, longitude },
+    });
+  };
+  
+  onRegionChangeComplete = region => {
+    const { longitudeDelta } = region || {};
     const currentZoom = Math.round(Math.log(360 / longitudeDelta) / Math.LN2);
     this.setState({
       isAllowedZoom: currentZoom >= ZOOM_THRESHOLD,
-      centerPos: { latitude, longitude },
     });
   };
   
@@ -149,46 +155,17 @@ class AreaDraw extends Component {
   };
   
   handleDrawingFinish = () => {
-    const { polygons, editing, polygonAreaSize } = this.state;
+    const { editing, polygonAreaSize } = this.state;
     const { storeFarmerArea } = this.props;
     storeFarmerArea({
       polygon: editing.coordinates,
       size: polygonAreaSize,
     });
     this.setState({
-      polygons: [...polygons, editing],
-      editing: null,
       isFinished: true,
     }, () => {
       const { navigation } = this.props;
       navigation.navigate('AreaType');
-    });
-  };
-  
-  onMapPress = e => {
-    
-  };
-  
-  onPolygonPress = e => {
-    const { latitude: pivotLat, longitude: pivotLng } = e.nativeEvent.coordinate;
-    const { polygons } = this.state;
-    const selectedPolygonIndex = polygons.findIndex(({ coordinates }) =>
-      coordinates.findIndex(({ latitude, longitude}) =>
-        pivotLat === latitude && pivotLng === longitude
-      ) > -1
-    );
-    this.setState({ selectedPolygonIndex });
-  };
-  
-  removePolygon = () => {
-    const { polygons, selectedPolygonIndex } = this.state;
-    if (selectedPolygonIndex < 0) return;
-    this.setState({ 
-      polygons: [
-        ...polygons.slice(0, selectedPolygonIndex),
-        ...polygons.slice(selectedPolygonIndex+1)
-      ],
-      selectedPolygonIndex: -1,
     });
   };
 
@@ -222,27 +199,11 @@ class AreaDraw extends Component {
           mapType={MAP_TYPES.HYBRID}
           initialRegion={region}
           onRegionChange={this.onRegionChange}
-          onPress={this.onMapPress}
+          onRegionChangeComplete={this.onRegionChangeComplete}
           {...mapOptions}
         >
-          {polygons.map((polygon, index) => (
-            <Polygon
-              key={polygon.id}
-              coordinates={polygon.coordinates}
-              strokeColor={Colors.polygon_border}
-              fillColor={
-                selectedPolygonIndex === index
-                  ? Colors.polygon_fill_light
-                  : Colors.polygon_fill_dark
-              }
-              strokeWidth={selectedPolygonIndex === index ? 4 : 1}
-              tappable
-              onPress={this.onPolygonPress}
-            />
-          ))}
           {editing
             ? (
-              <Fragment>
               <Polygon
                 key={editing.id}
                 coordinates={editing.coordinates}
@@ -250,33 +211,34 @@ class AreaDraw extends Component {
                 fillColor={Colors.polygon_fill_light}
                 strokeWidth={1}
               />
-              {polygonCenterPoint && (
-                <Marker
-                  coordinate={{
-                    latitude: polygonCenterPoint.latitude,
-                    longitude: polygonCenterPoint.longitude
-                  }}
-                  trackViewChanges={false}
-                  anchor={{x: 0.4, y: 1.05}}
-                  centerOffset={{x: 0, y: -40}}
-                  >
-                  <Text
-                    style={{
-                      ...Fonts.TITLE_HEADER__BOLD,
-                      color: Colors.white,
-                      textShadowColor: 'rgba(0, 0, 0, 0.5)',
-                      textShadowOffset: {width: -3, height: 3},
-                      textShadowRadius: 3,
-                      elevation: 10,
-                    }}
-                    numberOfLines={2}>
-                    {polygonAreaSize}
-                  </Text>
-                </Marker>
-              )}
-              </Fragment>
             )
-            : (<View />)
+            : null
+          }
+          {editing && polygonCenterPoint
+            ? (
+              <Marker
+                coordinate={{
+                  latitude: polygonCenterPoint.latitude,
+                  longitude: polygonCenterPoint.longitude
+                }}
+                trackViewChanges={false}
+                anchor={{x: 0.4, y: 1.05}}
+                centerOffset={{x: 0, y: -40}}
+                >
+                <Text
+                  style={{
+                    ...Fonts.TITLE_HEADER__BOLD,
+                    color: Colors.white,
+                    textShadowColor: 'rgba(0, 0, 0, 0.5)',
+                    textShadowOffset: {width: -3, height: 3},
+                    textShadowRadius: 3,
+                    elevation: 10,
+                  }}
+                  numberOfLines={2}>
+                  {polygonAreaSize}
+                </Text>
+              </Marker>
+            ) : null
           }
           {isAllowedZoom
             ? (
@@ -324,7 +286,6 @@ class AreaDraw extends Component {
           <AreaDrawControl
             isVisible={isAllowedZoom}
             isPolygonSelected={selectedPolygonIndex >= 0}
-            removePolygon={() => this.removePolygon()}
             zoomToLocation={() => this.zoomToLocation()}
             handleDrawing={() => this.handleDrawing()}
             handleDrawingFinish={() => this.handleDrawingFinish()}

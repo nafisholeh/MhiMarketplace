@@ -29,13 +29,12 @@ import { ReactNativeFile } from 'apollo-upload-client';
  */
 export const convertToGraphQLFile = (userId, photos) => {
   if (Array.isArray(photos) && !photos.length) return null;
-  const images = photos.map((item, index) => {
-    const { path, mime } = item || {};
-    return new ReactNativeFile({
-      uri: path,
+  const images = photos.map((item, index) => 
+    new ReactNativeFile({
+      uri: item.path,
       name: `${moment().format('YYYYMMDDHHmmss')}_${index}_${userId}`,
-      type: mime
+      type: item.mime
     })
-  });
+  );
   return images;
 };

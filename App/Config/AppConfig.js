@@ -325,11 +325,15 @@ export default {
       value: '12',
     },
   ],
-  areaType: {
+  areaStatus: {
     OWN: 'own',
     RENT: 'rent',
     RENTED: 'rented',
   },
+  areaType: [
+    'Sawah',
+    'Tegal',
+  ],
   mapStyle: [
     {
       "elementType": "geometry",

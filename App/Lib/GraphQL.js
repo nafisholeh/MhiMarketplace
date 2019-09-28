@@ -1,3 +1,5 @@
+import moment from 'moment';
+import { ReactNativeFile } from 'apollo-upload-client';
 
 /**
  * Get message from a complex error objects
@@ -16,4 +18,24 @@
   if (message) {
     return message.replace("GraphQL error: ", "");
   }
+};
+
+/**
+ * Convert raw photo format from ImagePicker to a compatible format for uploading a file 
+ *
+ * @param {string} userId the user ID which upload this file
+ * @param {array} photos raw photo list data, e.g. [ {path, mime}, ... ]
+ * @return {array} compatible data format for GraphQL upload file
+ */
+export const convertToGraphQLFile = (userId, photos) => {
+  if (Array.isArray(photos) && !photos.length) return null;
+  const images = photos.map((item, index) => {
+    const { path, mime } = item || {};
+    return new ReactNativeFile({
+      uri: path,
+      name: `${moment().format('YYYYMMDDHHmmss')}_${index}_${userId}`,
+      type: mime
+    })
+  });
+  return images;
 };

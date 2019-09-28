@@ -1,6 +1,6 @@
 import { parseToRupiah, calcDiscount } from './money';
 import { isEmailValid, isEmailError } from './Email';
-import { getGraphQLError } from './GraphQL';
+import { getGraphQLError, convertToGraphQLFile } from './GraphQL';
 import { getReadableDate, getIntervalTimeToday, getIntervalDateToday } from './Date';
 import { setTabBarHide } from './Navigation';
 import { moderateScale, screenWidth, screenHeight } from './Responsive';
@@ -30,5 +30,5 @@ export {
   getIntervalDateToday, reportSentryError, addToSentryLog, reportSentryLog,
   getTotalWeight, calcPolygonSize, extractAdministrativeName,
   getStateFromAsyncStorage, setStateFromAsyncStorage, calcPolygonCenter,
-  normalizeAreaSize
+  normalizeAreaSize, convertToGraphQLFile
 };

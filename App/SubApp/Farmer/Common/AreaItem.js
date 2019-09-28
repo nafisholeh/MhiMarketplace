@@ -5,7 +5,7 @@ import ViewOverflow from 'react-native-view-overflow';
 import convert from 'convert-units';
 
 import AppConfig from 'Config/AppConfig';
-import { moderateScale, screenWidth } from 'Lib';
+import { moderateScale, screenWidth, normalizeAreaSize } from 'Lib';
 import { Fonts, Images, Colors } from 'Themes';
 import { ProductHorizontalWrapper } from 'Components';
 
@@ -34,7 +34,9 @@ class AreaItem extends Component {
   convertSize = () => {
     const { size } = this.props;
     if (!size) return;
-    this.setState({ sizeInUnit: size });
+    this.setState({
+      sizeInUnit: normalizeAreaSize(size, 'm2', 'ha') || ''
+    });
   };
   
   onMapReady = () => {

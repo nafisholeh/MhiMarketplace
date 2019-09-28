@@ -126,6 +126,7 @@ class AreaType extends Component {
           </Text>
           {AppConfig.areaType.map((item, index) => (
             <RadioButton
+              key={index}
               title={item}
               isSelected={type === item}
               onPress={() => this.setState({ type: item })}

@@ -142,24 +142,24 @@ class AreaDraw extends Component {
     }
     const newCoordinates = editing.coordinates.concat(centerPos);
     const polygonCenterPoint = calcPolygonCenter(newCoordinates);
+    const polygonSize = calcPolygonSize(newCoordinates);
     this.setState({
       editing: {
         ...editing,
         coordinates: newCoordinates,
       },
-      polygonAreaSize: normalizeAreaSize(
-        calcPolygonSize(newCoordinates), 'm2', 'ha'
-      ) || '',
+      polygonAreaSizeM2: polygonSize,
+      polygonAreaSize: normalizeAreaSize(polygonSize, 'm2', 'ha') || '',
       polygonCenterPoint,
     });
   };
   
   handleDrawingFinish = () => {
-    const { editing, polygonAreaSize } = this.state;
+    const { editing, polygonAreaSizeM2 } = this.state;
     const { storeFarmerArea } = this.props;
     storeFarmerArea({
       polygon: editing.coordinates,
-      size: polygonAreaSize,
+      size: polygonAreaSizeM2,
     });
     this.setState({
       isFinished: true,

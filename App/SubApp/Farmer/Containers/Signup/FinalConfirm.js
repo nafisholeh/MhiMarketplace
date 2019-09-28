@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { string } from 'prop-types';
 import * as Progress from 'react-native-progress';
 import { DotIndicator } from 'react-native-indicators';
+import { withNavigation } from 'react-navigation';
 
 import { Images, Colors, Fonts } from 'Themes';
 import { moderateScale, screenWidth, screenHeight } from 'Lib';
@@ -16,6 +17,11 @@ class FinalConfirm extends Component {
       header: null,
     }
   }
+  
+  openFarmerSubApp = () => {
+    const { navigation } = this.props;
+    navigation.navigate('Home');
+  };
 
   render() {
     return (
@@ -51,6 +57,7 @@ class FinalConfirm extends Component {
             justifyContent: 'center',
             alignItems: 'center',
           }}
+          onPress={this.openFarmerSubApp}
         >
           <Image
             source={Images.mhi}
@@ -96,4 +103,4 @@ const mapDispatchToProps = dispatch => ({
   
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(FinalConfirm);
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(FinalConfirm));

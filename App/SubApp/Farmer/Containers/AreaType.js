@@ -53,14 +53,22 @@ class AreaType extends Component {
       date_start: `${year_start}-${month_start}-01`,
       date_end: `${year_end}-${month_end}-01`
     });
-    navigation.navigate('AreaCommodity');
+    navigation.navigate(
+      type_name === AppConfig.areaType.RENTED
+        ? 'AreaList'
+        : 'AreaCommodity'
+    );
   };
 
   renderBottom = () => {
     const { type_name } = this.state;
     return (
       <ButtonPrimary
-        title={type_name === AppConfig.areaType.RENTED ? "Selesai" : "Lanjut"}
+        title={
+          type_name === AppConfig.areaType.RENTED
+           ? "Selesai"
+           : "Isi Komoditi"
+        }
         onPress={this.onSubmit}
       />
     );

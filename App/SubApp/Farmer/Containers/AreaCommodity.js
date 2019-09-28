@@ -49,7 +49,7 @@ class AreaCommodity extends Component {
       commodity_id,
       commodity_name
     });
-    navigation.navigate('Home');
+    navigation.navigate('AreaList');
   }
 
   renderBottom = () => {

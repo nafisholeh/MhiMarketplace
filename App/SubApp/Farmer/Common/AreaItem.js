@@ -34,11 +34,7 @@ class AreaItem extends Component {
   convertSize = () => {
     const { size } = this.props;
     if (!size) return;
-    let outputSize = Math.round(convert(size).from('m2').to('ha') * 10) / 10;
-    outputSize = outputSize === 0 ? `${Math.round(size * 10) / 10} m2` : `${outputSize} ha`;
-    this.setState({
-      sizeInUnit: outputSize
-    });
+    this.setState({ sizeInUnit: size });
   };
   
   onMapReady = () => {

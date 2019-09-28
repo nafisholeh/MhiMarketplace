@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { func } from 'prop-types';
 
@@ -12,6 +12,7 @@ import {
   InputPicker,
 } from 'Components';
 import AppConfig from 'Config/AppConfig';
+import { Fonts, Colors } from 'Themes';
 import { moderateScale, screenWidth } from 'Lib';
 import { HillHeaderWrapper, AreaItem } from 'CommonFarmer';
 
@@ -24,7 +25,8 @@ class AreaType extends Component {
   }
 
   state = {
-    type_name: 'rent', // oneOf [own, rent, rented]
+    type: AppConfig.areaType[0],
+    status: 'rent', // oneOf [own, rent, rented]
     name: '',
     name_error: null,
     month_start: null,
@@ -40,7 +42,8 @@ class AreaType extends Component {
   onSubmit = () => {
     const { navigation, storeFarmerType } = this.props;
     const {
-      type_name,
+      type,
+      status,
       name,
       month_start,
       year_start,
@@ -48,24 +51,25 @@ class AreaType extends Component {
       year_end
     } = this.state;
     storeFarmerType({
-      type: type_name,
+      type,
+      status,
       name,
       date_start: `${year_start}-${month_start}-01`,
       date_end: `${year_end}-${month_end}-01`
     });
     navigation.navigate(
-      type_name === AppConfig.areaType.RENTED
+      status === AppConfig.areaStatus.RENTED
         ? 'AreaList'
         : 'AreaCommodity'
     );
   };
 
   renderBottom = () => {
-    const { type_name } = this.state;
+    const { status } = this.state;
     return (
       <ButtonPrimary
         title={
-          type_name === AppConfig.areaType.RENTED
+          status === AppConfig.areaStatus.RENTED
            ? "Selesai"
            : "Isi Komoditi"
         }
@@ -80,7 +84,8 @@ class AreaType extends Component {
 
   render() {
     const {
-      type_name,
+      type,
+      status,
       name,
       name_error,
       year_start,
@@ -95,7 +100,7 @@ class AreaType extends Component {
       >
         <ProductHorizontalWrapper
           width={screenWidth - moderateScale(20)}
-          height={moderateScale(150)}
+          height={moderateScale(135)}
           borderRadius={10}
           shadowRadiusAndroid={13}
           style={{
@@ -111,23 +116,65 @@ class AreaType extends Component {
             paddingVertical: moderateScale(15),
           }}
         >
+          <Text
+            style={{
+              ...Fonts.TITLE_HEADER__SMALL,
+              color: Colors.veggie_dark
+            }}
+          >
+            Tipe lahan
+          </Text>
+          {AppConfig.areaType.map((item, index) => (
+            <RadioButton
+              title={item}
+              isSelected={type === item}
+              onPress={() => this.setState({ type: item })}
+            />
+          ))}
+        </ProductHorizontalWrapper>
+        <ProductHorizontalWrapper
+          width={screenWidth - moderateScale(20)}
+          height={moderateScale(175)}
+          borderRadius={10}
+          shadowRadiusAndroid={13}
+          style={{
+            marginBottom: moderateScale(5),
+            marginBottom: moderateScale(10),
+            marginHorizontal: moderateScale(10),
+          }}
+          styleChildren={{
+            flexDirection: 'column',
+            justifyContent: 'space-around',
+            alignItems: 'flex-start',
+            paddingHorizontal: moderateScale(15),
+            paddingVertical: moderateScale(15),
+          }}
+        >
+          <Text
+            style={{
+              ...Fonts.TITLE_HEADER__SMALL,
+              color: Colors.veggie_dark
+            }}
+          >
+            Status lahan
+          </Text>
           <RadioButton
             title="Milik sendiri"
-            isSelected={type_name === AppConfig.areaType.OWN}
-            onPress={() => this.setState({ type_name: AppConfig.areaType.OWN })}
+            isSelected={status === AppConfig.areaStatus.OWN}
+            onPress={() => this.setState({ status: AppConfig.areaStatus.OWN })}
           />
           <RadioButton
             title="Sewa"
-            isSelected={type_name === AppConfig.areaType.RENT}
-            onPress={() => this.setState({ type_name: AppConfig.areaType.RENT })}
+            isSelected={status === AppConfig.areaStatus.RENT}
+            onPress={() => this.setState({ status: AppConfig.areaStatus.RENT })}
           />
           <RadioButton
             title="Disewakan"
-            isSelected={type_name === AppConfig.areaType.RENTED}
-            onPress={() => this.setState({ type_name: AppConfig.areaType.RENTED })}
+            isSelected={status === AppConfig.areaStatus.RENTED}
+            onPress={() => this.setState({ status: AppConfig.areaStatus.RENTED })}
           />
         </ProductHorizontalWrapper>
-        {type_name !== AppConfig.areaType.OWN
+        {status !== AppConfig.areaStatus.OWN
           ? (
             <ProductHorizontalWrapper
               width={screenWidth - moderateScale(20)}
@@ -150,7 +197,7 @@ class AreaType extends Component {
             >
               <InputText
                 name="name"
-                title={type_name !== AppConfig.areaType.RENT ? "Nama pemilik" : "Nama penyewa"}
+                title={status !== AppConfig.areaStatus.RENT ? "Nama pemilik" : "Nama penyewa"}
                 placeholder="Nama sesuai KTP"
                 value={name || ''}
                 error={name_error}

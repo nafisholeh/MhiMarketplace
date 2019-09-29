@@ -42,7 +42,7 @@ const AccountNav = createStackNavigator({
   AreaCommodity: { screen: AreaCommodity },
   FarmerFinalConfirm: { screen: FarmerFinalConfirm },
 }, {
-  initialRouteName: 'AreaList',
+  initialRouteName: 'SignupFarmerFirst',
   navigationOptions: {
     headerStyle: styles.header
   }

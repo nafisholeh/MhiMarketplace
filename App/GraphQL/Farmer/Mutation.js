@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const SIGNUP_FARMER = gql`
-  mutation signupFarmer($data: UserFarmerInput!, $images: [Upload]) {
-    signupFarmer(data: $data, images: $images) {
+  mutation signupFarmer($data: UserFarmerInput!) {
+    signupFarmer(data: $data) {
       _id
     }
   }

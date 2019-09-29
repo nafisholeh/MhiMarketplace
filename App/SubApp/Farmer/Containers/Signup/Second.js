@@ -4,7 +4,11 @@ import { DotIndicator } from 'react-native-indicators';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
+
+import { ReactNativeFile } from 'apollo-upload-client';
 import moment from 'moment';
+
+import { SIGNUP_FARMER } from 'GraphQL/Farmer/Mutation';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { AutoAddressInput } from 'Containers/Address/Common';
@@ -97,13 +101,36 @@ class Farmer extends Component {
       address_detail, rtrw, kodepos, kelurahan,
       kecamatan, kecamatan_id, kabupaten, provinsi
     } = this.state;
-    storeFarmerKtp({
-      nik, name, birth_place, birth_date, gender,
-      blood_type, religion, marriage_status, occupation,
-      citizenship, expired_date, photo_face, photo_ktp,
-      address_detail, rtrw, kodepos, kelurahan,
-      kecamatan, kecamatan_id, kabupaten, provinsi
-    });
+    let photo = {};
+    if (Array.isArray(photo_face) && photo_face.length) {
+      const { data, mime } = photo_face[0];
+      photo = Object.assign(
+        {},
+        photo,
+        { photo_face: `data:${mime};base64,${data}` }
+      );
+    }
+    if (Array.isArray(photo_ktp) && photo_ktp.length) {
+      const { data, mime } = photo_ktp[0];
+      photo = Object.assign(
+        {},
+        photo,
+        { photo_ktp: `data:${mime};base64,${data}` }
+      );
+    }
+    storeFarmerKtp(
+      Object.assign(
+        {},
+        {
+          nik, name, birth_place, birth_date, gender,
+          blood_type, religion, marriage_status, occupation,
+          citizenship, expired_date, photo_face, photo_ktp,
+          address_detail, rtrw, kodepos, kelurahan,
+          kecamatan, kecamatan_id, kabupaten, provinsi
+        },
+        photo
+      )
+    );
     navigation.navigate('AreaList');
   }
   
@@ -141,6 +168,14 @@ class Farmer extends Component {
   
   onSelectionChange = (value, stateName) => {
     this.setState({ [stateName]: value });
+  };
+  
+  onPhotoChange = (name, raw = [], paths = []) => {
+    const photos = raw.map((item, i) => {
+      const { mime, path, data } = raw[i];
+      return { mime, path, data };
+    })
+    this.setState({ [name]: photos });
   };
   
   renderBottom = () => {
@@ -414,13 +449,8 @@ class Farmer extends Component {
           Ambil Foto KTP
         </Text>
         <ImagePicker
-          onChange={(raw = [], paths = []) => {
-            const photos = raw.map((item, i) => {
-              const { mime, path } = raw[i];
-              return { mime, path };
-            })
-            this.setState({ photo_ktp: photos });
-          }}
+          name="photo_ktp"
+          onChange={this.onPhotoChange}
           data={photo_ktp}
           titleBottomSheet='Ambil foto KTP'
           isMultiplePick={false}
@@ -445,13 +475,8 @@ class Farmer extends Component {
           Ambil Foto Muka
         </Text>
         <ImagePicker
-          onChange={(raw = [], paths = []) => {
-            const photos = raw.map((item, i) => {
-              const { mime, path } = raw[i];
-              return { mime, path };
-            })
-            this.setState({ photo_face: photos });
-          }}
+          name="photo_face"
+          onChange={this.onPhotoChange}
           data={photo_face}
           titleBottomSheet='Ambil foto muka'
           isMultiplePick={false}

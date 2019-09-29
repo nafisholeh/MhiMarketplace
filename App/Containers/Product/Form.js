@@ -338,7 +338,7 @@ class Form extends Component {
     });
   };
   
-  onPhotoPicked = (raw, paths = []) => {
+  onPhotoPicked = (name, raw, paths = []) => {
     const photos = paths.map((item, i) => {
       return {
         mime: raw[i][0].mime,

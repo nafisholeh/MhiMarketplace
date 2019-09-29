@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { ScrollView, Image, TouchableOpacity, Text } from 'react-native';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
@@ -6,9 +6,20 @@ import { string } from 'prop-types';
 import * as Progress from 'react-native-progress';
 import { DotIndicator } from 'react-native-indicators';
 import { withNavigation } from 'react-navigation';
+import { Mutation } from 'react-apollo';
+import { ReactNativeFile } from 'apollo-upload-client';
+import moment from 'moment';
 
+import ApolloClientProvider from 'Services/ApolloClientProvider';
+import { SIGNUP_FARMER } from 'GraphQL/Farmer/Mutation';
+import { getFarmerSignupData, getAreas } from 'Redux/FarmerSignupRedux';
 import { Images, Colors, Fonts } from 'Themes';
-import { moderateScale, screenWidth, screenHeight } from 'Lib';
+import {
+  moderateScale,
+  screenWidth,
+  screenHeight,
+  convertToGraphQLFile
+} from 'Lib';
 
 class FinalConfirm extends Component {
   static navigationOptions = ({navigation}) => {
@@ -17,6 +28,15 @@ class FinalConfirm extends Component {
       header: null,
     }
   }
+  
+  submit = mutate => {
+    const { signupData } = this.props;
+    mutate({ variables: { data: signupData } });
+  };
+  
+  onUploadCompleted = () => {
+    this.openFarmerSubApp();
+  };
   
   openFarmerSubApp = () => {
     const { navigation } = this.props;
@@ -46,57 +66,71 @@ class FinalConfirm extends Component {
         >
           Tekan logo untuk bergabung dengan keluarga besar MHI...
         </Text>
-        <TouchableOpacity
-          style={{
-            position: 'absolute',
-            top: '25%',
-            width: moderateScale(screenWidth * 0.8),
-            height: moderateScale(screenHeight * 0.5),
-            borderRadius: moderateScale(screenWidth * 0.4),
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
+        <Mutation
+          mutation={SIGNUP_FARMER}
+          onCompleted={this.onUploadCompleted}
+          awaitRefetchQueries={true}
+          ignoreResults={false}
+          errorPolicy='all'>
+          { (mutate, {loading, error, data}) => {
+            return (
+              <Fragment>
+                <TouchableOpacity
+                  style={{
+                    position: 'absolute',
+                    top: '25%',
+                    width: moderateScale(screenWidth * 0.8),
+                    height: moderateScale(screenHeight * 0.5),
+                    borderRadius: moderateScale(screenWidth * 0.4),
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                  onPress={() => this.submit(mutate)}
+                >
+                  <Image
+                    source={Images.mhi}
+                    style={{
+                      width: moderateScale(screenWidth * 0.7),
+                      height: moderateScale(screenHeight * 0.4),
+                    }}
+                  />
+                  <Progress.Circle
+                    size={moderateScale(screenWidth * 0.8)}
+                    thickness={7}
+                    showsText={false}
+                    progress={0.6}
+                    strokeCap='square'
+                    color={Colors.veggie_dark}
+                    textStyle={Fonts.TITLE_HEADER__NORMAL}
+                    style={{
+                      position: 'absolute',
+                      alignSelf: 'center',
+                    }}
+                  />
+                </TouchableOpacity>
+                <DotIndicator
+                  count={4}
+                  size={7}
+                  color={Colors.veggie_dark}
+                  animationDuration={800}
+                  style={{
+                    position: 'absolute',
+                    bottom: '8%',
+                  }}
+                />
+              </Fragment>
+            );
           }}
-          onPress={this.openFarmerSubApp}
-        >
-          <Image
-            source={Images.mhi}
-            style={{
-              width: moderateScale(screenWidth * 0.7),
-              height: moderateScale(screenHeight * 0.4),
-            }}
-          />
-          <Progress.Circle
-            size={moderateScale(screenWidth * 0.8)}
-            thickness={7}
-            showsText={false}
-            progress={0.6}
-            strokeCap='square'
-            color={Colors.veggie_dark}
-            textStyle={Fonts.TITLE_HEADER__NORMAL}
-            style={{
-              position: 'absolute',
-              alignSelf: 'center',
-            }}
-          />
-        </TouchableOpacity>
-        <DotIndicator
-          count={4}
-          size={7}
-          color={Colors.veggie_dark}
-          animationDuration={800}
-          style={{
-            position: 'absolute',
-            bottom: '8%',
-          }}
-        />
+        </Mutation>
       </ScrollView>
     )
   };
 }
 
 const mapStateToProps = createStructuredSelector({
-  
+  areas: getAreas(),
+  signupData: getFarmerSignupData(),
 });
 
 const mapDispatchToProps = dispatch => ({

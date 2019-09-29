@@ -43,6 +43,7 @@ class ImagePicker extends PureComponent {
           ImagePickers
           .openCamera({
             compressImageQuality: 0.5,
+            includeBase64: true,
           })
           .then((image: Object) =>
             this._saveImages(image)
@@ -55,6 +56,7 @@ class ImagePicker extends PureComponent {
           .openPicker({
             multiple: this.props.isMultiplePick ? true : false,
             compressImageQuality: 0.5,
+            includeBase64: true,
           })
           .then(image =>
             this._saveImages(image)
@@ -79,6 +81,7 @@ class ImagePicker extends PureComponent {
           ImagePickers
           .openCamera({
             compressImageQuality: 0.5,
+            includeBase64: true,
           })
           .then((image: Object) =>
             this._saveImages(image)
@@ -97,6 +100,7 @@ class ImagePicker extends PureComponent {
           .openPicker({
             multiple: this.props.isMultiplePick ? true : false,
             compressImageQuality: 0.5,
+            includeBase64: true,
           })
           .then(image =>
             this._saveImages(image)
@@ -142,7 +146,9 @@ class ImagePicker extends PureComponent {
     outputImages.push(this._getImagePath(image))
     rawOutputImages.push(image)
     this.setState({ image: outputImages, imageRaw: rawOutputImages }, () => {
-      this.props.onChange(this.state.imageRaw, this.state.image)
+      const { imageRaw, image } = this.state;
+      const { name, onChange } = this.props; 
+      onChange(name, imageRaw, image)
     })
   }
 
@@ -159,15 +165,19 @@ class ImagePicker extends PureComponent {
       rawNewImages.push(images);
     }
     
-    let outputImages = this.props.isMultiplePick ?
-                          [...this.state.image, newImages] :
+    const { isMultiplePick, isCropping, onChange, name } = this.props;
+    const { imageRaw, image } = this.state;
+    
+    let outputImages = isMultiplePick ?
+                          [...image, newImages] :
                           newImages
-    let rawOutputImages = this.props.isMultiplePick ?
-                          [...this.state.imageRaw, rawNewImages] :
+    let rawOutputImages = isMultiplePick ?
+                          [...imageRaw, rawNewImages] :
                           rawNewImages
     this.setState({ image: outputImages, imageRaw: rawOutputImages }, () => {
-      if(this.props.isCropping) this._onOpenCropImage()
-      if(!this.props.isCropping) this.props.onChange(this.state.imageRaw, this.state.image)
+      const { imageRaw, image } = this.state;
+      if(isCropping) this._onOpenCropImage()
+      if(!isCropping) onChange(name, imageRaw, image)
     })
   }
 
@@ -180,11 +190,14 @@ class ImagePicker extends PureComponent {
 
   // tereksekusi ketika image ada yg terhapus, sebab fitur hapus pada ImageGrid
   _onDeleteImage = index => {
+    const { onChange, name } = this.props;
+    const { imageRaw, image } = this.state;
     this.setState({
-      image: this.state.image.splice(index, 1),
-      imageRaw: this.state.imageRaw.splice(index, 1),
+      image: image.splice(index, 1),
+      imageRaw: imageRaw.splice(index, 1),
     }, () => {
-      this.props.onChange(this.state.imageRaw, this.state.image)
+      const { imageRaw, image } = this.state;
+      onChange(name, imageRaw, image);
     })
   }
 
@@ -203,7 +216,6 @@ class ImagePicker extends PureComponent {
       isMultiplePick,
       singlePhotoButtonStyle,
     } = this.props;
-    console.tron.log('_renderGallery', this.state);
     if(!isCustomComponent) {
       if(isMultiplePick) {
         return (
@@ -281,6 +293,7 @@ class ImagePicker extends PureComponent {
 const styles = StyleSheet.create({ });
 
 ImagePicker.propTypes = {
+  name: PropTypes.string,
   onChange: PropTypes.func,
   title: PropTypes.string,
   titleBottomSheet: PropTypes.string,

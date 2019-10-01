@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 import update from 'immutability-helper';
 
 import { convertToGraphQLFile } from 'Lib';
+import AppConfig from 'Config/AppConfig';
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -64,7 +65,6 @@ export const getFarmerSignupData = () =>
             ({ latitude, longitude }) => `${latitude},${longitude}||`
           )
           .join(',');
-        
         const output = Object.assign(
           {},
           {
@@ -72,10 +72,14 @@ export const getFarmerSignupData = () =>
             status, // ["own", "rent", "rented"]
             size,   // in m2
             polygon: polygonInCsv,
-            name,
-            date_start,
-            date_end,
           },
+          status !== AppConfig.areaStatus.OWN
+            ? {
+              name,
+              date_start,
+              date_end,
+            }
+            : {},
           isNewCommodity
             ? { commodity_other_name: commodity_id }
             : { commodity_id }

@@ -31,6 +31,7 @@ class AreaCommodity extends Component {
     trigger_fetch_commodity: false,
     trigger_reset_commodity: false,
     height: moderateScale(100),
+    isNewCommodity: false,
   };
   
   componentDidMount = () => {
@@ -43,11 +44,12 @@ class AreaCommodity extends Component {
   
   onSubmit = () => {
     const { navigation, storeFarmerCommodity } = this.props;
-    const { commodity } = this.state;
+    const { commodity, isNewCommodity } = this.state;
     const [commodity_id, commodity_name] = commodity.split('||');
     storeFarmerCommodity({
       commodity_id,
-      commodity_name
+      commodity_name,
+      isNewCommodity
     });
     navigation.navigate('AreaList');
   }
@@ -62,8 +64,11 @@ class AreaCommodity extends Component {
     );
   };
   
-  onSelectionChange = (value, stateName) => {
-    this.setState({ [stateName]: value });
+  onCommodityChange = (value, stateName, isManualInput) => {
+    this.setState({
+      [stateName]: value,
+      isNewCommodity: isManualInput,
+    });
   };
 
   render() {
@@ -98,7 +103,7 @@ class AreaCommodity extends Component {
             name="commodity"
             title="Komoditas"
             placeholder="Pilih komoditas"
-            onSelectionChange={this.onSelectionChange}
+            onSelectionChange={this.onCommodityChange}
             query={FETCH_COMMODITIES}
             triggerFetch={trigger_fetch_commodity}
             styleContainer={{

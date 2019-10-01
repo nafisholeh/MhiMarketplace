@@ -57,22 +57,30 @@ export const getFarmerSignupData = () =>
           date_start,
           date_end,
           commodity_id,
+          isNewCommodity
         } = item || {};
         const polygonInCsv = polygon
           .map(
             ({ latitude, longitude }) => `${latitude},${longitude}||`
           )
           .join(',');
-        return {
-          type,   // ["sawah", "tegal"]
-          status, // ["own", "rent", "rented"]
-          size,   // in m2
-          polygon: polygonInCsv,
-          name,
-          date_start,
-          date_end,
-          commodity_id,
-        }
+        
+        const output = Object.assign(
+          {},
+          {
+            type,   // ["sawah", "tegal"]
+            status, // ["own", "rent", "rented"]
+            size,   // in m2
+            polygon: polygonInCsv,
+            name,
+            date_start,
+            date_end,
+          },
+          isNewCommodity
+            ? { commodity_other_name: commodity_id }
+            : { commodity_id }
+        );
+        return output;
       });
     }
     
@@ -132,7 +140,7 @@ export const storeFarmerType = (state, { area }) => {
 }
 
 export const storeFarmerCommodity = (state, { area }) => {
-  const { commodity_id, commodity_name } = area;
+  const { commodity_id, commodity_name, isNewCommodity } = area;
   const currentArea = state.area || [];
   if (Array.isArray(currentArea) && currentArea.length > 0) {
     const updatedIndex = currentArea.length - 1;
@@ -140,7 +148,7 @@ export const storeFarmerCommodity = (state, { area }) => {
     return state.merge({
       area: [
         ...state.area.slice(0, updatedIndex),
-        Object.assign({}, lastArea, { commodity_id, commodity_name }),
+        Object.assign({}, lastArea, { commodity_id, commodity_name, isNewCommodity }),
         ...state.area.slice(updatedIndex + 1)
       ]
     });

@@ -115,7 +115,7 @@ class InputPicker extends Component {
       showManualInput,
     });
     if (onSelectionChange) {
-      onSelectionChange(showManualInput ? null : val, name);
+      onSelectionChange(showManualInput ? null : val, name, showManualInput);
       if (showManualInput) {
         if (onShowManualInput) onShowManualInput();
       } else if(prevShowManualInput && !showManualInput) {
@@ -126,9 +126,10 @@ class InputPicker extends Component {
   
   onManualTextChange = text => {
     const { onSelectionChange, name } = this.props;
+    const { showManualInput } = this.state;
     this.setState({ manual_text: text });
     if (onSelectionChange) {
-      onSelectionChange(text, name);
+      onSelectionChange(text, name, showManualInput);
     }
   };
 

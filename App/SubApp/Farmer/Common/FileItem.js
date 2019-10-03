@@ -1,49 +1,100 @@
 import React, { Component } from 'react';
 import { View, Text, Image } from 'react-native';
 import { string } from 'prop-types';
+import LinearGradient from 'react-native-linear-gradient';
 
-import { ProductHorizontalWrapper } from 'Components';
+import { ProductHorizontalWrapper, ImageRadius } from 'Components';
 import { moderateScale, screenWidth } from 'Lib';
 import { Colors, Fonts } from 'Themes';
 
+const BORDER_RADIUS = 8;
+
 class FileItem extends Component {
   render() {
-    const { title, desc, thumbnail } = this.props;
+    const { title, desc, thumbnail, bigThumbnail } = this.props;
+    const width = screenWidth / 2 - moderateScale(30);
     return (
       <ProductHorizontalWrapper
         styleChildren={{
-          padding: moderateScale(8),
           alignItems: 'center',
+          position: 'relative',
         }}
         style={{
           alignSelf: 'center',
         }}
-        width={screenWidth / 2 - moderateScale(30)}
-        height={150}
-        borderRadius={8}
+        width={width}
+        height={moderateScale(150)}
+        borderRadius={BORDER_RADIUS}
       >
-        <Image
-          source={{ uri: thumbnail }}
-          style={{
-            width: moderateScale(40),
-            height: moderateScale(40),
-            marginTop: moderateScale(35),
-            alignSelf: 'center',
-          }}
-        />
-        <Text 
+        {bigThumbnail
+          ? (
+            <ImageRadius
+              source={{ uri: thumbnail }}
+              width={width}
+              height={moderateScale(150)}
+              resizeMode='cover'
+              resizeMethod='resize'
+              borderTopLeftRadius={BORDER_RADIUS}
+              borderTopRightRadius={BORDER_RADIUS}
+              borderBottomLeftRadius={BORDER_RADIUS}
+              borderBottomRightRadius={BORDER_RADIUS}
+            />
+          )
+          : (
+            <ImageRadius
+              source={{ uri: thumbnail }}
+              style={{
+                width: moderateScale(40),
+                height: moderateScale(40),
+                marginTop: moderateScale(40),
+                alignSelf: 'center',
+              }}
+            />
+          )
+        }
+        <LinearGradient
+          colors={
+            bigThumbnail
+              ? ['#ffffff00', Colors.icon]
+              : ['#ffffff00', '#ffffff00']
+          }
+          start={{x: 0.5, y: 0.58}}
           style={{
             position: 'absolute',
-            bottom: moderateScale(15),
             left: 0, right: 0,
-            textAlign: 'center',
-            marginRight: moderateScale(5),
-            ...Fonts.TITLE_HEADER__SMALL
+            bottom: 0,
+            height: moderateScale(150),
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+            borderBottomLeftRadius: BORDER_RADIUS,
+            borderBottomRightRadius: BORDER_RADIUS,
           }}
-          numberOfLines={1}
         >
-          {title}
-        </Text>
+          <Text 
+            style={
+              Object.assign(
+                {},
+                bigThumbnail ? {
+                  textAlign: 'left',
+                  flexWrap: 'wrap',
+                  marginHorizontal: moderateScale(10),
+                  marginBottom: moderateScale(8),
+                  ...Fonts.TITLE_HEADER__SMALL,
+                  color: Colors.white,
+                } : {
+                  textAlign: 'center',
+                  flexWrap: 'wrap',
+                  marginHorizontal: moderateScale(10),
+                  marginBottom: moderateScale(13),
+                  ...Fonts.TITLE_HEADER__SMALL,
+                }
+              )
+            }
+            numberOfLines={2}
+          >
+            {title}
+          </Text>
+        </LinearGradient>
       </ProductHorizontalWrapper>
     )
   };

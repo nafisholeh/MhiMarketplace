@@ -20,3 +20,14 @@ export const THEORIES = gql`
     }
   }
 `
+
+export const SEARCH_THEORIES = gql`
+  query searchTheories($term:String) {
+    searchTheories(term:$term) {
+      title
+      thumbnail
+      url
+      enabled
+    }
+  }
+`

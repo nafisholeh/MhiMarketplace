@@ -17,14 +17,16 @@ class Dashboard extends Component {
   static navigationOptions = ({navigation}) => ({ header: null })
   
   state = {
-    isSearchMode: false,
-    searchTerm: '',
+    isShowTheories: false,
+    searchTerm: null,
+    categoryId: null,
   }
   
   onSearchSOP = value => {
     this.setState({
-      isSearchMode: value ? true : false,
+      isShowTheories: value ? true : false,
       searchTerm: value,
+      categoryId: null,
     });
   };
   
@@ -34,20 +36,29 @@ class Dashboard extends Component {
     navigation.navigate('SopViewer');
   };
   
+  onOpenCategory = categoryId => {
+    this.setState({
+      isShowTheories: true,
+      categoryId,
+      searchTerm: null,
+    });
+  };
+  
   render() {
-    const { isSearchMode, searchTerm } = this.state;
+    const { isShowTheories, searchTerm, categoryId } = this.state;
     return (
       <View style={{ flex: 1, paddingVertical: moderateScale(20) }}>
       <SearchHeader
         style={{ marginBottom: moderateScale(15) }}
         onSearch={this.onSearchSOP}
       />
-      {isSearchMode
+      {isShowTheories
         ? (
           <Query
             query={SEARCH_THEORIES}
             variables={{
-              term: searchTerm 
+              term: searchTerm,
+              categoryId
             }}
           >
             {({ loading, error, data, refetch }) => {
@@ -74,7 +85,7 @@ class Dashboard extends Component {
                           <FileItem
                             title={title}
                             bigThumbnail
-                            url={url}
+                            onPressParam={url}
                             thumbnail={`${AppConfig.uri.basic}${thumbnail}`}
                             onPress={this.onOpenSOP}
                           />
@@ -117,11 +128,13 @@ class Dashboard extends Component {
                     itemHeight={moderateScale(170)}
                     data={theoryCategories}
                     renderRow={(type, data) => {
-                      const { title, desc, thumbnail } = data;
+                      const { title, desc, thumbnail, _id } = data;
                       return (
                         <FileItem
                           title={title}
                           thumbnail={`${AppConfig.uri.basic}${thumbnail}`}
+                          onPress={this.onOpenCategory}
+                          onPressParam={_id}
                         />
                       );
                     }}

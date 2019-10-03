@@ -3,6 +3,7 @@ import gql from 'graphql-tag'
 export const THEORY_CATEGORIES = gql`
   query theoryCategories {
     theoryCategories {
+      _id
       title
       desc
       thumbnail
@@ -22,8 +23,8 @@ export const THEORIES = gql`
 `
 
 export const SEARCH_THEORIES = gql`
-  query searchTheories($term:String) {
-    searchTheories(term:$term) {
+  query searchTheories($term:String, $categoryId:String) {
+    searchTheories(term:$term, categoryId:$categoryId) {
       title
       thumbnail
       url

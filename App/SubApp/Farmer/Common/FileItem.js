@@ -11,9 +11,9 @@ const BORDER_RADIUS = 8;
 
 class FileItem extends Component {
   onPress = () => {
-    const { onPress, url } = this.props;
+    const { onPress, onPressParam } = this.props;
     if (onPress) {
-      onPress(url);
+      onPress(onPressParam);
     }
   };
 

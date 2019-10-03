@@ -42,7 +42,8 @@ class SopViewer extends Component {
             console.tron.log(error);
           }}
           style={{
-            flex:1,
+            flex: 1,
+            backgroundColor: Colors.white,
           }}
         />
         <View

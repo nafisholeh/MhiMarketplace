@@ -40,7 +40,11 @@ class FinalConfirm extends Component {
   
   openFarmerSubApp = () => {
     const { navigation } = this.props;
-    navigation.navigate('Home');
+    navigation.navigate('DashboardFarmer');
+  };
+  
+  onUploadError = (error) => {
+    
   };
 
   render() {
@@ -69,6 +73,7 @@ class FinalConfirm extends Component {
         <Mutation
           mutation={SIGNUP_FARMER}
           onCompleted={this.onUploadCompleted}
+          onError={this.onUploadError}
           awaitRefetchQueries={true}
           ignoreResults={false}
           errorPolicy='all'>

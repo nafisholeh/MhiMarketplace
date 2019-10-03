@@ -5,6 +5,7 @@ import Header from './Header';
 import withLocationListener from './withLocationListener';
 import SignupBottomButton from './SignupBottomButton';
 import SignupBoxWrapper from './SignupBoxWrapper';
+import FileItem from './FileItem';
 
 import AreaDrawInfo from './MapBottomInfo/AreaDrawInfo';
 import AreaDrawControl from './MapBottomInfo/AreaDrawControl';
@@ -25,4 +26,5 @@ export {
   withLocationListener,
   SignupBottomButton,
   SignupBoxWrapper,
+  FileItem
 };

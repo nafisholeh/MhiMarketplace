@@ -12,7 +12,7 @@ import AppConfig from '../Config/AppConfig';
 const cache = new InMemoryCache();
 
 const options = {
-  uri: AppConfig.uri,
+  uri: AppConfig.uri.graphql,
 };
 
 const httpLink = ApolloLink.from([
@@ -24,7 +24,7 @@ const httpLink = ApolloLink.from([
     }
   }),
   new HttpLink({
-    uri: AppConfig.uri,
+    uri: AppConfig.uri.graphql,
     credentials: 'same-origin'
   })
 ]);

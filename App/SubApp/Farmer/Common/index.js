@@ -7,6 +7,7 @@ import SignupBottomButton from './SignupBottomButton';
 import SignupBoxWrapper from './SignupBoxWrapper';
 import FileItem from './FileItem';
 import SearchHeader from './SearchHeader';
+import FloatNavigation from './FloatNavigation';
 
 import AreaDrawInfo from './MapBottomInfo/AreaDrawInfo';
 import AreaDrawControl from './MapBottomInfo/AreaDrawControl';
@@ -28,5 +29,6 @@ export {
   SignupBottomButton,
   SignupBoxWrapper,
   FileItem,
-  SearchHeader
+  SearchHeader,
+  FloatNavigation
 };

@@ -7,10 +7,10 @@ import { Query } from 'react-apollo';
 
 import AppConfig from 'Config/AppConfig';
 import { OptimizedList, QueryEffectPage } from 'Components';
-import { FileItem, SearchHeader } from 'CommonFarmer';
+import { FileItem, SearchHeader, FloatNavigation } from 'CommonFarmer';
 import { moderateScale, screenWidth } from 'Lib';
 import { THEORY_CATEGORIES, SEARCH_THEORIES } from 'GraphQL/Theory/Query';
-import { Fonts } from 'Themes';
+import { Fonts, Images } from 'Themes';
 import ListActions, { getSelectedListId } from 'Redux/ListRedux';
 
 class Dashboard extends Component {
@@ -18,13 +18,14 @@ class Dashboard extends Component {
   
   state = {
     isShowTheories: false,
+    isSearchMode: false,
     searchTerm: null,
     categoryId: null,
   }
   
   onSearchSOP = value => {
     this.setState({
-      isShowTheories: value ? true : false,
+      isSearchMode: value ? true : false,
       searchTerm: value,
       categoryId: null,
     });
@@ -36,23 +37,33 @@ class Dashboard extends Component {
     navigation.navigate('SopViewer');
   };
   
-  onOpenCategory = categoryId => {
+  onOpenCategories = () => {
+    this.setState({
+      isShowTheories: false,
+      isSearchMode: false,
+      categoryId: null,
+      searchTerm: null,
+    });
+  };
+  
+  onOpenTheories = categoryId => {
     this.setState({
       isShowTheories: true,
+      isSearchMode: false,
       categoryId,
       searchTerm: null,
     });
   };
   
   render() {
-    const { isShowTheories, searchTerm, categoryId } = this.state;
+    const { isShowTheories, isSearchMode, searchTerm, categoryId } = this.state;
     return (
       <View style={{ flex: 1, paddingVertical: moderateScale(20) }}>
       <SearchHeader
         style={{ marginBottom: moderateScale(15) }}
         onSearch={this.onSearchSOP}
       />
-      {isShowTheories
+      {(isShowTheories || isSearchMode)
         ? (
           <Query
             query={SEARCH_THEORIES}
@@ -66,14 +77,19 @@ class Dashboard extends Component {
               if (Array.isArray(items) && items.length > 0) {
                 return (
                   <Fragment>
-                    <Text
-                      style={{
-                        marginHorizontal: moderateScale(23),
-                        ...Fonts.TITLE_SMALL
-                      }}
-                    >
-                      Ditemukan {items.length} hasil
-                    </Text>
+                    { isSearchMode
+                      ? (
+                        <Text
+                          style={{
+                            marginHorizontal: moderateScale(23),
+                            ...Fonts.TITLE_SMALL
+                          }}
+                        >
+                          Ditemukan {items.length} hasil
+                        </Text>
+                      )
+                      : null
+                    }
                     <OptimizedList
                       isHorizontal={false}
                       itemWidth={screenWidth / 2 - moderateScale(10)}
@@ -100,6 +116,25 @@ class Dashboard extends Component {
                         marginHorizontal: moderateScale(10),
                       }}
                     />
+                    {isShowTheories
+                      ? (
+                        <View
+                          style={{
+                            position: 'absolute', 
+                            bottom: moderateScale(20),
+                            left: 0, right: 0,
+                          }}
+                        >
+                          <FloatNavigation
+                            title="Kembali ke daftar kategori"
+                            icon={Images.back}
+                            onPress={this.onOpenCategories}
+                            style={{ marginHorizontal: moderateScale(30) }}
+                          />
+                        </View>
+                      )
+                      : null
+                    }
                   </Fragment>
                 );
               }
@@ -133,7 +168,7 @@ class Dashboard extends Component {
                         <FileItem
                           title={title}
                           thumbnail={`${AppConfig.uri.basic}${thumbnail}`}
-                          onPress={this.onOpenCategory}
+                          onPress={this.onOpenTheories}
                           onPressParam={_id}
                         />
                       );

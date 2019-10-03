@@ -76,6 +76,7 @@
     "react-native-material-textfield": "^0.12.0",
     "react-native-modalbox": "^1.7.1",
     "react-native-onesignal": "^3.2.12",
+    "react-native-pdf": "^5.1.5",
     "react-native-permissions": "^2.0.0-rc.1",
     "react-native-picker-select": "^6.2.0",
     "react-native-progress": "^3.6.0",
@@ -96,6 +97,7 @@
     "redux-saga": "^0.16.0",
     "reduxsauce": "0.7.0",
     "reselect": "^4.0.0",
+    "rn-fetch-blob": "^0.11.2",
     "seamless-immutable": "^7.1.4",
     "throttle-debounce": "^2.1.0"
   },

@@ -3,6 +3,8 @@ package com.freshfoodmhi;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import org.wonday.pdf.RCTPdfView;
+import com.RNFetchBlob.RNFetchBlobPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.reactnativecommunity.rnpermissions.RNPermissionsPackage;
 import br.com.dopaminamob.gpsstate.GPSStatePackage;
@@ -38,6 +40,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RCTPdfView(),
+            new RNFetchBlobPackage(),
             new AsyncStoragePackage(),
             new RNPermissionsPackage(),
             new GPSStatePackage(),

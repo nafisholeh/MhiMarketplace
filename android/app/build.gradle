@@ -107,6 +107,13 @@ def enableProguardInReleaseBuilds = false
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
+    
+    packagingOptions {
+      pickFirst 'lib/x86/libc++_shared.so'
+      pickFirst 'lib/arm64-v8a/libc++_shared.so'
+      pickFirst 'lib/x86_64/libc++_shared.so'
+      pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+    }
 
     defaultConfig {
         applicationId "com.freshfoodmhi"
@@ -163,6 +170,8 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-pdf')
+    implementation project(':rn-fetch-blob')
     implementation project(':react-native-datetimepicker')
     implementation project(':@react-native-community_async-storage')
     implementation project(':react-native-permissions')

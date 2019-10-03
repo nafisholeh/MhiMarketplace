@@ -10,8 +10,15 @@ import { Colors, Fonts } from 'Themes';
 const BORDER_RADIUS = 8;
 
 class FileItem extends Component {
+  onPress = () => {
+    const { onPress, url } = this.props;
+    if (onPress) {
+      onPress(url);
+    }
+  };
+
   render() {
-    const { title, desc, thumbnail, bigThumbnail } = this.props;
+    const { title, desc, thumbnail, bigThumbnail, onPress } = this.props;
     const width = screenWidth / 2 - moderateScale(30);
     return (
       <ProductHorizontalWrapper
@@ -25,6 +32,7 @@ class FileItem extends Component {
         width={width}
         height={moderateScale(150)}
         borderRadius={BORDER_RADIUS}
+        onPress={this.onPress}
       >
         {bigThumbnail
           ? (

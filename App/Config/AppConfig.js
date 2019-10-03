@@ -38,7 +38,8 @@ export default {
     'AreaList',
     'AreaType',
     'AreaCommodity',
-    'FarmerFinalConfirm'
+    'FarmerFinalConfirm',
+    'SopViewer'
   ],
   pageState: {
     ERROR: 'error',

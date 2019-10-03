@@ -24,6 +24,7 @@ import SignupFarmerSecond from 'SubApp/Farmer/Containers/Signup/Second';
 import SignupFarmerThird from 'SubApp/Farmer/Containers/Signup/Third';
 import FarmerFinalConfirm from 'SubApp/Farmer/Containers/Signup/FinalConfirm';
 import DashboardFarmer from 'SubApp/Farmer/Containers/Dashboard';
+import SopViewer from 'SubApp/Farmer/Containers/SopViewer';
 
 const AccountNav = createStackNavigator({
   Account: { screen: Account },
@@ -43,6 +44,7 @@ const AccountNav = createStackNavigator({
   AreaCommodity: { screen: AreaCommodity },
   FarmerFinalConfirm: { screen: FarmerFinalConfirm },
   DashboardFarmer: { screen: DashboardFarmer },
+  SopViewer: { screen: SopViewer },
 }, {
   initialRouteName: 'DashboardFarmer',
   navigationOptions: {

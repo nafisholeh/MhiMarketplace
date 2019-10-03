@@ -11,6 +11,7 @@ import { FileItem, SearchHeader } from 'CommonFarmer';
 import { moderateScale, screenWidth } from 'Lib';
 import { THEORY_CATEGORIES, SEARCH_THEORIES } from 'GraphQL/Theory/Query';
 import { Fonts } from 'Themes';
+import ListActions, { getSelectedListId } from 'Redux/ListRedux';
 
 class Dashboard extends Component {
   static navigationOptions = ({navigation}) => ({ header: null })
@@ -25,6 +26,12 @@ class Dashboard extends Component {
       isSearchMode: value ? true : false,
       searchTerm: value,
     });
+  };
+  
+  onOpenSOP = url => {
+    const { navigation, selectListItem } = this.props;
+    selectListItem(AppConfig.uri.basic + url);
+    navigation.navigate('SopViewer');
   };
   
   render() {
@@ -67,7 +74,9 @@ class Dashboard extends Component {
                           <FileItem
                             title={title}
                             bigThumbnail
+                            url={url}
                             thumbnail={`${AppConfig.uri.basic}${thumbnail}`}
+                            onPress={this.onOpenSOP}
                           />
                         );
                       }}
@@ -149,7 +158,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-  
+  selectListItem: selectedId => dispatch(ListActions.selectListItem(selectedId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

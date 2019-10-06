@@ -40,7 +40,7 @@ class FinalConfirm extends Component {
   
   openFarmerSubApp = () => {
     const { navigation } = this.props;
-    navigation.navigate('DashboardFarmer');
+    navigation.navigate('SopFarmer');
   };
   
   onUploadError = (error) => {

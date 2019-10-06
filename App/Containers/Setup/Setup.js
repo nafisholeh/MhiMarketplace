@@ -81,7 +81,7 @@ class Setup extends Component {
       else if (isStokOpname) navigation.navigate('StockOpnameNav');
       else if (isKeuangan) navigation.navigate('FinanceNav');
       else if (isAdmin) navigation.navigate('AdminNav');
-      else navigation.navigate('ConsumerNav');
+      else navigation.navigate('FarmerNav');
     }
   };
   

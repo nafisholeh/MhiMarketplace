@@ -52,6 +52,9 @@ const images = {
   dropdown: require(pathPrefix+'dropdown.png'),
   photo_add_button: require(pathPrefix+'photo_add_button.jpg'),
   empty_profile: require(pathPrefix+'empty_profile.png'),
+  like: require(pathPrefix+'like.png'),
+  comment: require(pathPrefix+'comment.png'),
+  share: require(pathPrefix+'share.png'),
 }
 
 export default images

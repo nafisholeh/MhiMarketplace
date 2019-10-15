@@ -6,7 +6,7 @@ import { string } from 'prop-types';
 import Modal from "react-native-modal";
 
 import { ViewShadow, ButtonPrimary } from 'Components';
-import { NewsFeedDivider } from 'CommonFarmer';
+import { NewsFeedDivider, Avatar } from 'CommonFarmer';
 import { moderateScale, screenWidth, screenHeight } from 'Lib';
 import { Colors, Fonts, Images } from 'Themes';
 
@@ -55,15 +55,7 @@ class PostFeedModal extends Component {
             marginBottom: moderateScale(15),
           }}
         >
-          <Image
-            source={Images.empty_profile}
-            style={{
-              width: moderateScale(50),
-              height: moderateScale(50),
-              borderRadius: moderateScale(25),
-              marginRight: moderateScale(10)
-            }}
-          />
+          <Avatar style={{ marginRight: moderateScale(10) }} />
           <TextInput
             underlineColorAndroid='rgba(0,0,0,0)'
             placeholder="Apa yang anda pikirkan..."

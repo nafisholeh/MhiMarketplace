@@ -51,6 +51,7 @@ const images = {
   gps: require(pathPrefix+'gps.png'),
   dropdown: require(pathPrefix+'dropdown.png'),
   photo_add_button: require(pathPrefix+'photo_add_button.jpg'),
+  empty_profile: require(pathPrefix+'empty_profile.png'),
 }
 
 export default images

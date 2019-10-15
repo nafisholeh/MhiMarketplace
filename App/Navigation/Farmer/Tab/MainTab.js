@@ -5,15 +5,17 @@ import { createBottomTabNavigator } from 'react-navigation-tabs'
 
 import styles from '../../Styles/NavigationStyles'
 import SopStack from '../Stack/Sop';
+import CommoditySocmedStack from '../Stack/CommoditySocmed';
 import AccountStack from '../Stack/Account';
 
 const TabNav = createBottomTabNavigator(
   {
+    Komoditas: { screen: CommoditySocmedStack },
     SOP: { screen: SopStack },
     Account: { screen: AccountStack },
   },
   {
-    initialRouteName: 'SOP',
+    initialRouteName: 'Komoditas',
     backBehavior: 'initialRoute',
   }
 )

@@ -1,6 +1,11 @@
 import Colors from './Colors';
 
 export default {
+  PAGE_TITLE: {
+    fontFamily: 'CircularStd-Bold',
+    fontSize: 20,
+    color: 'rgba(0,0,0,0.8)',
+  },
   TITLE_HEADER__BOLD: {
     fontFamily: 'CircularStd-Bold',
     fontSize: 20,

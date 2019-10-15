@@ -74,6 +74,7 @@
     "react-native-linear-gradient": "^2.5.4",
     "react-native-maps": "0.25.0",
     "react-native-material-textfield": "^0.12.0",
+    "react-native-modal": "^11.4.0",
     "react-native-modalbox": "^1.7.1",
     "react-native-onesignal": "^3.2.12",
     "react-native-pdf": "^5.1.5",

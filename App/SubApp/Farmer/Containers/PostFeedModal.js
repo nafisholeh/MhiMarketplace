@@ -6,6 +6,7 @@ import { string } from 'prop-types';
 import Modal from "react-native-modal";
 
 import { ViewShadow, ButtonPrimary } from 'Components';
+import { NewsFeedDivider } from 'CommonFarmer';
 import { moderateScale, screenWidth, screenHeight } from 'Lib';
 import { Colors, Fonts, Images } from 'Themes';
 
@@ -40,7 +41,7 @@ class PostFeedModal extends Component {
           style={{
             marginLeft: moderateScale(15),
             marginTop: moderateScale(15),
-            marginBottom: moderateScale(10),
+            marginBottom: moderateScale(12),
             ...Fonts.PAGE_TITLE
           }}
         >
@@ -50,7 +51,8 @@ class PostFeedModal extends Component {
           onPress={this.onShowPostModal}
           style={{
             flexDirection: 'row',
-            marginHorizontal: moderateScale(15)
+            marginHorizontal: moderateScale(15),
+            marginBottom: moderateScale(15),
           }}
         >
           <Image
@@ -76,6 +78,7 @@ class PostFeedModal extends Component {
             }}
           />
         </TouchableOpacity>
+        <NewsFeedDivider />
         <Modal
           isVisible={isNeedToPost}
           swipeThreshold={40}

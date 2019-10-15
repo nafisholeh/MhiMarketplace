@@ -8,6 +8,7 @@ import SignupBoxWrapper from './SignupBoxWrapper';
 import FileItem from './FileItem';
 import SearchHeader from './SearchHeader';
 import FloatNavigation from './FloatNavigation';
+import NewsFeedDivider from './NewsFeedDivider';
 
 import AreaDrawInfo from './MapBottomInfo/AreaDrawInfo';
 import AreaDrawControl from './MapBottomInfo/AreaDrawControl';
@@ -30,5 +31,6 @@ export {
   SignupBoxWrapper,
   FileItem,
   SearchHeader,
-  FloatNavigation
+  FloatNavigation,
+  NewsFeedDivider
 };

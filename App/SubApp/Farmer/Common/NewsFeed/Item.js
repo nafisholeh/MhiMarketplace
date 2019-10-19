@@ -3,9 +3,10 @@ import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { string } from 'prop-types';
+import moment from 'moment';
 
 import { Fonts, Colors, Images } from 'Themes';
-import { moderateScale } from 'Lib';
+import { moderateScale, getIntervalTimeToday } from 'Lib';
 import NewsFeedDivider from './Divider';
 import Avatar from '../Avatar';
 
@@ -16,10 +17,11 @@ class NewsFeedItem extends Component {
   
   componentDidMount() {
     this.drawStatistic();
+    this.handleCreatedDate();
   }
   
   componentDidUpdate(prevProps) {
-    const { likeTotal, commentTotal, shareTotal } = this.props;
+    const { likeTotal, commentTotal, shareTotal, dateCreated } = this.props;
     if (
       prevProps.likeTotal !== likeTotal
       ||prevProps.commentTotal !== commentTotal
@@ -27,7 +29,17 @@ class NewsFeedItem extends Component {
     ) {
       this.drawStatistic();
     }
+    if (prevProps.dateCreated !== dateCreated) {
+      this.handleCreatedDate();
+    }
   }
+  
+  handleCreatedDate = () => {
+    const { dateCreated } = this.props;
+    this.setState({ 
+      dateCreated: moment.unix(dateCreated/1000).format("YYYY-MM-DD HH:mm")
+    });
+  };
   
   drawStatistic = () => {
     const { likeTotal, commentTotal, shareTotal } = this.props;
@@ -71,7 +83,7 @@ class NewsFeedItem extends Component {
 
   render() {
     const { userName, content } = this.props;
-    const { statistic } = this.state;
+    const { statistic, dateCreated } = this.state;
     return (
       <Fragment>
         <View
@@ -91,13 +103,31 @@ class NewsFeedItem extends Component {
               size="small"
               style={{ marginRight: moderateScale(10) }}
             />
-            <Text
+            <View
               style={{
-                ...Fonts.TITLE_NORMAL,
+                
               }}
             >
-              {userName}
-            </Text>
+              <Text
+                style={{
+                  ...Fonts.TITLE_NORMAL,
+                }}
+              >
+                {userName}
+              </Text>
+              {dateCreated
+                ? (
+                  <Text
+                    style={{
+                      ...Fonts.TITLE_SMALL,
+                    }}
+                  >
+                    {getIntervalTimeToday(dateCreated)}
+                  </Text>
+                )
+                : null
+              }
+            </View>
           </View>
           <View
             style={{

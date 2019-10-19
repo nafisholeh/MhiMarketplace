@@ -15,12 +15,13 @@ class CommoditySocmed extends Component {
   static navigationOptions = ({navigation}) => ({ header: null })
   
   renderNewsFeedItem = ({ item, index }) => {
-    const { content, author } = item || {};
+    const { content, author, date_posted } = item || {};
     const { ktp_name } = author || {};
     return (
       <NewsFeedItem
         userName={ktp_name}
         content={content}
+        dateCreated={date_posted}
       />
     );
   };

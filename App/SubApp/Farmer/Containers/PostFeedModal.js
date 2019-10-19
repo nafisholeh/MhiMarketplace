@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { string } from 'prop-types';
 import Modal from "react-native-modal";
 import { Mutation } from 'react-apollo';
+import moment from 'moment';
 
 import { ViewShadow, ButtonPrimary } from 'Components';
 import { NewsFeedDivider, Avatar } from 'CommonFarmer';
@@ -30,7 +31,8 @@ class PostFeedModal extends Component {
       variables: {
         data: {
           content: postContent,
-          author: "5d8fc089043c4772aa81fa65"
+          author: "5d8fc089043c4772aa81fa65",
+          date_posted: moment.utc(new Date()).local().format("YYYY-MM-DD HH:mm:ss")
         }
       }
     });

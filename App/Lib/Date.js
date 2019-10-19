@@ -31,6 +31,7 @@ export function getIntervalTime(old, current) {
 
 // output: 3 hari yang lalu, 22 hari yang lalu, dst
 export function getIntervalTimeToday(old) {
+  if (!old) return null;
   return moment(old).from(moment())
 }
 

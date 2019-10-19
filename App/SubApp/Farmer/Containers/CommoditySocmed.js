@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, ScrollView } from 'react-native';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { string } from 'prop-types';
@@ -21,14 +21,13 @@ class CommoditySocmed extends Component {
       <NewsFeedItem
         userName={ktp_name}
         content={content}
-        commentTotal={10}
       />
     );
   };
 
   render() {
     return (
-      <View>
+      <ScrollView>
         <PostFeedModal />
         <Query query={FETCH_FARMER_POSTS}>
           {({ loading, error, data, refetch }) => {
@@ -56,7 +55,7 @@ class CommoditySocmed extends Component {
             );
           }}
         </Query>
-      </View>
+      </ScrollView>
     )
   };
 }

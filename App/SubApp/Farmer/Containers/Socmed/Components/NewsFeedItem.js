@@ -7,8 +7,8 @@ import moment from 'moment';
 
 import { Fonts, Colors, Images } from 'Themes';
 import { moderateScale, getIntervalTimeToday } from 'Lib';
-import NewsFeedDivider from './Divider';
-import Avatar from '../Avatar';
+import { Avatar } from 'CommonFarmer';
+import NewsFeedDivider from './NewsFeedDivider';
 
 class NewsFeedItem extends Component {
   state = {

@@ -8,7 +8,8 @@ import { Mutation } from 'react-apollo';
 import moment from 'moment';
 
 import { ViewShadow, ButtonPrimary } from 'Components';
-import { NewsFeedDivider, Avatar } from 'CommonFarmer';
+import { Avatar } from 'CommonFarmer';
+import NewsFeedDivider from './NewsFeedDivider';
 import { moderateScale, screenWidth, screenHeight } from 'Lib';
 import { Colors, Fonts, Images } from 'Themes';
 import { POST_AS_FARMER } from 'GraphQL/Farmer/Mutation';

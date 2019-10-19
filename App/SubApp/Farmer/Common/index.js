@@ -8,8 +8,6 @@ import SignupBoxWrapper from './SignupBoxWrapper';
 import FileItem from './FileItem';
 import SearchHeader from './SearchHeader';
 import FloatNavigation from './FloatNavigation';
-import NewsFeedDivider from './NewsFeed/Divider';
-import NewsFeedItem from './NewsFeed/Item';
 import Avatar from './Avatar';
 
 import AreaDrawInfo from './MapBottomInfo/AreaDrawInfo';
@@ -34,7 +32,5 @@ export {
   FileItem,
   SearchHeader,
   FloatNavigation,
-  NewsFeedDivider,
-  NewsFeedItem,
   Avatar
 };

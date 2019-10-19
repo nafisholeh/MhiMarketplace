@@ -6,7 +6,7 @@ import { Images } from 'Themes';
 import { tabNavOptions } from 'Navigation/Tabs/Options';
 import styles from 'Navigation/Styles/NavigationStyles'
 
-import CommoditySocmed from 'SubApp/Farmer/Containers/CommoditySocmed';
+import CommoditySocmed from 'SubApp/Farmer/Containers/Socmed/Commodity';
 
 const StackNav = createStackNavigator({
   CommoditySocmed: { screen: CommoditySocmed },

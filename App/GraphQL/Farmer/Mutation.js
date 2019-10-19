@@ -7,3 +7,11 @@ export const SIGNUP_FARMER = gql`
     }
   }
 `
+
+export const POST_AS_FARMER = gql`
+  mutation postAsFarmer($data: CreateFarmerPostInput) {
+    postAsFarmer(data: $data) {
+      _id
+    }
+  }
+`

@@ -1,14 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { View, TextInput, Text, TouchableOpacity, Image } from 'react-native';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { string } from 'prop-types';
 import Modal from "react-native-modal";
+import { Mutation } from 'react-apollo';
 
 import { ViewShadow, ButtonPrimary } from 'Components';
 import { NewsFeedDivider, Avatar } from 'CommonFarmer';
 import { moderateScale, screenWidth, screenHeight } from 'Lib';
 import { Colors, Fonts, Images } from 'Themes';
+import { POST_AS_FARMER } from 'GraphQL/Farmer/Mutation';
+import { getUserId } from 'Redux/SessionRedux';
 
 class PostFeedModal extends Component {
   state = {
@@ -20,9 +23,22 @@ class PostFeedModal extends Component {
     this.setState({ postContent: text });
   };
   
-  onPostContent = () => {
+  onPostContent = mutate => {
     const { postContent } = this.state;
+    const { userId } = this.props;
+    mutate({
+      variables: {
+        data: {
+          content: postContent,
+          author: "5d8fc089043c4772aa81fa65"
+        }
+      }
+    });
     this.setState({ isNeedToPost: false, postContent: '' });
+  };
+  
+  onPostSuccess = data => {
+    
   };
   
   onShowPostModal = () => {
@@ -120,33 +136,49 @@ class PostFeedModal extends Component {
                 paddingVertical: moderateScale(25),
               }}
             >
-              <TextInput
-                underlineColorAndroid='rgba(0,0,0,0)'
-                placeholder="Apa yang anda pikirkan..."
-                onChangeText={this.onChangeContent}
-                onSubmitEditing={this.onPostContent}
-                value={postContent}
-                style={{
-                  flex: 1,
-                  marginBottom: moderateScale(70),
-                  marginRight: moderateScale(5),
-                  borderRadius: moderateScale(10),
-                  padding: moderateScale(10),
-                  backgroundColor: Colors.white,
-                  ...Fonts.TITLE_NORMAL
-                }}
-                multiline={true}
-                textAlignVertical="top"
-              />
-              <ButtonPrimary
-                onPress={this.onPostContent}
-                title="Posting"
-                style={{
-                  position: 'absolute', bottom: moderateScale(25),
-                  left: moderateScale(15), right: moderateScale(15),
-                  borderRadius: moderateScale(12),
-                }}
-              />
+            <Mutation
+              mutation={POST_AS_FARMER}
+              onCompleted={this.onPostSuccess}
+              onError={error => {
+                console.tron.log('postAsFarmer/onError', error)
+              }}
+              ignoreResults={false}
+              errorPolicy='all'>
+              { (mutate, {loading, error, data}) => {
+                return (
+                  <Fragment>
+                    <TextInput
+                      underlineColorAndroid='rgba(0,0,0,0)'
+                      placeholder="Apa yang anda pikirkan..."
+                      onChangeText={this.onChangeContent}
+                      onSubmitEditing={this.onPostContent}
+                      value={postContent}
+                      style={{
+                        flex: 1,
+                        marginBottom: moderateScale(70),
+                        marginRight: moderateScale(5),
+                        borderRadius: moderateScale(10),
+                        padding: moderateScale(10),
+                        backgroundColor: Colors.white,
+                        ...Fonts.TITLE_NORMAL
+                      }}
+                      multiline={true}
+                      textAlignVertical="top"
+                    />
+                    <ButtonPrimary
+                      onPress={() => this.onPostContent(mutate)}
+                      title="Posting"
+                      loading={loading}
+                      style={{
+                        position: 'absolute', bottom: moderateScale(25),
+                        left: moderateScale(15), right: moderateScale(15),
+                        borderRadius: moderateScale(12),
+                      }}
+                    />
+                  </Fragment>
+                );
+              }}
+            </Mutation>
             </ViewShadow>
           </View>
         </Modal>
@@ -156,7 +188,7 @@ class PostFeedModal extends Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-  
+  userId: getUserId(),
 });
 
 const mapDispatchToProps = dispatch => ({

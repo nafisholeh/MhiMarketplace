@@ -9,7 +9,7 @@ import moment from 'moment';
 
 import { ViewShadow, ButtonPrimary } from 'Components';
 import { Avatar } from 'CommonFarmer';
-import NewsFeedDivider from './NewsFeedDivider';
+import { NewsFeedDivider } from './Components';
 import { moderateScale, screenWidth, screenHeight } from 'Lib';
 import { Colors, Fonts, Images } from 'Themes';
 import { POST_AS_FARMER } from 'GraphQL/Farmer/Mutation';

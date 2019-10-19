@@ -4,7 +4,8 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { string } from 'prop-types';
 
-import { PostFeedModal, NewsFeedList } from './Components';
+import PostFeedModal from './PostFeedModal';
+import NewsFeedList from './NewsFeedList';
 
 class CommoditySocmed extends Component {
   static navigationOptions = ({navigation}) => ({ header: null })

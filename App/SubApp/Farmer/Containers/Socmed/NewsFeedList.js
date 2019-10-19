@@ -5,7 +5,7 @@ import { Query } from 'react-apollo';
 import Config from 'Config/AppConfig';
 import { FETCH_FARMER_POSTS } from 'GraphQL/Farmer/Query';
 import { QueryEffectPage } from 'Components';
-import NewsFeedItem from './NewsFeedItem';
+import { NewsFeedItem } from './Components';
 
 class NewsFeedList extends Component {
 

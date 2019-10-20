@@ -22,7 +22,6 @@ class NewsFeedItem extends Component {
 
   render() {
     const { comments = [] } = this.props;
-    console.tron.log('NewsFeedItem', comments)
     return (
       <View>
         <PostBody

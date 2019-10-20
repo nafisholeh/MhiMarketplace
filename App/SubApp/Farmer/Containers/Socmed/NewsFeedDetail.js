@@ -6,6 +6,7 @@ import { string } from 'prop-types';
 import { withNavigation } from 'react-navigation';
 import { Query } from 'react-apollo';
 
+import ApolloClientProvider from 'Services/ApolloClientProvider';
 import {
   CommentItem,
   PostBody,
@@ -13,9 +14,10 @@ import {
   CommentInput
 } from './Components';
 import { Colors } from 'Themes';
-import { moderateScale } from 'Lib';
+import { moderateScale, getUTCDate } from 'Lib';
 import { getSelectedListId } from 'Redux/ListRedux';
 import { FETCH_FARMER_POST } from 'GraphQL/Farmer/Query';
+import { COMMENT_TO_POST } from 'GraphQL/Farmer/Mutation';
 import { QueryEffectPage } from 'Components';
 import Config from 'Config/AppConfig';
 
@@ -36,6 +38,26 @@ class NewsFeedDetail extends Component {
   handleDataFetch = () => {
     const { feedId } = this.props;
     
+  };
+  
+  submitCommentToPost = (feedId, comment) => {
+    ApolloClientProvider.client.mutate({
+      mutation: COMMENT_TO_POST,
+      variables: {
+        data: {
+          content: comment,
+          author: "5d8fc3f8b8ea7474d8b0c94b",
+          post: feedId,
+          date_commented: getUTCDate(),
+        }
+      }
+    })
+    .then(res => {
+      console.tron.log('submitCommentToPost/res', res)
+    })
+    .catch(err => {
+      console.tron.log('submitCommentToPost/err', err)
+    });
   };
 
   render() {
@@ -109,6 +131,7 @@ class NewsFeedDetail extends Component {
               marginRight: 0,
               marginBottom: 0,
             }}
+            onSubmitComment={comment => this.submitCommentToPost(feedId, comment)}
           />
         </View>
       </View>

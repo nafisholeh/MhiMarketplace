@@ -9,6 +9,7 @@ import { Fonts, Colors, Images } from 'Themes';
 import { moderateScale, getIntervalTimeToday } from 'Lib';
 import { Avatar } from 'CommonFarmer';
 import PostBody from './PostBody';
+import PostComments from './PostComments';
 import NewsFeedDivider from './NewsFeedDivider';
 
 class NewsFeedItem extends Component {
@@ -25,7 +26,13 @@ class NewsFeedItem extends Component {
     } = this.props;
     return (
       <View>
-        <PostBody {...this.props} />
+        <PostBody
+          {...this.props}
+          showActionBorder
+        />
+        <PostComments
+          showCommentInput
+        />
         <NewsFeedDivider/>
       </View>
     )

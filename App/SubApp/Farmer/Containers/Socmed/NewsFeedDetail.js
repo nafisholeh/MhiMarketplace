@@ -72,7 +72,7 @@ class NewsFeedDetail extends Component {
         author: "5d8fc3f8b8ea7474d8b0c94b",
         date_commented: getUTCDate(),
       },
-      isReplyParent ? { comment: parentId } : { post: parentId }
+      isReplyParent ? { comment: parentId } : { post: feedId }
     );
     ApolloClientProvider.client.mutate({
       mutation: isReplyParent ? REPLY_TO_COMMENT : COMMENT_TO_POST,

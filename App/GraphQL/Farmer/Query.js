@@ -19,17 +19,17 @@ export const FETCH_FARMER_POSTS = gql`
           ktp_photo_face
         }
         content
+        date_commented
         content_reply {
           _id
-          content
           author {
             _id
             ktp_name
             ktp_photo_face
           }
+          content
           date_commented
         }
-        date_commented
       }
     }
   }
@@ -54,17 +54,17 @@ export const FETCH_FARMER_POST = gql`
           ktp_photo_face
         }
         content
+        date_commented
         content_reply {
           _id
-          content
           author {
             _id
             ktp_name
             ktp_photo_face
           }
+          content
           date_commented
         }
-        date_commented
       }
     }
   }

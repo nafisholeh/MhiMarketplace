@@ -34,6 +34,10 @@ class NewsFeedItem extends Component {
               comments={comments}
               onSubmitComment={this.submitCommentToPost}
               showCommentInput
+              onLikeParent={() => {}}
+              onCommentParent={() => {}}
+              onLikeChild={() => {}}
+              onCommentChild={() => {}}
             />
           )
           : null

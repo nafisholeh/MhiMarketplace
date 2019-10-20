@@ -21,17 +21,11 @@ class PostComments extends Component {
           paddingVertical: moderateScale(15)
         }}
       >
-        {Array.isArray(comments) && comments.map((item) => {
-          const { _id: commentId, content, author, date_commented, content_reply } = item || {};
-          const { _id: authorId, ktp_name, ktp_photo_face } = author || {};
+        {Array.isArray(comments) && comments.map((item, index) => {
           return (
             <CommentItem
-              key={commentId}
-              feedId={commentId}
-              content={content}
-              name={ktp_name}
-              commentedDate={unixToDate(date_commented)}
-              commentReplies={content_reply}
+              key={index}
+              data={item}
               {...this.props}
             />
           );

@@ -127,7 +127,10 @@ class NewsFeedDetail extends Component {
                     />
                     <PostComments
                       comments={comments}
+                      onLikeParent={() => {}}
                       onCommentParent={this.replyParentComment}
+                      onLikeChild={() => {}}
+                      onCommentChild={() => {}}
                     />
                   </Fragment>
                 );

@@ -8,7 +8,6 @@ import moment from 'moment';
 import { Fonts, Colors, Images } from 'Themes';
 import { moderateScale, getIntervalTimeToday } from 'Lib';
 import { Avatar } from 'CommonFarmer';
-import NewsFeedDivider from './NewsFeedDivider';
 
 class NewsFeedItem extends Component {
   state = {
@@ -89,99 +88,128 @@ class NewsFeedItem extends Component {
   );
 
   render() {
-    const { userName, content } = this.props;
+    const {
+      userName,
+      content,
+      onLike,
+      onComment,
+      showBackButton,
+      onBackPressed,
+      showActionBorder
+    } = this.props;
     const { statistic, dateCreated } = this.state;
     return (
-      <Fragment>
-        <TouchableOpacity
-          onPress={this.onPressWrapper}
+      <TouchableOpacity
+        onPress={this.onPressWrapper}
+        disabled={showBackButton}
+        style={{
+          paddingHorizontal: moderateScale(10),
+          paddingVertical: moderateScale(showBackButton ? 15 : 10),
+        }}
+      >
+        <View
           style={{
-            paddingHorizontal: moderateScale(10),
-            paddingVertical: moderateScale(10),
+            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingBottom: moderateScale(15),
           }}
         >
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingBottom: moderateScale(15),
-            }}
-          >
-            <Avatar
-              size="small"
-              style={{ marginRight: moderateScale(10) }}
-            />
-            <View
-              style={{
-                justifyContent: 'space-between'
-              }}
-            >
-              <Text
-                style={{
-                  ...Fonts.TITLE_NORMAL,
-                }}
+          {showBackButton
+            ? (
+              <TouchableOpacity
+                onPress={onBackPressed}
               >
-                {userName}
-              </Text>
-              {dateCreated
-                ? (
-                  <Text
-                    style={{
-                      ...Fonts.TITLE_SMALL,
-                    }}
-                  >
-                    {getIntervalTimeToday(dateCreated)}
-                  </Text>
-                )
-                : null
-              }
-            </View>
-          </View>
+                <Image
+                  source={Images.back}
+                  style={{
+                    width: moderateScale(20),
+                    height: moderateScale(20),
+                    marginRight: moderateScale(18),
+                  }}
+                />
+              </TouchableOpacity>
+            )
+            : null
+          }
+          <Avatar
+            size="small"
+            style={{ marginRight: moderateScale(10) }}
+          />
           <View
             style={{
-              marginBottom: moderateScale(10),
+              justifyContent: 'space-between'
             }}
           >
             <Text
               style={{
                 ...Fonts.TITLE_NORMAL,
-                color: Colors.text,
               }}
             >
-              {content}
+              {userName}
             </Text>
-          </View>
-          {statistic ? (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                  marginBottom: moderateScale(10),
-                }}
-              >
+            {dateCreated
+              ? (
                 <Text
                   style={{
-                    ...Fonts.TITLE_SMALL
+                    ...Fonts.TITLE_SMALL,
                   }}
                 >
-                  {statistic}
+                  {getIntervalTimeToday(dateCreated)}
                 </Text>
-              </View>
-            )
-            : null
-          }
-          <View
+              )
+              : null
+            }
+          </View>
+        </View>
+        <View
+          style={{
+            marginBottom: moderateScale(10),
+          }}
+        >
+          <Text
             style={{
-              flexDirection: 'row',
+              ...Fonts.TITLE_NORMAL,
+              color: Colors.text,
+              lineHeight: moderateScale(18),
+              letterSpacing: 0.3
             }}
           >
-            {this.renderButton('suka', 'like', this.onLike)}
-            {this.renderButton('komentar', 'comment', this.onComment)}
-          </View>
-        </TouchableOpacity>
-        <NewsFeedDivider/>
-      </Fragment>
+            {content}
+          </Text>
+        </View>
+        {statistic ? (
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                marginBottom: moderateScale(10),
+              }}
+            >
+              <Text
+                style={{
+                  ...Fonts.TITLE_SMALL
+                }}
+              >
+                {statistic}
+              </Text>
+            </View>
+          )
+          : null
+        }
+        <View
+          style={{
+            flexDirection: 'row',
+            borderBottomWidth: showActionBorder ? 1 : 0,
+            borderBottomColor: Colors.border,
+            paddingBottom: showActionBorder ? moderateScale(10) : 0,
+            marginBottom: showActionBorder ? moderateScale(10) : 0
+          }}
+        >
+          {this.renderButton('suka', 'like', onLike)}
+          {this.renderButton('komentar', 'comment', onComment)}
+        </View>
+      </TouchableOpacity>
     )
   };
 }

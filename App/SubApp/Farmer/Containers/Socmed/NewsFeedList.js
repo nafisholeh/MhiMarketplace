@@ -8,7 +8,7 @@ import ListActions from 'Redux/ListRedux';
 import Config from 'Config/AppConfig';
 import { FETCH_FARMER_POSTS } from 'GraphQL/Farmer/Query';
 import { QueryEffectPage } from 'Components';
-import { NewsFeedItem } from './Components';
+import { NewsFeedItem, NewsFeedDivider } from './Components';
 
 class NewsFeedList extends Component {
   
@@ -22,13 +22,16 @@ class NewsFeedList extends Component {
     const { _id, content, author, date_posted } = item || {};
     const { ktp_name } = author || {};
     return (
-      <NewsFeedItem
-        feedId={_id}
-        userName={ktp_name}
-        content={content}
-        dateCreated={date_posted}
-        onPressWrapper={this.onOpenComments}
-      />
+      <Fragment>
+        <NewsFeedItem
+          feedId={_id}
+          userName={ktp_name}
+          content={content}
+          dateCreated={date_posted}
+          onPressWrapper={this.onOpenComments}
+        />
+        <NewsFeedDivider/>
+      </Fragment>
     );
   };
 

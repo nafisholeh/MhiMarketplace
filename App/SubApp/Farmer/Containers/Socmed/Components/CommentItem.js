@@ -85,7 +85,7 @@ class CommentItem extends Component {
               style={{
                 ...Fonts.TITLE_NORMAL,
                 lineHeight: moderateScale(18),
-                letterSpacing: 0.5
+                letterSpacing: 0.3
               }}
             >
               {content}

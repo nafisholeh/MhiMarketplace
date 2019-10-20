@@ -27,15 +27,22 @@ class CommentItem extends Component {
       commented_date: getIntervalTimeToday(commentedDate, true),
     });
   };
-
-  render() {
-    const { content, photo, name, onLike, onComment } = this.props;
-    const { commented_date } = this.state;
+  
+  renderItem = (
+    photo,
+    name,
+    content,
+    commented_date,
+    onLike,
+    onComment,
+    isParent
+  ) => {
     return (
       <View
         style={{
           flexDirection: 'row',
-          marginHorizontal: moderateScale(10),
+          marginLeft: moderateScale(isParent ? 10 : 50),
+          marginRight: moderateScale(10),
           marginBottom: moderateScale(10),
         }}
       >
@@ -104,38 +111,88 @@ class CommentItem extends Component {
               )
               : null
             }
-            <TouchableOpacity
-              onPress={onLike}
-              style={{
-                marginRight: moderateScale(15),
-              }}
-            >
-              <Text
-                style={{
-                  ...Fonts.TITLE_SMALL,
-                  color: Colors.text,
-                  fontWeight: 'bold',
-                }}
-              >
-                like
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={onComment}
-            >
-              <Text
-                style={{
-                  ...Fonts.TITLE_SMALL,
-                  color: Colors.text,
-                  fontWeight: 'bold',
-                }}
-              >
-                comment
-              </Text>
-            </TouchableOpacity>
+            {onLike
+              ? (
+                <TouchableOpacity
+                  onPress={onLike}
+                  style={{
+                    marginRight: moderateScale(15),
+                  }}
+                >
+                  <Text
+                    style={{
+                      ...Fonts.TITLE_SMALL,
+                      color: Colors.text,
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    like
+                  </Text>
+                </TouchableOpacity>
+              )
+              : null
+            }
+            {onComment
+              ? (
+                <TouchableOpacity
+                  onPress={onComment}
+                >
+                  <Text
+                    style={{
+                      ...Fonts.TITLE_SMALL,
+                      color: Colors.text,
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    comment
+                  </Text>
+                </TouchableOpacity>
+              )
+              : null
+            }
           </View>
         </View>
-        
+      </View>
+    );
+  };
+
+  render() {
+    const {
+      feedId,
+      content,
+      photo,
+      name,
+      onLikeParent,
+      onCommentParent,
+      onLikeChild,
+      onCommentChild,
+      commentReplies
+    } = this.props;
+    const { commented_date } = this.state;
+    return (
+      <View>
+        {this.renderItem(
+          photo,
+          name,
+          content,
+          commented_date,
+          () => onLikeParent(feedId, name),
+          () => onCommentParent(feedId, name),
+          true
+        )}
+        {Array.isArray(commentReplies)
+          && commentReplies.map((item, index) => {
+            const { _id, photo, name, content, commented_date } = item || {};
+            return (
+              this.renderItem(
+                photo,
+                name,
+                content,
+                commented_date,
+                () => onLikeChild(_id, name),
+                () => onCommentChild(_id, name)
+            ));
+        })}
       </View>
     );
   }

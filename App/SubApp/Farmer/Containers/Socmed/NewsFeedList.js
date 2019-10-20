@@ -8,30 +8,27 @@ import ListActions from 'Redux/ListRedux';
 import Config from 'Config/AppConfig';
 import { FETCH_FARMER_POSTS } from 'GraphQL/Farmer/Query';
 import { QueryEffectPage } from 'Components';
-import { NewsFeedItem, NewsFeedDivider } from './Components';
+import { NewsFeedItem } from './Components';
 
 class NewsFeedList extends Component {
   
   onOpenComments = feedId => {
     const { selectListItem, navigation } = this.props;
     selectListItem(feedId);
-    navigation.navigate('NewsFeedComments');
+    navigation.navigate('NewsFeedDetail');
   };
 
   renderNewsFeedItem = ({ item, index }) => {
     const { _id, content, author, date_posted } = item || {};
     const { ktp_name } = author || {};
     return (
-      <Fragment>
-        <NewsFeedItem
-          feedId={_id}
-          userName={ktp_name}
-          content={content}
-          dateCreated={date_posted}
-          onPressWrapper={this.onOpenComments}
-        />
-        <NewsFeedDivider/>
-      </Fragment>
+      <NewsFeedItem
+        feedId={_id}
+        userName={ktp_name}
+        content={content}
+        dateCreated={date_posted}
+        onPressWrapper={this.onOpenComments}
+      />
     );
   };
 

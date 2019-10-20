@@ -64,6 +64,7 @@ class PostBody extends Component {
         alignItems: 'center',
         justifyContent: 'center',
         paddingVertical: moderateScale(5),
+        marginBottom: moderateScale(10)
       }}
     >
       <Image
@@ -102,7 +103,6 @@ class PostBody extends Component {
         disabled={showBackButton}
         style={{
           paddingHorizontal: moderateScale(10),
-          paddingVertical: moderateScale(showBackButton ? 15 : 10),
         }}
       >
         <View
@@ -110,7 +110,7 @@ class PostBody extends Component {
             flex: 1,
             flexDirection: 'row',
             alignItems: 'center',
-            paddingBottom: moderateScale(15),
+            paddingVertical: moderateScale(15),
           }}
         >
           {showBackButton
@@ -200,8 +200,6 @@ class PostBody extends Component {
             flexDirection: 'row',
             borderBottomWidth: showActionBorder ? 1 : 0,
             borderBottomColor: Colors.border,
-            paddingBottom: showActionBorder ? moderateScale(10) : 0,
-            marginBottom: showActionBorder ? moderateScale(10) : 0
           }}
         >
           {this.renderButton('suka', 'like', onLike)}

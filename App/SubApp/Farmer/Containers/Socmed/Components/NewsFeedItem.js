@@ -21,18 +21,24 @@ class NewsFeedItem extends Component {
   };
 
   render() {
-    const { comments } = this.props;
+    const { comments = [] } = this.props;
+    console.tron.log('NewsFeedItem', comments)
     return (
       <View>
         <PostBody
           {...this.props}
           showActionBorder
         />
-        <PostComments
-          comments={comments}
-          onSubmitComment={this.submitCommentToPost}
-          showCommentInput
-        />
+        {Array.isArray(comments) && comments.length
+          ? (
+            <PostComments
+              comments={comments}
+              onSubmitComment={this.submitCommentToPost}
+              showCommentInput
+            />
+          )
+          : null
+        }
         <NewsFeedDivider/>
       </View>
     )

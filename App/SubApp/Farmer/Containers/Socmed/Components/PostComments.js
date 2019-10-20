@@ -12,7 +12,11 @@ class PostComments extends Component {
   render() {
     const { comments, showCommentInput, onSubmitComment } = this.props;
     return (
-      <View>
+      <View
+        style={{
+          paddingVertical: moderateScale(15)
+        }}
+      >
         {Array.isArray(comments) && comments.map((item) => {
           const { _id: commentId, content, author, date_commented } = item || {};
           const { _id: authorId, ktp_name, ktp_photo_face } = author || {};

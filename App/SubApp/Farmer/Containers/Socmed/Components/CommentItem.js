@@ -2,12 +2,35 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 
 import { Colors, Fonts } from 'Themes';
-import { moderateScale } from 'Lib';
+import { moderateScale, getIntervalTimeToday } from 'Lib';
 import { Avatar } from 'CommonFarmer';
 
 class CommentItem extends Component {
+  state = {
+    commented_date: null
+  };
+
+  componentDidMount() {
+    this.handleCommentedDate();
+  }
+  
+  componentDidUpdate(prevProps) {
+    const { commentedDate } = this.props;
+    if (prevProps.commentedDate !== commentedDate) {
+      this.handleCommentedDate();
+    }
+  }
+
+  handleCommentedDate = () => {
+    const { commentedDate } = this.props;
+    this.setState({
+      commented_date: getIntervalTimeToday(commentedDate, true),
+    });
+  };
+
   render() {
     const { content, photo, name, onLike, onComment } = this.props;
+    const { commented_date } = this.state;
     return (
       <View
         style={{
@@ -68,14 +91,19 @@ class CommentItem extends Component {
               paddingHorizontal: moderateScale(15),
             }}
           >
-            <Text
-              style={{
-                ...Fonts.TITLE_SMALL,
-                marginRight: moderateScale(15),
-              }}
-            >
-              18h
-            </Text>
+            {commented_date
+              ? (
+                <Text
+                  style={{
+                    ...Fonts.TITLE_SMALL,
+                    marginRight: moderateScale(15),
+                  }}
+                >
+                  {commented_date}
+                </Text>
+              )
+              : null
+            }
             <TouchableOpacity
               onPress={onLike}
               style={{

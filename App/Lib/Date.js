@@ -30,9 +30,15 @@ export function getIntervalTime(old, current) {
 }
 
 // output: 3 hari yang lalu, 22 hari yang lalu, dst
-export function getIntervalTimeToday(old) {
+export function getIntervalTimeToday(old, isShort) {
   if (!old) return null;
-  return moment(old).from(moment())
+  const interval = moment(old).from(moment())
+  if (isShort && typeof interval === 'string') {
+    if (interval.includes('yang lalu')) {
+      return interval.replace('yang lalu', '');
+    }
+  }
+  return interval
 }
 
 // output: Hari ini, Kemarin, 22 Juli, 21 Juli, dst

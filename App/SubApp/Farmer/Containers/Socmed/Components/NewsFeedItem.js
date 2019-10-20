@@ -50,6 +50,13 @@ class NewsFeedItem extends Component {
         + `${shareTotal ? `${shareTotal} share` : ``}`
     });
   };
+
+  onPressWrapper = () => {
+    const { onPressWrapper, feedId } = this.props;
+    if (onPressWrapper) {
+      onPressWrapper(feedId);
+    }
+  };
   
   renderButton = (title, icon, onPress) => (
     <TouchableOpacity
@@ -86,7 +93,8 @@ class NewsFeedItem extends Component {
     const { statistic, dateCreated } = this.state;
     return (
       <Fragment>
-        <View
+        <TouchableOpacity
+          onPress={this.onPressWrapper}
           style={{
             paddingHorizontal: moderateScale(10),
             paddingVertical: moderateScale(10),
@@ -94,9 +102,10 @@ class NewsFeedItem extends Component {
         >
           <View
             style={{
+              flex: 1,
               flexDirection: 'row',
               alignItems: 'center',
-              marginBottom: moderateScale(15),
+              paddingBottom: moderateScale(15),
             }}
           >
             <Avatar
@@ -105,7 +114,7 @@ class NewsFeedItem extends Component {
             />
             <View
               style={{
-                
+                justifyContent: 'space-between'
               }}
             >
               <Text
@@ -170,7 +179,7 @@ class NewsFeedItem extends Component {
             {this.renderButton('suka', 'like', this.onLike)}
             {this.renderButton('komentar', 'comment', this.onComment)}
           </View>
-        </View>
+        </TouchableOpacity>
         <NewsFeedDivider/>
       </Fragment>
     )

@@ -26,6 +26,8 @@ const colors = {
   disabled_dark: '#454955',
   disabled_light: '#C8CCBF',
   border: 'rgba(133, 133, 133, 0.2)',
+  socmed_bg: 'rgba(133, 133, 133, 0.4)',
+  text_bg: 'rgba(133, 133, 133, 0.2)',
   text: 'rgba(0,0,0,0.68)',
   text_light: 'rgba(0,0,0,0.3)',
 }

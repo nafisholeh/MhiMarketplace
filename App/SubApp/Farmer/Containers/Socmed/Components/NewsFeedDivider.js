@@ -10,7 +10,7 @@ class NewsFeedDivider extends Component {
     return (
       <View
         style={{
-          backgroundColor: Colors.border,
+          backgroundColor: Colors.socmed_bg,
           height: moderateScale(7),
         }}
       />

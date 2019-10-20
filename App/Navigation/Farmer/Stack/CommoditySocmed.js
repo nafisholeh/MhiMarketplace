@@ -7,11 +7,13 @@ import { tabNavOptions } from 'Navigation/Tabs/Options';
 import styles from 'Navigation/Styles/NavigationStyles'
 
 import CommoditySocmed from 'SubApp/Farmer/Containers/Socmed/Commodity';
+import NewsFeedComments from 'SubApp/Farmer/Containers/Socmed/NewsFeedComments';
 
 const StackNav = createStackNavigator({
   CommoditySocmed: { screen: CommoditySocmed },
+  NewsFeedComments: { screen: NewsFeedComments },
 }, {
-  initialRouteName: 'CommoditySocmed',
+  initialRouteName: 'NewsFeedComments',
   navigationOptions: {
     headerStyle: styles.header
   }

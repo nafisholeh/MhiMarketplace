@@ -4,7 +4,7 @@ import { string } from 'prop-types';
 import moment from 'moment';
 
 import { Fonts, Colors, Images } from 'Themes';
-import { moderateScale, getIntervalTimeToday } from 'Lib';
+import { moderateScale, getIntervalTimeToday, unixToDate } from 'Lib';
 import { Avatar } from 'CommonFarmer';
 
 class PostBody extends Component {
@@ -34,7 +34,7 @@ class PostBody extends Component {
   handleCreatedDate = () => {
     const { dateCreated } = this.props;
     this.setState({ 
-      dateCreated: moment.unix(dateCreated/1000).format("YYYY-MM-DD HH:mm")
+      dateCreated: unixToDate(dateCreated)
     });
   };
   

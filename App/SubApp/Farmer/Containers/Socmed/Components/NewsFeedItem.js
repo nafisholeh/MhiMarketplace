@@ -30,7 +30,8 @@ class NewsFeedItem extends Component {
       showBackButton,
       onBackPressed,
       showActionBorder,
-      dateCreated
+      dateCreated,
+      comments
     } = this.props;
     return (
       <View>
@@ -39,6 +40,7 @@ class NewsFeedItem extends Component {
           showActionBorder
         />
         <PostComments
+          comments={comments}
           onSubmitComment={this.submitCommentToPost}
           showCommentInput
         />

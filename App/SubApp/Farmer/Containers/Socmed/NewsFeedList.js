@@ -12,6 +12,7 @@ import { FETCH_FARMER_POSTS } from 'GraphQL/Farmer/Query';
 import { COMMENT_TO_POST } from 'GraphQL/Farmer/Mutation';
 import { QueryEffectPage } from 'Components';
 import { NewsFeedItem } from './Components';
+import { getUTCDate } from 'Lib';
 
 class NewsFeedList extends Component {
   
@@ -29,7 +30,7 @@ class NewsFeedList extends Component {
           content: comment,
           author: "5d8fc3f8b8ea7474d8b0c94b",
           post: feedId,
-          date_commented: moment(),
+          date_commented: getUTCDate(),
         }
       }
     })
@@ -42,7 +43,7 @@ class NewsFeedList extends Component {
   };
 
   renderNewsFeedItem = ({ item, index }) => {
-    const { _id, content, author, date_posted } = item || {};
+    const { _id, content, author, date_posted, comments } = item || {};
     const { ktp_name } = author || {};
     return (
       <NewsFeedItem
@@ -50,6 +51,7 @@ class NewsFeedList extends Component {
         userName={ktp_name}
         content={content}
         dateCreated={date_posted}
+        comments={comments}
         onPressWrapper={this.onOpenComments}
         submitCommentToPost={comment => this.submitCommentToPost(_id, comment)}
       />

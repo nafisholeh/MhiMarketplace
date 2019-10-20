@@ -41,6 +41,14 @@ export function getIntervalTimeToday(old, isShort) {
   return interval
 }
 
+export function getUTCDate(date) {
+  return moment.utc(new Date()).local().format("YYYY-MM-DD HH:mm:ss");
+}
+
+export function unixToDate(date) {
+  return moment.unix(date/1000).format("YYYY-MM-DD HH:mm")
+}
+
 // output: Hari ini, Kemarin, 22 Juli, 21 Juli, dst
 export function getIntervalDateToday(old, _format) {
   let a = moment(old)

@@ -9,10 +9,17 @@ export const FETCH_FARMER_POSTS = gql`
       author {
         _id
         ktp_name
+        ktp_photo_face
       }
       comments {
         _id
+        author {
+          _id
+          ktp_name
+          ktp_photo_face
+        }
         content
+        date_commented
       }
     }
   }

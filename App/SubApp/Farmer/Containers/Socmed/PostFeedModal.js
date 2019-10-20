@@ -10,7 +10,7 @@ import moment from 'moment';
 import { ViewShadow, ButtonPrimary } from 'Components';
 import { Avatar } from 'CommonFarmer';
 import { NewsFeedDivider } from './Components';
-import { moderateScale, screenWidth, screenHeight } from 'Lib';
+import { moderateScale, screenWidth, screenHeight, getUTCDate } from 'Lib';
 import { Colors, Fonts, Images } from 'Themes';
 import { POST_AS_FARMER } from 'GraphQL/Farmer/Mutation';
 import { getUserId } from 'Redux/SessionRedux';
@@ -33,7 +33,7 @@ class PostFeedModal extends Component {
         data: {
           content: postContent,
           author: "5d8fc089043c4772aa81fa65",
-          date_posted: moment.utc(new Date()).local().format("YYYY-MM-DD HH:mm:ss")
+          date_posted: getUTCDate(),
         }
       }
     });

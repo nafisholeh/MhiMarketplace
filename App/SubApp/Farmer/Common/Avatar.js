@@ -13,12 +13,11 @@ const IMAGE_SIZE = {
 
 class Avatar extends Component {
   render() {
-    const { source, size = 'medium', style } = this.props;
+    const { source = null, size = 'medium', style } = this.props;
     const imageSize = moderateScale(IMAGE_SIZE[size]);
     const borderRadius = moderateScale(IMAGE_SIZE[size] / 2);
     return (
       <Image
-        source={source || Images.empty_profile}
         {...this.props}
         style={{
           width: imageSize,
@@ -26,6 +25,7 @@ class Avatar extends Component {
           borderRadius,
           ...style
         }}
+        source={source || Images.empty_profile}
       />
     )
   };

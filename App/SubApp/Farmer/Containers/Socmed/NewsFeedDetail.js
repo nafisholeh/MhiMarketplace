@@ -21,7 +21,11 @@ class NewsFeedDetail extends Component {
     const { navigation } = this.props;
     return (
       <View style={{flex: 1}}>
-        <ScrollView>
+        <ScrollView
+          contentContainerStyle={{
+            paddingBottom: moderateScale(65)
+          }}
+        >
           <PostBody
             // feedId={_id}
             userName="test"

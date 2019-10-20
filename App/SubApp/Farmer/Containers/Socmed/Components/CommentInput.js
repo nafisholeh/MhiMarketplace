@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import { View, TextInput } from 'react-native';
+import { View, TextInput, Image, TouchableOpacity } from 'react-native';
 import { string } from 'prop-types';
 
-import { Colors } from 'Themes';
+import { Colors, Images } from 'Themes';
 import { moderateScale } from 'Lib';
 import { Avatar } from 'CommonFarmer';
 
 class CommentInput extends Component {
   state = {
     comment: '',
+    showSendButton: false,
   };
   
   onChangeComment = text => {
@@ -22,10 +23,21 @@ class CommentInput extends Component {
       onSubmitComment(comment);
     }
   };
+  
+  onFocus = () => {
+    this.setState({ showSendButton: true });
+  };
+  
+  onBlur = () => {
+    const { comment } = this.state;
+    if (!comment || comment === '') {
+      this.setState({ showSendButton: false });
+    }
+  };
 
   render() {
-    const { comment } = this.state;
-    const { photo, style } = this.props;
+    const { style, photo, onSend } = this.props;
+    const { comment, showSendButton } = this.state;
     return (
       <View
         style={{
@@ -47,6 +59,8 @@ class CommentInput extends Component {
           placeholder="Balas postingan..."
           onChangeText={this.onChangeComment}
           onSubmitEditing={this.onSubmitComment}
+          onBlur={this.onBlur}
+          onFocus={this.onFocus}
           value={comment}
           multiline={true}
           style={{
@@ -55,8 +69,30 @@ class CommentInput extends Component {
             borderWidth: 0.7,
             borderRadius: moderateScale(10),
             borderColor: Colors.border,
+            paddingHorizontal: moderateScale(10),
+            paddingVertical: moderateScale(5)
           }}
         />
+        {showSendButton
+          ? (
+            <TouchableOpacity
+              onPress={onSend}
+              style={{
+                marginLeft: moderateScale(5),
+                marginRight: moderateScale(5),
+              }}
+            >
+              <Image
+                source={Images.send}
+                style={{
+                  width: moderateScale(25),
+                  height: moderateScale(20),
+                }}
+              />
+            </TouchableOpacity>
+          )
+          : null
+        }
       </View>
     )
   };

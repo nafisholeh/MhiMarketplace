@@ -16,7 +16,7 @@ import { getUTCDate } from 'Lib';
 
 class NewsFeedList extends Component {
   
-  onOpenComments = feedId => {
+  openFeedDetail = feedId => {
     const { selectListItem, navigation } = this.props;
     selectListItem(feedId);
     navigation.navigate('NewsFeedDetail');
@@ -52,7 +52,8 @@ class NewsFeedList extends Component {
         content={content}
         dateCreated={date_posted}
         comments={comments}
-        onPressWrapper={this.onOpenComments}
+        onPressWrapper={this.openFeedDetail}
+        onComment={() => this.openFeedDetail(_id)}
         submitCommentToPost={comment => this.submitCommentToPost(_id, comment)}
       />
     );

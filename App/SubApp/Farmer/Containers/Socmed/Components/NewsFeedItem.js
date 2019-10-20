@@ -21,18 +21,7 @@ class NewsFeedItem extends Component {
   };
 
   render() {
-    const {
-      feedId,
-      userName,
-      content,
-      onLike,
-      onComment,
-      showBackButton,
-      onBackPressed,
-      showActionBorder,
-      dateCreated,
-      comments
-    } = this.props;
+    const { comments } = this.props;
     return (
       <View>
         <PostBody

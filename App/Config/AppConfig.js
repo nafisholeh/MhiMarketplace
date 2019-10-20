@@ -39,7 +39,8 @@ export default {
     'AreaType',
     'AreaCommodity',
     'FarmerFinalConfirm',
-    'SopViewer'
+    'SopViewer',
+    'NewsFeedDetail'
   ],
   pageState: {
     ERROR: 'error',

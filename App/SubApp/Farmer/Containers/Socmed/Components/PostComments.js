@@ -5,28 +5,12 @@ import { string } from 'prop-types';
 import { Colors } from 'Themes';
 import { moderateScale } from 'Lib';
 import CommentItem from './CommentItem';
+import CommentInput from './CommentInput';
 import { Avatar } from 'CommonFarmer';
 
 class PostComments extends Component {
-  state = {
-    comment: ''
-  };
-  
-  onChangeComment = text => {
-    this.setState({ comment: text });
-  };
-  
-  onCommentToPost = () => {
-    const { onCommentToPost } = this.props;
-    const { comment } = this.state;
-    if (onCommentToPost) {
-      onCommentToPost(comment);
-    }
-  };
-
   render() {
-    const { comment } = this.state;
-    const { showCommentInput } = this.props;
+    const { showCommentInput, onSubmitComment } = this.props;
     return (
       <View>
         <CommentItem
@@ -61,32 +45,9 @@ class PostComments extends Component {
         />
         {showCommentInput
           ? (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginLeft: moderateScale(10),
-                marginRight: moderateScale(5),
-                marginBottom: moderateScale(10)
-              }}
-            >
-              <Avatar size="small" style={{ marginRight: moderateScale(10) }} />
-              <TextInput
-                underlineColorAndroid='rgba(0,0,0,0)'
-                placeholder="Balas postingan..."
-                onChangeText={this.onChangeComment}
-                onSubmitEditing={this.onCommentToPost}
-                value={comment}
-                multiline={true}
-                style={{
-                  flex: 1,
-                  marginRight: moderateScale(5),
-                  borderWidth: 0.7,
-                  borderRadius: moderateScale(10),
-                  borderColor: Colors.border,
-                }}
-              />
-            </View>
+            <CommentInput
+              onSubmitComment={onSubmitComment}
+            />
           )
           : null
         }

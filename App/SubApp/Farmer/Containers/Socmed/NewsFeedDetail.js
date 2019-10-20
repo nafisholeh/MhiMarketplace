@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { View, ScrollView } from 'react-native';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { string } from 'prop-types';
 import { withNavigation } from 'react-navigation';
+import { Query } from 'react-apollo';
 
 import {
   CommentItem,
@@ -13,12 +14,35 @@ import {
 } from './Components';
 import { Colors } from 'Themes';
 import { moderateScale } from 'Lib';
+import { getSelectedListId } from 'Redux/ListRedux';
+import { FETCH_FARMER_POST } from 'GraphQL/Farmer/Query';
+import { QueryEffectPage } from 'Components';
+import Config from 'Config/AppConfig';
 
 class NewsFeedDetail extends Component {
   static navigationOptions = ({navigation}) => ({ header: null })
+  
+  componentDidMount() {
+    this.handleDataFetch();
+  }
+  
+  componentDidUpdate(prevProps) {
+    const { feedId } = this.props;
+    if (prevProps.feedId !== feedId) {
+      this.handleDataFetch();
+    }
+  }
+  
+  handleDataFetch = () => {
+    const { feedId } = this.props;
+    
+  };
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, feedId } = this.props;
+    if (!feedId) {
+      return <View></View>
+    }
     return (
       <View style={{flex: 1}}>
         <ScrollView
@@ -26,16 +50,47 @@ class NewsFeedDetail extends Component {
             paddingBottom: moderateScale(65)
           }}
         >
-          <PostBody
-            // feedId={_id}
-            userName="test"
-            content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum"
-            dateCreated="2019-10-10 20:00:00"
-            showBackButton
-            showActionBorder
-            onBackPressed={() => navigation.goBack()}
-          />
-          <PostComments />
+          <Query
+            query={FETCH_FARMER_POST}
+            variables={{ _id: feedId }}
+            fetchPolicy="network-only"
+          >
+            {({ loading, error, data, refetch }) => {
+              const { farmerPost: dataList = [] } = data || {};
+              if (dataList) {
+                const { _id: feedId, content, author, date_posted, comments } = dataList || {};
+                const { ktp_name } = author || {};
+                return (
+                  <Fragment>
+                    <PostBody
+                      feedId={feedId}
+                      userName={ktp_name}
+                      content={content}
+                      dateCreated={date_posted}
+                      showBackButton
+                      showActionBorder
+                      onBackPressed={() => navigation.goBack()}
+                    />
+                    <PostComments
+                      comments={comments}
+                    />
+                  </Fragment>
+                );
+              }
+              return (
+                <QueryEffectPage
+                  title="Terjadi masalah"
+                  subtitle="Silahkan coba lagi"
+                  buttonTitle="Coba lagi"
+                  isLoading={loading}
+                  isError={error}
+                  isEmpty={!dataList.length}
+                  iconEmpty={Config.pageState.ERROR}
+                  onRefetch={() => refetch()}
+                />
+              );
+            }}
+          </Query>
         </ScrollView>
         <View
           style={{
@@ -62,7 +117,7 @@ class NewsFeedDetail extends Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-  
+  feedId: getSelectedListId(),
 });
 
 const mapDispatchToProps = dispatch => ({

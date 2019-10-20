@@ -24,3 +24,28 @@ export const FETCH_FARMER_POSTS = gql`
     }
   }
 `
+
+export const FETCH_FARMER_POST = gql`
+  query farmerPost($_id:String!) {
+    farmerPost(_id:$_id) {
+      _id
+      content
+      date_posted
+      author {
+        _id
+        ktp_name
+        ktp_photo_face
+      }
+      comments {
+        _id
+        author {
+          _id
+          ktp_name
+          ktp_photo_face
+        }
+        content
+        date_commented
+      }
+    }
+  }
+`

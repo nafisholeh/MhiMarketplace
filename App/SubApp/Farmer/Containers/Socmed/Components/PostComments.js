@@ -18,6 +18,7 @@ class PostComments extends Component {
           const { _id: authorId, ktp_name, ktp_photo_face } = author || {};
           return (
             <CommentItem
+              key={commentId}
               content={content}
               name={ktp_name}
               commentedDate={unixToDate(date_commented)}

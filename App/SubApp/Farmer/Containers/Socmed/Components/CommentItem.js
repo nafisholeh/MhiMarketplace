@@ -182,7 +182,13 @@ class CommentItem extends Component {
         )}
         {Array.isArray(commentReplies)
           && commentReplies.map((item, index) => {
-            const { _id, photo, name, content, commented_date } = item || {};
+            const {
+              _id,
+              content,
+              author,
+              date_commented: commented_date,
+            } = item || {};
+            const { ktp_photo_face: photo, ktp_name: name } = author;
             return (
               this.renderItem(
                 photo,
@@ -190,7 +196,8 @@ class CommentItem extends Component {
                 content,
                 commented_date,
                 () => onLikeChild(_id, name),
-                () => onCommentChild(_id, name)
+                () => onCommentChild(_id, name),
+                false
             ));
         })}
       </View>

@@ -22,7 +22,7 @@ class PostComments extends Component {
         }}
       >
         {Array.isArray(comments) && comments.map((item) => {
-          const { _id: commentId, content, author, date_commented } = item || {};
+          const { _id: commentId, content, author, date_commented, content_reply } = item || {};
           const { _id: authorId, ktp_name, ktp_photo_face } = author || {};
           return (
             <CommentItem
@@ -31,7 +31,7 @@ class PostComments extends Component {
               content={content}
               name={ktp_name}
               commentedDate={unixToDate(date_commented)}
-              // commentReplies={}
+              commentReplies={content_reply}
               {...this.props}
             />
           );

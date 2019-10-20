@@ -15,3 +15,22 @@ export const POST_AS_FARMER = gql`
     }
   }
 `
+
+export const COMMENT_TO_POST = gql`
+  mutation commentAsFarmer($data: CreateFarmerCommentInput) {
+    commentAsFarmer(data: $data) {
+      _id
+      content
+      date_commented
+      author {
+        _id
+        ktp_nik
+        ktp_name
+      }
+      post {
+        _id
+        content
+      }
+    }
+  }
+`

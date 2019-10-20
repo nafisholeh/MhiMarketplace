@@ -13,8 +13,16 @@ import PostComments from './PostComments';
 import NewsFeedDivider from './NewsFeedDivider';
 
 class NewsFeedItem extends Component {
+  submitCommentToPost = comment => {
+    const { submitCommentToPost } = this.props;
+    if (submitCommentToPost) {
+      submitCommentToPost(comment);
+    }
+  };
+
   render() {
     const {
+      feedId,
       userName,
       content,
       onLike,
@@ -31,6 +39,7 @@ class NewsFeedItem extends Component {
           showActionBorder
         />
         <PostComments
+          onSubmitComment={this.submitCommentToPost}
           showCommentInput
         />
         <NewsFeedDivider/>

@@ -21,6 +21,7 @@ class CommentInput extends Component {
     const { comment } = this.state;
     if (onSubmitComment) {
       onSubmitComment(comment);
+      this.setState({ comment: '', showSendButton: false });
     }
   };
   
@@ -36,7 +37,7 @@ class CommentInput extends Component {
   };
 
   render() {
-    const { style, photo, onSend } = this.props;
+    const { style, photo } = this.props;
     const { comment, showSendButton } = this.state;
     return (
       <View
@@ -76,7 +77,7 @@ class CommentInput extends Component {
         {showSendButton
           ? (
             <TouchableOpacity
-              onPress={onSend}
+              onPress={this.onSubmitComment}
               style={{
                 marginLeft: moderateScale(5),
                 marginRight: moderateScale(5),

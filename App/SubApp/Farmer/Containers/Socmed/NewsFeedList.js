@@ -3,10 +3,13 @@ import { FlatList, View } from 'react-native';
 import { Query } from 'react-apollo';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
+import moment from 'moment';
 
+import ApolloClientProvider from 'Services/ApolloClientProvider';
 import ListActions from 'Redux/ListRedux';
 import Config from 'Config/AppConfig';
 import { FETCH_FARMER_POSTS } from 'GraphQL/Farmer/Query';
+import { COMMENT_TO_POST } from 'GraphQL/Farmer/Mutation';
 import { QueryEffectPage } from 'Components';
 import { NewsFeedItem } from './Components';
 
@@ -16,6 +19,26 @@ class NewsFeedList extends Component {
     const { selectListItem, navigation } = this.props;
     selectListItem(feedId);
     navigation.navigate('NewsFeedDetail');
+  };
+  
+  submitCommentToPost = (feedId, comment) => {
+    ApolloClientProvider.client.mutate({
+      mutation: COMMENT_TO_POST,
+      variables: {
+        data: {
+          content: comment,
+          author: "5d8fc3f8b8ea7474d8b0c94b",
+          post: feedId,
+          date_commented: moment(),
+        }
+      }
+    })
+    .then(res => {
+      console.tron.log('submitCommentToPost/res', res)
+    })
+    .catch(err => {
+      console.tron.log('submitCommentToPost/err', err)
+    });
   };
 
   renderNewsFeedItem = ({ item, index }) => {
@@ -28,6 +51,7 @@ class NewsFeedList extends Component {
         content={content}
         dateCreated={date_posted}
         onPressWrapper={this.onOpenComments}
+        submitCommentToPost={comment => this.submitCommentToPost(_id, comment)}
       />
     );
   };

@@ -17,12 +17,18 @@ import { Colors } from 'Themes';
 import { moderateScale, getUTCDate } from 'Lib';
 import { getSelectedListId } from 'Redux/ListRedux';
 import { FETCH_FARMER_POST } from 'GraphQL/Farmer/Query';
-import { COMMENT_TO_POST } from 'GraphQL/Farmer/Mutation';
+import { COMMENT_TO_POST, REPLY_TO_COMMENT } from 'GraphQL/Farmer/Mutation';
 import { QueryEffectPage } from 'Components';
 import Config from 'Config/AppConfig';
 
 class NewsFeedDetail extends Component {
   static navigationOptions = ({navigation}) => ({ header: null })
+  
+  state = {
+    parentId: null,
+    isReplyParent: false,
+    parentUsername: '',
+  };
   
   componentDidMount() {
     this.handleDataFetch();
@@ -40,28 +46,54 @@ class NewsFeedDetail extends Component {
     
   };
   
+  replyParentComment = (feedId, name) => {
+    console.tron.log('replyParentComment', feedId, name)
+    this.setState({
+      parentId: feedId,
+      isReplyParent: true,
+      parentUsername: name
+    });
+  };
+  
+  cancelReplyParentComment = () => {
+    this.setState({
+      parentId: null,
+      isReplyParent: false,
+      parentUsername: ''
+    });
+  };
+  
   submitCommentToPost = (feedId, comment) => {
+    const { isReplyParent, parentId } = this.state;
+    const data = Object.assign(
+      {},
+      {
+        content: comment,
+        author: "5d8fc3f8b8ea7474d8b0c94b",
+        date_commented: getUTCDate(),
+      },
+      isReplyParent ? { comment: parentId } : { post: parentId }
+    );
     ApolloClientProvider.client.mutate({
-      mutation: COMMENT_TO_POST,
-      variables: {
-        data: {
-          content: comment,
-          author: "5d8fc3f8b8ea7474d8b0c94b",
-          post: feedId,
-          date_commented: getUTCDate(),
-        }
-      }
+      mutation: isReplyParent ? REPLY_TO_COMMENT : COMMENT_TO_POST,
+      variables: { data }
     })
     .then(res => {
       console.tron.log('submitCommentToPost/res', res)
     })
     .catch(err => {
       console.tron.log('submitCommentToPost/err', err)
-    });
+    })
+    .finally(() => {
+      if (isReplyParent) {
+        this.cancelReplyParentComment();
+      }
+    })
   };
 
   render() {
     const { navigation, feedId } = this.props;
+    const { isReplyParent, parentUsername } = this.state;
     if (!feedId) {
       return <View></View>
     }
@@ -95,6 +127,7 @@ class NewsFeedDetail extends Component {
                     />
                     <PostComments
                       comments={comments}
+                      onCommentParent={this.replyParentComment}
                     />
                   </Fragment>
                 );
@@ -132,6 +165,9 @@ class NewsFeedDetail extends Component {
               marginBottom: 0,
             }}
             onSubmitComment={comment => this.submitCommentToPost(feedId, comment)}
+            showInfo={isReplyParent}
+            info={isReplyParent ? `Balas ke ${parentUsername}` : ''}
+            onClosingInfo={this.cancelReplyParentComment}
           />
         </View>
       </View>

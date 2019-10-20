@@ -10,7 +10,11 @@ import { Avatar } from 'CommonFarmer';
 
 class PostComments extends Component {
   render() {
-    const { comments, showCommentInput, onSubmitComment } = this.props;
+    const {
+      comments,
+      showCommentInput,
+      onSubmitComment,
+    } = this.props;
     return (
       <View
         style={{
@@ -23,14 +27,12 @@ class PostComments extends Component {
           return (
             <CommentItem
               key={commentId}
+              feedId={commentId}
               content={content}
               name={ktp_name}
               commentedDate={unixToDate(date_commented)}
-              onLikeParent={() => {}}
-              onCommentParent={() => {}}
-              onLikeChild={() => {}}
-              onCommentChild={() => {}}
               // commentReplies={}
+              {...this.props}
             />
           );
         })}

@@ -34,3 +34,22 @@ export const COMMENT_TO_POST = gql`
     }
   }
 `
+
+export const REPLY_TO_COMMENT = gql`
+  mutation replyCommentAsFarmer($data:CreateFarmerCommentReplyInput) {
+    replyCommentAsFarmer(data:$data) {
+      _id
+      content
+      date_commented
+      author {
+        _id
+        ktp_nik
+        ktp_name
+      }
+      comment {
+        _id
+        content
+      }
+    }
+  }
+`

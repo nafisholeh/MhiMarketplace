@@ -58,7 +58,10 @@ class NewsFeedList extends Component {
 
   render() {
     return (
-      <Query query={FETCH_FARMER_POSTS}>
+      <Query
+        query={FETCH_FARMER_POSTS}
+        fetchPolicy="network-only"
+      >
         {({ loading, error, data, refetch }) => {
           const { farmerPosts: dataList = [] } = data || {};
           if (Array.isArray(dataList) && dataList.length) {

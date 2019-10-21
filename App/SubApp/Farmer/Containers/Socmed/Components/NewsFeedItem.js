@@ -26,7 +26,6 @@ class NewsFeedItem extends Component {
       <View>
         <PostBody
           {...this.props}
-          userId="5d93631029c05f7a60f247a5"
           showActionBorder
         />
         {Array.isArray(comments) && comments.length

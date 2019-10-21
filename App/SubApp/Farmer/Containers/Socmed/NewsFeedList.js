@@ -43,15 +43,17 @@ class NewsFeedList extends Component {
   };
 
   renderNewsFeedItem = ({ item, index }) => {
-    const { _id, content, author, date_posted, comments, likes_total } = item || {};
+    const { _id, content, author, date_posted, comments, likes_total, likes } = item || {};
     const { ktp_name } = author || {};
     return (
       <NewsFeedItem
         feedId={_id}
+        loggedInUserId="5d93631029c05f7a60f247a5"
         userName={ktp_name}
         content={content}
         dateCreated={date_posted}
         comments={comments}
+        likes={likes}
         likeTotal={likes_total}
         onPressWrapper={this.openFeedDetail}
         onComment={() => this.openFeedDetail(_id)}

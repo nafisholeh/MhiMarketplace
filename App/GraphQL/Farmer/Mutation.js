@@ -107,3 +107,37 @@ export const cacheLike = ( cache, feedId, userId ) => {
     return null;
   }
 };
+
+export const cacheDislike = ( cache, feedId, userId ) => {
+  try {
+    const { farmerPosts } = cache.readQuery({
+      query: FETCH_FARMER_POSTS
+    });
+    const updatedIndex = farmerPosts.findIndex(({ _id }) => _id === feedId);
+    const { likes_total, likes } = farmerPosts[updatedIndex];
+    const removedLikesIndex = likes.findIndex(({ _id }) => _id === userId);
+    const updatedData = Object.assign(
+      farmerPosts[updatedIndex],
+      {
+        likes_total: likes_total - 1,
+        likes: [
+          ...likes.slice(0, removedLikesIndex),
+          ...likes.slice(removedLikesIndex + 1, likes.length)
+        ],
+        __typename: 'FarmerPost'
+      }
+    );
+    cache.writeQuery({
+      query: FETCH_FARMER_POSTS,
+      data: {
+        farmerPosts: [
+          ...farmerPosts.slice(0, updatedIndex),
+          updatedData,
+          ...farmerPosts.slice(updatedIndex + 1, farmerPosts.length)
+        ]
+      }
+    });
+  } catch(err) {
+    return null;
+  }
+};

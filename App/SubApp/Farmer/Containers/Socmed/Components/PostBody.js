@@ -7,20 +7,22 @@ import { Mutation } from 'react-apollo';
 import { Fonts, Colors, Images } from 'Themes';
 import { moderateScale, getIntervalTimeToday, unixToDate } from 'Lib';
 import { Avatar } from 'CommonFarmer';
-import { LIKE, cacheLike } from 'GraphQL/Farmer/Mutation';
+import { LIKE, DISLIKE, cacheLike, cacheDislike } from 'GraphQL/Farmer/Mutation';
 
 class PostBody extends Component {
   state = {
     statistic: '',
+    isLiked: false,
   };
   
   componentDidMount() {
     this.drawStatistic();
     this.handleCreatedDate();
+    this.handleLikeStatus();
   }
   
   componentDidUpdate(prevProps) {
-    const { likeTotal, commentTotal, shareTotal, dateCreated } = this.props;
+    const { likeTotal, commentTotal, shareTotal, dateCreated, likes } = this.props;
     if (
       prevProps.likeTotal !== likeTotal
       ||prevProps.commentTotal !== commentTotal
@@ -30,6 +32,18 @@ class PostBody extends Component {
     }
     if (prevProps.dateCreated !== dateCreated) {
       this.handleCreatedDate();
+    }
+    if (prevProps.likes !== likes) {
+      this.handleLikeStatus();
+    }
+  }
+  
+  handleLikeStatus = () => {
+    const { loggedInUserId, likes = [] } = this.props;
+    if (Array.isArray(likes)) {
+      this.setState({ 
+        isLiked: likes.findIndex(({ _id }) => _id === loggedInUserId) >= 0,
+      });
     }
   }
   
@@ -57,7 +71,7 @@ class PostBody extends Component {
     }
   };
   
-  renderButton = (title, icon, onPress) => (
+  renderButton = (title, icon, onPress, noTintColor) => (
     <TouchableOpacity
       onPress={onPress}
       style={{
@@ -71,12 +85,17 @@ class PostBody extends Component {
     >
       <Image
         source={Images[icon]}
-        style={{
-          width: moderateScale(20),
-          height: moderateScale(20),
-          tintColor: Colors.icon,
-          marginRight: moderateScale(5),
-        }}
+        style={
+          Object.assign(
+            {},
+            {
+              width: moderateScale(20),
+              height: moderateScale(20),
+              marginRight: moderateScale(5),
+            },
+            noTintColor ? {} : { tintColor: Colors.icon }
+          )
+        }
       />
       <Text
         style={{
@@ -91,16 +110,17 @@ class PostBody extends Component {
   render() {
     const {
       feedId,
-      userId,
+      loggedInUserId,
       userName,
       content,
       onLike,
+      likes,
       onComment,
       showBackButton,
       onBackPressed,
       showActionBorder
     } = this.props;
-    const { statistic, dateCreated } = this.state;
+    const { statistic, dateCreated, isLiked } = this.state;
     return (
       <TouchableOpacity
         onPress={this.onPressWrapper}
@@ -207,19 +227,23 @@ class PostBody extends Component {
           }}
         >
           <Mutation
-            mutation={LIKE}
+            mutation={isLiked ? DISLIKE : LIKE}
             ignoreResults={false}
-            update={(cache, data) => cacheLike(cache, feedId, userId)}
+            update={(cache, data) =>
+              isLiked
+                ? cacheDislike(cache, feedId, loggedInUserId)
+                : cacheLike(cache, feedId, loggedInUserId)
+            }
             errorPolicy='all'>
             { (mutate, {loading, error, data}) => {
               const onLikeMutate = () => mutate({
                 variables: {
                   elementId: feedId,
-                  userId,
+                  userId: loggedInUserId,
                   type: "POST"
                 }
               });
-              return (this.renderButton('suka', 'like', onLikeMutate));
+              return (this.renderButton('suka', isLiked ? 'liked' : 'like', onLikeMutate, isLiked));
             }}
           </Mutation>
           {this.renderButton('komentar', 'comment', onComment)}

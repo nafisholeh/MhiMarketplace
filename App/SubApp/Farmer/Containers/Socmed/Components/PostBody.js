@@ -2,10 +2,12 @@ import React, { Component, Fragment } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { string } from 'prop-types';
 import moment from 'moment';
+import { Mutation } from 'react-apollo';
 
 import { Fonts, Colors, Images } from 'Themes';
 import { moderateScale, getIntervalTimeToday, unixToDate } from 'Lib';
 import { Avatar } from 'CommonFarmer';
+import { LIKE, cacheLike } from 'GraphQL/Farmer/Mutation';
 
 class PostBody extends Component {
   state = {
@@ -88,6 +90,8 @@ class PostBody extends Component {
 
   render() {
     const {
+      feedId,
+      userId,
       userName,
       content,
       onLike,
@@ -202,7 +206,22 @@ class PostBody extends Component {
             borderBottomColor: Colors.border,
           }}
         >
-          {this.renderButton('suka', 'like', onLike)}
+          <Mutation
+            mutation={LIKE}
+            ignoreResults={false}
+            update={(cache, data) => cacheLike(cache, feedId, userId)}
+            errorPolicy='all'>
+            { (mutate, {loading, error, data}) => {
+              const onLikeMutate = () => mutate({
+                variables: {
+                  elementId: feedId,
+                  userId,
+                  type: "POST"
+                }
+              });
+              return (this.renderButton('suka', 'like', onLikeMutate));
+            }}
+          </Mutation>
           {this.renderButton('komentar', 'comment', onComment)}
         </View>
       </TouchableOpacity>

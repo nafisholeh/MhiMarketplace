@@ -47,7 +47,6 @@ class NewsFeedDetail extends Component {
   };
   
   replyParentComment = (feedId, name) => {
-    console.tron.log('replyParentComment', feedId, name)
     this.setState({
       parentId: feedId,
       isReplyParent: true,

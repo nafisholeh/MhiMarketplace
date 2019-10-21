@@ -11,6 +11,10 @@ export const FETCH_FARMER_POSTS = gql`
         ktp_name
         ktp_photo_face
       }
+      likes {
+        _id
+      }
+      likes_total
       comments {
         _id
         author {

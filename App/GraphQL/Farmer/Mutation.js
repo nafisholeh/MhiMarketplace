@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 
+import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { FETCH_FARMER_POSTS } from './Query';
 
 export const SIGNUP_FARMER = gql`
@@ -85,15 +86,15 @@ export const cacheLike = ( cache, feedId, userId ) => {
     });
     const updatedIndex = farmerPosts.findIndex(({ _id }) => _id === feedId);
     const { likes_total, likes } = farmerPosts[updatedIndex];
-    const updatedData = Object.assign(
-      farmerPosts[updatedIndex],
-      {
+    const updatedData = {
+      ...farmerPosts[updatedIndex],
+      ...{
         likes_total: likes_total + 1,
         likes: [...likes, { _id: userId, __typename: 'UserFarmer' }],
         __typename: 'FarmerPost'
       }
-    );
-    cache.writeQuery({
+    };
+    ApolloClientProvider.client.writeQuery({
       query: FETCH_FARMER_POSTS,
       data: {
         farmerPosts: [
@@ -116,9 +117,9 @@ export const cacheDislike = ( cache, feedId, userId ) => {
     const updatedIndex = farmerPosts.findIndex(({ _id }) => _id === feedId);
     const { likes_total, likes } = farmerPosts[updatedIndex];
     const removedLikesIndex = likes.findIndex(({ _id }) => _id === userId);
-    const updatedData = Object.assign(
-      farmerPosts[updatedIndex],
-      {
+    const updatedData = {
+      ...farmerPosts[updatedIndex],
+      ...{
         likes_total: likes_total - 1,
         likes: [
           ...likes.slice(0, removedLikesIndex),
@@ -126,8 +127,8 @@ export const cacheDislike = ( cache, feedId, userId ) => {
         ],
         __typename: 'FarmerPost'
       }
-    );
-    cache.writeQuery({
+    };
+    ApolloClientProvider.client.writeQuery({
       query: FETCH_FARMER_POSTS,
       data: {
         farmerPosts: [

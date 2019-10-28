@@ -59,7 +59,7 @@ class PostBody extends Component {
     this.setState({
       statistic:
         `${likeTotal ? `${likeTotal} suka ` : ``}`
-        + `${commentTotal ? `${commentTotal} komentar ` : ``}`
+        + `${commentTotal ? `${commentTotal} balasan ` : ``}`
         + `${shareTotal ? `${shareTotal} share` : ``}`
     });
   };
@@ -246,7 +246,7 @@ class PostBody extends Component {
               return (this.renderButton('suka', isLiked ? 'liked' : 'like', onLikeMutate, isLiked));
             }}
           </Mutation>
-          {this.renderButton('komentar', 'comment', onComment)}
+          {this.renderButton('balas', 'comment', onComment)}
         </View>
       </TouchableOpacity>
     )

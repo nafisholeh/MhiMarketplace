@@ -117,7 +117,7 @@ class CommentItem extends Component {
                     fontWeight: 'bold',
                   }}
                 >
-                  like
+                  suka
                 </Text>
               </TouchableOpacity>
             )
@@ -135,7 +135,7 @@ class CommentItem extends Component {
                     fontWeight: 'bold',
                   }}
                 >
-                  comment
+                  balas
                 </Text>
               </TouchableOpacity>
             )

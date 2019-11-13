@@ -2,11 +2,13 @@ import React, { Component, Fragment } from 'react';
 import { FlatList, View } from 'react-native';
 import { Query } from 'react-apollo';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import { withNavigation } from 'react-navigation';
 import moment from 'moment';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import ListActions from 'Redux/ListRedux';
+import { getMockUserId } from 'Redux/SessionRedux';
 import Config from 'Config/AppConfig';
 import { FETCH_FARMER_POSTS } from 'GraphQL/Farmer/Query';
 import { COMMENT_TO_POST } from 'GraphQL/Farmer/Mutation';
@@ -43,12 +45,13 @@ class NewsFeedList extends Component {
   };
 
   renderNewsFeedItem = ({ item, index }) => {
+    const { loggedInUserId } = this.props;
     const { _id, content, author, date_posted, comments, likes_total, likes } = item || {};
     const { ktp_name } = author || {};
     return (
       <NewsFeedItem
         feedId={_id}
-        loggedInUserId="5d93631029c05f7a60f247a5"
+        loggedInUserId={loggedInUserId}
         userName={ktp_name}
         content={content}
         dateCreated={date_posted}
@@ -97,8 +100,12 @@ class NewsFeedList extends Component {
   }
 }
 
+const mapStateToProps = createStructuredSelector({
+  loggedInUserId: getMockUserId(),
+});
+
 const mapDispatchToProps = dispatch => ({
   selectListItem: selectedId => dispatch(ListActions.selectListItem(selectedId)),
 });
 
-export default connect(null, mapDispatchToProps)(withNavigation(NewsFeedList));
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(NewsFeedList));

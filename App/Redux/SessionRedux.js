@@ -31,6 +31,14 @@ export const getUser = () =>
     sessionSelectors(),
     state => state.user
   )
+  
+export const getMockUserId = () => 
+  createSelector(
+    sessionSelectors(),
+    state => {
+      return "5d93631029c05f7a60f247a5";
+    }
+  )
 
 export const getUserId = () => 
   createSelector(

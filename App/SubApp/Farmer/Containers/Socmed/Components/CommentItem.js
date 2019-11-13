@@ -12,7 +12,8 @@ class CommentItem extends Component {
     data,
     onLike,
     onComment,
-    isParent
+    isParent,
+    isLikedByMe,
   ) => {
     const {
       _id: feedId,
@@ -28,6 +29,7 @@ class CommentItem extends Component {
     const date = unixToDate(date_commented);
     return (
       <View
+        key={feedId}
         style={{
           marginLeft: moderateScale(isParent ? 10 : 50),
           marginRight: moderateScale(10),
@@ -115,7 +117,7 @@ class CommentItem extends Component {
                 <Text
                   style={{
                     ...Fonts.TITLE_SMALL,
-                    color: Colors.text,
+                    color: isLikedByMe ? Colors.veggie_dark : Colors.text,
                     fontWeight: 'bold',
                   }}
                 >
@@ -155,14 +157,18 @@ class CommentItem extends Component {
       onCommentParent,
       onLikeChild,
       onCommentChild,
+      loggedInUserId,
     } = this.props;
-    const { content_reply } = data || {};
+    const { content_reply, likes = [] } = data || {};
+    const isLikedByMe = Array.isArray(likes) && likes.findIndex(({ _id }) => _id === loggedInUserId) >= 0;
     return (
       <View>
-        {this.renderItem(data, onLikeParent, onCommentParent, true)}
+        {this.renderItem(data, onLikeParent, onCommentParent, true, isLikedByMe)}
         {Array.isArray(content_reply)
           && content_reply.map((item, index) => {
-            return this.renderItem(item, onLikeChild, onCommentChild);
+            const { likes = [] } = item || {};
+            const isReplyLikedByMe = Array.isArray(likes) && likes.findIndex(({ _id }) => _id === loggedInUserId) >= 0;
+            return this.renderItem(item, onLikeChild, onCommentChild, false, isReplyLikedByMe);
         })}
       </View>
     );

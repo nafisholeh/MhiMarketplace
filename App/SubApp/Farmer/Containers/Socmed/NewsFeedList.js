@@ -13,7 +13,8 @@ import Config from 'Config/AppConfig';
 import { FETCH_FARMER_POSTS } from 'GraphQL/Farmer/Query';
 import { COMMENT_TO_POST } from 'GraphQL/Farmer/Mutation';
 import { QueryEffectPage } from 'Components';
-import { NewsFeedItem } from './Components';
+import { NewsFeedContent, NewsFeedDivider } from './Components';
+import NewsFeedComments from './NewsFeedComments';
 import { getUTCDate } from 'Lib';
 
 class NewsFeedList extends Component {
@@ -49,19 +50,34 @@ class NewsFeedList extends Component {
     const { _id, content, author, date_posted, comments, likes_total, likes } = item || {};
     const { ktp_name } = author || {};
     return (
-      <NewsFeedItem
-        feedId={_id}
-        loggedInUserId={loggedInUserId}
-        userName={ktp_name}
-        content={content}
-        dateCreated={date_posted}
-        comments={comments}
-        likes={likes}
-        likeTotal={likes_total}
-        onPressWrapper={this.openFeedDetail}
-        onComment={() => this.openFeedDetail(_id)}
-        submitCommentToPost={comment => this.submitCommentToPost(_id, comment)}
-      />
+      <View>
+        <NewsFeedContent
+          feedId={_id}
+          loggedInUserId={loggedInUserId}
+          userName={ktp_name}
+          content={content}
+          dateCreated={date_posted}
+          comments={comments}
+          likes={likes}
+          likeTotal={likes_total}
+          onPressWrapper={this.openFeedDetail}
+          onComment={() => this.openFeedDetail(_id)}
+          showActionBorder
+        />
+        {Array.isArray(comments) && comments.length
+          ? (
+            <NewsFeedComments
+              comments={comments}
+              onSubmitComment={comment => this.submitCommentToPost(_id, comment)}
+              showCommentInput
+              onCommentParent={() => {}}
+              onCommentChild={() => {}}
+            />
+          )
+          : null
+        }
+        <NewsFeedDivider/>
+      </View>
     );
   };
 

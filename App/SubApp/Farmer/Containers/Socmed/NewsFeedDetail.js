@@ -8,11 +8,11 @@ import { Query, Mutation } from 'react-apollo';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import {
+  NewsFeedContent,
   CommentItem,
-  PostBody,
-  PostComments,
-  CommentInput
+  CommentInput,
 } from './Components';
+import NewsFeedComments from './NewsFeedComments';
 import { Colors } from 'Themes';
 import { moderateScale, getUTCDate } from 'Lib';
 import { getSelectedListId } from 'Redux/ListRedux';
@@ -129,7 +129,7 @@ class NewsFeedDetail extends Component {
                 const { ktp_name } = author || {};
                 return (
                   <Fragment>
-                    <PostBody
+                    <NewsFeedContent
                       feedId={feedId}
                       loggedInUserId={loggedInUserId}
                       userName={ktp_name}
@@ -141,38 +141,11 @@ class NewsFeedDetail extends Component {
                       likeTotal={likes_total}
                       onBackPressed={() => navigation.goBack()}
                     />
-                    <Mutation
-                      mutation={LIKE}
-                      ignoreResults={false}
-                      errorPolicy='all'>
-                      { (mutate, {loading, error, data}) => {
-                        return (
-                          <PostComments
-                            comments={comments}
-                            onLikeParent={(feedId, name) => {
-                              mutate({
-                                variables: {
-                                  elementId: feedId,
-                                  userId: loggedInUserId,
-                                  type: "COMMENT"
-                                }
-                              });
-                            }}
-                            onLikeChild={(feedId, name) => {
-                              mutate({
-                                variables: {
-                                  elementId: feedId,
-                                  userId: loggedInUserId,
-                                  type: "COMMENT_REPLY"
-                                }
-                              });
-                            }}
-                            onCommentParent={this.replyParentComment}
-                            onCommentChild={() => {}}
-                          />
-                        );
-                      }}
-                    </Mutation>
+                    <NewsFeedComments
+                      comments={comments}
+                      onCommentParent={this.replyParentComment}
+                      onCommentChild={() => {}}
+                    />
                   </Fragment>
                 );
               }

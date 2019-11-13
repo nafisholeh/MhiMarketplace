@@ -24,6 +24,10 @@ export const FETCH_FARMER_POSTS = gql`
         }
         content
         date_commented
+        likes {
+          _id
+        }
+        likes_total
         content_reply {
           _id
           author {
@@ -33,6 +37,10 @@ export const FETCH_FARMER_POSTS = gql`
           }
           content
           date_commented
+          likes {
+            _id
+          }
+          likes_total
         }
       }
     }
@@ -63,6 +71,10 @@ export const FETCH_FARMER_POST = gql`
         }
         content
         date_commented
+        likes {
+          _id
+        }
+        likes_total
         content_reply {
           _id
           author {
@@ -72,6 +84,10 @@ export const FETCH_FARMER_POST = gql`
           }
           content
           date_commented
+          likes {
+            _id
+          }
+          likes_total
         }
       }
     }

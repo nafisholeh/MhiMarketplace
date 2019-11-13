@@ -9,7 +9,7 @@ import { moderateScale, getIntervalTimeToday, unixToDate } from 'Lib';
 import { Avatar } from 'CommonFarmer';
 import { LIKE, DISLIKE, cacheLike, cacheDislike } from 'GraphQL/Farmer/Mutation';
 
-class PostBody extends Component {
+class NewsFeedContent extends Component {
   state = {
     statistic: '',
     isLiked: false,
@@ -253,4 +253,4 @@ class PostBody extends Component {
   };
 }
 
-export default PostBody;
+export default NewsFeedContent;

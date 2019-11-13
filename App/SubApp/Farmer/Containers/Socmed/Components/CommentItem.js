@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { Mutation } from 'react-apollo';
 
 import { Colors, Fonts } from 'Themes';
 import { moderateScale, getIntervalTimeToday, unixToDate } from 'Lib';
 import { Avatar } from 'CommonFarmer';
+import { LIKE, DISLIKE, cacheLike, cacheDislike } from 'GraphQL/Farmer/Mutation';
 
 class CommentItem extends Component {
   renderItem = (

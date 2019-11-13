@@ -4,7 +4,7 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { string } from 'prop-types';
 import { withNavigation } from 'react-navigation';
-import { Query } from 'react-apollo';
+import { Query, Mutation } from 'react-apollo';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import {
@@ -16,8 +16,14 @@ import {
 import { Colors } from 'Themes';
 import { moderateScale, getUTCDate } from 'Lib';
 import { getSelectedListId } from 'Redux/ListRedux';
+import { getMockUserId } from 'Redux/SessionRedux';
 import { FETCH_FARMER_POST } from 'GraphQL/Farmer/Query';
-import { COMMENT_TO_POST, REPLY_TO_COMMENT } from 'GraphQL/Farmer/Mutation';
+import {
+  COMMENT_TO_POST,
+  REPLY_TO_COMMENT,
+  LIKE,
+  DISLIKE,
+} from 'GraphQL/Farmer/Mutation';
 import { QueryEffectPage } from 'Components';
 import Config from 'Config/AppConfig';
 
@@ -91,7 +97,7 @@ class NewsFeedDetail extends Component {
   };
 
   render() {
-    const { navigation, feedId } = this.props;
+    const { navigation, feedId, loggedInUserId } = this.props;
     const { isReplyParent, parentUsername } = this.state;
     if (!feedId) {
       return <View></View>
@@ -111,26 +117,62 @@ class NewsFeedDetail extends Component {
             {({ loading, error, data, refetch }) => {
               const { farmerPost: dataList = [] } = data || {};
               if (dataList) {
-                const { _id: feedId, content, author, date_posted, comments } = dataList || {};
+                const {
+                  _id: feedId,
+                  content,
+                  author,
+                  date_posted,
+                  comments,
+                  likes,
+                  likes_total
+                } = dataList || {};
                 const { ktp_name } = author || {};
                 return (
                   <Fragment>
                     <PostBody
                       feedId={feedId}
+                      loggedInUserId={loggedInUserId}
                       userName={ktp_name}
                       content={content}
                       dateCreated={date_posted}
                       showBackButton
                       showActionBorder
+                      likes={likes}
+                      likeTotal={likes_total}
                       onBackPressed={() => navigation.goBack()}
                     />
-                    <PostComments
-                      comments={comments}
-                      onLikeParent={() => {}}
-                      onCommentParent={this.replyParentComment}
-                      onLikeChild={() => {}}
-                      onCommentChild={() => {}}
-                    />
+                    <Mutation
+                      mutation={LIKE}
+                      ignoreResults={false}
+                      errorPolicy='all'>
+                      { (mutate, {loading, error, data}) => {
+                        return (
+                          <PostComments
+                            comments={comments}
+                            onLikeParent={(feedId, name) => {
+                              mutate({
+                                variables: {
+                                  elementId: feedId,
+                                  userId: loggedInUserId,
+                                  type: "COMMENT"
+                                }
+                              });
+                            }}
+                            onLikeChild={(feedId, name) => {
+                              mutate({
+                                variables: {
+                                  elementId: feedId,
+                                  userId: loggedInUserId,
+                                  type: "COMMENT_REPLY"
+                                }
+                              });
+                            }}
+                            onCommentParent={this.replyParentComment}
+                            onCommentChild={() => {}}
+                          />
+                        );
+                      }}
+                    </Mutation>
                   </Fragment>
                 );
               }
@@ -179,6 +221,7 @@ class NewsFeedDetail extends Component {
 
 const mapStateToProps = createStructuredSelector({
   feedId: getSelectedListId(),
+  loggedInUserId: getMockUserId(),
 });
 
 const mapDispatchToProps = dispatch => ({

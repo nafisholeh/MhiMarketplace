@@ -41,21 +41,23 @@ class NewsFeedComments extends Component {
                 return (
                   <CommentItem
                     data={item}
-                    onLikeParent={(feedId, name) => {
+                    onLikeParent={(feedId, name, isLikedByMe) => {
                       mutate({
                         variables: {
                           elementId: feedId,
                           userId: loggedInUserId,
-                          type: "COMMENT"
+                          type: "COMMENT",
+                          action: isLikedByMe ? "dislike" : "like"
                         }
                       });
                     }}
-                    onLikeChild={(feedId, name) => {
+                    onLikeChild={(feedId, name, isLikedByMe) => {
                       mutate({
                         variables: {
                           elementId: feedId,
                           userId: loggedInUserId,
-                          type: "COMMENT_REPLY"
+                          type: "COMMENT_REPLY",
+                          action: isLikedByMe ? "dislike" : "like"
                         }
                       });
                     }}

@@ -109,7 +109,7 @@ class CommentItem extends Component {
           {onLike
             ? (
               <TouchableOpacity
-                onPress={() => onLike(feedId, name)}
+                onPress={() => onLike(feedId, name, isLikedByMe)}
                 style={{
                   marginRight: moderateScale(15),
                 }}

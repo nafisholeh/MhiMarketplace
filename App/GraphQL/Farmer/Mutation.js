@@ -58,8 +58,8 @@ export const REPLY_TO_COMMENT = gql`
 `
 
 export const LIKE = gql`
-  mutation like($elementId:String!, $userId:String!, $type:String!) {
-    like(elementId:$elementId, userId:$userId, type:$type) {
+  mutation like($elementId:String!, $userId:String!, $type:String!, $action:String!) {
+    like(elementId:$elementId, userId:$userId, type:$type, action:$action) {
       _id
       likesPost
       likesComment

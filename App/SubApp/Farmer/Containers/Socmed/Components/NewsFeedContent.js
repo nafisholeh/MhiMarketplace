@@ -227,7 +227,7 @@ class NewsFeedContent extends Component {
           }}
         >
           <Mutation
-            mutation={isLiked ? DISLIKE : LIKE}
+            mutation={LIKE}
             ignoreResults={false}
             update={(cache, data) =>
               isLiked
@@ -240,7 +240,8 @@ class NewsFeedContent extends Component {
                 variables: {
                   elementId: feedId,
                   userId: loggedInUserId,
-                  type: "POST"
+                  type: "POST",
+                  action: isLiked ? "dislike" : "like",
                 }
               });
               return (this.renderButton('suka', isLiked ? 'liked' : 'like', onLikeMutate, isLiked));

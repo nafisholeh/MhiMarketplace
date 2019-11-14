@@ -49,6 +49,14 @@ class NewsFeedList extends Component {
     const { loggedInUserId } = this.props;
     const { _id, content, author, date_posted, comments, likes_total, likes } = item || {};
     const { ktp_name } = author || {};
+    const lastComment =
+      Array.isArray(comments) && comments.length
+        ? [comments[comments.length - 1]]
+        : [];
+    const otherCommentTotal =
+      Array.isArray(comments) && comments.length
+        ? comments.length - 1
+        : 0;
     return (
       <View>
         <NewsFeedContent
@@ -64,19 +72,20 @@ class NewsFeedList extends Component {
           onComment={() => this.openFeedDetail(_id)}
           showActionBorder
         />
-        {Array.isArray(comments) && comments.length
-          ? (
-            <NewsFeedComments
-              feedId={_id}
-              comments={comments}
-              onSubmitComment={comment => this.submitCommentToPost(_id, comment)}
-              showCommentInput
-              onCommentParent={() => {}}
-              onCommentChild={() => {}}
-            />
-          )
-          : null
-        }
+        <NewsFeedComments
+          feedId={_id}
+          comments={lastComment}
+          onSubmitComment={comment => this.openFeedDetail(_id, comment)}
+          showCommentInput
+          commentInputDisabled
+          onLikeParent={() => this.openFeedDetail(_id)}
+          onLikeChild={() => this.openFeedDetail(_id)}
+          onCommentParent={() => this.openFeedDetail(_id)}
+          onCommentChild={() => this.openFeedDetail(_id)}
+          onCommentContainerPressed={() => this.openFeedDetail(_id)}
+          otherCommentTotal={otherCommentTotal}
+          onViewOtherCommentPressed={() => this.openFeedDetail(_id)}
+        />
         <NewsFeedDivider/>
       </View>
     );

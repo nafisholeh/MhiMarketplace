@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View, TextInput } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity } from 'react-native';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { string } from 'prop-types';
 import { Mutation } from 'react-apollo';
 
-import { Colors } from 'Themes';
+import { Colors, Fonts } from 'Themes';
 import { moderateScale, getIntervalTimeToday, unixToDate } from 'Lib';
 import { CommentItem, CommentInput } from './Components';
 import { Avatar } from 'CommonFarmer';
@@ -25,13 +25,40 @@ class NewsFeedComments extends Component {
       onSubmitComment,
       loggedInUserId,
       feedId,
+      otherCommentTotal,
+      onCommentContainerPressed,
+      onViewOtherCommentPressed,
     } = this.props;
     return (
-      <View
+      <TouchableOpacity
         style={{
           paddingVertical: moderateScale(15)
         }}
+        onPress={() => {
+          if (onCommentContainerPressed) onCommentContainerPressed();
+        }}
       >
+        {otherCommentTotal && onViewOtherCommentPressed
+          ? (
+            <TouchableOpacity
+              onPress={onViewOtherCommentPressed}
+              style={{
+                paddingBottom: moderateScale(15),
+                paddingHorizontal: moderateScale(10),
+              }}
+            >
+              <Text
+                style={{
+                  ...Fonts.TITLE_NORMAL,
+                  color: 'rgba(0,0,0,0.3)',
+                }}
+              >
+                Lihat {otherCommentTotal} diskusi lainnya
+              </Text>
+            </TouchableOpacity>
+          )
+          : null
+        }
         {Array.isArray(comments) && comments.map((item, index) => {
           const { _id: commentId } = item || {};
           return (
@@ -85,7 +112,7 @@ class NewsFeedComments extends Component {
           )
           : null
         }
-      </View>
+      </TouchableOpacity>
     );
   };
 }

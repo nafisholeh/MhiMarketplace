@@ -55,8 +55,11 @@ export const REPLY_TO_COMMENT = gql`
       }
       comment {
         _id
-        content
       }
+      likes {
+        _id
+      }
+      likes_total
     }
   }
 `
@@ -262,6 +265,51 @@ export const cacheCommentSubmit = ( cache, { data }, feedId, comment ) => {
         });
       }
     } 
+  } catch(err) {
+    return null;
+  }
+};
+
+export const cacheCommentReply = ( cache, { data }, feedId, parentId, comment ) => {
+  try {
+    const { replyCommentAsFarmer: newSubComment } = data || {};
+    
+    const dataCache = cache.readQuery({
+      query: FETCH_FARMER_POST,
+      variables: {
+        _id: feedId
+      }
+    });
+    const { farmerPost: farmerPostOld = {} } = dataCache || {};
+    const { comments: oldComments = [] } = farmerPostOld || {};
+    const matchedCommentsIndex =
+      Array.isArray(oldComments)
+      && oldComments.findIndex(({ _id }) => _id === parentId);
+    if (matchedCommentsIndex < 0) return;
+    const { content_reply: oldSubComments = [] } = oldComments[matchedCommentsIndex] || [];
+    ApolloClientProvider.client.writeQuery({
+      query: FETCH_FARMER_POST,
+      data: {
+        farmerPost: {
+          ...farmerPostOld,
+          ...{
+            comments: [
+              ...oldComments.slice(0, matchedCommentsIndex),
+              {
+                ...oldComments[matchedCommentsIndex],
+                ...{
+                  content_reply: 
+                    oldSubComments.length
+                      ? [ ...oldSubComments, newSubComment ]
+                      : [ newSubComment ]
+                }
+              },
+              ...oldComments.slice(matchedCommentsIndex + 1, oldComments.length),
+            ]
+          }
+        }
+      }
+    });
   } catch(err) {
     return null;
   }

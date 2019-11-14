@@ -24,6 +24,7 @@ import {
   LIKE,
   DISLIKE,
   cacheCommentSubmit,
+  cacheCommentReply,
 } from 'GraphQL/Farmer/Mutation';
 import { QueryEffectPage } from 'Components';
 import Config from 'Config/AppConfig';
@@ -83,7 +84,10 @@ class NewsFeedDetail extends Component {
     ApolloClientProvider.client.mutate({
       mutation: isReplyParent ? REPLY_TO_COMMENT : COMMENT_TO_POST,
       variables: { data },
-      update: (cache, data) => cacheCommentSubmit(cache, data, feedId, comment)
+      update: (cache, data) => 
+        isReplyParent
+          ? cacheCommentReply(cache, data, feedId, parentId, comment)
+          : cacheCommentSubmit(cache, data, feedId, comment)
     })
     .then(res => {
       console.tron.log('submitCommentToPost/res', res)

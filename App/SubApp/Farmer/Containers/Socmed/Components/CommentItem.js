@@ -159,7 +159,7 @@ class CommentItem extends Component {
       onCommentChild,
       loggedInUserId,
     } = this.props;
-    const { content_reply, likes = [] } = data || {};
+    const { _id: commentId, content_reply, likes = [] } = data || {};
     const isLikedByMe = Array.isArray(likes) && likes.findIndex(({ _id }) => _id === loggedInUserId) >= 0;
     return (
       <View>
@@ -167,8 +167,18 @@ class CommentItem extends Component {
         {Array.isArray(content_reply)
           && content_reply.map((item, index) => {
             const { likes = [] } = item || {};
-            const isReplyLikedByMe = Array.isArray(likes) && likes.findIndex(({ _id }) => _id === loggedInUserId) >= 0;
-            return this.renderItem(item, onLikeChild, onCommentChild, false, isReplyLikedByMe);
+            const isReplyLikedByMe =
+              Array.isArray(likes)
+              && likes.findIndex(({ _id }) => _id === loggedInUserId) >= 0;
+            return (
+              this.renderItem(
+                item,
+                onLikeChild,
+                (subCommentId, name) => onCommentChild(commentId, name),
+                false,
+                isReplyLikedByMe
+              )
+            )
         })}
       </View>
     );

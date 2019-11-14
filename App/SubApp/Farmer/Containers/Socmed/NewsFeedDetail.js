@@ -52,7 +52,7 @@ class NewsFeedDetail extends Component {
     
   };
   
-  replyParentComment = (feedId, name) => {
+  replyComment = (feedId, name) => {
     this.setState({
       parentId: feedId,
       isReplyParent: true,
@@ -60,7 +60,7 @@ class NewsFeedDetail extends Component {
     });
   };
   
-  cancelReplyParentComment = () => {
+  cancelReplyComment = () => {
     this.setState({
       parentId: null,
       isReplyParent: false,
@@ -91,7 +91,7 @@ class NewsFeedDetail extends Component {
     })
     .finally(() => {
       if (isReplyParent) {
-        this.cancelReplyParentComment();
+        this.cancelReplyComment();
       }
     })
   };
@@ -143,8 +143,8 @@ class NewsFeedDetail extends Component {
                     <NewsFeedComments
                       feedId={feedId}
                       comments={comments}
-                      onCommentParent={this.replyParentComment}
-                      onCommentChild={() => {}}
+                      onCommentParent={this.replyComment}
+                      onCommentChild={this.replyComment}
                     />
                   </Fragment>
                 );
@@ -184,7 +184,7 @@ class NewsFeedDetail extends Component {
             onSubmitComment={comment => this.submitCommentToPost(feedId, comment)}
             showInfo={isReplyParent}
             info={isReplyParent ? `Balas ke ${parentUsername}` : ''}
-            onClosingInfo={this.cancelReplyParentComment}
+            onClosingInfo={this.cancelReplyComment}
           />
         </View>
       </View>

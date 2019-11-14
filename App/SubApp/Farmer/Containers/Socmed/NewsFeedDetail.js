@@ -172,7 +172,8 @@ class NewsFeedDetail extends Component {
             right: 0,
             backgroundColor: Colors.white,
             paddingHorizontal: moderateScale(10),
-            paddingVertical: moderateScale(5),
+            paddingTop: moderateScale(5),
+            paddingBottom: moderateScale(10),
           }}
         >
           <CommentInput

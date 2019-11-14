@@ -232,21 +232,35 @@ export const cacheCommentSubmit = ( cache, { data }, feedId, comment ) => {
     const { farmerPost: farmerPostOld = {} } = dataCache || {};
     const { comments: oldComments = [] } = farmerPostOld || {};
     const { commentAsFarmer: newComment } = data || {};
-    if (Array.isArray(oldComments) && oldComments.length) {
-      ApolloClientProvider.client.writeQuery({
-        query: FETCH_FARMER_POST,
-        data: {
-          farmerPost: {
-            ...farmerPostOld,
-            ...{
-              comments: [
-                ...oldComments,
-                newComment
-              ]
+    if (Array.isArray(oldComments)) {
+      if (oldComments.length) {
+        ApolloClientProvider.client.writeQuery({
+          query: FETCH_FARMER_POST,
+          data: {
+            farmerPost: {
+              ...farmerPostOld,
+              ...{
+                comments: [
+                  ...oldComments,
+                  newComment
+                ]
+              }
             }
           }
-        }
-      });
+        });
+      } else {
+        ApolloClientProvider.client.writeQuery({
+          query: FETCH_FARMER_POST,
+          data: {
+            farmerPost: {
+              ...farmerPostOld,
+              ...{
+                comments: [ newComment ]
+              }
+            }
+          }
+        });
+      }
     } 
   } catch(err) {
     return null;

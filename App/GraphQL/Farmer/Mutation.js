@@ -236,34 +236,20 @@ export const cacheCommentSubmit = ( cache, { data }, feedId, comment ) => {
     const { comments: oldComments = [] } = farmerPostOld || {};
     const { commentAsFarmer: newComment } = data || {};
     if (Array.isArray(oldComments)) {
-      if (oldComments.length) {
-        ApolloClientProvider.client.writeQuery({
-          query: FETCH_FARMER_POST,
-          data: {
-            farmerPost: {
-              ...farmerPostOld,
-              ...{
-                comments: [
-                  ...oldComments,
-                  newComment
-                ]
-              }
+      ApolloClientProvider.client.writeQuery({
+        query: FETCH_FARMER_POST,
+        data: {
+          farmerPost: {
+            ...farmerPostOld,
+            ...{
+              comments: 
+                oldComments.length
+                  ? [ ...oldComments, newComment ]
+                  : [ newComment ]
             }
           }
-        });
-      } else {
-        ApolloClientProvider.client.writeQuery({
-          query: FETCH_FARMER_POST,
-          data: {
-            farmerPost: {
-              ...farmerPostOld,
-              ...{
-                comments: [ newComment ]
-              }
-            }
-          }
-        });
-      }
+        }
+      });
     } 
   } catch(err) {
     return null;

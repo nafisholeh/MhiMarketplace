@@ -32,7 +32,8 @@ class NewsFeedComments extends Component {
     return (
       <TouchableOpacity
         style={{
-          paddingVertical: moderateScale(15)
+          paddingTop: moderateScale(15),
+          paddingBottom: moderateScale(5)
         }}
         onPress={() => {
           if (onCommentContainerPressed) onCommentContainerPressed();

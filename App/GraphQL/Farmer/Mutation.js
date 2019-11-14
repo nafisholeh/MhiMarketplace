@@ -30,9 +30,13 @@ export const COMMENT_TO_POST = gql`
         ktp_nik
         ktp_name
       }
-      post {
+      likes_total
+      likes {
         _id
-        content
+      }
+      comments_total
+      content_reply {
+        _id
       }
     }
   }
@@ -91,6 +95,40 @@ export const cacheLike = ( cache, feedId, userId ) => {
       ...{
         likes_total: likes_total + 1,
         likes: [...likes, { _id: userId, __typename: 'UserFarmer' }],
+        __typename: 'FarmerPost'
+      }
+    };
+    ApolloClientProvider.client.writeQuery({
+      query: FETCH_FARMER_POSTS,
+      data: {
+        farmerPosts: [
+          ...farmerPosts.slice(0, updatedIndex),
+          updatedData,
+          ...farmerPosts.slice(updatedIndex + 1, farmerPosts.length)
+        ]
+      }
+    });
+  } catch(err) {
+    return null;
+  }
+};
+
+export const cacheDislike = ( cache, feedId, userId ) => {
+  try {
+    const { farmerPosts } = cache.readQuery({
+      query: FETCH_FARMER_POSTS
+    });
+    const updatedIndex = farmerPosts.findIndex(({ _id }) => _id === feedId);
+    const { likes_total, likes } = farmerPosts[updatedIndex];
+    const removedLikesIndex = likes.findIndex(({ _id }) => _id === userId);
+    const updatedData = {
+      ...farmerPosts[updatedIndex],
+      ...{
+        likes_total: likes_total - 1,
+        likes: [
+          ...likes.slice(0, removedLikesIndex),
+          ...likes.slice(removedLikesIndex + 1, likes.length)
+        ],
         __typename: 'FarmerPost'
       }
     };
@@ -183,35 +221,33 @@ export const cacheLikeComment = ( cache, feedId, commentId, userId, action ) => 
   }
 }
 
-export const cacheDislike = ( cache, feedId, userId ) => {
+export const cacheCommentSubmit = ( cache, { data }, feedId, comment ) => {
   try {
-    const { farmerPosts } = cache.readQuery({
-      query: FETCH_FARMER_POSTS
-    });
-    const updatedIndex = farmerPosts.findIndex(({ _id }) => _id === feedId);
-    const { likes_total, likes } = farmerPosts[updatedIndex];
-    const removedLikesIndex = likes.findIndex(({ _id }) => _id === userId);
-    const updatedData = {
-      ...farmerPosts[updatedIndex],
-      ...{
-        likes_total: likes_total - 1,
-        likes: [
-          ...likes.slice(0, removedLikesIndex),
-          ...likes.slice(removedLikesIndex + 1, likes.length)
-        ],
-        __typename: 'FarmerPost'
-      }
-    };
-    ApolloClientProvider.client.writeQuery({
-      query: FETCH_FARMER_POSTS,
-      data: {
-        farmerPosts: [
-          ...farmerPosts.slice(0, updatedIndex),
-          updatedData,
-          ...farmerPosts.slice(updatedIndex + 1, farmerPosts.length)
-        ]
+    const dataCache = cache.readQuery({
+      query: FETCH_FARMER_POST,
+      variables: {
+        _id: feedId
       }
     });
+    const { farmerPost: farmerPostOld = {} } = dataCache || {};
+    const { comments: oldComments = [] } = farmerPostOld || {};
+    const { commentAsFarmer: newComment } = data || {};
+    if (Array.isArray(oldComments) && oldComments.length) {
+      ApolloClientProvider.client.writeQuery({
+        query: FETCH_FARMER_POST,
+        data: {
+          farmerPost: {
+            ...farmerPostOld,
+            ...{
+              comments: [
+                ...oldComments,
+                newComment
+              ]
+            }
+          }
+        }
+      });
+    } 
   } catch(err) {
     return null;
   }

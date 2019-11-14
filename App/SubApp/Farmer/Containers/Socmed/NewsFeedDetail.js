@@ -112,7 +112,6 @@ class NewsFeedDetail extends Component {
           <Query
             query={FETCH_FARMER_POST}
             variables={{ _id: feedId }}
-            fetchPolicy="network-only"
           >
             {({ loading, error, data, refetch }) => {
               const { farmerPost: dataList = [] } = data || {};
@@ -142,6 +141,7 @@ class NewsFeedDetail extends Component {
                       onBackPressed={() => navigation.goBack()}
                     />
                     <NewsFeedComments
+                      feedId={feedId}
                       comments={comments}
                       onCommentParent={this.replyParentComment}
                       onCommentChild={() => {}}

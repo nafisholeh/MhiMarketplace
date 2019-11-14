@@ -67,6 +67,7 @@ class NewsFeedList extends Component {
         {Array.isArray(comments) && comments.length
           ? (
             <NewsFeedComments
+              feedId={_id}
               comments={comments}
               onSubmitComment={comment => this.submitCommentToPost(_id, comment)}
               showCommentInput

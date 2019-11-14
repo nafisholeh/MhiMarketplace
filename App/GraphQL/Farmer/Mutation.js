@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
-import { FETCH_FARMER_POSTS } from './Query';
+import { FETCH_FARMER_POSTS, FETCH_FARMER_POST } from './Query';
 
 export const SIGNUP_FARMER = gql`
   mutation signupFarmer($data: UserFarmerInput!) {
@@ -108,6 +108,80 @@ export const cacheLike = ( cache, feedId, userId ) => {
     return null;
   }
 };
+
+export const cacheLikeComment = ( cache, feedId, commentId, userId, action ) => {
+  try {
+    const data = cache.readQuery({
+      query: FETCH_FARMER_POST,
+      variables: {
+        _id: feedId
+      }
+    });
+    const { farmerPost: farmerPostOld = {} } = data || {};
+    const { comments = [] } = farmerPostOld || {};
+    if (Array.isArray(comments) && comments.length) {
+      const matchCommentId = comments.findIndex(({ _id }) => _id === commentId);
+      if (matchCommentId >= 0) {
+        const { likes, likes_total } = comments[matchCommentId];
+        if (action === "like") {
+          ApolloClientProvider.client.writeQuery({
+            query: FETCH_FARMER_POST,
+            data: {
+              farmerPost: {
+                ...farmerPostOld,
+                ...{
+                  comments: [
+                    ...comments.slice(0, matchCommentId),
+                    {
+                      ...comments[matchCommentId],
+                      ...{
+                        likes_total: likes_total + 1,
+                        likes: [...likes, { _id: userId, __typename: 'UserFarmer' }],
+                        __typename: 'FarmerPost'
+                      }
+                    },
+                    ...comments.slice(matchCommentId + 1, comments.length)
+                  ]
+                }
+              }
+            }
+          });
+        } else {
+          const matchUserId = likes.findIndex(({ _id }) => _id === userId);
+          if (matchUserId >= 0) {
+            ApolloClientProvider.client.writeQuery({
+              query: FETCH_FARMER_POST,
+              data: {
+                farmerPost: {
+                  ...farmerPostOld,
+                  ...{
+                    comments: [
+                      ...comments.slice(0, matchCommentId),
+                      {
+                        ...comments[matchCommentId],
+                        ...{
+                          likes_total: likes_total - 1,
+                          likes: [
+                            ...likes.slice(0, matchUserId),
+                            ...likes.slice(matchUserId + 1, likes.length)
+                          ],
+                          __typename: 'FarmerPost'
+                        }
+                      },
+                      ...comments.slice(matchCommentId + 1, comments.length)
+                    ]
+                  }
+                }
+              }
+            });
+          }
+        }
+      }
+    }
+  } catch(err) {
+    return null;
+  }
+}
 
 export const cacheDislike = ( cache, feedId, userId ) => {
   try {

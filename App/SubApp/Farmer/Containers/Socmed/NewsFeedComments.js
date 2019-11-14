@@ -13,6 +13,8 @@ import { getMockUserId } from 'Redux/SessionRedux';
 import {
   LIKE,
   DISLIKE,
+  cacheLikeComment,
+  cacheDislikeComment,
 } from 'GraphQL/Farmer/Mutation';
 
 class NewsFeedComments extends Component {
@@ -22,6 +24,7 @@ class NewsFeedComments extends Component {
       showCommentInput,
       onSubmitComment,
       loggedInUserId,
+      feedId,
     } = this.props;
     return (
       <View
@@ -30,7 +33,7 @@ class NewsFeedComments extends Component {
         }}
       >
         {Array.isArray(comments) && comments.map((item, index) => {
-          const { _id: feedId } = item || {};
+          const { _id: commentId } = item || {};
           return (
             <Mutation
               key={index}
@@ -41,24 +44,30 @@ class NewsFeedComments extends Component {
                 return (
                   <CommentItem
                     data={item}
-                    onLikeParent={(feedId, name, isLikedByMe) => {
+                    onLikeParent={(commentId, name, isLikedByMe) => {
                       mutate({
                         variables: {
-                          elementId: feedId,
+                          elementId: commentId,
                           userId: loggedInUserId,
                           type: "COMMENT",
                           action: isLikedByMe ? "dislike" : "like"
-                        }
+                        },
+                        update: ((cache, data) => 
+                          cacheLikeComment(cache, feedId, commentId, loggedInUserId, isLikedByMe ? "dislike" : "like")
+                        )
                       });
                     }}
-                    onLikeChild={(feedId, name, isLikedByMe) => {
+                    onLikeChild={(commentId, name, isLikedByMe) => {
                       mutate({
                         variables: {
-                          elementId: feedId,
+                          elementId: commentId,
                           userId: loggedInUserId,
                           type: "COMMENT_REPLY",
                           action: isLikedByMe ? "dislike" : "like"
-                        }
+                        },
+                        update: ((cache, data) => 
+                          cacheLikeComment(cache, feedId, commentId, loggedInUserId, isLikedByMe ? "dislike" : "like")
+                        )
                       });
                     }}
                     {...this.props}

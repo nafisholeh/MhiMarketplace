@@ -103,6 +103,8 @@ class CommentInput extends Component {
             onFocus={this.onFocus}
             value={comment}
             multiline={true}
+            editable={!disabled}
+            selectTextOnFocus={!disabled}
             style={{
               flex: 1,
               marginRight: moderateScale(5),

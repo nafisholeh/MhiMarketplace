@@ -26,6 +26,10 @@ class CommentItem extends Component {
       ktp_name: name,
       ktp_photo_face: photo
     } = author || {};
+    const { 
+      hideLikeButton,
+      hideCommentButton
+    } = this.props;
     const date = unixToDate(date_commented);
     return (
       <View
@@ -106,7 +110,7 @@ class CommentItem extends Component {
             )
             : null
           }
-          {onLike
+          {onLike && !hideLikeButton
             ? (
               <TouchableOpacity
                 onPress={() => onLike(feedId, name, isLikedByMe)}
@@ -127,7 +131,7 @@ class CommentItem extends Component {
             )
             : null
           }
-          {onComment
+          {onComment && !hideCommentButton
             ? (
               <TouchableOpacity
                 onPress={() => onComment(feedId, name)}

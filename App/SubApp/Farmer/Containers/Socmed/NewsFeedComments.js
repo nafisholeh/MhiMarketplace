@@ -28,6 +28,7 @@ class NewsFeedComments extends Component {
       otherCommentTotal,
       onCommentContainerPressed,
       onViewOtherCommentPressed,
+      onCommentInputClicked,
     } = this.props;
     return (
       <TouchableOpacity
@@ -107,9 +108,14 @@ class NewsFeedComments extends Component {
         })}
         {showCommentInput
           ? (
-            <CommentInput
-              onSubmitComment={onSubmitComment}
-            />
+            <TouchableOpacity
+              onPress={onCommentInputClicked}
+            >
+              <CommentInput
+                disabled
+                onSubmitComment={onSubmitComment}
+              />
+            </TouchableOpacity>
           )
           : null
         }

@@ -77,12 +77,14 @@ class NewsFeedList extends Component {
           comments={lastComment}
           onSubmitComment={comment => this.openFeedDetail(_id, comment)}
           showCommentInput
-          commentInputDisabled
+          onCommentInputClicked={() => this.openFeedDetail(_id)}
           onLikeParent={() => this.openFeedDetail(_id)}
           onLikeChild={() => this.openFeedDetail(_id)}
+          hideLikeButton={true}
           onCommentParent={() => this.openFeedDetail(_id)}
           onCommentChild={() => this.openFeedDetail(_id)}
           onCommentContainerPressed={() => this.openFeedDetail(_id)}
+          hideCommentButton={true}
           otherCommentTotal={otherCommentTotal}
           onViewOtherCommentPressed={() => this.openFeedDetail(_id)}
         />

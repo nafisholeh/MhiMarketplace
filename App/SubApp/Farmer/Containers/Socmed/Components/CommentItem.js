@@ -177,7 +177,8 @@ class CommentItem extends Component {
             return (
               this.renderItem(
                 item,
-                onLikeChild,
+                (subCommentId, name, isLikedByMe) => 
+                  onLikeChild(commentId, subCommentId, name, isLikedByMe),
                 (subCommentId, name) => onCommentChild(commentId, name),
                 false,
                 isReplyLikedByMe

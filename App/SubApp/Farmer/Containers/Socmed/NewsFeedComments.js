@@ -14,7 +14,7 @@ import {
   LIKE,
   DISLIKE,
   cacheLikeComment,
-  cacheDislikeComment,
+  cacheLikeSubComment,
 } from 'GraphQL/Farmer/Mutation';
 
 class NewsFeedComments extends Component {
@@ -82,20 +82,33 @@ class NewsFeedComments extends Component {
                           action: isLikedByMe ? "dislike" : "like"
                         },
                         update: ((cache, data) => 
-                          cacheLikeComment(cache, feedId, commentId, loggedInUserId, isLikedByMe ? "dislike" : "like")
+                          cacheLikeComment(
+                            cache,
+                            feedId,
+                            commentId,
+                            loggedInUserId,
+                            isLikedByMe ? "dislike" : "like"
+                          )
                         )
                       });
                     }}
-                    onLikeChild={(commentId, name, isLikedByMe) => {
+                    onLikeChild={(commentId, subCommentId, name, isLikedByMe) => {
                       mutate({
                         variables: {
-                          elementId: commentId,
+                          elementId: subCommentId,
                           userId: loggedInUserId,
                           type: "COMMENT_REPLY",
                           action: isLikedByMe ? "dislike" : "like"
                         },
                         update: ((cache, data) => 
-                          cacheLikeComment(cache, feedId, commentId, loggedInUserId, isLikedByMe ? "dislike" : "like")
+                          cacheLikeSubComment(
+                            cache,
+                            feedId,
+                            commentId,
+                            subCommentId,
+                            loggedInUserId,
+                            isLikedByMe ? "dislike" : "like"
+                          )
                         )
                       });
                     }}

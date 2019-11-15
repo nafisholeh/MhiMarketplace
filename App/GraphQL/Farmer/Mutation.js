@@ -160,65 +160,110 @@ export const cacheLikeComment = ( cache, feedId, commentId, userId, action ) => 
     });
     const { farmerPost: farmerPostOld = {} } = data || {};
     const { comments = [] } = farmerPostOld || {};
-    if (Array.isArray(comments) && comments.length) {
-      const matchCommentId = comments.findIndex(({ _id }) => _id === commentId);
-      if (matchCommentId >= 0) {
-        const { likes, likes_total } = comments[matchCommentId];
-        if (action === "like") {
-          ApolloClientProvider.client.writeQuery({
-            query: FETCH_FARMER_POST,
-            data: {
-              farmerPost: {
-                ...farmerPostOld,
-                ...{
-                  comments: [
-                    ...comments.slice(0, matchCommentId),
-                    {
-                      ...comments[matchCommentId],
-                      ...{
-                        likes_total: likes_total + 1,
-                        likes: [...likes, { _id: userId, __typename: 'UserFarmer' }],
-                        __typename: 'FarmerPost'
-                      }
-                    },
-                    ...comments.slice(matchCommentId + 1, comments.length)
-                  ]
-                }
-              }
-            }
-          });
-        } else {
-          const matchUserId = likes.findIndex(({ _id }) => _id === userId);
-          if (matchUserId >= 0) {
-            ApolloClientProvider.client.writeQuery({
-              query: FETCH_FARMER_POST,
-              data: {
-                farmerPost: {
-                  ...farmerPostOld,
+    if (!Array.isArray(comments) || !comments.length) return;
+    const matchCommentId = comments.findIndex(({ _id }) => _id === commentId);
+    if (matchCommentId < 0) return;
+    const { likes, likes_total } = comments[matchCommentId];
+    const matchUserId = likes.findIndex(({ _id }) => _id === userId);
+    ApolloClientProvider.client.writeQuery({
+      query: FETCH_FARMER_POST,
+      data: {
+        farmerPost: {
+          ...farmerPostOld,
+          ...{
+            comments: [
+              ...comments.slice(0, matchCommentId),
+              action === "like" 
+                ? {
+                  ...comments[matchCommentId],
                   ...{
-                    comments: [
-                      ...comments.slice(0, matchCommentId),
-                      {
-                        ...comments[matchCommentId],
+                    likes_total: likes_total + 1,
+                    likes: [...likes, { _id: userId, __typename: 'UserFarmer' }],
+                    __typename: 'FarmerPost'
+                  }
+                }
+                : {
+                  ...comments[matchCommentId],
+                  ...{
+                    likes_total: likes_total - 1,
+                    likes: [
+                      ...likes.slice(0, matchUserId),
+                      ...likes.slice(matchUserId + 1, likes.length)
+                    ],
+                    __typename: 'FarmerPost'
+                  }
+                },
+              ...comments.slice(matchCommentId + 1, comments.length)
+            ]
+          }
+        }
+      }
+    });
+  } catch(err) {
+    return null;
+  }
+}
+
+export const cacheLikeSubComment = ( cache, feedId, commentId, subCommentId, userId, action ) => {
+  try {
+    const data = cache.readQuery({
+      query: FETCH_FARMER_POST,
+      variables: {
+        _id: feedId
+      }
+    });
+    const { farmerPost: farmerPostOld = {} } = data || {};
+    const { comments: oldComments = [] } = farmerPostOld || {};
+    if (!Array.isArray(oldComments) || !oldComments.length) return;
+    const matchedCommentsIndex = oldComments.findIndex(({ _id }) => _id === commentId);
+    if (matchedCommentsIndex < 0) return;
+    const { content_reply: oldSubComments = [] } = oldComments[matchedCommentsIndex] || [];
+    const matchedSubCommentIndex = oldSubComments.findIndex(({ _id }) => _id === subCommentId);
+    if (matchedSubCommentIndex < 0) return;
+    const matchedSubComment = oldSubComments[matchedSubCommentIndex];
+    const { likes, likes_total } = matchedSubComment || {};
+    const matchUserId = likes.findIndex(({ _id }) => _id === userId);
+    ApolloClientProvider.client.writeQuery({
+      query: FETCH_FARMER_POST,
+      data: {
+        farmerPost: {
+          ...farmerPostOld,
+          ...{
+            comments: [
+              ...oldComments.slice(0, matchedCommentsIndex),
+              {
+                ...oldComments[matchedCommentsIndex],
+                ...{
+                  content_reply: [
+                    ...oldSubComments.slice(0, matchedSubCommentIndex),
+                    action === "like" 
+                      ? {
+                        ...matchedSubComment,
+                        ...{
+                          likes_total: likes_total + 1,
+                          likes: [...likes, { _id: userId, __typename: 'UserFarmer' }],
+                        }
+                      }
+                      : {
+                        ...matchedSubComment,
                         ...{
                           likes_total: likes_total - 1,
                           likes: [
                             ...likes.slice(0, matchUserId),
                             ...likes.slice(matchUserId + 1, likes.length)
                           ],
-                          __typename: 'FarmerPost'
                         }
                       },
-                      ...comments.slice(matchCommentId + 1, comments.length)
-                    ]
-                  }
+                    ...oldSubComments.slice(matchedSubCommentIndex + 1, oldSubComments.length)
+                  ]
                 }
-              }
-            });
+              },
+              ...oldComments.slice(matchedCommentsIndex + 1, oldComments.length),
+            ]
           }
         }
       }
-    }
+    });
   } catch(err) {
     return null;
   }

@@ -23,8 +23,8 @@ import {
   REPLY_TO_COMMENT,
   LIKE,
   DISLIKE,
-  cacheCommentSubmit,
   cacheCommentReply,
+  cacheSubCommentReply,
 } from 'GraphQL/Farmer/Mutation';
 import { QueryEffectPage } from 'Components';
 import Config from 'Config/AppConfig';
@@ -86,8 +86,8 @@ class NewsFeedDetail extends Component {
       variables: { data },
       update: (cache, data) => 
         isReplyParent
-          ? cacheCommentReply(cache, data, feedId, parentId, comment)
-          : cacheCommentSubmit(cache, data, feedId, comment)
+          ? cacheSubCommentReply(cache, data, feedId, parentId, comment)
+          : cacheCommentReply(cache, data, feedId, comment)
     })
     .then(res => {
       console.tron.log('submitCommentToPost/res', res)

@@ -224,7 +224,7 @@ export const cacheLikeComment = ( cache, feedId, commentId, userId, action ) => 
   }
 }
 
-export const cacheCommentSubmit = ( cache, { data }, feedId, comment ) => {
+export const cacheCommentReply = ( cache, { data }, feedId, comment ) => {
   try {
     const dataCache = cache.readQuery({
       query: FETCH_FARMER_POST,
@@ -256,7 +256,7 @@ export const cacheCommentSubmit = ( cache, { data }, feedId, comment ) => {
   }
 };
 
-export const cacheCommentReply = ( cache, { data }, feedId, parentId, comment ) => {
+export const cacheSubCommentReply = ( cache, { data }, feedId, parentId, comment ) => {
   try {
     const { replyCommentAsFarmer: newSubComment } = data || {};
     

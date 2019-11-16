@@ -35,6 +35,8 @@ class PostFeedModal extends Component {
     postContent: '',
     isNeedToPost: false,
     photos: null,
+    photosDeleted: [],
+    photoSelectedIndex: null,
   };
   
   onChangeContent = text => {
@@ -85,16 +87,43 @@ class PostFeedModal extends Component {
     this.setState({ isNeedToPost: false });
   };
   
+  selectPhoto = index => {
+    const { photos, photosDeleted = [], photoSelectedIndex } = this.state;
+    if (photoSelectedIndex === index) {
+      this.setState({
+        photos: [
+          ...photos.slice(0, index),
+          ...photos.slice(index + 1, photos.length),
+        ],
+        photosDeleted: Array.isArray(photosDeleted)
+          ? photosDeleted.push(index)
+          : [index],
+        photoSelectedIndex: null,
+      });
+    } else {
+      this.setState({ photoSelectedIndex: index });
+    }
+  };
+  
   onPhotoChange = (name, raw = [], paths = []) => {
-    const imageData = raw.map((item, i) => {
-      const [{ mime, path, data }] = raw[i];
-      return { mime, path };
-    })
+    const { [name]: currentPhotos, photosDeleted = [] } = this.state;
+    const imageData =
+      raw
+      .map((item, i) => {
+        const [{ mime, path, data }] = raw[i];
+        return { mime, path };
+      })
+      .filter(({ path }) => 
+        Array.isArray(photosDeleted)
+          ? photosDeleted.findIndex(({ path: curPath }) => curPath === path ) < 0
+          : true
+      );
     this.setState({ [name]: imageData });
   };
 
   render() {
-    const { postContent, isNeedToPost, photos } = this.state;
+    const { postContent, isNeedToPost, photos, photoSelectedIndex } = this.state;
+    const isShowPhotos = Array.isArray(photos) && photos.length;
     return (
       <View>
         <Text
@@ -199,7 +228,7 @@ class PostFeedModal extends Component {
                       onSubmitEditing={this.onPostContent}
                       value={postContent}
                       style={{
-                        flex: Array.isArray(photos) ? 1 : 2,
+                        flex: isShowPhotos ? 1 : 2,
                         marginRight: moderateScale(5),
                         borderRadius: moderateScale(10),
                         padding: moderateScale(10),
@@ -208,7 +237,7 @@ class PostFeedModal extends Component {
                       multiline={true}
                       textAlignVertical="top"
                     />
-                    {Array.isArray(photos)
+                    {isShowPhotos
                       ? (
                         <ScrollView
                           horizontal={true}
@@ -234,17 +263,45 @@ class PostFeedModal extends Component {
                             >
                               {photos.map((item, index) => {
                                 const { path } = item || {};
+                                const isSelected = photoSelectedIndex === index;
                                 return (
-                                  <Image
-                                    key={index}
-                                    source={{ uri: path }}
+                                  <TouchableOpacity
+                                    onPress={() => this.selectPhoto(index)}
                                     style={{
-                                      width: moderateScale(100),
-                                      height: moderateScale(70),
-                                      borderRadius: moderateScale(10),
                                       marginRight: moderateScale(7),
+                                      borderRadius: moderateScale(10),
+                                      backgroundColor: 
+                                        isSelected
+                                          ? 'rgba(255,255,255,0.8)'
+                                          : 'rgba(0,0,0,0)'
                                     }}
-                                  />
+                                  >
+                                    <Image
+                                      key={index}
+                                      source={{ uri: path }}
+                                      style={{
+                                        width: moderateScale(100),
+                                        height: moderateScale(70),
+                                        borderRadius: moderateScale(10),
+                                      }}
+                                    />
+                                    {isSelected
+                                      ? (
+                                        <Image
+                                          source={Images.delete_flat}
+                                          style={{
+                                            position: 'absolute',
+                                            top: '25%',
+                                            left: '35%',
+                                            width: moderateScale(30),
+                                            height: moderateScale(30),
+                                            tintColor: Colors.red,
+                                          }}
+                                        />
+                                      )
+                                      : null
+                                    }
+                                  </TouchableOpacity>
                                 );
                               })}
                             </View>

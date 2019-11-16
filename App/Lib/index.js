@@ -25,6 +25,7 @@ import { reportSentryError, addToSentryLog, reportSentryLog } from './SentryUtil
 import { calcPolygonSize, calcPolygonCenter, normalizeAreaSize } from './Map';
 import { extractAdministrativeName } from './LocationUtils';
 import { getStateFromAsyncStorage, setStateFromAsyncStorage  } from './AsyncStorage';
+import { getFilenameFromPath, getFileType, combineFilenameMime } from './File';
 
 export { 
   parseToRupiah, calcDiscount, isEmailValid, isEmailError, 
@@ -36,5 +37,6 @@ export {
   getIntervalDateToday, reportSentryError, addToSentryLog, reportSentryLog,
   getTotalWeight, calcPolygonSize, extractAdministrativeName,
   getStateFromAsyncStorage, setStateFromAsyncStorage, calcPolygonCenter,
-  normalizeAreaSize, convertToGraphQLFile, getUTCDate, unixToDate
+  normalizeAreaSize, convertToGraphQLFile, getUTCDate, unixToDate,
+  getFilenameFromPath, getFileType, combineFilenameMime
 };

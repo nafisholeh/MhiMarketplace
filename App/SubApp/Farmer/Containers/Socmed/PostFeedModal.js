@@ -19,7 +19,13 @@ import { ReactNativeFile } from 'apollo-upload-client';
 import { ViewShadow, ButtonPrimary, ImagePicker } from 'Components';
 import { Avatar } from 'CommonFarmer';
 import { NewsFeedDivider } from './Components';
-import { moderateScale, screenWidth, screenHeight, getUTCDate } from 'Lib';
+import {
+  moderateScale,
+  screenWidth,
+  screenHeight,
+  getUTCDate,
+  combineFilenameMime,
+} from 'Lib';
 import { Colors, Fonts, Images } from 'Themes';
 import { POST_AS_FARMER, cachePostSubmit } from 'GraphQL/Farmer/Mutation';
 import { getUserId } from 'Redux/SessionRedux';
@@ -50,7 +56,9 @@ class PostFeedModal extends Component {
         const { path, mime } = item || {};
         return new ReactNativeFile({
             uri: path,
-            name: `${moment().format('YYYYMMDDHHmmss')}_${index}_${userId}`,
+            name: combineFilenameMime(
+              `${moment().format('YYYYMMDDHHmmss')}_${index}_${userId}`,
+              mime),
             type: mime
           });
         }

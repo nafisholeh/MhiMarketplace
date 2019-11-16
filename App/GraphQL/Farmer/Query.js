@@ -5,6 +5,7 @@ export const FETCH_FARMER_POSTS = gql`
     farmerPosts {
       _id
       content
+      photo
       date_posted
       author {
         _id

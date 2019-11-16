@@ -12,7 +12,7 @@ import { Avatar } from 'CommonFarmer';
 import { NewsFeedDivider } from './Components';
 import { moderateScale, screenWidth, screenHeight, getUTCDate } from 'Lib';
 import { Colors, Fonts, Images } from 'Themes';
-import { POST_AS_FARMER } from 'GraphQL/Farmer/Mutation';
+import { POST_AS_FARMER, cachePostSubmit } from 'GraphQL/Farmer/Mutation';
 import { getUserId } from 'Redux/SessionRedux';
 
 class PostFeedModal extends Component {
@@ -141,6 +141,7 @@ class PostFeedModal extends Component {
             >
             <Mutation
               mutation={POST_AS_FARMER}
+              update={(cache, data) => cachePostSubmit(cache, data)}
               onCompleted={this.onPostSuccess}
               onError={error => {
                 console.tron.log('postAsFarmer/onError', error)

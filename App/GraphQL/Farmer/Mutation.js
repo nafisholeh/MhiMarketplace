@@ -15,6 +15,20 @@ export const POST_AS_FARMER = gql`
   mutation postAsFarmer($data: CreateFarmerPostInput) {
     postAsFarmer(data: $data) {
       _id
+      content
+      author {
+        _id
+        ktp_nik
+        ktp_name
+      }
+      date_posted
+      comments {
+        _id
+      }
+      likes_total
+      likes {
+        _id
+      } 
     }
   }
 `
@@ -85,6 +99,26 @@ export const DISLIKE = gql`
     }
   }
 `
+
+export const cachePostSubmit = ( cache, { data }) => {
+  try {
+    const { farmerPosts = [] } = cache.readQuery({
+      query: FETCH_FARMER_POSTS
+    });
+    const { postAsFarmer: newPost } = data || {};
+    ApolloClientProvider.client.writeQuery({
+      query: FETCH_FARMER_POSTS,
+      data: {
+        farmerPosts: [
+          newPost,
+          ...farmerPosts,
+        ]
+      }
+    });
+  } catch (err) {
+    return;
+  }
+};
 
 export const cacheLike = ( cache, feedId, userId ) => {
   try {

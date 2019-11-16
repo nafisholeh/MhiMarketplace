@@ -1,5 +1,13 @@
 import React, { Component, Fragment } from 'react';
-import { View, TextInput, Text, TouchableOpacity, Image } from 'react-native';
+import {
+  View,
+  TextInput,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Image,
+  ScrollView
+} from 'react-native';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { string } from 'prop-types';
@@ -7,7 +15,7 @@ import Modal from "react-native-modal";
 import { Mutation } from 'react-apollo';
 import moment from 'moment';
 
-import { ViewShadow, ButtonPrimary } from 'Components';
+import { ViewShadow, ButtonPrimary, ImagePicker } from 'Components';
 import { Avatar } from 'CommonFarmer';
 import { NewsFeedDivider } from './Components';
 import { moderateScale, screenWidth, screenHeight, getUTCDate } from 'Lib';
@@ -19,6 +27,7 @@ class PostFeedModal extends Component {
   state = {
     postContent: '',
     isNeedToPost: false,
+    photos: null,
   };
   
   onChangeContent = text => {
@@ -51,9 +60,17 @@ class PostFeedModal extends Component {
   onHidePostModal = () => {
     this.setState({ isNeedToPost: false });
   };
+  
+  onPhotoChange = (name, raw = [], paths = []) => {
+    const imageData = raw.map((item, i) => {
+      const [{ mime, path, data }] = raw[i];
+      return { mime, path, data };
+    })
+    this.setState({ [name]: imageData });
+  };
 
   render() {
-    const { postContent, isNeedToPost } = this.state;
+    const { postContent, isNeedToPost, photos } = this.state;
     return (
       <View>
         <Text
@@ -127,7 +144,7 @@ class PostFeedModal extends Component {
             />
             <ViewShadow
               width={screenWidth}
-              height={screenHeight * 0.4}
+              height={screenHeight * 0.5}
               borderRadius={13}
               shadowBorderRadiusAndroid={40}
               shadowRadiusAndroid={20}
@@ -158,27 +175,113 @@ class PostFeedModal extends Component {
                       onSubmitEditing={this.onPostContent}
                       value={postContent}
                       style={{
-                        flex: 1,
-                        marginBottom: moderateScale(70),
+                        flex: Array.isArray(photos) ? 1 : 2,
                         marginRight: moderateScale(5),
                         borderRadius: moderateScale(10),
                         padding: moderateScale(10),
-                        backgroundColor: Colors.white,
                         ...Fonts.TITLE_NORMAL
                       }}
                       multiline={true}
                       textAlignVertical="top"
                     />
-                    <ButtonPrimary
-                      onPress={() => this.onPostContent(mutate)}
-                      title="Posting"
-                      loading={loading}
+                    {Array.isArray(photos)
+                      ? (
+                        <ScrollView
+                          horizontal={true}
+                          showsHorizontalScrollIndicator={false}
+                          style={{
+                            flex: 1,
+                          }}
+                          contentContainerStyle={{
+                            flexGrow: 1,
+                          }}
+                        >
+                          <TouchableWithoutFeedback
+                            style={{
+                              flex: 1,
+                            }}
+                          >
+                            <View
+                              style={{
+                                flex: 1,
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                              }}
+                            >
+                              {photos.map((item, index) => {
+                                const { path } = item || {};
+                                return (
+                                  <Image
+                                    key={index}
+                                    source={{ uri: path }}
+                                    style={{
+                                      width: moderateScale(100),
+                                      height: moderateScale(70),
+                                      borderRadius: moderateScale(10),
+                                      marginRight: moderateScale(7),
+                                    }}
+                                  />
+                                );
+                              })}
+                            </View>
+                          </TouchableWithoutFeedback>
+                        </ScrollView>
+                      )
+                      : null
+                    }
+                    <View
                       style={{
-                        position: 'absolute', bottom: moderateScale(25),
-                        left: moderateScale(15), right: moderateScale(15),
-                        borderRadius: moderateScale(12),
+                        flex: 0.5,
+                        flexDirection: 'row',
                       }}
-                    />
+                    >
+                      <ImagePicker
+                        name="photos"
+                        onChange={this.onPhotoChange}
+                        data={photos}
+                        titleBottomSheet='Ambil foto'
+                        isMultiplePick={true}
+                        isShowCancelButton={false}
+                        isShowGallery
+                        styleContainer={{
+                          marginRight: moderateScale(10),
+                        }}
+                        isCustomComponent
+                        customComponent={
+                          (props) => (
+                            <TouchableOpacity
+                              onPress={() => props.onStartPick()}
+                              style={{
+                                width: moderateScale(50),
+                                height: moderateScale(50),
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderRadius: moderateScale(12),
+                                backgroundColor: Colors.disabled_light,
+                              }}
+                            >
+                              <Image
+                                source={Images.camera}  
+                                style={{
+                                  width: moderateScale(25),
+                                  height: moderateScale(25),
+                                  tintColor: Colors.white,
+                                }}
+                              />
+                            </TouchableOpacity>
+                          )
+                        }
+                      />
+                      <ButtonPrimary
+                        onPress={() => this.onPostContent(mutate)}
+                        title="Posting"
+                        loading={loading}
+                        style={{
+                          flex: 1,
+                          borderRadius: moderateScale(12),
+                        }}
+                      />
+                    </View>
                   </Fragment>
                 );
               }}

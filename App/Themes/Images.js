@@ -56,7 +56,8 @@ const images = {
   liked: require(pathPrefix+'liked.png'),
   comment: require(pathPrefix+'comment.png'),
   share: require(pathPrefix+'share.png'),
-  send: require(pathPrefix+'send.png')
+  send: require(pathPrefix+'send.png'),
+  camera: require(pathPrefix+'camera.png'),
 }
 
 export default images

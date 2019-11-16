@@ -12,10 +12,11 @@ export const SIGNUP_FARMER = gql`
 `
 
 export const POST_AS_FARMER = gql`
-  mutation postAsFarmer($data: CreateFarmerPostInput) {
-    postAsFarmer(data: $data) {
+  mutation postAsFarmer($data: CreateFarmerPostInput, $images: [Upload]) {
+    postAsFarmer(data: $data, images: $images) {
       _id
       content
+      photo
       author {
         _id
         ktp_nik

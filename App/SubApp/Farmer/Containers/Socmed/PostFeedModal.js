@@ -14,6 +14,7 @@ import { string } from 'prop-types';
 import Modal from "react-native-modal";
 import { Mutation } from 'react-apollo';
 import moment from 'moment';
+import { ReactNativeFile } from 'apollo-upload-client';
 
 import { ViewShadow, ButtonPrimary, ImagePicker } from 'Components';
 import { Avatar } from 'CommonFarmer';
@@ -35,16 +36,30 @@ class PostFeedModal extends Component {
   };
   
   onPostContent = mutate => {
-    const { postContent } = this.state;
+    const { postContent, photos } = this.state;
     const { userId } = this.props;
-    mutate({
-      variables: {
-        data: {
-          content: postContent,
-          author: "5d8fc089043c4772aa81fa65",
-          date_posted: getUTCDate(),
-        }
+    let variables = {
+      data: {
+        content: postContent,
+        author: "5d8fc089043c4772aa81fa65",
+        date_posted: getUTCDate(),
       }
+    };
+    if (Array.isArray(photos) && photos.length) {
+      const images = photos.map((item, index) => {
+        const { path, mime } = item || {};
+        return new ReactNativeFile({
+            uri: path,
+            name: `${moment().format('YYYYMMDDHHmmss')}_${index}_${userId}`,
+            type: mime
+          });
+        }
+      );
+      variables = Object.assign({}, variables, { images });
+    }
+    mutate({
+      variables,
+      context: { hasUpload: true },
     });
     this.setState({ isNeedToPost: false, postContent: '' });
   };
@@ -64,7 +79,7 @@ class PostFeedModal extends Component {
   onPhotoChange = (name, raw = [], paths = []) => {
     const imageData = raw.map((item, i) => {
       const [{ mime, path, data }] = raw[i];
-      return { mime, path, data };
+      return { mime, path };
     })
     this.setState({ [name]: imageData });
   };

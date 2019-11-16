@@ -3,7 +3,9 @@ import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { string } from 'prop-types';
 import moment from 'moment';
 import { Mutation } from 'react-apollo';
+import FBCollage from 'react-native-fb-collage';
 
+import AppConfig from 'Config/AppConfig';
 import { Fonts, Colors, Images } from 'Themes';
 import { moderateScale, getIntervalTimeToday, unixToDate } from 'Lib';
 import { Avatar } from 'CommonFarmer';
@@ -13,16 +15,18 @@ class NewsFeedContent extends Component {
   state = {
     statistic: '',
     isLiked: false,
+    photoUri: [],
   };
   
   componentDidMount() {
     this.drawStatistic();
     this.handleCreatedDate();
     this.handleLikeStatus();
+    this.handlePhoto();
   }
   
   componentDidUpdate(prevProps) {
-    const { likeTotal, commentTotal, shareTotal, dateCreated, likes } = this.props;
+    const { likeTotal, commentTotal, shareTotal, dateCreated, likes, photo } = this.props;
     if (
       prevProps.likeTotal !== likeTotal
       ||prevProps.commentTotal !== commentTotal
@@ -36,7 +40,17 @@ class NewsFeedContent extends Component {
     if (prevProps.likes !== likes) {
       this.handleLikeStatus();
     }
+    if (prevProps.photo !== photo) {
+      this.handlePhoto();
+    }
   }
+  
+  handlePhoto = () => {
+    const { photo } = this.props;
+    if (!photo) return;
+    const photoUri = photo.split(',').map((item) => `${AppConfig.uri.image}/${item}`);
+    this.setState({ photoUri });
+  };
   
   handleLikeStatus = () => {
     const { loggedInUserId, likes = [] } = this.props;
@@ -120,7 +134,7 @@ class NewsFeedContent extends Component {
       onBackPressed,
       showActionBorder
     } = this.props;
-    const { statistic, dateCreated, isLiked } = this.state;
+    const { statistic, dateCreated, isLiked, photoUri } = this.state;
     return (
       <TouchableOpacity
         onPress={this.onPressWrapper}
@@ -184,22 +198,21 @@ class NewsFeedContent extends Component {
             }
           </View>
         </View>
-        <View
+        <Text
           style={{
+            ...Fonts.TITLE_NORMAL,
+            color: Colors.text,
+            lineHeight: moderateScale(18),
+            letterSpacing: 0.3,
             marginBottom: moderateScale(10),
           }}
         >
-          <Text
-            style={{
-              ...Fonts.TITLE_NORMAL,
-              color: Colors.text,
-              lineHeight: moderateScale(18),
-              letterSpacing: 0.3
-            }}
-          >
-            {content}
-          </Text>
-        </View>
+          {content}
+        </Text>
+        <FBCollage 
+          images={photoUri}
+          imageOnPress={() => {}}
+        />
         {statistic ? (
             <View
               style={{

@@ -58,7 +58,8 @@ class PostFeedModal extends Component {
             uri: path,
             name: combineFilenameMime(
               `${moment().format('YYYYMMDDHHmmss')}_${index}_${userId}`,
-              mime),
+              mime
+            ),
             type: mime
           });
         }

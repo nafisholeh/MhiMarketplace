@@ -47,7 +47,16 @@ class NewsFeedList extends Component {
 
   renderNewsFeedItem = ({ item, index }) => {
     const { loggedInUserId } = this.props;
-    const { _id, content, author, date_posted, comments, likes_total, likes } = item || {};
+    const {
+      _id,
+      content,
+      photo,
+      author,
+      date_posted,
+      comments,
+      likes_total,
+      likes
+    } = item || {};
     const { ktp_name } = author || {};
     const lastComment =
       Array.isArray(comments) && comments.length
@@ -64,6 +73,7 @@ class NewsFeedList extends Component {
           loggedInUserId={loggedInUserId}
           userName={ktp_name}
           content={content}
+          photo={photo}
           dateCreated={date_posted}
           comments={comments}
           likes={likes}

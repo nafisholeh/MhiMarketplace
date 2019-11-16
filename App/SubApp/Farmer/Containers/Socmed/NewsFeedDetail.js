@@ -125,6 +125,7 @@ class NewsFeedDetail extends Component {
                 const {
                   _id: feedId,
                   content,
+                  photo,
                   author,
                   date_posted,
                   comments,
@@ -139,6 +140,7 @@ class NewsFeedDetail extends Component {
                       loggedInUserId={loggedInUserId}
                       userName={ktp_name}
                       content={content}
+                      photo={photo}
                       dateCreated={date_posted}
                       showBackButton
                       showActionBorder

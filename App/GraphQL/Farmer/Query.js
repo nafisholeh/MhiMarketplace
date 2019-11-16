@@ -53,6 +53,7 @@ export const FETCH_FARMER_POST = gql`
     farmerPost(_id:$_id) {
       _id
       content
+      photo
       date_posted
       author {
         _id

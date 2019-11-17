@@ -158,11 +158,6 @@ class Signin extends Component {
           }}
         />
 
-        <View
-          style={{
-            
-          }}
-        >
           <InputTextAccount
             label="Email"
             value={email || ''}
@@ -223,7 +218,6 @@ class Signin extends Component {
               Daftar
             </Text>
           </View>
-        </View>
         
       </KeyboardFriendlyView>
     )

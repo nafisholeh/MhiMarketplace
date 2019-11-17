@@ -6,6 +6,7 @@ import { Images } from 'Themes';
 import { tabNavOptions } from 'Navigation/Tabs/Options';
 import styles from 'Navigation/Styles/NavigationStyles';
 
+import Signin from 'Containers/Signin/Signin';
 import AreaCommodity from 'SubApp/Farmer/Containers/AreaCommodity';
 import AreaType from 'SubApp/Farmer/Containers/AreaType';
 import AreaDraw from 'SubApp/Farmer/Containers/AreaDraw';
@@ -16,6 +17,7 @@ import SignupFarmerThird from 'SubApp/Farmer/Containers/Signup/Third';
 import FarmerFinalConfirm from 'SubApp/Farmer/Containers/Signup/FinalConfirm';
 
 const AccountNav = createStackNavigator({
+  Signin: { screen: Signin },
   SignupFarmerFirst: { screen: SignupFarmerFirst },
   SignupFarmerSecond: { screen: SignupFarmerSecond },
   SignupFarmerThird: { screen: SignupFarmerThird },
@@ -25,7 +27,7 @@ const AccountNav = createStackNavigator({
   AreaType: { screen: AreaType },
   AreaCommodity: { screen: AreaCommodity },
 }, {
-  initialRouteName: 'SignupFarmerFirst',
+  initialRouteName: 'Signin',
   navigationOptions: {
     headerStyle: styles.header
   }

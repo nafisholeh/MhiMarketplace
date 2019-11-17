@@ -37,6 +37,7 @@ import BackButton from './Header/BackButton';
 import CustomHeader from './Header/CustomHeader';
 import DayTimeline from './DayTimeline';
 import ImageRadius from './ImageRadius';
+import InputTextAccount from './InputTextAccount';
 
 export {
   OptimizedList, StatePage, UpDownCounter, HeaderButton, ToolbarButton,
@@ -47,5 +48,5 @@ export {
   ConsumerPageHeader, ProductImage, ListHeader, CategoryItem, AppTitle,
   HeaderTitle, CartSubtractButton, ViewShadow, InputText, InputPicker, 
   KeyboardFriendlyView, BackButton, CustomHeader, DayTimeline, ButtonCircle,
-  ImageRadius
+  ImageRadius, InputTextAccount
 };

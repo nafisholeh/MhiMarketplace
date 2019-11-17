@@ -11,10 +11,12 @@ import FarmerNavigation from './Farmer/Tab/MainTab';
 
 import { store } from 'Containers/App';
 import Setup from 'Containers/Setup/Setup';
+import SubAppChooser from 'Containers/Setup/SubAppChooser';
 
 const PrimarySwitchNavigator = createSwitchNavigator(
   {
     Setup: { screen: Setup },
+    SubAppChooser: { screen: SubAppChooser },
     ConsumerNav: { screen: ConsumerNavigation },
     CourierNav: { screen: CourierNavigation },
     FinanceNav: { screen: FinanceNavigation },

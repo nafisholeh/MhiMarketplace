@@ -111,6 +111,28 @@ export const isKurir = () =>
     }
   )
 
+export const isFarmer = () =>
+  createSelector(
+    sessionSelectors(),
+    state => {
+      const { user } = state;
+      if (!user) return false;
+      const { user_type } = user;
+      if (user_type && user_type === Config.userType.FARMER) return true;
+      return false;
+    }
+  )
+  
+export const isLoggedin = () =>
+  createSelector(
+    sessionSelectors(),
+    state => {
+      const { user } = state;
+      if (!user) return false;
+      return true;
+    }
+  )
+
 export const getSignupEmail = () => 
   createSelector(
     sessionSelectors(),

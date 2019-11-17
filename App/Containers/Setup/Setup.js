@@ -19,7 +19,14 @@ import { FETCH_PRODUCT_CATEGORY, FETCH_PRODUCT_PACKAGING } from 'GraphQL/Product
 import { getUserId } from 'Redux/SessionRedux';
 import OneSignalActions, { getOneSignalToken } from 'Redux/OneSignalRedux';
 import CartActions, { isFetchingCart, isFetchingCartSuccess } from 'Redux/CartRedux';
-import { isKurir, isStokOpname, isKeuangan, isAdmin } from 'Redux/SessionRedux';
+import {
+  isKurir,
+  isStokOpname,
+  isKeuangan,
+  isAdmin,
+  isLoggedin,
+  isFarmer,
+} from 'Redux/SessionRedux';
 
 class Setup extends Component {
   
@@ -64,7 +71,7 @@ class Setup extends Component {
   }
   
   checkIfDone = () => {
-    const { navigation, isFetchingCartSuccess, isKurir, isStokOpname, isKeuangan, isAdmin } = this.props;
+    const { navigation, isFetchingCartSuccess, isKurir, isStokOpname, isKeuangan, isAdmin, isLoggedin } = this.props;
     const {
       isCourierCostFinish,
       isPaymentFinish,
@@ -77,11 +84,15 @@ class Setup extends Component {
       isPaymentFinish && isTokenFinish && isProductCategoryFinish &&
       isProductPackagingFinish
     ) {
-      if (isKurir) navigation.navigate('CourierNav');
-      else if (isStokOpname) navigation.navigate('StockOpnameNav');
-      else if (isKeuangan) navigation.navigate('FinanceNav');
-      else if (isAdmin) navigation.navigate('AdminNav');
-      else navigation.navigate('FarmerNav');
+      if (!isLoggedin) navigation.navigate('SubAppChooser');
+      else {
+        if (isKurir) navigation.navigate('CourierNav');
+        else if (isStokOpname) navigation.navigate('StockOpnameNav');
+        else if (isKeuangan) navigation.navigate('FinanceNav');
+        else if (isAdmin) navigation.navigate('AdminNav');
+        else if (isFarmer) navigation.navigate('FarmerNav');
+        else navigation.navigate('ConsumerNav');
+      }
     }
   };
   
@@ -283,6 +294,8 @@ Setup.propTypes = {
   isStokOpname: bool,
   isKeuangan: bool,
   isAdmin: bool,
+  isLoggedin: bool,
+  isFarmer: bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -294,6 +307,8 @@ const mapStateToProps = createStructuredSelector({
   isStokOpname: isStokOpname(),
   isKeuangan: isKeuangan(),
   isAdmin: isAdmin(),
+  isLoggedin: isLoggedin(),
+  isFarmer: isFarmer(),
 });
 
 const mapDispatchToProps = dispatch => ({

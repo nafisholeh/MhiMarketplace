@@ -7,7 +7,7 @@ import { Colors } from 'Themes';
 
 class Header extends Component {
   render() {
-    const { title, style } = this.props;
+    const { title, style, isHideBackButton } = this.props;
     return (
       <View
         style=
@@ -22,7 +22,7 @@ class Header extends Component {
           style
         ]}
       >
-        <BackButton />
+        {!isHideBackButton ? <BackButton /> : null}
         <Text
           style={{
             fontFamily: 'CircularStd-Bold',

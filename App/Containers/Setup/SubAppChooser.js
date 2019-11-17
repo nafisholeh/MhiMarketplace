@@ -19,7 +19,10 @@ class SubAppChooser extends Component {
     const { navigation } = this.props;
     return (
       <View style={{ flex: 1 }}>
-        <Header title="Pilih aplikasi..." />
+        <Header
+          title="Pilih aplikasi..."
+          isHideBackButton
+        />
         
         <View
           style={{
@@ -42,6 +45,7 @@ class SubAppChooser extends Component {
             color={Colors.horti_light}
             title="Akademisi"
             icon={Images.scholar}
+            isInDevelopment
             styleWrapper={{
               marginHorizontal: moderateScale(20),
               marginBottom: moderateScale(15),
@@ -52,6 +56,7 @@ class SubAppChooser extends Component {
             color={Colors.fruit_light}
             title="Pelanggan"
             icon={Images.customer}
+            isInDevelopment
             styleWrapper={{
               marginHorizontal: moderateScale(20),
               marginBottom: moderateScale(15),

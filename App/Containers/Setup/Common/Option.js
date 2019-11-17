@@ -6,16 +6,24 @@ import { Colors, Images } from 'Themes';
 
 class Option extends Component {
   render() {
-    const { onPress, color, title, icon, styleWrapper } = this.props;
+    const {
+      onPress,
+      isInDevelopment,
+      color,
+      title,
+      icon,
+      styleWrapper
+    } = this.props;
     return (
       <TouchableOpacity
         onPress={onPress}
+        disabled={isInDevelopment}
         style={styleWrapper}
       >
         <View
           style={{
             ...styles.container,
-            ...{ backgroundColor: color },
+            ...{ backgroundColor: isInDevelopment ? Colors.disabled_light : color },
           }}
         >
           <Text

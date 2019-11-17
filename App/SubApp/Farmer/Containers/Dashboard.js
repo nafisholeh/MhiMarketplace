@@ -7,7 +7,7 @@ import { Query } from 'react-apollo';
 
 import AppConfig from 'Config/AppConfig';
 import { OptimizedList, QueryEffectPage } from 'Components';
-import { FileItem, SearchHeader, FloatNavigation } from 'CommonFarmer';
+import { FileItem, SearchHeader, FloatNavigation, withPageAccess } from 'CommonFarmer';
 import { moderateScale, screenWidth } from 'Lib';
 import { THEORY_CATEGORIES, SEARCH_THEORIES } from 'GraphQL/Theory/Query';
 import { Fonts, Images } from 'Themes';
@@ -209,4 +209,4 @@ const mapDispatchToProps = dispatch => ({
   selectListItem: selectedId => dispatch(ListActions.selectListItem(selectedId)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(withPageAccess(Dashboard));

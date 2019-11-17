@@ -9,6 +9,7 @@ import FileItem from './FileItem';
 import SearchHeader from './SearchHeader';
 import FloatNavigation from './FloatNavigation';
 import Avatar from './Avatar';
+import withPageAccess from './withPageAccess';
 
 import AreaDrawInfo from './MapBottomInfo/AreaDrawInfo';
 import AreaDrawControl from './MapBottomInfo/AreaDrawControl';
@@ -27,6 +28,7 @@ export {
   Header,
   HeaderWhite,
   withLocationListener,
+  withPageAccess,
   SignupBottomButton,
   SignupBoxWrapper,
   FileItem,

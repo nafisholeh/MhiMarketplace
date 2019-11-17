@@ -6,9 +6,7 @@ import { string } from 'prop-types';
 
 import PostFeedModal from './PostFeedModal';
 import NewsFeedList from './NewsFeedList';
-import { isLoggedin } from 'Redux/SessionRedux';
-import { StatePage } from 'Components';
-import Config from 'Config/AppConfig';
+import { withPageAccess } from 'CommonFarmer';
 
 class CommoditySocmed extends Component {
   static navigationOptions = ({navigation}) => ({ header: null })
@@ -19,18 +17,6 @@ class CommoditySocmed extends Component {
   };
 
   render() {
-    const { isLoggedin } = this.props;
-    if (!isLoggedin) {
-      return (
-        <StatePage
-          title="Sosial Media diblokir"
-          subtitle="Halaman ini hanya untuk akun yang telah terdaftar sebagai petani"
-          buttonTitle="Daftar Yuk"
-          icon={Config.pageState.NO_ACCOUNT}
-          onPress={this.openRegistrationPage}
-        />
-      );
-    }
     return (
       <ScrollView>
         <PostFeedModal />
@@ -40,12 +26,8 @@ class CommoditySocmed extends Component {
   };
 }
 
-const mapStateToProps = createStructuredSelector({
-  isLoggedin: isLoggedin(),
-});
+const mapStateToProps = createStructuredSelector({});
 
-const mapDispatchToProps = dispatch => ({
-  
-});
+const mapDispatchToProps = dispatch => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(CommoditySocmed);
+export default connect(mapStateToProps, mapDispatchToProps)(withPageAccess(CommoditySocmed));

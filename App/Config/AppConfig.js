@@ -3,8 +3,9 @@ import { Colors, Images } from 'Themes';
 export default {
   // uri: 'http://app-dev.metodehayati.id:4001/graphql',
   uri: {
-    basic: 'http://192.168.1.2:4001/',
-    graphql: 'http://192.168.1.2:4001/graphql',
+    basic: 'http://192.168.1.3:4001/',
+    graphql: 'http://192.168.1.3:4001/graphql',
+    image: 'http://192.168.1.3:4001/images'
   },
   oneSignalKey: "63d5eb55-3ba8-4489-bfba-ce4d74c3bd40",
   sentryKey: 'https://acfc9528eb164f6d8cb3c02a5294b6cd@sentry.io/1498313',
@@ -63,6 +64,7 @@ export default {
     KONSUMEN: 'user',
     RESELLER: 'reseller',
     ADMIN: 'admin',
+    FARMER: 'farmer',
   },
   weightType: {
     KILOGRAM: 'kg',

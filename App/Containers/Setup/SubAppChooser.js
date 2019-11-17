@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 
 import { moderateScale } from 'Lib';
 import { Colors, Images } from 'Themes';
+import AppConfig from 'Config/AppConfig';
 import { Option, Header } from './Common';
+import SessionActions from 'Redux/SessionRedux';
 
 class SubAppChooser extends Component {
   
@@ -16,7 +18,7 @@ class SubAppChooser extends Component {
   }
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, storeSubAppSession } = this.props;
     return (
       <View style={{ flex: 1 }}>
         <Header
@@ -31,7 +33,10 @@ class SubAppChooser extends Component {
           }}
         >
           <Option
-            onPress={() => navigation.navigate('SignupFarmerFirst')}
+            onPress={() => {
+              storeSubAppSession(AppConfig.userType.FARMER);
+              navigation.navigate('FarmerNav');
+            }}
             color={Colors.veggie_light}
             title="Petani"
             icon={Images.farmer}
@@ -68,4 +73,8 @@ class SubAppChooser extends Component {
   }
 }
 
-export default connect(null, null)(SubAppChooser);
+const mapDispatchToProps = (dispatch) => ({
+  storeSubAppSession: subAppSession => dispatch(SessionActions.storeSubAppSession(subAppSession)),
+});
+
+export default connect(null, mapDispatchToProps)(SubAppChooser);

@@ -10,6 +10,7 @@ const { Types, Creators } = createActions({
   reset: null,
   storeSession: ['user'],
   storeSignupEmail: ['email'],
+  storeSubAppSession: ['subAppSession']
 })
 
 export const SessionTypes = Types
@@ -20,6 +21,7 @@ export default Creators
 export const INITIAL_STATE = Immutable({
   user: undefined,
   signupEmail: null,
+  subAppSession: null,
 })
 
 /* ------------- Selectors ------------- */
@@ -138,6 +140,12 @@ export const getSignupEmail = () =>
     sessionSelectors(),
     state => state.signupEmail
   )
+  
+export const getChosenSubApp = () =>
+  createSelector(
+    sessionSelectors(),
+    state => state.subAppSession
+  )
 
 /* ------------- Reducers ------------- */
 
@@ -146,7 +154,11 @@ export const reset = state => INITIAL_STATE
 // store user session related data
 export const storeSession = (state, { user }) => state.merge({ user })
 
-export const storeSignupEmail = (state, { email }) => state.merge({ signupEmail: email })
+export const storeSignupEmail = (state, { email }) =>
+  state.merge({ signupEmail: email })
+
+export const storeSubAppSession = (state, { subAppSession }) =>
+  state.merge({ subAppSession })
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -154,4 +166,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.RESET]: reset,
   [Types.STORE_SESSION]: storeSession,
   [Types.STORE_SIGNUP_EMAIL]: storeSignupEmail,
+  [Types.STORE_SUB_APP_SESSION]: storeSubAppSession,
 })

@@ -21,7 +21,7 @@ export default Creators
 export const INITIAL_STATE = Immutable({
   user: undefined,
   signupEmail: null,
-  subAppSession: null,
+  subAppSession: 'user',
 })
 
 /* ------------- Selectors ------------- */

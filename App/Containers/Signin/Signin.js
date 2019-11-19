@@ -7,8 +7,8 @@ import { DotIndicator } from 'react-native-indicators';
 import { StackActions, NavigationActions, SwitchActions } from 'react-navigation';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
-import { SIGNIN } from 'GraphQL/User/Mutation';
-import SessionActions, { getSignupEmail } from 'Redux/SessionRedux';
+import { SIGNIN, SIGNIN_FARMER } from 'GraphQL/User/Mutation';
+import SessionActions, { getSignupEmail, getChosenSubApp } from 'Redux/SessionRedux';
 import { getOneSignalToken } from 'Redux/OneSignalRedux';
 import {
   isEmailError,
@@ -76,7 +76,40 @@ class Signin extends Component {
       isValid = false;
     }
     if (isValid) {
-      this.onSignin();
+      const { chosenSubApp } = this.props;
+      if (chosenSubApp === 'farmer') this.onSigninFarmer();
+      else this.onSignin();
+    }
+  }
+  
+  onSigninFarmer = async () => {
+    const { email, password } = this.state;
+    const emailLowerCase = email && email.toLowerCase();
+    const { storeSession, storeSignupEmail, navigation } = this.props;
+    storeSignupEmail(null);
+    try {
+      const { navigation, oneSignalToken: token } = this.props;
+      this.setState({ loading: true });
+      const signinResult = await ApolloClientProvider.client.mutate({
+        mutation: SIGNIN_FARMER,
+        variables: { email: emailLowerCase, password, token },
+      });
+      const { data: { signinFarmer } } = signinResult;
+      if (signinFarmer) {
+        await storeSession(signinFarmer);
+        const screenName = "SopFarmer";
+        const resetAction = StackActions.reset({
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: 'Account' })]
+        });
+        const goToHome = NavigationActions.navigate({
+          routeName: screenName
+        });
+        // navigation.dispatch(resetAction);
+        navigation.dispatch(goToHome);
+      }
+    } catch (error) {
+      this.onSigninError(error);
     }
   }
   
@@ -130,17 +163,21 @@ class Signin extends Component {
         navigation.dispatch(goToHome);
       }
     } catch (error) {
-      this.setState({ loading: false });
-      const message = getGraphQLError(error);
-      if (message.toLowerCase().indexOf("email") >= 0) {
-        this.setState({ error_email: message });
-      } else if (message.toLowerCase().indexOf("password") >= 0) {
-        this.setState({ error_password: message });
-      } else {
-        InAppNotification.error();
-      }
+      this.onSigninError(error);
     }
   }
+  
+  onSigninError = error => {
+    this.setState({ loading: false });
+    const message = getGraphQLError(error);
+    if (message.toLowerCase().indexOf("email") >= 0) {
+      this.setState({ error_email: message });
+    } else if (message.toLowerCase().indexOf("password") >= 0) {
+      this.setState({ error_password: message });
+    } else {
+      InAppNotification.error();
+    }
+  };
   
   render () {
     const { email, error_email, password, error_password, loading } = this.state;
@@ -229,11 +266,13 @@ Signin.propTypes = {
   storeSignupEmail: func,
   oneSignalToken: string,
   signupEmail: string,
+  chosenSubApp: string,
 };
 
 const mapStateToProps = createStructuredSelector({
   oneSignalToken: getOneSignalToken(),
   signupEmail: getSignupEmail(),
+  chosenSubApp: getChosenSubApp(),
 });
 
 const mapDispatchToProps = (dispatch) => ({

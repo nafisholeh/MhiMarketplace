@@ -11,6 +11,41 @@ export const SIGNIN = gql`
   }
 `
 
+export const SIGNIN_FARMER = gql`
+  mutation signinFarmer($email: String!, $password: String!, $token: String) {
+    signinFarmer(email: $email, password: $password, token: $token) {
+      _id
+      phone
+      email
+      password
+      token
+      ktp_nik
+      ktp_name
+      ktp_birth_place
+      ktp_birth_date
+      ktp_gender
+      ktp_blood_type
+      
+      ktp_kecamatan_id
+      ktp_address_detail
+      ktp_rtrw
+      ktp_kodepos
+      ktp_kelurahan
+      ktp_kecamatan
+      ktp_kabupaten
+      ktp_provinsi
+      
+      ktp_religion
+      ktp_marriage_status
+      ktp_occupation
+      ktp_citizenship
+      ktp_expired_date
+      ktp_photo_face
+      ktp_photo_ktp
+    }
+  }
+`
+
 export const SIGNOUT = gql`
   mutation signout($user_id: String!) {
     signout(user_id: $user_id) {

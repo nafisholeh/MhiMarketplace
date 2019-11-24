@@ -24,26 +24,6 @@ class NewsFeedList extends Component {
     selectListItem(feedId);
     navigation.navigate('NewsFeedDetail');
   };
-  
-  submitCommentToPost = (feedId, comment) => {
-    ApolloClientProvider.client.mutate({
-      mutation: COMMENT_TO_POST,
-      variables: {
-        data: {
-          content: comment,
-          author: "5d8fc3f8b8ea7474d8b0c94b",
-          post: feedId,
-          date_commented: getUTCDate(),
-        }
-      }
-    })
-    .then(res => {
-      console.tron.log('submitCommentToPost/res', res)
-    })
-    .catch(err => {
-      console.tron.log('submitCommentToPost/err', err)
-    });
-  };
 
   renderNewsFeedItem = ({ item, index }) => {
     const { loggedInUserId } = this.props;

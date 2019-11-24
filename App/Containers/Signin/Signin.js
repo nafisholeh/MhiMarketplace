@@ -59,8 +59,9 @@ class Signin extends Component {
   }
   
   openSignup = () => {
-    const { navigation } = this.props;
-    navigation.navigate('Signup');
+    const { navigation, chosenSubApp } = this.props;
+    if (chosenSubApp === 'farmer') navigation.navigate('SignupFarmerFirst');
+    else navigation.navigate('Signup');
   }
   
   onStartSignin = async () => {

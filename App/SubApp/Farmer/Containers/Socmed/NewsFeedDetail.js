@@ -70,16 +70,25 @@ class NewsFeedDetail extends Component {
     });
   };
   
-  submitCommentToPost = (feedId, comment) => {
+  submitCommentToPost = (feedId, feedAuthorId, comment) => {
     const { isReplyParent, parentId } = this.state;
+    const { loggedInUserId } = this.props;
     const data = Object.assign(
       {},
       {
         content: comment,
-        author: "5d8fc3f8b8ea7474d8b0c94b",
         date_commented: getUTCDate(),
       },
-      isReplyParent ? { comment: parentId } : { post: feedId }
+      isReplyParent
+        ? {
+          comment: parentId,
+          author: loggedInUserId,
+        }
+        : {
+          post: feedId,
+          post_author_id: feedAuthorId,
+          reply_author_id: loggedInUserId,
+        }
     );
     ApolloClientProvider.client.mutate({
       mutation: isReplyParent ? REPLY_TO_COMMENT : COMMENT_TO_POST,
@@ -110,31 +119,31 @@ class NewsFeedDetail extends Component {
     }
     return (
       <View style={{flex: 1}}>
-        <ScrollView
-          contentContainerStyle={{
-            paddingBottom: moderateScale(65)
-          }}
+        <Query
+          query={FETCH_FARMER_POST}
+          variables={{ _id: feedId }}
         >
-          <Query
-            query={FETCH_FARMER_POST}
-            variables={{ _id: feedId }}
-          >
-            {({ loading, error, data, refetch }) => {
-              const { farmerPost: dataList = [] } = data || {};
-              if (dataList) {
-                const {
-                  _id: feedId,
-                  content,
-                  photo,
-                  author,
-                  date_posted,
-                  comments,
-                  likes,
-                  likes_total
-                } = dataList || {};
-                const { ktp_name } = author || {};
-                return (
-                  <Fragment>
+          {({ loading, error, data, refetch }) => {
+            const { farmerPost: dataList = [] } = data || {};
+            if (dataList) {
+              const {
+                _id: feedId,
+                content,
+                photo,
+                author,
+                date_posted,
+                comments,
+                likes,
+                likes_total
+              } = dataList || {};
+              const { _id: feedAuthorId, ktp_name } = author || {};
+              return (
+                <Fragment>
+                  <ScrollView
+                    contentContainerStyle={{
+                      paddingBottom: moderateScale(65)
+                    }}
+                  >
                     <NewsFeedContent
                       feedId={feedId}
                       loggedInUserId={loggedInUserId}
@@ -154,48 +163,50 @@ class NewsFeedDetail extends Component {
                       onCommentParent={this.replyComment}
                       onCommentChild={this.replyComment}
                     />
-                  </Fragment>
-                );
-              }
-              return (
-                <QueryEffectPage
-                  title="Terjadi masalah"
-                  subtitle="Silahkan coba lagi"
-                  buttonTitle="Coba lagi"
-                  isLoading={loading}
-                  isError={error}
-                  isEmpty={!dataList.length}
-                  iconEmpty={Config.pageState.ERROR}
-                  onRefetch={() => refetch()}
-                />
+                  </ScrollView>
+                  <View
+                    style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      backgroundColor: Colors.white,
+                      paddingHorizontal: moderateScale(10),
+                      paddingTop: moderateScale(5),
+                      paddingBottom: moderateScale(10),
+                    }}
+                  >
+                    <CommentInput
+                      style={{
+                        marginLeft: 0,
+                        marginRight: 0,
+                        marginBottom: 0,
+                      }}
+                      onSubmitComment={comment =>
+                        this.submitCommentToPost(feedId, feedAuthorId, comment)
+                      }
+                      showInfo={isReplyParent}
+                      info={isReplyParent ? `Balas ke ${parentUsername}` : ''}
+                      onClosingInfo={this.cancelReplyComment}
+                    />
+                  </View>
+                </Fragment>
               );
-            }}
-          </Query>
-        </ScrollView>
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            backgroundColor: Colors.white,
-            paddingHorizontal: moderateScale(10),
-            paddingTop: moderateScale(5),
-            paddingBottom: moderateScale(10),
+            }
+            return (
+              <QueryEffectPage
+                title="Terjadi masalah"
+                subtitle="Silahkan coba lagi"
+                buttonTitle="Coba lagi"
+                isLoading={loading}
+                isError={error}
+                isEmpty={!dataList.length}
+                iconEmpty={Config.pageState.ERROR}
+                onRefetch={() => refetch()}
+              />
+            );
           }}
-        >
-          <CommentInput
-            style={{
-              marginLeft: 0,
-              marginRight: 0,
-              marginBottom: 0,
-            }}
-            onSubmitComment={comment => this.submitCommentToPost(feedId, comment)}
-            showInfo={isReplyParent}
-            info={isReplyParent ? `Balas ke ${parentUsername}` : ''}
-            onClosingInfo={this.cancelReplyComment}
-          />
-        </View>
+        </Query>
       </View>
     )
   };

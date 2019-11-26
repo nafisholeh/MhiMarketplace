@@ -1,31 +1,22 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native'
-import { DotIndicator } from 'react-native-indicators';
+import { View, Text, TouchableOpacity, Image } from 'react-native'
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
-
-import { ReactNativeFile } from 'apollo-upload-client';
 import moment from 'moment';
-
-import { SIGNUP_FARMER } from 'GraphQL/Farmer/Mutation';
-
 import DateTimePicker from '@react-native-community/datetimepicker';
+
 import { AutoAddressInput } from 'Containers/Address/Common';
-import ApolloClientProvider from 'Services/ApolloClientProvider';
 import FarmerSignupActions from 'Redux/FarmerSignupRedux';
-import { SIGNUP } from 'GraphQL/User/Mutation';
-import { isEmailError, getGraphQLError, moderateScale } from 'Lib';
+import { moderateScale, generateBase64Thumbnail } from 'Lib';
 import {
   InputText,
   InputPicker,
   ButtonPrimary,
-  BackButton,
-  KeyboardFriendlyView,
   RadioButton,
   ImagePicker,
 } from 'Components';
-import { Header, HillHeaderWrapper, SignupBoxWrapper } from 'CommonFarmer';
+import { HillHeaderWrapper, SignupBoxWrapper } from 'CommonFarmer';
 import { Images, Colors } from 'Themes';
 import AppConfig from 'Config/AppConfig';
 
@@ -65,8 +56,10 @@ class Farmer extends Component {
     expired_date: LIFETIME,
     expired_date_error: null,
     photo_face: null,
+    photo_face_thumbnail: null,
     photo_face_error: null,
     photo_ktp: null,
+    photo_ktp_thumbnail: null,
     photo_ktp_error: null,
     address_detail: null,
     address_detail_error: null,
@@ -170,12 +163,13 @@ class Farmer extends Component {
     this.setState({ [stateName]: value });
   };
   
-  onPhotoChange = (name, raw = [], paths = []) => {
+  onPhotoChange = async (name, raw = [], paths = []) => {
     const photos = raw.map((item, i) => {
       const { mime, path, data } = raw[i];
       return { mime, path, data };
-    })
-    this.setState({ [name]: photos });
+    });
+    const base64Thumbnail = await generateBase64Thumbnail(photos[0].data);
+    this.setState({ [name]: photos, [`${name}_thumbnail`]: base64Thumbnail });
   };
   
   renderBottom = () => {
@@ -200,28 +194,20 @@ class Farmer extends Component {
       birth_place_error,
       birth_date,
       birth_date_error,
-      loading,
-      address_detail,
-      rtrw,
-      kodepos,
-      kelurahan,
-      kecamatan,
-      kecamatan_id,
-      kabupaten,
-      provinsi,
       show_expired_modal,
       show_date_modal,
       expired_date,
       expired_date_error,
       expired_date_lifetime,
       photo_face,
-      photo_face_error,
+      photo_face_thumbnail,
       photo_ktp,
-      photo_ktp_error,
+      photo_ktp_thumbnail,
       heightBox1,
       heightBox2,
     } = this.state;
     const { navigation } = this.props;
+    console.tron.log('Second/render/photo_ktp_thumbnail', photo_ktp_thumbnail)
     return (
       <HillHeaderWrapper
         title="Pendaftaran akun baru"

@@ -1,4 +1,36 @@
+import ImageResizer from 'react-native-image-resizer';
+import RNFetchBlob from 'rn-fetch-blob';
 
+export async function generateBase64Thumbnail(base64, imageType) {
+  const newWidth = 40;
+  const newHeight = 40;
+  const compressFormat = 'JPEG';
+  const quality = 100;
+  const imageTypeParsed = imageType || 'jpeg';
+  const base64Parsed = `data:image/${imageTypeParsed};base64,${base64}`;
+  
+  return new Promise((resolve, reject) => {
+    try {
+      ImageResizer
+      .createResizedImage(base64Parsed, newWidth, newHeight, compressFormat, quality)
+      .then((response) => {
+        RNFetchBlob.fs
+        .readFile(response.path, "base64")
+        .then(data => {
+          resolve(data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+      }).catch((err) => {
+        reject(err);
+      });
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+    
 // ekstrak filename dari full path (berlaku utk / dan \)
 export function getFilenameFromPath(input) {
   return input.replace(/^.*[\\\/]/, '')

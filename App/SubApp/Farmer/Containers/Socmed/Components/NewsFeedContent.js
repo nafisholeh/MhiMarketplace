@@ -211,10 +211,15 @@ class NewsFeedContent extends Component {
         >
           {content}
         </Text>
-        <FBCollage 
-          images={photoUri}
-          imageOnPress={() => {}}
-        />
+        {Array.isArray(photoUri) && photoUri.length
+          ? (
+            <FBCollage 
+              images={photoUri}
+              imageOnPress={() => {}}
+            />
+          )
+          : null
+        }
         {statistic ? (
             <View
               style={{

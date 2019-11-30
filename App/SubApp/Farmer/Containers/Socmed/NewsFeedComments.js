@@ -9,7 +9,7 @@ import { Colors, Fonts } from 'Themes';
 import { moderateScale, getIntervalTimeToday, unixToDate } from 'Lib';
 import { CommentItem, CommentInput } from './Components';
 import { Avatar } from 'CommonFarmer';
-import { getMockUserId } from 'Redux/SessionRedux';
+import { getUserId } from 'Redux/SessionRedux';
 import {
   LIKE,
   DISLIKE,
@@ -138,7 +138,7 @@ class NewsFeedComments extends Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-  loggedInUserId: getMockUserId(),
+  loggedInUserId: getUserId(),
 });
 
 export default connect(mapStateToProps, null)(NewsFeedComments);

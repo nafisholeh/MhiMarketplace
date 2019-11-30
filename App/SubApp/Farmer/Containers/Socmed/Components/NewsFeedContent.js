@@ -132,7 +132,8 @@ class NewsFeedContent extends Component {
       onComment,
       showBackButton,
       onBackPressed,
-      showActionBorder
+      showActionBorder,
+      avatar,
     } = this.props;
     const { statistic, dateCreated, isLiked, photoUri } = this.state;
     return (
@@ -170,6 +171,7 @@ class NewsFeedContent extends Component {
           }
           <Avatar
             size="small"
+            source={{ uri: avatar }}
             style={{ marginRight: moderateScale(10) }}
           />
           <View

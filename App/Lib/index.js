@@ -30,7 +30,9 @@ import {
   getFileType,
   combineFilenameMime,
   generateBase64Thumbnail,
-  saveBase64AsImage
+  saveBase64AsImage,
+  normalizeServerFileUri,
+  generateValidServerFileUri
 } from './File';
 
 export { 
@@ -45,5 +47,5 @@ export {
   getStateFromAsyncStorage, setStateFromAsyncStorage, calcPolygonCenter,
   normalizeAreaSize, convertToGraphQLFile, getUTCDate, unixToDate,
   getFilenameFromPath, getFileType, combineFilenameMime, generateBase64Thumbnail,
-  saveBase64AsImage
+  saveBase64AsImage, generateValidServerFileUri, normalizeServerFileUri
 };

@@ -1,6 +1,8 @@
 import ImageResizer from 'react-native-image-resizer';
 import RNFetchBlob from 'rn-fetch-blob';
 
+import Config from 'Config/AppConfig';
+
 export async function generateBase64Thumbnail(base64, imageType) {
   const newWidth = 30;
   const newHeight = 30;
@@ -127,4 +129,16 @@ export function combineFilenameMime(filename, mime) {
     case 'video/mp2p': extensionName = '.mpeg'; break;
   }
   return `${filename}${extensionName}`
+}
+
+export function generateValidServerFileUri(uri) {
+  if (!uri) return uri;
+  return uri
+    ? `${Config.uri.image}/${exports.normalizeServerFileUri(uri)}`
+    : null;
+}
+
+export function normalizeServerFileUri(uri) {
+  if (!uri) return uri;
+  return uri.replace(`server/public/`, '');
 }

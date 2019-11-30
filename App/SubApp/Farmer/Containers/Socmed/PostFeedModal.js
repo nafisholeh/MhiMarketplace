@@ -49,7 +49,7 @@ class PostFeedModal extends Component {
     let variables = {
       data: {
         content: postContent,
-        author: "5d8fc089043c4772aa81fa65",
+        author: userId,
         date_posted: getUTCDate(),
       }
     };

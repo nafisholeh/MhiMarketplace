@@ -16,7 +16,7 @@ import NewsFeedComments from './NewsFeedComments';
 import { Colors } from 'Themes';
 import { moderateScale, getUTCDate } from 'Lib';
 import { getSelectedListId } from 'Redux/ListRedux';
-import { getMockUserId } from 'Redux/SessionRedux';
+import { getUserId } from 'Redux/SessionRedux';
 import { FETCH_FARMER_POST } from 'GraphQL/Farmer/Query';
 import {
   COMMENT_TO_POST,
@@ -214,7 +214,7 @@ class NewsFeedDetail extends Component {
 
 const mapStateToProps = createStructuredSelector({
   feedId: getSelectedListId(),
-  loggedInUserId: getMockUserId(),
+  loggedInUserId: getUserId(),
 });
 
 const mapDispatchToProps = dispatch => ({

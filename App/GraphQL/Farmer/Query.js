@@ -11,6 +11,7 @@ export const FETCH_FARMER_POSTS = gql`
         _id
         ktp_name
         ktp_photo_face
+        ktp_photo_face_thumbnail
       }
       likes {
         _id

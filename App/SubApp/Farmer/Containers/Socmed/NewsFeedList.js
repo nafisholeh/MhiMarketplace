@@ -8,14 +8,14 @@ import moment from 'moment';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import ListActions from 'Redux/ListRedux';
-import { getMockUserId } from 'Redux/SessionRedux';
+import { getUserId } from 'Redux/SessionRedux';
 import Config from 'Config/AppConfig';
 import { FETCH_FARMER_POSTS } from 'GraphQL/Farmer/Query';
 import { COMMENT_TO_POST } from 'GraphQL/Farmer/Mutation';
 import { QueryEffectPage } from 'Components';
 import { NewsFeedContent, NewsFeedDivider } from './Components';
 import NewsFeedComments from './NewsFeedComments';
-import { getUTCDate } from 'Lib';
+import { generateValidServerFileUri } from 'Lib';
 
 class NewsFeedList extends Component {
   
@@ -35,9 +35,10 @@ class NewsFeedList extends Component {
       date_posted,
       comments,
       likes_total,
-      likes
+      likes,
     } = item || {};
-    const { ktp_name } = author || {};
+    const { ktp_name, ktp_photo_face_thumbnail } = author || {};
+    const avatar = generateValidServerFileUri(ktp_photo_face_thumbnail);
     const lastComment =
       Array.isArray(comments) && comments.length
         ? [comments[comments.length - 1]]
@@ -52,6 +53,7 @@ class NewsFeedList extends Component {
           feedId={_id}
           loggedInUserId={loggedInUserId}
           userName={ktp_name}
+          avatar={avatar}
           content={content}
           photo={photo}
           dateCreated={date_posted}
@@ -119,7 +121,7 @@ class NewsFeedList extends Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-  loggedInUserId: getMockUserId(),
+  loggedInUserId: getUserId(),
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -33,6 +33,7 @@ class App extends Component {
         ['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader', 'Require cycle'
       ]);
     OneSignal.init(AppConfig.oneSignalKey);
+    OneSignal.inFocusDisplaying(2);
     OneSignal.addEventListener('received', this.onReceived);
     OneSignal.addEventListener('opened', this.onOpened);
   }

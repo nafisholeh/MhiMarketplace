@@ -43,6 +43,7 @@ class App extends Component {
   }
   
   onReceived(notification) {
+    console.tron.log('App/onReceived/notification', notification)
     const { payload = {} } = notification || {};
     const { additionalData = {} } = payload || {};
     const { __purpose } = additionalData || {};

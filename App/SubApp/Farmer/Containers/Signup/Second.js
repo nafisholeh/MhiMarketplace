@@ -90,25 +90,30 @@ class Farmer extends Component {
     const {
       nik, name, birth_place, birth_date, gender,
       blood_type, religion, marriage_status, occupation,
-      citizenship, expired_date, photo_face, photo_ktp,
-      address_detail, rtrw, kodepos, kelurahan,
-      kecamatan, kecamatan_id, kabupaten, provinsi
+      citizenship, expired_date, photo_face, photo_face_thumbnail,
+      photo_ktp, photo_ktp_thumbnail, address_detail,
+      rtrw, kodepos, kelurahan, kecamatan, kecamatan_id,
+      kabupaten, provinsi
     } = this.state;
     let photo = {};
     if (Array.isArray(photo_face) && photo_face.length) {
-      const { data, mime } = photo_face[0];
       photo = Object.assign(
         {},
         photo,
-        { photo_face: `data:${mime};base64,${data}` }
+        {
+          photo_face: photo_face[0],
+          photo_face_thumbnail: photo_face_thumbnail,
+        }
       );
     }
     if (Array.isArray(photo_ktp) && photo_ktp.length) {
-      const { data, mime } = photo_ktp[0];
       photo = Object.assign(
         {},
         photo,
-        { photo_ktp: `data:${mime};base64,${data}` }
+        {
+          photo_ktp: photo_ktp[0],
+          photo_ktp_thumbnail: photo_ktp_thumbnail,
+        }
       );
     }
     storeFarmerKtp(
@@ -164,12 +169,14 @@ class Farmer extends Component {
   };
   
   onPhotoChange = async (name, raw = [], paths = []) => {
+    if (!Array.isArray(raw)) return;
     const photos = raw.map((item, i) => {
       const { mime, path, data } = raw[i];
       return { mime, path, data };
     });
-    const base64Thumbnail = await generateBase64Thumbnail(photos[0].data);
-    this.setState({ [name]: photos, [`${name}_thumbnail`]: base64Thumbnail });
+    const { data: dataBase64, mime } = photos.length ? photos[0] : null;
+    const thumbnail = await generateBase64Thumbnail(dataBase64);
+    this.setState({ [name]: photos, [`${name}_thumbnail`]: thumbnail });
   };
   
   renderBottom = () => {

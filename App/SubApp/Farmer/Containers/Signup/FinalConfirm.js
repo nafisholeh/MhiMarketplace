@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import { ScrollView, Image, TouchableOpacity, Text } from 'react-native';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
-import { string } from 'prop-types';
 import * as Progress from 'react-native-progress';
 import { DotIndicator } from 'react-native-indicators';
 import { withNavigation } from 'react-navigation';
@@ -10,15 +9,16 @@ import { Mutation } from 'react-apollo';
 import { ReactNativeFile } from 'apollo-upload-client';
 import moment from 'moment';
 
-import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { SIGNUP_FARMER } from 'GraphQL/Farmer/Mutation';
-import { getFarmerSignupData, getAreas } from 'Redux/FarmerSignupRedux';
+import { getFarmerSignupData, getFarmerSignupImages, getAreas } from 'Redux/FarmerSignupRedux';
+import { getUserId } from 'Redux/SessionRedux';
 import { Images, Colors, Fonts } from 'Themes';
 import {
   moderateScale,
   screenWidth,
   screenHeight,
-  convertToGraphQLFile
+  saveBase64AsImage,
+  combineFilenameMime,
 } from 'Lib';
 
 class FinalConfirm extends Component {
@@ -29,9 +29,32 @@ class FinalConfirm extends Component {
     }
   }
   
-  submit = mutate => {
-    const { signupData } = this.props;
-    mutate({ variables: { data: signupData } });
+  submit = async mutate => {
+    const { signupData, signupImages } = this.props;
+    let variables = {};
+    let images = [];
+    for (const key in signupImages) {
+      let value = signupImages[key];
+      if (signupImages.hasOwnProperty(key)) {
+        const { mime, data } = value || {};
+        const imagePath = await saveBase64AsImage(data, key, mime);
+        const imageName = `${moment().format('YYYYMMDDHHmmss')}_${key}`;
+        images.push(
+          new ReactNativeFile({
+            uri: 'file:///'+imagePath,
+            name: combineFilenameMime(imageName, mime),
+            type: mime
+          })
+        )
+      }
+    }
+    variables = Object.assign({}, {data: signupData} , {images});
+    mutate({
+      variables,
+      context: {
+        hasUpload: true,
+      }
+    });
   };
   
   onUploadCompleted = () => {
@@ -44,7 +67,6 @@ class FinalConfirm extends Component {
   };
   
   onUploadError = (error) => {
-    
   };
 
   render() {
@@ -78,6 +100,7 @@ class FinalConfirm extends Component {
           ignoreResults={false}
           errorPolicy='all'>
           { (mutate, {loading, error, data}) => {
+            console.tron.log('SIGNUP_FARMER/loading, error, data',loading, error, data)
             return (
               <Fragment>
                 <TouchableOpacity
@@ -91,7 +114,7 @@ class FinalConfirm extends Component {
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}
-                  onPress={() => this.submit(mutate)}
+                  onPress={async () => this.submit(mutate)}
                 >
                   <Image
                     source={Images.mhi}
@@ -136,6 +159,7 @@ class FinalConfirm extends Component {
 const mapStateToProps = createStructuredSelector({
   areas: getAreas(),
   signupData: getFarmerSignupData(),
+  signupImages: getFarmerSignupImages(),
 });
 
 const mapDispatchToProps = dispatch => ({

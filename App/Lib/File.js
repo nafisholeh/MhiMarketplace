@@ -2,10 +2,10 @@ import ImageResizer from 'react-native-image-resizer';
 import RNFetchBlob from 'rn-fetch-blob';
 
 export async function generateBase64Thumbnail(base64, imageType) {
-  const newWidth = 40;
-  const newHeight = 40;
+  const newWidth = 30;
+  const newHeight = 30;
   const compressFormat = 'JPEG';
-  const quality = 100;
+  const quality = 80;
   const imageTypeParsed = imageType || 'jpeg';
   const base64Parsed = `data:image/${imageTypeParsed};base64,${base64}`;
   
@@ -14,10 +14,15 @@ export async function generateBase64Thumbnail(base64, imageType) {
       ImageResizer
       .createResizedImage(base64Parsed, newWidth, newHeight, compressFormat, quality)
       .then((response) => {
+        const { name, path } = response || {};
         RNFetchBlob.fs
-        .readFile(response.path, "base64")
+        .readFile(path, "base64")
         .then(data => {
-          resolve(data);
+          resolve({
+            mime: exports.getFileType(name),
+            path,
+            data
+          });
         })
         .catch(err => {
           reject(err);
@@ -27,6 +32,26 @@ export async function generateBase64Thumbnail(base64, imageType) {
       });
     } catch (err) {
       reject(err);
+    }
+  });
+};
+
+export async function saveBase64AsImage(base64, fileName, mime) {
+  const { DocumentDir } = RNFetchBlob.fs.dirs;
+  const tempName = exports.combineFilenameMime(fileName, mime);
+  const tempUri = `${DocumentDir}/${tempName}`;
+  return new Promise((resolve, reject) => {
+    try {
+      RNFetchBlob.fs
+        .writeFile(tempUri, base64, "base64")
+        .then(() => {
+          resolve(tempUri);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    } catch (error) {
+      reject(error);
     }
   });
 };

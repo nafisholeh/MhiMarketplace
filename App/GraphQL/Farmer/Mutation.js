@@ -4,8 +4,8 @@ import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { FETCH_FARMER_POSTS, FETCH_FARMER_POST } from './Query';
 
 export const SIGNUP_FARMER = gql`
-  mutation signupFarmer($data: UserFarmerInput!) {
-    signupFarmer(data: $data) {
+  mutation signupFarmer($data: UserFarmerInput!, $images: [Upload]) {
+    signupFarmer(data: $data, images: $images) {
       _id
     }
   }

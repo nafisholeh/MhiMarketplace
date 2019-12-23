@@ -33,8 +33,9 @@ class NewsFeedDetail extends Component {
   static navigationOptions = ({navigation}) => ({ header: null })
   
   state = {
-    parentId: null,
-    isReplyParent: false,
+    commentId: null,
+    commentAuthorId: null,
+    isReplyComment: false,
     parentUsername: '',
   };
   
@@ -54,48 +55,50 @@ class NewsFeedDetail extends Component {
     
   };
   
-  replyComment = (feedId, name) => {
+  replyComment = (feedId, authorId, name) => {
     this.setState({
-      parentId: feedId,
-      isReplyParent: true,
+      commentId: feedId,
+      commentAuthorId: authorId,
+      isReplyComment: true,
       parentUsername: name
     });
   };
   
   cancelReplyComment = () => {
     this.setState({
-      parentId: null,
-      isReplyParent: false,
+      commentId: null,
+      commentAuthorId: null,
+      isReplyComment: false,
       parentUsername: ''
     });
   };
   
   submitCommentToPost = (feedId, feedAuthorId, comment) => {
-    const { isReplyParent, parentId } = this.state;
+    const { isReplyComment, commentId, commentAuthorId } = this.state;
     const { loggedInUserId } = this.props;
     const data = Object.assign(
       {},
       {
         content: comment,
         date_commented: getUTCDate(),
+        reply_author_id: loggedInUserId,
       },
-      isReplyParent
+      isReplyComment
         ? {
-          comment: parentId,
-          author: loggedInUserId,
+          comment_id: commentId,
+          comment_author_id: commentAuthorId,
         }
         : {
           post: feedId,
           post_author_id: feedAuthorId,
-          reply_author_id: loggedInUserId,
         }
     );
     ApolloClientProvider.client.mutate({
-      mutation: isReplyParent ? REPLY_TO_COMMENT : COMMENT_TO_POST,
+      mutation: isReplyComment ? REPLY_TO_COMMENT : COMMENT_TO_POST,
       variables: { data },
       update: (cache, data) => 
-        isReplyParent
-          ? cacheSubCommentReply(cache, data, feedId, parentId, comment)
+        isReplyComment
+          ? cacheSubCommentReply(cache, data, feedId, commentId, comment)
           : cacheCommentReply(cache, data, feedId, comment)
     })
     .then(res => {
@@ -105,7 +108,7 @@ class NewsFeedDetail extends Component {
       console.tron.log('submitCommentToPost/err', err)
     })
     .finally(() => {
-      if (isReplyParent) {
+      if (isReplyComment) {
         this.cancelReplyComment();
       }
     })
@@ -113,7 +116,7 @@ class NewsFeedDetail extends Component {
 
   render() {
     const { navigation, feedId, loggedInUserId } = this.props;
-    const { isReplyParent, parentUsername } = this.state;
+    const { isReplyComment, parentUsername } = this.state;
     if (!feedId) {
       return <View></View>
     }
@@ -185,8 +188,8 @@ class NewsFeedDetail extends Component {
                       onSubmitComment={comment =>
                         this.submitCommentToPost(feedId, feedAuthorId, comment)
                       }
-                      showInfo={isReplyParent}
-                      info={isReplyParent ? `Balas ke ${parentUsername}` : ''}
+                      showInfo={isReplyComment}
+                      info={isReplyComment ? `Balas ke ${parentUsername}` : ''}
                       onClosingInfo={this.cancelReplyComment}
                     />
                   </View>

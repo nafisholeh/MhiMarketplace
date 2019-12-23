@@ -134,7 +134,7 @@ class CommentItem extends Component {
           {onComment && !hideCommentButton
             ? (
               <TouchableOpacity
-                onPress={() => onComment(feedId, name)}
+                onPress={() => onComment(feedId, authorId, name)}
               >
                 <Text
                   style={{
@@ -179,7 +179,7 @@ class CommentItem extends Component {
                 item,
                 (subCommentId, name, isLikedByMe) => 
                   onLikeChild(commentId, subCommentId, name, isLikedByMe),
-                (subCommentId, name) => onCommentChild(commentId, name),
+                (subCommentId, authorId, name) => onCommentChild(commentId, authorId, name),
                 false,
                 isReplyLikedByMe
               )

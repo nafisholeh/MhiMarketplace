@@ -140,7 +140,7 @@ class NewsFeedDetail extends Component {
                 likes,
                 likes_total
               } = dataList || {};
-              const { _id: feedAuthorId, ktp_name } = author || {};
+              const { _id: feedAuthorId, ktp_name, ktp_photo_face } = author || {};
               return (
                 <Fragment>
                   <ScrollView
@@ -152,6 +152,7 @@ class NewsFeedDetail extends Component {
                       feedId={feedId}
                       loggedInUserId={loggedInUserId}
                       userName={ktp_name}
+                      avatar={ktp_photo_face}
                       content={content}
                       photo={photo}
                       dateCreated={date_posted}

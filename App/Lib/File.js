@@ -133,6 +133,7 @@ export function combineFilenameMime(filename, mime) {
 
 export function generateValidServerFileUri(uri) {
   if (!uri) return uri;
+  if (uri.includes('data:image')) return uri;
   return uri
     ? `${Config.uri.image}/${exports.normalizeServerFileUri(uri)}`
     : null;

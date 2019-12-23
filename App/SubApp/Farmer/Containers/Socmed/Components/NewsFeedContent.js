@@ -171,7 +171,7 @@ class NewsFeedContent extends Component {
           }
           <Avatar
             size="small"
-            source={{ uri: avatar }}
+            source={avatar}
             style={{ marginRight: moderateScale(10) }}
           />
           <View

@@ -15,7 +15,6 @@ import { COMMENT_TO_POST } from 'GraphQL/Farmer/Mutation';
 import { QueryEffectPage } from 'Components';
 import { NewsFeedContent, NewsFeedDivider } from './Components';
 import NewsFeedComments from './NewsFeedComments';
-import { generateValidServerFileUri } from 'Lib';
 
 class NewsFeedList extends Component {
   
@@ -38,7 +37,6 @@ class NewsFeedList extends Component {
       likes,
     } = item || {};
     const { ktp_name, ktp_photo_face_thumbnail } = author || {};
-    const avatar = generateValidServerFileUri(ktp_photo_face_thumbnail);
     const lastComment =
       Array.isArray(comments) && comments.length
         ? [comments[comments.length - 1]]
@@ -53,7 +51,7 @@ class NewsFeedList extends Component {
           feedId={_id}
           loggedInUserId={loggedInUserId}
           userName={ktp_name}
-          avatar={avatar}
+          avatar={ktp_photo_face_thumbnail}
           content={content}
           photo={photo}
           dateCreated={date_posted}

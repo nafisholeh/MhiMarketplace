@@ -3,7 +3,7 @@ import { View, Image } from 'react-native';
 import { string, number, object, oneOfType, oneOf } from 'prop-types';
 
 import { Images } from 'Themes';
-import { moderateScale } from 'Lib';
+import { moderateScale, generateValidServerFileUri } from 'Lib';
 
 const IMAGE_SIZE = {
   small: 30,
@@ -16,6 +16,7 @@ class Avatar extends Component {
     const { source = null, size = 'medium', style } = this.props;
     const imageSize = moderateScale(IMAGE_SIZE[size]);
     const borderRadius = moderateScale(IMAGE_SIZE[size] / 2);
+    const imageUri = generateValidServerFileUri(source);
     return (
       <Image
         {...this.props}
@@ -25,7 +26,7 @@ class Avatar extends Component {
           borderRadius,
           ...style
         }}
-        source={source || Images.empty_profile}
+        source={imageUri ? { uri: imageUri } : Images.empty_profile}
       />
     )
   };

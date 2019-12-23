@@ -52,6 +52,17 @@ export const getUserId = () =>
       return _id ? _id : null;
     }
   )
+
+export const getUserPhoto = () => 
+  createSelector(
+    sessionSelectors(),
+    state => {
+      const { user } = state;
+      if (!user) return null;
+      const { ktp_photo_face } = user;
+      return ktp_photo_face ? ktp_photo_face : null;
+    }
+  )
   
 export const isAdmin = () =>
   createSelector(

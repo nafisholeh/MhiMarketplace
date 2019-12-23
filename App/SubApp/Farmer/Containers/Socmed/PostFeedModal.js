@@ -28,7 +28,7 @@ import {
 } from 'Lib';
 import { Colors, Fonts, Images } from 'Themes';
 import { POST_AS_FARMER, cachePostSubmit } from 'GraphQL/Farmer/Mutation';
-import { getUserId } from 'Redux/SessionRedux';
+import { getUserId, getUserPhoto } from 'Redux/SessionRedux';
 
 class PostFeedModal extends Component {
   state = {
@@ -122,6 +122,7 @@ class PostFeedModal extends Component {
   };
 
   render() {
+    const { userPhoto } = this.props;
     const { postContent, isNeedToPost, photos, photoSelectedIndex } = this.state;
     const isShowPhotos = Array.isArray(photos) && photos.length;
     return (
@@ -144,7 +145,10 @@ class PostFeedModal extends Component {
             marginBottom: moderateScale(15),
           }}
         >
-          <Avatar style={{ marginRight: moderateScale(10) }} />
+          <Avatar
+            source={userPhoto}
+            style={{ marginRight: moderateScale(10) }}
+          />
           <TextInput
             underlineColorAndroid='rgba(0,0,0,0)'
             placeholder="Apa yang anda pikirkan..."
@@ -377,6 +381,7 @@ class PostFeedModal extends Component {
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
+  userPhoto: getUserPhoto(),
 });
 
 const mapDispatchToProps = dispatch => ({

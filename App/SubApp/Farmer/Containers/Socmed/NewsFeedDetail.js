@@ -85,6 +85,7 @@ class NewsFeedDetail extends Component {
       },
       isReplyComment
         ? {
+          post_id: feedId,
           comment_id: commentId,
           comment_author_id: commentAuthorId,
         }

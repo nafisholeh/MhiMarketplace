@@ -82,6 +82,7 @@ export default {
   },
   notifPurpose: {
     NEW_ORDER: 'newReadyToProcess',
+    REPLY_POST: 'replyPost',
     REPLY_COMMENT: 'replyComment',
   },
   category: {

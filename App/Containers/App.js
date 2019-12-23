@@ -13,7 +13,7 @@ import ApolloClientProvider from 'Services/ApolloClientProvider'
 import { InAppNotification } from 'Lib';
 import AppConfig from "Config/AppConfig";
 import { cacheNewOrder } from 'Containers/CourierOrder/ReadyToProcess/Helper';
-import { cacheNewReplyComment } from 'GraphQL/Farmer/CacheMutation';
+import { cacheNewComment, cacheNewReplyComment } from 'GraphQL/Farmer/CacheMutation';
 
 // create our store
 export const store = createStore()
@@ -52,6 +52,9 @@ class App extends Component {
     switch (__purpose) {
       case AppConfig.notifPurpose.NEW_ORDER:
         cacheNewOrder(additionalData);
+        break;
+      case AppConfig.notifPurpose.REPLY_POST:
+        cacheNewComment(additionalData);
         break;
       case AppConfig.notifPurpose.REPLY_COMMENT:
         cacheNewReplyComment(additionalData);

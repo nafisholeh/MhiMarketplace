@@ -1,6 +1,58 @@
 import ApolloClientProvider from 'Services/ApolloClientProvider'
 import { FETCH_FARMER_POST } from './Query';
 
+export const cacheNewComment = async (data) => {
+    const {
+        postId,
+        commentId,
+        content,
+        author,
+        dateCommented
+    } = data || {};
+    const {
+        _id: authorId,
+        ktp_photo_face_thumbnail: ktp_photo_face,
+        ktp_name
+    } = author || {};
+    const result = await ApolloClientProvider.client.query({
+        query: FETCH_FARMER_POST,
+        variables: { _id: postId }
+    });
+    const { data: postCache } = result || {};
+    const { farmerPost } = postCache || {};
+    const { comments = [] } = farmerPost || {};
+
+    if (!Array.isArray(comments)) return;
+    const newComment = {
+        _id: commentId,
+        author: {
+            _id: authorId,
+            ktp_name,
+            ktp_photo_face,
+            __typename: "UserFarmer"
+        },
+        content,
+        date_commented: dateCommented,
+        likes: [],
+        likes_total: 0,
+        content_reply: [],
+        __typename: "FarmerComment"
+    };
+
+    ApolloClientProvider.client.writeQuery({
+        query: FETCH_FARMER_POST,
+        variables: { _id: postId },
+        data: {
+            farmerPost: {
+                ...farmerPost,
+                ...{
+                    comments: [].concat(comments, newComment)
+                }
+            }
+        }
+    });
+};
+
 export const cacheNewReplyComment = async (data) => {
     const {
         postId,

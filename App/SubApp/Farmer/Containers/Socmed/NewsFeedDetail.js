@@ -90,7 +90,7 @@ class NewsFeedDetail extends Component {
           comment_author_id: commentAuthorId,
         }
         : {
-          post: feedId,
+          post_id: feedId,
           post_author_id: feedAuthorId,
         }
     );

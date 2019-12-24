@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
-import { string } from 'prop-types';
+import { View, Text, Keyboard, TextInput, Image, TouchableOpacity } from 'react-native';
 
 import { Colors, Images, Fonts } from 'Themes';
 import { moderateScale } from 'Lib';
@@ -22,6 +21,7 @@ class CommentInput extends Component {
     if (onSubmitComment) {
       onSubmitComment(comment);
       this.setState({ comment: '', showSendButton: false });
+      Keyboard.dismiss();
     }
   };
   

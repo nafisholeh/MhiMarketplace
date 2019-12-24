@@ -1,17 +1,15 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { FlatList, View } from 'react-native';
 import { Query } from 'react-apollo';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { withNavigation } from 'react-navigation';
-import moment from 'moment';
 
-import ApolloClientProvider from 'Services/ApolloClientProvider';
 import ListActions from 'Redux/ListRedux';
 import { getUserId } from 'Redux/SessionRedux';
 import Config from 'Config/AppConfig';
+import { moderateScale } from 'Lib';
 import { FETCH_FARMER_POSTS } from 'GraphQL/Farmer/Query';
-import { COMMENT_TO_POST } from 'GraphQL/Farmer/Mutation';
 import { QueryEffectPage } from 'Components';
 import { NewsFeedContent, NewsFeedDivider } from './Components';
 import NewsFeedComments from './NewsFeedComments';
@@ -101,16 +99,20 @@ class NewsFeedList extends Component {
             );
           }
           return (
-            <QueryEffectPage
-              title="Belum ada postingan"
-              subtitle="Posting yuk..."
-              buttonTitle="Coba lagi"
-              isLoading={loading}
-              isError={error}
-              isEmpty={!dataList.length}
-              iconEmpty={Config.pageState.ERROR}
-              onRefetch={() => refetch()}
-            />
+            <View
+              style={{
+                marginTop: moderateScale(50),
+              }}
+            >
+              <QueryEffectPage
+                buttonTitle="Coba lagi"
+                isLoading={loading}
+                isError={error}
+                isEmpty={!dataList.length}
+                iconEmpty={Config.pageState.ERROR}
+                onRefetch={() => refetch()}
+              />
+            </View>
           );
         }}
       </Query>

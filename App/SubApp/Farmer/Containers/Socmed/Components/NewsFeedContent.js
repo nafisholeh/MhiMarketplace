@@ -1,15 +1,12 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
-import { string } from 'prop-types';
-import moment from 'moment';
-import { Mutation } from 'react-apollo';
 import FBCollage from 'react-native-fb-collage';
 
 import AppConfig from 'Config/AppConfig';
 import { Fonts, Colors, Images } from 'Themes';
 import { moderateScale, getIntervalTimeToday, unixToDate } from 'Lib';
 import { Avatar } from 'CommonFarmer';
-import { LIKE, DISLIKE, cacheLike, cacheDislike } from 'GraphQL/Farmer/Mutation';
+import NewsFeedAction from './NewsFeedAction';
 
 class NewsFeedContent extends Component {
   state = {
@@ -21,7 +18,6 @@ class NewsFeedContent extends Component {
   componentDidMount() {
     this.drawStatistic();
     this.handleCreatedDate();
-    this.handleLikeStatus();
     this.handlePhoto();
   }
   
@@ -37,9 +33,6 @@ class NewsFeedContent extends Component {
     if (prevProps.dateCreated !== dateCreated) {
       this.handleCreatedDate();
     }
-    if (prevProps.likes !== likes) {
-      this.handleLikeStatus();
-    }
     if (prevProps.photo !== photo) {
       this.handlePhoto();
     }
@@ -51,15 +44,6 @@ class NewsFeedContent extends Component {
     const photoUri = photo.split(',').map((item) => `${AppConfig.uri.image}/${item}`);
     this.setState({ photoUri });
   };
-  
-  handleLikeStatus = () => {
-    const { loggedInUserId, likes = [] } = this.props;
-    if (Array.isArray(likes)) {
-      this.setState({ 
-        isLiked: likes.findIndex(({ _id }) => _id === loggedInUserId) >= 0,
-      });
-    }
-  }
   
   handleCreatedDate = () => {
     const { dateCreated } = this.props;
@@ -84,58 +68,16 @@ class NewsFeedContent extends Component {
       onPressWrapper(feedId);
     }
   };
-  
-  renderButton = (title, icon, onPress, noTintColor) => (
-    <TouchableOpacity
-      onPress={onPress}
-      style={{
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: moderateScale(5),
-        marginBottom: moderateScale(10)
-      }}
-    >
-      <Image
-        source={Images[icon]}
-        style={
-          Object.assign(
-            {},
-            {
-              width: moderateScale(20),
-              height: moderateScale(20),
-              marginRight: moderateScale(5),
-            },
-            noTintColor ? {} : { tintColor: Colors.icon }
-          )
-        }
-      />
-      <Text
-        style={{
-          ...Fonts.TITLE_NORMAL,
-        }}
-      >
-        {title}
-      </Text>
-    </TouchableOpacity>
-  );
 
   render() {
     const {
-      feedId,
-      loggedInUserId,
       userName,
       content,
-      onLike,
-      likes,
-      onComment,
       showBackButton,
       onBackPressed,
-      showActionBorder,
       avatar,
     } = this.props;
-    const { statistic, dateCreated, isLiked, photoUri } = this.state;
+    const { statistic, dateCreated, photoUri } = this.state;
     return (
       <TouchableOpacity
         onPress={this.onPressWrapper}
@@ -220,55 +162,22 @@ class NewsFeedContent extends Component {
           )
           : null
         }
-        {statistic ? (
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                marginBottom: moderateScale(10),
-              }}
-            >
-              <Text
-                style={{
-                  ...Fonts.TITLE_SMALL
-                }}
-              >
-                {statistic}
-              </Text>
-            </View>
-          )
-          : null
-        }
         <View
           style={{
             flexDirection: 'row',
-            borderBottomWidth: showActionBorder ? 1 : 0,
-            borderBottomColor: Colors.border,
+            justifyContent: 'flex-end',
+            marginBottom: moderateScale(5),
           }}
         >
-          <Mutation
-            mutation={LIKE}
-            ignoreResults={false}
-            update={(cache, data) =>
-              isLiked
-                ? cacheDislike(cache, feedId, loggedInUserId)
-                : cacheLike(cache, feedId, loggedInUserId)
-            }
-            errorPolicy='all'>
-            { (mutate, {loading, error, data}) => {
-              const onLikeMutate = () => mutate({
-                variables: {
-                  elementId: feedId,
-                  userId: loggedInUserId,
-                  type: "POST",
-                  action: isLiked ? "dislike" : "like",
-                }
-              });
-              return (this.renderButton('suka', isLiked ? 'liked' : 'like', onLikeMutate, isLiked));
+          <Text
+            style={{
+              ...Fonts.TITLE_SMALL
             }}
-          </Mutation>
-          {this.renderButton('balas', 'comment', onComment)}
+          >
+            {statistic}
+          </Text>
         </View>
+        <NewsFeedAction {...this.props} />
       </TouchableOpacity>
     )
   };

@@ -166,7 +166,7 @@ class NewsFeedDetail extends Component {
           variables={{ _id: feedId }}
         >
           {({ loading, error, data, refetch }) => {
-            const { farmerPost: dataList = [] } = data || {};
+            const { farmerPost: dataList } = data || {};
             if (dataList) {
               const {
                 _id: feedId,
@@ -238,12 +238,10 @@ class NewsFeedDetail extends Component {
             }
             return (
               <QueryEffectPage
-                title="Terjadi masalah"
-                subtitle="Silahkan coba lagi"
                 buttonTitle="Coba lagi"
                 isLoading={loading}
                 isError={error}
-                isEmpty={!dataList.length}
+                isEmpty={!dataList}
                 iconEmpty={Config.pageState.ERROR}
                 onRefetch={() => refetch()}
               />

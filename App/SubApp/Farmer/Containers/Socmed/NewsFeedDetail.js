@@ -16,7 +16,7 @@ import NewsFeedComments from './NewsFeedComments';
 import { Colors } from 'Themes';
 import { moderateScale, getUTCDate } from 'Lib';
 import { getSelectedListId } from 'Redux/ListRedux';
-import { getUserId } from 'Redux/SessionRedux';
+import { getUser, getUserId } from 'Redux/SessionRedux';
 import { FETCH_FARMER_POST } from 'GraphQL/Farmer/Query';
 import {
   COMMENT_TO_POST,
@@ -75,7 +75,8 @@ class NewsFeedDetail extends Component {
   
   submitCommentToPost = (feedId, feedAuthorId, comment) => {
     const { isReplyComment, commentId, commentAuthorId } = this.state;
-    const { loggedInUserId } = this.props;
+    const { loggedInUserId, userData } = this.props;
+    const { ktp_nik, ktp_name } = userData || {};
     const data = Object.assign(
       {},
       {
@@ -100,7 +101,25 @@ class NewsFeedDetail extends Component {
       update: (cache, data) => 
         isReplyComment
           ? cacheSubCommentReply(cache, data, feedId, commentId, comment)
-          : cacheCommentReply(cache, data, feedId, comment)
+          : cacheCommentReply(cache, data, feedId, comment),
+      optimisticResponse: {
+        commentAsFarmer: {
+          _id: Math.random() * 1000 * -1,
+          content: comment,
+          date_commented: getUTCDate(),
+          author: {
+            _id: loggedInUserId,
+            ktp_nik,
+            ktp_name,
+            __typename: "UserFarmer"
+          },
+          likes_total: 0,
+          likes: [],
+          comments_total: 0,
+          content_reply: [],
+          __typename: "commentAsFarmer"
+        }
+      }
     })
     .then(res => {
       console.tron.log('submitCommentToPost/res', res)
@@ -220,6 +239,7 @@ class NewsFeedDetail extends Component {
 const mapStateToProps = createStructuredSelector({
   feedId: getSelectedListId(),
   loggedInUserId: getUserId(),
+  userData: getUser(),
 });
 
 const mapDispatchToProps = dispatch => ({

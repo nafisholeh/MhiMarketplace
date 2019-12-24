@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { Mutation } from 'react-apollo';
+import { PulseIndicator } from 'react-native-indicators';
 
 import { Colors, Fonts } from 'Themes';
 import { moderateScale, getIntervalTimeToday, unixToDate } from 'Lib';
 import { Avatar } from 'CommonFarmer';
-import { LIKE, DISLIKE, cacheLike, cacheDislike } from 'GraphQL/Farmer/Mutation';
 
 class CommentItem extends Component {
   renderItem = (
@@ -31,6 +30,7 @@ class CommentItem extends Component {
       hideCommentButton
     } = this.props;
     const date = unixToDate(date_commented);
+    const isLoading = feedId < 0;
     return (
       <View
         key={feedId}
@@ -60,22 +60,43 @@ class CommentItem extends Component {
           >
             <View
               style={{
-                backgroundColor: Colors.text_bg,
+                backgroundColor: isLoading ? Colors.text_loading : Colors.text_bg,
                 borderRadius: moderateScale(15),
                 paddingHorizontal: moderateScale(15),
                 paddingVertical: moderateScale(10),
                 marginBottom: moderateScale(5),
               }}
             >
-              <Text
+              <View
                 style={{
-                  ...Fonts.TITLE_NORMAL,
-                  fontWeight: 'bold',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
                   marginBottom: moderateScale(3),
                 }}
               >
-                {name}
-              </Text>
+                <Text
+                  style={{
+                    ...Fonts.TITLE_NORMAL,
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {name}
+                </Text>
+                {isLoading
+                  ? (
+                    <PulseIndicator
+                      size={20}
+                      color={Colors.disabled_dark}
+                      animationDuration={900}
+                      style={{
+                        flex: 0,
+                        marginLeft: moderateScale(5),
+                      }}
+                    />
+                  )
+                  : null
+                }                
+              </View>
               <Text
                 style={{
                   ...Fonts.TITLE_NORMAL,

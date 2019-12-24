@@ -102,24 +102,43 @@ class NewsFeedDetail extends Component {
         isReplyComment
           ? cacheSubCommentReply(cache, data, feedId, commentId, comment)
           : cacheCommentReply(cache, data, feedId, comment),
-      optimisticResponse: {
-        commentAsFarmer: {
-          _id: Math.random() * 1000 * -1,
-          content: comment,
-          date_commented: getUTCDate(),
-          author: {
-            _id: loggedInUserId,
-            ktp_nik,
-            ktp_name,
-            __typename: "UserFarmer"
-          },
-          likes_total: 0,
-          likes: [],
-          comments_total: 0,
-          content_reply: [],
-          __typename: "commentAsFarmer"
+      optimisticResponse: 
+        isReplyComment
+        ? {
+          replyCommentAsFarmer: {
+            _id: Math.random() * 1000 * -1,
+            content: comment,
+            date_commented: getUTCDate(),
+            author: {
+              _id: loggedInUserId,
+              ktp_nik,
+              ktp_name,
+              __typename: "UserFarmer"
+            },
+            likes_total: 0,
+            likes: [],
+            comment: [],
+            __typename: "replyCommentAsFarmer"
+          }
         }
-      }
+        : {
+          commentAsFarmer: {
+            _id: Math.random() * 1000 * -1,
+            content: comment,
+            date_commented: getUTCDate(),
+            author: {
+              _id: loggedInUserId,
+              ktp_nik,
+              ktp_name,
+              __typename: "UserFarmer"
+            },
+            likes_total: 0,
+            likes: [],
+            comments_total: 0,
+            content_reply: [],
+            __typename: "commentAsFarmer"
+          }
+        }
     })
     .then(res => {
       console.tron.log('submitCommentToPost/res', res)

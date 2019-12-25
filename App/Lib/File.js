@@ -141,5 +141,23 @@ export function generateValidServerFileUri(uri) {
 
 export function normalizeServerFileUri(uri) {
   if (!uri) return uri;
-  return uri.replace(`server/public/`, '');
+  let tempUri = uri.replace(`server/public/`, '');
+  if (!tempUri.includes('images')) tempUri = `images/${tempUri};`;
+  return exports.filterSymbolInLastChar(tempUri);
+}
+
+export function filterSymbolInLastChar(str) {
+  const checkSymbolInLastChar = /[$-/:-?{-~!"^_`[\]]$/gm;
+  let newStr = '';
+  if (str) {
+    newStr = str.constructor === Number ? str.toString() : str;
+    newStr =
+      newStr.constructor === String
+        ? newStr.replace(checkSymbolInLastChar, '')
+        : '';
+  }
+  if (checkSymbolInLastChar.test(newStr)) {
+    return filterSymbolInLastChar(newStr);
+  }
+  return newStr;
 }

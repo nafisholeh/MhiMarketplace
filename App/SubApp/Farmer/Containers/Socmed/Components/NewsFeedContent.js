@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import FBCollage from 'react-native-fb-collage';
 
-import AppConfig from 'Config/AppConfig';
 import { Fonts, Colors, Images } from 'Themes';
-import { moderateScale, getIntervalTimeToday, unixToDate } from 'Lib';
+import { moderateScale, getIntervalTimeToday, unixToDate, generateValidServerFileUri } from 'Lib';
 import { Avatar } from 'CommonFarmer';
 import NewsFeedAction from './NewsFeedAction';
 
@@ -41,7 +40,7 @@ class NewsFeedContent extends Component {
   handlePhoto = () => {
     const { photo } = this.props;
     if (!photo) return;
-    const photoUri = photo.split(',').map((item) => `${AppConfig.uri.image}/${item}`);
+    const photoUri = photo.split(',').map((item) => generateValidServerFileUri(item));
     this.setState({ photoUri });
   };
   

@@ -14,6 +14,7 @@ import { InAppNotification } from 'Lib';
 import AppConfig from "Config/AppConfig";
 import { cacheNewOrder } from 'Containers/CourierOrder/ReadyToProcess/Helper';
 import { cacheNewComment, cacheNewReplyComment } from 'GraphQL/Farmer/CacheMutation';
+import { openFeedDetail } from "Navigation/NotificationRouter/SocialFeed";
 
 // create our store
 export const store = createStore()
@@ -45,7 +46,6 @@ class App extends Component {
   }
   
   onReceived(notification) {
-    console.tron.log('App/onReceived/notification', notification)
     const { payload = {} } = notification || {};
     const { additionalData = {} } = payload || {};
     const { __purpose } = additionalData || {};
@@ -65,7 +65,16 @@ class App extends Component {
   }
 
   onOpened(openResult) {
-    
+    const { notification: { payload: { additionalData } = {} } = {} } = openResult || {};
+    const { __purpose } = additionalData || {};
+    switch (__purpose) {
+      case AppConfig.notifPurpose.REPLY_POST:
+      case AppConfig.notifPurpose.REPLY_COMMENT:
+        openFeedDetail(additionalData);
+        break;
+      default:
+        break;
+    }
   }
   
   render () {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, AppState, View } from 'react-native';
 import PropTypes from 'prop-types';
-import Geocoder from 'react-native-geocoder';
+// import Geocoder from 'react-native-geocoder';
 import GPSState from 'react-native-gps-state';
 import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
@@ -215,10 +215,11 @@ export default function withLocationListener(
             locationError: null,
             isListening: mode === 'repeat',
           });
-          this._geocodeCurrentLoc(      // translate lat,lng ke nama kota
-            position.coords.latitude,
-            position.coords.longitude
-          );
+          // TODO: replace react-native-geocoder, targetSdkVersion must be 26 or higher
+          // this._geocodeCurrentLoc(      // translate lat,lng ke nama kota
+          //   position.coords.latitude,
+          //   position.coords.longitude
+          // );
         },
         (error) => {
           this.setState({
@@ -246,19 +247,20 @@ export default function withLocationListener(
 
     // konversi lat lng ke kota/kab/prov/negara
     _geocodeCurrentLoc(lat, lng) {
-      Geocoder.geocodePosition({ lat:lat, lng:lng })
-      .then(res => {
-        if(!_.isEmpty(res)) {
-          let locNames = extractAdministrativeName(res);
-          this.setState({ locationName: locNames });      // simpan semua kandidat nama lokasi
-        } else {
-          this._useDefaultLocation();
-        }
-      })
-      .catch(err => {
-        reportSentryError(this, '_geocodeCurrentLoc error', err);
-        this._useDefaultLocation();
-      })
+      // TODO: replace react-native-geocoder, targetSdkVersion must be 26 or higher
+      // Geocoder.geocodePosition({ lat:lat, lng:lng })
+      // .then(res => {
+      //   if(!_.isEmpty(res)) {
+      //     let locNames = extractAdministrativeName(res);
+      //     this.setState({ locationName: locNames });      // simpan semua kandidat nama lokasi
+      //   } else {
+      //     this._useDefaultLocation();
+      //   }
+      // })
+      // .catch(err => {
+      //   reportSentryError(this, '_geocodeCurrentLoc error', err);
+      //   this._useDefaultLocation();
+      // })
     }
 
     render () {

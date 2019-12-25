@@ -214,7 +214,6 @@ class Farmer extends Component {
       heightBox2,
     } = this.state;
     const { navigation } = this.props;
-    console.tron.log('Second/render/photo_ktp_thumbnail', photo_ktp_thumbnail)
     return (
       <HillHeaderWrapper
         title="Pendaftaran akun baru"

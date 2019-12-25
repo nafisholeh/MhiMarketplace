@@ -100,7 +100,6 @@ class FinalConfirm extends Component {
           ignoreResults={false}
           errorPolicy='all'>
           { (mutate, {loading, error, data}) => {
-            console.tron.log('SIGNUP_FARMER/loading, error, data',loading, error, data)
             return (
               <Fragment>
                 <TouchableOpacity

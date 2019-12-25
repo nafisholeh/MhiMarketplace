@@ -29,17 +29,17 @@ class SopViewer extends Component {
         <Pdf
           source={{ uri: url }}
           onLoadComplete={(numberOfPages,filePath)=>{
-              console.tron.log(`number of pages: ${numberOfPages}`);
+              
           }}
           onPageChanged={(page,numberOfPages)=>{
-              console.tron.log(`current page: ${page}`);
+              
           }}
           onError={(error)=>{
-              console.tron.log(error);
+              
           }}
           enablePaging
           onPageSingleTap={page => {
-            console.tron.log(error);
+            
           }}
           style={{
             flex: 1,

@@ -141,10 +141,10 @@ class NewsFeedDetail extends Component {
         }
     })
     .then(res => {
-      console.tron.log('submitCommentToPost/res', res)
+      
     })
     .catch(err => {
-      console.tron.log('submitCommentToPost/err', err)
+      
     })
     .finally(() => {
       if (isReplyComment) {

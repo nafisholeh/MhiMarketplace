@@ -83,7 +83,6 @@ class Farmer extends Component {
       email,
       password
     } = this.state;
-    console.tron.log('onSignup', this.state, this.props)
     storeFarmerCreds(phone, email, password);
     navigation.navigate('SignupFarmerSecond');
   }

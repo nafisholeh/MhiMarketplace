@@ -13,6 +13,7 @@ class CommentItem extends Component {
     onComment,
     isParent,
     isLikedByMe,
+    isDisableAction
   ) => {
     const {
       _id: feedId,
@@ -31,6 +32,8 @@ class CommentItem extends Component {
     } = this.props;
     const date = unixToDate(date_commented);
     const isLoading = feedId < 0;
+    const isShowLike = onLike && !hideLikeButton && !isDisableAction;
+    const isShowComment = onComment && !hideCommentButton && !isDisableAction;
     return (
       <View
         key={feedId}
@@ -131,7 +134,7 @@ class CommentItem extends Component {
             )
             : null
           }
-          {onLike && !hideLikeButton
+          {isShowLike
             ? (
               <TouchableOpacity
                 onPress={() => onLike(feedId, name, isLikedByMe)}
@@ -152,7 +155,7 @@ class CommentItem extends Component {
             )
             : null
           }
-          {onComment && !hideCommentButton
+          {isShowComment
             ? (
               <TouchableOpacity
                 onPress={() => onComment(feedId, authorId, name)}
@@ -164,7 +167,7 @@ class CommentItem extends Component {
                     fontWeight: 'bold',
                   }}
                 >
-                  balas
+                  tanggapi
                 </Text>
               </TouchableOpacity>
             )
@@ -184,17 +187,21 @@ class CommentItem extends Component {
       onCommentChild,
       loggedInUserId,
     } = this.props;
-    const { _id: commentId, content_reply, likes = [] } = data || {};
+    const { _id: commentId, content_reply, likes = [], author } = data || {};
+    const { _id: commentAuthorId } = author || {};
+    const isOurOwn = commentAuthorId === loggedInUserId;
     const isLikedByMe = Array.isArray(likes) && likes.findIndex(({ _id }) => _id === loggedInUserId) >= 0;
     return (
       <View>
-        {this.renderItem(data, onLikeParent, onCommentParent, true, isLikedByMe)}
+        {this.renderItem(data, onLikeParent, onCommentParent, true, isLikedByMe, isOurOwn)}
         {Array.isArray(content_reply)
           && content_reply.map((item, index) => {
-            const { likes = [] } = item || {};
+            const { likes = [], author } = item || {};
+            const { _id: subCommentAuthorId } = author || {};
             const isReplyLikedByMe =
               Array.isArray(likes)
               && likes.findIndex(({ _id }) => _id === loggedInUserId) >= 0;
+            const isOurOwnSubComment = subCommentAuthorId === loggedInUserId;
             return (
               this.renderItem(
                 item,
@@ -202,7 +209,8 @@ class CommentItem extends Component {
                   onLikeChild(commentId, subCommentId, name, isLikedByMe),
                 (subCommentId, authorId, name) => onCommentChild(commentId, authorId, name),
                 false,
-                isReplyLikedByMe
+                isReplyLikedByMe,
+                isOurOwnSubComment
               )
             )
         })}

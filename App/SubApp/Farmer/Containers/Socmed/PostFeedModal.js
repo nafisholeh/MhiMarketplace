@@ -218,7 +218,7 @@ class PostFeedModal extends Component {
               update={(cache, data) => cachePostSubmit(cache, data)}
               onCompleted={this.onPostSuccess}
               onError={error => {
-                console.tron.log('postAsFarmer/onError', error)
+                
               }}
               ignoreResults={false}
               errorPolicy='all'>

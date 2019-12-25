@@ -39,11 +39,11 @@ class CommentInput extends Component {
   render() {
     const {
       style,
-      photo,
       showInfo,
       info,
       onClosingInfo,
       disabled,
+      photo,
     } = this.props;
     const { comment, showSendButton } = this.state;
     return (

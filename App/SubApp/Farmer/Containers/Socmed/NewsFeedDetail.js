@@ -16,7 +16,7 @@ import NewsFeedComments from './NewsFeedComments';
 import { Colors } from 'Themes';
 import { moderateScale, getUTCDate } from 'Lib';
 import { getSelectedListId } from 'Redux/ListRedux';
-import { getUser, getUserId } from 'Redux/SessionRedux';
+import { getUser, getUserId, getUserPhoto } from 'Redux/SessionRedux';
 import { FETCH_FARMER_POST } from 'GraphQL/Farmer/Query';
 import {
   COMMENT_TO_POST,
@@ -154,7 +154,7 @@ class NewsFeedDetail extends Component {
   };
 
   render() {
-    const { navigation, feedId, loggedInUserId } = this.props;
+    const { navigation, feedId, loggedInUserId, userPhoto } = this.props;
     const { isReplyComment, parentUsername } = this.state;
     if (!feedId) {
       return <View></View>
@@ -231,6 +231,7 @@ class NewsFeedDetail extends Component {
                       showInfo={isReplyComment}
                       info={isReplyComment ? `Balas ke ${parentUsername}` : ''}
                       onClosingInfo={this.cancelReplyComment}
+                      photo={userPhoto}
                     />
                   </View>
                 </Fragment>
@@ -257,6 +258,7 @@ const mapStateToProps = createStructuredSelector({
   feedId: getSelectedListId(),
   loggedInUserId: getUserId(),
   userData: getUser(),
+  userPhoto: getUserPhoto(),
 });
 
 const mapDispatchToProps = dispatch => ({

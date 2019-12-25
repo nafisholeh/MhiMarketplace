@@ -9,7 +9,7 @@ import { Colors, Fonts } from 'Themes';
 import { moderateScale, getIntervalTimeToday, unixToDate } from 'Lib';
 import { CommentItem, CommentInput } from './Components';
 import { Avatar } from 'CommonFarmer';
-import { getUserId } from 'Redux/SessionRedux';
+import { getUserId, getUserPhoto } from 'Redux/SessionRedux';
 import {
   LIKE,
   DISLIKE,
@@ -29,6 +29,7 @@ class NewsFeedComments extends Component {
       onCommentContainerPressed,
       onViewOtherCommentPressed,
       onCommentInputClicked,
+      userPhoto,
     } = this.props;
     return (
       <TouchableOpacity
@@ -127,6 +128,7 @@ class NewsFeedComments extends Component {
               <CommentInput
                 disabled
                 onSubmitComment={onSubmitComment}
+                photo={userPhoto}
               />
             </TouchableOpacity>
           )
@@ -139,6 +141,7 @@ class NewsFeedComments extends Component {
 
 const mapStateToProps = createStructuredSelector({
   loggedInUserId: getUserId(),
+  userPhoto: getUserPhoto(),
 });
 
 export default connect(mapStateToProps, null)(NewsFeedComments);

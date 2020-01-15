@@ -82,8 +82,8 @@ export default {
   },
   notifPurpose: {
     NEW_ORDER: 'newReadyToProcess',
-    REPLY_POST: 'replyPost',
-    REPLY_COMMENT: 'replyComment',
+    REPLY_POST: 'reply_post',
+    REPLY_COMMENT: 'reply_comment',
   },
   category: {
     sayuran: {

@@ -10,14 +10,13 @@ import {
 } from 'react-native';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
-import { string } from 'prop-types';
 import Modal from "react-native-modal";
 import { Mutation } from 'react-apollo';
 import moment from 'moment';
 import { ReactNativeFile } from 'apollo-upload-client';
 
 import { ViewShadow, ButtonPrimary, ImagePicker } from 'Components';
-import { Avatar } from 'CommonFarmer';
+import { Avatar, NotificationBar } from 'CommonFarmer';
 import { NewsFeedDivider } from './Components';
 import {
   moderateScale,
@@ -127,16 +126,29 @@ class PostFeedModal extends Component {
     const isShowPhotos = Array.isArray(photos) && photos.length;
     return (
       <View>
-        <Text
+        <View
           style={{
-            marginLeft: moderateScale(15),
-            marginTop: moderateScale(15),
-            marginBottom: moderateScale(12),
-            ...Fonts.PAGE_TITLE
+            flexDirection: 'row',
+            justifyContent: 'space-between',
           }}
         >
-          Komoditasmu
-        </Text>
+          <Text
+            style={{
+              marginLeft: moderateScale(15),
+              marginTop: moderateScale(15),
+              marginBottom: moderateScale(12),
+              ...Fonts.PAGE_TITLE
+            }}
+          >
+            Komoditasmu
+          </Text>
+          <NotificationBar
+            style={{
+              alignSelf: 'center',
+              marginRight: moderateScale(10)
+            }}
+          />
+        </View>
         <TouchableOpacity
           onPress={this.onShowPostModal}
           style={{

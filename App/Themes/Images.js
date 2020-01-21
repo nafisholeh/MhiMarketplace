@@ -58,6 +58,7 @@ const images = {
   share: require(pathPrefix+'share.png'),
   send: require(pathPrefix+'send.png'),
   camera: require(pathPrefix+'camera.png'),
+  notification: require(pathPrefix+'notification.png'),
 }
 
 export default images

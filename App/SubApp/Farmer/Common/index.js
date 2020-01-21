@@ -17,6 +17,9 @@ import AreaDrawInfoWrapper from './MapBottomInfo/AreaDrawInfoWrapper';
 import AreaDrawItem from './MapBottomInfo/AreaDrawItem';
 import AreaDrawListHeader from './MapBottomInfo/AreaDrawListHeader';
 
+import NotificationBar from './NotificationBar';
+import NotificationItem from './NotificationItem';
+
 export {
   HillHeaderWrapper,
   AreaItem,
@@ -34,5 +37,7 @@ export {
   FileItem,
   SearchHeader,
   FloatNavigation,
-  Avatar
+  Avatar,
+  NotificationBar,
+  NotificationItem,
 };

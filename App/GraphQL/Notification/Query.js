@@ -18,6 +18,7 @@ export const NOTIFICATION_BY_USER = gql`
         post
         comment
         sub_comment
+        has_seen
       }
     }
   }

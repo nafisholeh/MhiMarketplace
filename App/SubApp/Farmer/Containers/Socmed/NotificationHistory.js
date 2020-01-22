@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, Image } from 'react-native';
+import { View, ScrollView, Text, Image, TouchableOpacity } from 'react-native';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { Query } from 'react-apollo';
@@ -15,7 +15,7 @@ class NotificationHistory extends Component {
   static navigationOptions = ({navigation}) => ({ header: null })
   
   render() {
-    const { userId } = this.props;
+    const { userId, navigation } = this.props;
     return (
       <View style={{ flex: 1 }}>
         <View
@@ -24,15 +24,19 @@ class NotificationHistory extends Component {
             alignItems: 'center',
           }}
         >
-          <Image
-            source={Images.back}
-            style={{
-              width: moderateScale(20),
-              height: moderateScale(20),
-              marginLeft: moderateScale(15),
-              marginRight: moderateScale(15)
-            }}
-          />
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+          >
+            <Image
+              source={Images.back}
+              style={{
+                width: moderateScale(20),
+                height: moderateScale(20),
+                marginLeft: moderateScale(15),
+                marginRight: moderateScale(15)
+              }}
+            />
+          </TouchableOpacity>
           <Text
             style={{
               marginTop: moderateScale(15),
@@ -54,7 +58,7 @@ class NotificationHistory extends Component {
               return (
                 <ScrollView>
                   {notification_history.map((item) => {
-                    const { context, content_preview, user_origin } = item || {};
+                    const { context, content_preview, user_origin, has_seen } = item || {};
                     const { ktp_name, ktp_photo_face } = user_origin;
                     return (
                       <NotificationItem
@@ -62,6 +66,7 @@ class NotificationHistory extends Component {
                         subjectName={ktp_name}
                         thumbnail={ktp_photo_face}
                         context={context}
+                        hasSeen={has_seen}
                       />
                     )
                   })}

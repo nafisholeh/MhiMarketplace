@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 
 import Avatar from './Avatar';
 import { moderateScale } from 'Lib';
-import { Fonts } from 'Themes';
+import { Fonts, Colors } from 'Themes';
 
 export default class NotificationItem extends Component {
   state = {
@@ -32,7 +32,7 @@ export default class NotificationItem extends Component {
   }
 
   render() {
-    const { thumbnail, content, subjectName } = this.props;
+    const { thumbnail, content, subjectName, hasSeen } = this.props;
     const { verb } = this.state;
     return (
       <View
@@ -41,6 +41,7 @@ export default class NotificationItem extends Component {
           alignItems: 'center',
           paddingHorizontal: moderateScale(10),
           paddingVertical: moderateScale(15),
+          backgroundColor: hasSeen ? null : Colors.veggie_bg
         }}
       >
         <Avatar

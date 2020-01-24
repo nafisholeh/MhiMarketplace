@@ -23,3 +23,9 @@ export const NOTIFICATION_BY_USER = gql`
     }
   }
 `
+
+export const NOTIFICATION_UNSEEN_TOTAL = gql`
+  query userNotificationUnseenTotal($user_id:String!) {
+    userNotificationUnseenTotal(user_id:$user_id)
+  }
+`

@@ -42,34 +42,25 @@ export const convertToGraphQLFile = (userId, photos) => {
 /**
  * Get the actual object of the response through React Component 
  *
- * @param {any} res { [name]: { actual object } }
+ * @param {any} res { [name]: { actual object } } or { data: { [name]: { actual object } } }
  * @return {object} the actual object filled with the needed data
  */
 export const extractGraphQLResponse = res => {
   if (!res) return null;
-  const actualObject = Object.values(res);
-  return Array.isArray(actualObject) && actualObject.length
-    ? actualObject[0]
-    : null;
-};
-
-/**
- * Get the actual object of the response through ApolloClientProvider 
- *
- * @param {any} res { data: { [name]: { actual object } } }
- * @return {object} the actual object filled with the needed data
- */
-export const extractGraphQLFuncResponse = res => {
-  if (!res) return null;
   const firstParent = Object.values(res);
-  const firstChild = Array.isArray(firstParent) && firstParent.length
+  const firstChild = Array.isArray(firstParent)
+    && firstParent.length
     ? firstParent[0]
     : null;
-  if (firstChild) {
-    const actualObject = Object.values(firstChild);
-    return Array.isArray(actualObject) && actualObject.length
+  if (!firstChild) return null;
+  const actualObject = Object.values(firstChild);
+  if (Array.isArray(actualObject) && actualObject.length === 1) {
+    return Array.isArray(actualObject)
+      && actualObject.length
       ? actualObject[0]
       : null;
+  } else if (Array.isArray(actualObject) && actualObject.length > 1) {
+    return firstChild;
   }
   return null;
 };

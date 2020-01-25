@@ -1,5 +1,11 @@
 import { Colors, Images } from 'Themes';
 
+export const BASIC_RESPONSE = {
+  SUCCESS: 'sukses',
+  FAILED: 'gagal',
+  NOTHING: 'kosong',
+};
+
 export default {
   // uri: 'http://app-dev.metodehayati.id:4001/graphql',
   uri: {

@@ -4,15 +4,33 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { Query } from 'react-apollo';
 
+import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { NOTIFICATION_BY_USER } from 'GraphQL/Notification/Query';
+import { READING_NOTIFICATION } from 'GraphQL/Notification/Mutation';
 import { getUserId } from 'Redux/SessionRedux';
 import { QueryEffectPage } from 'Components';
 import { NotificationItem } from 'CommonFarmer';
 import { Fonts, Images } from 'Themes';
-import { moderateScale } from 'Lib';
+import { InAppNotification, moderateScale } from 'Lib';
 
 class NotificationHistory extends Component {
   static navigationOptions = ({navigation}) => ({ header: null })
+
+  componentDidMount() {
+    this.readingUnseenNotification();
+  }
+
+  readingUnseenNotification = () => {
+    const { userId } = this.props;
+    ApolloClientProvider.client.mutate({
+      mutation: READING_NOTIFICATION,
+      variables: { user_id: userId },
+    })
+    .then(res => {})
+    .catch(err => {
+      InAppNotification.error();
+    })
+  };
   
   render() {
     const { userId, navigation } = this.props;

@@ -6,7 +6,7 @@ import { Query } from 'react-apollo';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { NOTIFICATION_BY_USER } from 'GraphQL/Notification/Query';
-import { READING_NOTIFICATION } from 'GraphQL/Notification/Mutation';
+import { READING_NOTIFICATION, cacheReadingNotification } from 'GraphQL/Notification/Mutation';
 import { getUserId } from 'Redux/SessionRedux';
 import { QueryEffectPage } from 'Components';
 import { NotificationItem } from 'CommonFarmer';
@@ -16,15 +16,12 @@ import { InAppNotification, moderateScale } from 'Lib';
 class NotificationHistory extends Component {
   static navigationOptions = ({navigation}) => ({ header: null })
 
-  componentDidMount() {
-    this.readingUnseenNotification();
-  }
-
   readingUnseenNotification = () => {
     const { userId } = this.props;
     ApolloClientProvider.client.mutate({
       mutation: READING_NOTIFICATION,
       variables: { user_id: userId },
+      update: (cache, data) => cacheReadingNotification(cache, userId),
     })
     .then(res => {})
     .catch(err => {
@@ -68,6 +65,9 @@ class NotificationHistory extends Component {
         <Query
           query={NOTIFICATION_BY_USER}
           variables={{ user_id: userId }}
+          onCompleted={() => {
+            setTimeout(() => {this.readingUnseenNotification()}, 1000)
+          }}
         >
           {({ loading, error, data, refetch }) => {
             const { userNotifications } = data || {};

@@ -4,7 +4,6 @@ import {
   getGraphQLError,
   convertToGraphQLFile,
   extractGraphQLResponse,
-  extractGraphQLFuncResponse
 } from './GraphQL';
 import {
   getReadableDate,
@@ -53,5 +52,5 @@ export {
   normalizeAreaSize, convertToGraphQLFile, getUTCDate, unixToDate,
   getFilenameFromPath, getFileType, combineFilenameMime, generateBase64Thumbnail,
   saveBase64AsImage, generateValidServerFileUri, normalizeServerFileUri,
-  extractGraphQLResponse, extractGraphQLFuncResponse
+  extractGraphQLResponse,
 };

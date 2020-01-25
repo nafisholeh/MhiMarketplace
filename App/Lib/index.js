@@ -1,6 +1,11 @@
 import { parseToRupiah, calcDiscount } from './money';
 import { isEmailValid, isEmailError } from './Email';
-import { getGraphQLError, convertToGraphQLFile } from './GraphQL';
+import {
+  getGraphQLError,
+  convertToGraphQLFile,
+  extractGraphQLResponse,
+  extractGraphQLFuncResponse
+} from './GraphQL';
 import {
   getReadableDate,
   getIntervalTimeToday,
@@ -47,5 +52,6 @@ export {
   getStateFromAsyncStorage, setStateFromAsyncStorage, calcPolygonCenter,
   normalizeAreaSize, convertToGraphQLFile, getUTCDate, unixToDate,
   getFilenameFromPath, getFileType, combineFilenameMime, generateBase64Thumbnail,
-  saveBase64AsImage, generateValidServerFileUri, normalizeServerFileUri
+  saveBase64AsImage, generateValidServerFileUri, normalizeServerFileUri,
+  extractGraphQLResponse, extractGraphQLFuncResponse
 };

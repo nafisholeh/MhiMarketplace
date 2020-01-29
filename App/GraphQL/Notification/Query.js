@@ -4,6 +4,7 @@ export const NOTIFICATION_BY_USER = gql`
   query userNotifications($user_id: String!) {
     userNotifications(user_id: $user_id) {
       notification_history {
+        _id
         context
         content_preview
         date

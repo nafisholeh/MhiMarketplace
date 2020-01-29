@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 
 import Avatar from './Avatar';
 import { moderateScale } from 'Lib';
@@ -21,7 +21,7 @@ export default class NotificationItem extends Component {
   }
 
   normalizeContent = () => {
-    const { context, content, subjectName } = this.props;
+    const { context } = this.props;
     let verb = '';
     if (context === 'reply_post') {
       verb = 'membalas postingan Anda';
@@ -31,11 +31,18 @@ export default class NotificationItem extends Component {
     this.setState({ verb });
   }
 
+  onPress = () => {
+    const { onPress, id } = this.props;
+    if (onPress) {
+      onPress(id);
+    }
+  }
+
   render() {
     const { thumbnail, content, subjectName, hasSeen } = this.props;
     const { verb } = this.state;
     return (
-      <View
+      <TouchableOpacity
         style={{
           flexDirection: 'row',
           alignItems: 'center',
@@ -43,6 +50,7 @@ export default class NotificationItem extends Component {
           paddingVertical: moderateScale(15),
           backgroundColor: hasSeen ? null : Colors.veggie_bg
         }}
+        onPress={this.onPress}
       >
         <Avatar
           source={thumbnail}
@@ -61,7 +69,7 @@ export default class NotificationItem extends Component {
           <Text> {verb}</Text>
           <Text style={{ fontWeight: "bold" }}> `{content}`</Text>
         </Text>
-      </View>
+      </TouchableOpacity>
     );
   }
 }

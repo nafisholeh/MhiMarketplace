@@ -6,7 +6,11 @@ import { Query } from 'react-apollo';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { NOTIFICATION_BY_USER } from 'GraphQL/Notification/Query';
-import { READING_NOTIFICATION, cacheReadAllNotification } from 'GraphQL/Notification/Mutation';
+import {
+  READING_NOTIFICATION,
+  cacheReadAllNotification,
+  cacheReadOneNotification
+} from 'GraphQL/Notification/Mutation';
 import { getUserId } from 'Redux/SessionRedux';
 import { QueryEffectPage } from 'Components';
 import { NotificationItem } from 'CommonFarmer';
@@ -31,6 +35,11 @@ class NotificationHistory extends Component {
   componentWillUnmount() {
     const { userId } = this.props;
     cacheReadAllNotification(userId);
+  }
+
+  onPressNotification = itemId => {
+    const { userId } = this.props;
+    cacheReadOneNotification(userId, itemId);
   }
   
   render() {
@@ -80,15 +89,17 @@ class NotificationHistory extends Component {
               return (
                 <ScrollView>
                   {notification_history.map((item) => {
-                    const { context, content_preview, user_origin, has_seen } = item || {};
+                    const { _id, context, content_preview, user_origin, has_seen } = item || {};
                     const { ktp_name, ktp_photo_face } = user_origin;
                     return (
                       <NotificationItem
+                        id={_id}
                         content={content_preview}
                         subjectName={ktp_name}
                         thumbnail={ktp_photo_face}
                         context={context}
                         hasSeen={has_seen}
+                        onPress={this.onPressNotification}
                       />
                     )
                   })}

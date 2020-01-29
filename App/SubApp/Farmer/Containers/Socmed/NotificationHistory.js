@@ -6,7 +6,7 @@ import { Query } from 'react-apollo';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import { NOTIFICATION_BY_USER } from 'GraphQL/Notification/Query';
-import { READING_NOTIFICATION, cacheReadingNotification } from 'GraphQL/Notification/Mutation';
+import { READING_NOTIFICATION, cacheReadAllNotification } from 'GraphQL/Notification/Mutation';
 import { getUserId } from 'Redux/SessionRedux';
 import { QueryEffectPage } from 'Components';
 import { NotificationItem } from 'CommonFarmer';
@@ -21,13 +21,17 @@ class NotificationHistory extends Component {
     ApolloClientProvider.client.mutate({
       mutation: READING_NOTIFICATION,
       variables: { user_id: userId },
-      update: (cache, data) => cacheReadingNotification(cache, userId),
     })
     .then(res => {})
     .catch(err => {
       InAppNotification.error();
     })
   };
+
+  componentWillUnmount() {
+    const { userId } = this.props;
+    cacheReadAllNotification(userId);
+  }
   
   render() {
     const { userId, navigation } = this.props;

@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 
 import { NOTIFICATION_BY_USER } from './Query';
 import { extractGraphQLResponse } from 'Lib';
+import ApolloClientProvider from 'Services/ApolloClientProvider';
 
 export const READING_NOTIFICATION = gql`
   mutation readingNotifications($user_id:String!) {
@@ -11,9 +12,9 @@ export const READING_NOTIFICATION = gql`
   }
 `
 
-export const cacheReadingNotification = ( cache, userId ) => {
+export const cacheReadAllNotification = ( userId ) => {
   try {
-    const rawNotifications = cache.readQuery({
+    const rawNotifications = ApolloClientProvider.client.cache.readQuery({
       query: NOTIFICATION_BY_USER,
       variables: { user_id: userId }
     });
@@ -27,7 +28,7 @@ export const cacheReadingNotification = ( cache, userId ) => {
       }
       return Object.assign({}, item, { __typename: "FarmerNotification" });
     });
-    cache.writeQuery({
+    ApolloClientProvider.client.cache.writeQuery({
       query: NOTIFICATION_BY_USER,
       variables: { user_id: userId },
       data: {

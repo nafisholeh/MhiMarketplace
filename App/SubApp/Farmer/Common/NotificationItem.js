@@ -32,9 +32,9 @@ export default class NotificationItem extends Component {
   }
 
   onPress = () => {
-    const { onPress, id } = this.props;
+    const { onPress, notifId, postId } = this.props;
     if (onPress) {
-      onPress(id);
+      onPress(notifId, postId);
     }
   }
 

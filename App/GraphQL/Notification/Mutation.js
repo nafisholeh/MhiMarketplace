@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-import { NOTIFICATION_BY_USER } from './Query';
+import { NOTIFICATION_BY_USER, NOTIFICATION_UNSEEN_TOTAL } from './Query';
 import { extractGraphQLResponse } from 'Lib';
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 
@@ -73,3 +73,18 @@ export const cacheReadOneNotification = ( userId, itemId ) => {
     
   }
 }
+
+export const cacheUpdateUnseenTotal = (cache, userId) => {
+  try {
+    cache.writeQuery({
+      query: NOTIFICATION_UNSEEN_TOTAL,
+      variables: { user_id: userId },
+      data: {
+        userNotificationUnseenTotal: 0
+      }
+    });
+  } catch (err) {
+    
+  }
+}
+cacheUpdateUnseenTotal

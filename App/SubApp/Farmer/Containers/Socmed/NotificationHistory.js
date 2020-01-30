@@ -10,7 +10,8 @@ import { NOTIFICATION_BY_USER } from 'GraphQL/Notification/Query';
 import {
   READING_NOTIFICATION,
   cacheReadAllNotification,
-  cacheReadOneNotification
+  cacheReadOneNotification,
+  cacheUpdateUnseenTotal,
 } from 'GraphQL/Notification/Mutation';
 import ListActions from 'Redux/ListRedux';
 import { getUserId } from 'Redux/SessionRedux';
@@ -27,6 +28,7 @@ class NotificationHistory extends Component {
     ApolloClientProvider.client.mutate({
       mutation: READING_NOTIFICATION,
       variables: { user_id: userId },
+      update: (cache, data) => cacheUpdateUnseenTotal(cache, userId),
     })
     .then(res => {})
     .catch(err => {

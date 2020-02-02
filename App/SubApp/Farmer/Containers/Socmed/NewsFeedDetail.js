@@ -2,9 +2,9 @@ import React, { Component, Fragment } from 'react';
 import { View, ScrollView } from 'react-native';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
-import { string } from 'prop-types';
 import { withNavigation } from 'react-navigation';
-import { Query, Mutation } from 'react-apollo';
+import { Query } from 'react-apollo';
+import { wrapScrollView } from 'react-native-scroll-into-view';
 
 import ApolloClientProvider from 'Services/ApolloClientProvider';
 import {
@@ -21,13 +21,13 @@ import { FETCH_FARMER_POST } from 'GraphQL/Farmer/Query';
 import {
   COMMENT_TO_POST,
   REPLY_TO_COMMENT,
-  LIKE,
-  DISLIKE,
   cacheCommentReply,
   cacheSubCommentReply,
 } from 'GraphQL/Farmer/Mutation';
 import { QueryEffectPage } from 'Components';
 import Config from 'Config/AppConfig';
+
+const CustomScrollView = wrapScrollView(ScrollView);
 
 class NewsFeedDetail extends Component {
   static navigationOptions = ({navigation}) => ({ header: null })
@@ -181,7 +181,7 @@ class NewsFeedDetail extends Component {
               const { _id: feedAuthorId, ktp_name, ktp_photo_face } = author || {};
               return (
                 <Fragment>
-                  <ScrollView
+                  <CustomScrollView
                     contentContainerStyle={{
                       paddingBottom: moderateScale(65)
                     }}
@@ -206,7 +206,7 @@ class NewsFeedDetail extends Component {
                       onCommentParent={this.replyComment}
                       onCommentChild={this.replyComment}
                     />
-                  </ScrollView>
+                  </CustomScrollView>
                   <View
                     style={{
                       position: 'absolute',

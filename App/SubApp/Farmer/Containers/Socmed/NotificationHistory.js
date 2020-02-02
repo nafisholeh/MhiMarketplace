@@ -41,10 +41,11 @@ class NotificationHistory extends Component {
     cacheReadAllNotification(userId);
   }
 
-  onPressNotification = (notifId, postId) => {
-    const { userId, selectListItem, navigation } = this.props;
+  onPressNotification = (notifId, postId, highlightId) => {
+    const { userId, selectListItem, selectListObject, navigation } = this.props;
     cacheReadOneNotification(userId, notifId);
     selectListItem(postId);
+    selectListObject({ highlightId });
     navigation.navigate('NewsFeedDetail');
   }
   
@@ -95,12 +96,23 @@ class NotificationHistory extends Component {
               return (
                 <ScrollView>
                   {notification_history.map((item) => {
-                    const { _id, post, context, content_preview, user_origin, has_seen } = item || {};
+                    const {
+                      _id,
+                      post,
+                      comment,
+                      sub_comment,
+                      context,
+                      content_preview,
+                      user_origin,
+                      has_seen
+                    } = item || {};
                     const { ktp_name, ktp_photo_face } = user_origin;
                     return (
                       <NotificationItem
                         notifId={_id}
                         postId={post}
+                        commentId={comment}
+                        subCommentId={sub_comment}
                         content={content_preview}
                         subjectName={ktp_name}
                         thumbnail={ktp_photo_face}
@@ -135,6 +147,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
   selectListItem: selectedId => dispatch(ListActions.selectListItem(selectedId)),
+  selectListObject: selectedObject => dispatch(ListActions.selectListObject(selectedObject)),
 });
 
 export default connect(

@@ -10,6 +10,7 @@ import { moderateScale, getIntervalTimeToday, unixToDate } from 'Lib';
 import { CommentItem, CommentInput } from './Components';
 import { Avatar } from 'CommonFarmer';
 import { getUserId, getUserPhoto } from 'Redux/SessionRedux';
+import { getSelectedListObject } from 'Redux/ListRedux';
 import {
   LIKE,
   DISLIKE,
@@ -20,6 +21,7 @@ import {
 class NewsFeedComments extends Component {
   render() {
     const {
+      selectedNotification,
       comments,
       showCommentInput,
       onSubmitComment,
@@ -31,6 +33,7 @@ class NewsFeedComments extends Component {
       onCommentInputClicked,
       userPhoto,
     } = this.props;
+    const { highlightId } = selectedNotification || {};
     return (
       <TouchableOpacity
         style={{
@@ -73,6 +76,7 @@ class NewsFeedComments extends Component {
               { (mutate, {loading, error, data}) => {
                 return (
                   <CommentItem
+                    highlightId={highlightId}
                     data={item}
                     onLikeParent={(commentId, name, isLikedByMe) => {
                       mutate({
@@ -142,6 +146,7 @@ class NewsFeedComments extends Component {
 const mapStateToProps = createStructuredSelector({
   loggedInUserId: getUserId(),
   userPhoto: getUserPhoto(),
+  selectedNotification: getSelectedListObject(),
 });
 
 export default connect(mapStateToProps, null)(NewsFeedComments);

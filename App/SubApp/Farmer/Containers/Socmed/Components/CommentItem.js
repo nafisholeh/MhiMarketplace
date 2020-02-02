@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { PulseIndicator } from 'react-native-indicators';
+import { ScrollIntoView } from 'react-native-scroll-into-view';
 
 import { Colors, Fonts } from 'Themes';
 import { moderateScale, getIntervalTimeToday, unixToDate } from 'Lib';
@@ -26,7 +27,8 @@ class CommentItem extends Component {
       ktp_name: name,
       ktp_photo_face: photo
     } = author || {};
-    const { 
+    const {
+      highlightId,
       hideLikeButton,
       hideCommentButton
     } = this.props;
@@ -35,7 +37,8 @@ class CommentItem extends Component {
     const isShowLike = onLike && !hideLikeButton && !isDisableAction;
     const isShowComment = onComment && !hideCommentButton && !isDisableAction;
     return (
-      <View
+      <ScrollIntoView
+        enabled={highlightId === feedId ? true : false}
         key={feedId}
         style={{
           marginLeft: moderateScale(isParent ? 10 : 50),
@@ -174,7 +177,7 @@ class CommentItem extends Component {
             : null
           }
         </View>
-      </View>
+      </ScrollIntoView>
     );
   };
 

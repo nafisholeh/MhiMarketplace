@@ -38,6 +38,8 @@ class CommentItem extends Component {
     const isShowComment = onComment && !hideCommentButton && !isDisableAction;
     return (
       <ScrollIntoView
+        align="center"
+        animated={true}
         enabled={highlightId === feedId ? true : false}
         key={feedId}
         style={{

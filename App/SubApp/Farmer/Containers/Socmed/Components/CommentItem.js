@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Animated } from 'react-native';
 import { PulseIndicator } from 'react-native-indicators';
 import { ScrollIntoView } from 'react-native-scroll-into-view';
 
@@ -8,6 +8,37 @@ import { moderateScale, getIntervalTimeToday, unixToDate } from 'Lib';
 import { Avatar } from 'CommonFarmer';
 
 class CommentItem extends Component {
+  state = {
+    highlightAnimation: new Animated.Value(1),
+  };
+
+  startAnimation = () => {
+    const { highlightAnimation } = this.state;
+    const { data, highlightId } = this.props;
+    const { _id: feedId } = data || {};
+    if (highlightId !== feedId) return;
+    Animated.timing(highlightAnimation, {
+      toValue : 0,
+      timing : 800
+    }).start(()=>{
+      Animated.timing(highlightAnimation, {
+        toValue : 1,
+        duration : 800
+      }).start();
+    });
+  };
+
+  componentDidMount() {
+    this.startAnimation();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { highlightId } = this.props;
+    if (prevProps.highlightId !== highlightId) {
+      this.startAnimation();
+    }
+  }
+
   render() {
     const {
       data,
@@ -20,6 +51,7 @@ class CommentItem extends Component {
       hideLikeButton,
       hideCommentButton,
     } = this.props;
+    const { highlightAnimation } = this.state;
     const {
       _id: feedId,
       content,
@@ -35,11 +67,19 @@ class CommentItem extends Component {
     const isLoading = feedId < 0;
     const isShowLike = onLike && !hideLikeButton && !isDisableAction;
     const isShowComment = onComment && !hideCommentButton && !isDisableAction;
+    const isHighlighted = highlightId === feedId;
+    const highlightBgStyle = isHighlighted
+      ? highlightAnimation.interpolate({
+          inputRange: [0, 1],
+          outputRange: [Colors.text_light, Colors.text_bg]
+        })
+      : null;
+    const loadingBgStyle = isLoading ? Colors.text_loading : Colors.text_bg;
     return (
       <ScrollIntoView
         align="center"
         animated={true}
-        enabled={highlightId === feedId ? true : false}
+        enabled={isHighlighted}
         key={feedId}
         style={{
           marginLeft: moderateScale(isParent ? 10 : 50),
@@ -60,14 +100,10 @@ class CommentItem extends Component {
               marginTop: moderateScale(3),
             }}
           />
-          <View
-            style={{
-              flexShrink: 1,
-            }}
-          >
-            <View
+          <View style={{ flexShrink: 1 }}>
+            <Animated.View
               style={{
-                backgroundColor: isLoading ? Colors.text_loading : Colors.text_bg,
+                backgroundColor: isHighlighted ? highlightBgStyle : loadingBgStyle,
                 borderRadius: moderateScale(15),
                 paddingHorizontal: moderateScale(15),
                 paddingVertical: moderateScale(10),
@@ -113,7 +149,7 @@ class CommentItem extends Component {
               >
                 {content}
               </Text>
-            </View>
+            </Animated.View>
           </View>
         </View>
         

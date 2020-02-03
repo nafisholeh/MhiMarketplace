@@ -8,14 +8,18 @@ import { moderateScale, getIntervalTimeToday, unixToDate } from 'Lib';
 import { Avatar } from 'CommonFarmer';
 
 class CommentItem extends Component {
-  renderItem = (
-    data,
-    onLike,
-    onComment,
-    isParent,
-    isLikedByMe,
-    isDisableAction
-  ) => {
+  render() {
+    const {
+      data,
+      onLike,
+      onComment,
+      isParent,
+      isLikedByMe,
+      isDisableAction,
+      highlightId,
+      hideLikeButton,
+      hideCommentButton,
+    } = this.props;
     const {
       _id: feedId,
       content,
@@ -27,11 +31,6 @@ class CommentItem extends Component {
       ktp_name: name,
       ktp_photo_face: photo
     } = author || {};
-    const {
-      highlightId,
-      hideLikeButton,
-      hideCommentButton
-    } = this.props;
     const date = unixToDate(date_commented);
     const isLoading = feedId < 0;
     const isShowLike = onLike && !hideLikeButton && !isDisableAction;
@@ -180,46 +179,6 @@ class CommentItem extends Component {
           }
         </View>
       </ScrollIntoView>
-    );
-  };
-
-  render() {
-    const {
-      data,
-      onLikeParent,
-      onCommentParent,
-      onLikeChild,
-      onCommentChild,
-      loggedInUserId,
-    } = this.props;
-    const { _id: commentId, content_reply, likes = [], author } = data || {};
-    const { _id: commentAuthorId } = author || {};
-    const isOurOwn = commentAuthorId === loggedInUserId;
-    const isLikedByMe = Array.isArray(likes) && likes.findIndex(({ _id }) => _id === loggedInUserId) >= 0;
-    return (
-      <View>
-        {this.renderItem(data, onLikeParent, onCommentParent, true, isLikedByMe, isOurOwn)}
-        {Array.isArray(content_reply)
-          && content_reply.map((item, index) => {
-            const { likes = [], author } = item || {};
-            const { _id: subCommentAuthorId } = author || {};
-            const isReplyLikedByMe =
-              Array.isArray(likes)
-              && likes.findIndex(({ _id }) => _id === loggedInUserId) >= 0;
-            const isOurOwnSubComment = subCommentAuthorId === loggedInUserId;
-            return (
-              this.renderItem(
-                item,
-                (subCommentId, name, isLikedByMe) => 
-                  onLikeChild(commentId, subCommentId, name, isLikedByMe),
-                (subCommentId, authorId, name) => onCommentChild(commentId, authorId, name),
-                false,
-                isReplyLikedByMe,
-                isOurOwnSubComment
-              )
-            )
-        })}
-      </View>
     );
   }
 }

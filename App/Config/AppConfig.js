@@ -1,592 +1,602 @@
-import { Colors, Images } from 'Themes';
+import { Colors, Images } from "Themes";
 
 export const BASIC_RESPONSE = {
-  SUCCESS: 'sukses',
-  FAILED: 'gagal',
-  NOTHING: 'kosong',
+  SUCCESS: "sukses",
+  FAILED: "gagal",
+  NOTHING: "kosong"
 };
+
+export const NOTIF_TYPE = {
+  NEW_ORDER: "newReadyToProcess",
+  REPLY_POST: "reply_post",
+  REPLY_COMMENT: "reply_comment"
+};
+
+export const ONE_SIGNAL_KEY = "63d5eb55-3ba8-4489-bfba-ce4d74c3bd40";
 
 export default {
   // uri: 'http://app-dev.metodehayati.id:4001/graphql',
   uri: {
-    basic: 'http://192.168.1.3:4001/',
-    graphql: 'http://192.168.1.3:4001/graphql',
-    image: 'http://192.168.1.3:4001'
+    basic: "http://192.168.1.3:4001/",
+    graphql: "http://192.168.1.3:4001/graphql",
+    image: "http://192.168.1.3:4001"
   },
-  oneSignalKey: "63d5eb55-3ba8-4489-bfba-ce4d74c3bd40",
-  sentryKey: 'https://acfc9528eb164f6d8cb3c02a5294b6cd@sentry.io/1498313',
+  sentryKey: "https://acfc9528eb164f6d8cb3c02a5294b6cd@sentry.io/1498313",
   allowTextFontScaling: true,
   hiddenTabScreen: [
-    'ProductDetail',
-    'Checkout',
-    'AddressList',
-    'AddressInput',
-    'Slip',
-    'Setup',
-    'ProductEdit',
-    'ProductAdd',
-    'OrderDetail',
-    'ReadyToProcessDetail',
-    'ProcessingDetail',
-    'ReadyToSendDetail',
-    'SendingDetail',
-    'SentDetail',
-    'CompletedDetail',
-    'ConsumerOrderDetail',
-    'ConsumerSendingDetail',
-    'EventInput',
-    'Signup',
-    'SignupFarmerFirst',
-    'SignupFarmerSecond',
-    'SignupFarmerThird',
-    'SignupCustomer',
-    'SignupScholar',
-    'AreaDraw',
-    'AreaList',
-    'AreaType',
-    'AreaCommodity',
-    'FarmerFinalConfirm',
-    'SopViewer',
-    'NewsFeedDetail',
-    'NotificationHistory'
+    "ProductDetail",
+    "Checkout",
+    "AddressList",
+    "AddressInput",
+    "Slip",
+    "Setup",
+    "ProductEdit",
+    "ProductAdd",
+    "OrderDetail",
+    "ReadyToProcessDetail",
+    "ProcessingDetail",
+    "ReadyToSendDetail",
+    "SendingDetail",
+    "SentDetail",
+    "CompletedDetail",
+    "ConsumerOrderDetail",
+    "ConsumerSendingDetail",
+    "EventInput",
+    "Signup",
+    "SignupFarmerFirst",
+    "SignupFarmerSecond",
+    "SignupFarmerThird",
+    "SignupCustomer",
+    "SignupScholar",
+    "AreaDraw",
+    "AreaList",
+    "AreaType",
+    "AreaCommodity",
+    "FarmerFinalConfirm",
+    "SopViewer",
+    "NewsFeedDetail",
+    "NotificationHistory"
   ],
   pageState: {
-    ERROR: 'error',
-    INFO: 'info',
-    CART: 'cart',
-    EMPTY: 'empty',
-    EMPTY_CART: 'cart',
-    LOCATION: 'location',
-    EMPTY_LOCATION: 'location',
-    NEED_CHECKOUT: 'cashier',
-    NO_ACCOUNT: 'needLogin',
+    ERROR: "error",
+    INFO: "info",
+    CART: "cart",
+    EMPTY: "empty",
+    EMPTY_CART: "cart",
+    LOCATION: "location",
+    EMPTY_LOCATION: "location",
+    NEED_CHECKOUT: "cashier",
+    NO_ACCOUNT: "needLogin"
   },
   debounceInterval: 0,
   defaulCourierCost: 25000,
-  warningMandatory: 'Wajib diisi',
+  warningMandatory: "Wajib diisi",
   userType: {
-    KURIR: 'kurir',
-    STOK_OPNAME: 'stok opname',
-    KEUANGAN: 'keuangan',
-    KONSUMEN: 'user',
-    RESELLER: 'reseller',
-    ADMIN: 'admin',
-    FARMER: 'farmer',
+    KURIR: "kurir",
+    STOK_OPNAME: "stok opname",
+    KEUANGAN: "keuangan",
+    KONSUMEN: "user",
+    RESELLER: "reseller",
+    ADMIN: "admin",
+    FARMER: "farmer"
   },
   weightType: {
-    KILOGRAM: 'kg',
-    GRAM: 'gram',
-    PIECES: 'pcs',
+    KILOGRAM: "kg",
+    GRAM: "gram",
+    PIECES: "pcs"
   },
-  MIN_WEIGHT_FREE_COURIER: 10, 
+  MIN_WEIGHT_FREE_COURIER: 10,
   timelineTitle: {
-    incomplete: 'Checkout pesanan',
-    ready_to_process: 'Konsumen konfirmasi pesanan',
-    processing: 'Kurir telah konfirmasi pengiriman',
-    ready_to_send: 'Barang diambil dari gudang',
-    sending: 'Pesanan sedang dikirim',
-    complete: 'Barang telah sampai di konsumen'
+    incomplete: "Checkout pesanan",
+    ready_to_process: "Konsumen konfirmasi pesanan",
+    processing: "Kurir telah konfirmasi pengiriman",
+    ready_to_send: "Barang diambil dari gudang",
+    sending: "Pesanan sedang dikirim",
+    complete: "Barang telah sampai di konsumen"
   },
   notifPurpose: {
-    NEW_ORDER: 'newReadyToProcess',
-    REPLY_POST: 'reply_post',
-    REPLY_COMMENT: 'reply_comment',
+    NEW_ORDER: "newReadyToProcess",
+    REPLY_POST: "reply_post",
+    REPLY_COMMENT: "reply_comment"
   },
   category: {
     sayuran: {
-      title: 'Sayuran',
+      title: "Sayuran",
       icon: Images.veggie,
-      color: Colors.veggie_bg,
+      color: Colors.veggie_bg
     },
     buah: {
-      title: 'Buah',
+      title: "Buah",
       icon: Images.fruit,
-      color: Colors.fruit_bg,
+      color: Colors.fruit_bg
     },
     hortikultura: {
-      title: 'Hortikultura',
+      title: "Hortikultura",
       icon: Images.horti,
-      color: Colors.horti_bg,
+      color: Colors.horti_bg
     },
     default: {
-      title: 'Lain-lain',
+      title: "Lain-lain",
       icon: Images.veggie,
-      color: Colors.veggie_bg,
-    },
+      color: Colors.veggie_bg
+    }
   },
   location: {
-    timeout: 900000,        // expired time to obtain location, in millisecond
-    maximumAge: 900000,     // maximum expired time for last location cache, in millisecond
-    distanceFilter: 10,  // minimum distance from the previous location to exceed before returning a new location, in meters
+    timeout: 900000, // expired time to obtain location, in millisecond
+    maximumAge: 900000, // maximum expired time for last location cache, in millisecond
+    distanceFilter: 10 // minimum distance from the previous location to exceed before returning a new location, in meters
   },
   gender: [
     {
-      label: 'Laki-laki',
-      value: 'L',
+      label: "Laki-laki",
+      value: "L"
     },
     {
-      label: 'Perempuan',
-      value: 'P',
+      label: "Perempuan",
+      value: "P"
     }
   ],
   bloodType: [
     {
-      label: 'A',
-      value: 'A',
+      label: "A",
+      value: "A"
     },
     {
-      label: 'B',
-      value: 'B',
+      label: "B",
+      value: "B"
     },
     {
-      label: 'AB',
-      value: 'AB',
+      label: "AB",
+      value: "AB"
     },
     {
-      label: 'O',
-      value: 'O',
+      label: "O",
+      value: "O"
     }
   ],
   religion: [
     {
-      label: 'Islam',
-      value: 'Islam',
+      label: "Islam",
+      value: "Islam"
     },
     {
-      label: 'Kristen',
-      value: 'Kristen',
+      label: "Kristen",
+      value: "Kristen"
     },
     {
-      label: 'Katholik',
-      value: 'Katholik',
+      label: "Katholik",
+      value: "Katholik"
     },
     {
-      label: 'Hindu',
-      value: 'Hindu',
+      label: "Hindu",
+      value: "Hindu"
     },
     {
-      label: 'Budha',
-      value: 'Budha',
+      label: "Budha",
+      value: "Budha"
     },
     {
-      label: 'Khong Hucu',
-      value: 'Khong Hucu',
+      label: "Khong Hucu",
+      value: "Khong Hucu"
     },
     {
-      label: 'Penghayat kepercayaan',
-      value: 'Penghayat Kepercayaan',
-      showManualInput: true,
+      label: "Penghayat kepercayaan",
+      value: "Penghayat Kepercayaan",
+      showManualInput: true
     },
     {
-      label: 'Lainnya',
-      value: 'Lainnya',
-      showManualInput: true,
-    },
+      label: "Lainnya",
+      value: "Lainnya",
+      showManualInput: true
+    }
   ],
   marriageStatus: [
     {
-      label: 'Belum kawin',
-      value: 'Belum kawin',
+      label: "Belum kawin",
+      value: "Belum kawin"
     },
     {
-      label: 'Kawin',
-      value: 'Kawin',
+      label: "Kawin",
+      value: "Kawin"
     },
     {
-      label: 'Cerai hidup',
-      value: 'Cerai hidup',
+      label: "Cerai hidup",
+      value: "Cerai hidup"
     },
     {
-      label: 'Cerai mati',
-      value: 'Cerai mati',
+      label: "Cerai mati",
+      value: "Cerai mati"
     }
   ],
   occupation: [
     {
-      label: 'Petani/Pekebun',
-      value: 'Petani/Pekebun',
+      label: "Petani/Pekebun",
+      value: "Petani/Pekebun"
     },
     {
-      label: 'Peternak',
-      value: 'Peternak',
+      label: "Peternak",
+      value: "Peternak"
     },
     {
-      label: 'Nelayan/Perikanan',
-      value: 'Nelayan/Perikanan',
+      label: "Nelayan/Perikanan",
+      value: "Nelayan/Perikanan"
     },
     {
-      label: 'Karyawan swasta',
-      value: 'Karyawan swasta',
+      label: "Karyawan swasta",
+      value: "Karyawan swasta"
     },
     {
-      label: 'Karyawan BUMN',
-      value: 'Karyawan BUMN',
+      label: "Karyawan BUMN",
+      value: "Karyawan BUMN"
     },
     {
-      label: 'Karyawan BUMD',
-      value: 'Karyawan BUMD',
+      label: "Karyawan BUMD",
+      value: "Karyawan BUMD"
     },
     {
-      label: 'Karyawan honorer',
-      value: 'Karyawan honorer',
+      label: "Karyawan honorer",
+      value: "Karyawan honorer"
     },
     {
-      label: 'Buruh harian lepas',
-      value: 'Buruh harian lepas',
+      label: "Buruh harian lepas",
+      value: "Buruh harian lepas"
     },
     {
-      label: 'Buruh tani/perkebunan',
-      value: 'Buruh tani/perkebunan',
+      label: "Buruh tani/perkebunan",
+      value: "Buruh tani/perkebunan"
     },
     {
-      label: 'Buruh nelayan/perikanan',
-      value: 'Buruh nelayan/perikanan',
+      label: "Buruh nelayan/perikanan",
+      value: "Buruh nelayan/perikanan"
     },
     {
-      label: 'Buruh peternakan',
-      value: 'Buruh peternakan',
+      label: "Buruh peternakan",
+      value: "Buruh peternakan"
     },
     {
-      label: 'Dosen',
-      value: 'Dosen',
+      label: "Dosen",
+      value: "Dosen"
     },
     {
-      label: 'Guru',
-      value: 'Guru',
+      label: "Guru",
+      value: "Guru"
     },
     {
-      label: 'Pelaut',
-      value: 'Pelaut',
+      label: "Pelaut",
+      value: "Pelaut"
     },
     {
-      label: 'Pedagang',
-      value: 'Pedagang',
+      label: "Pedagang",
+      value: "Pedagang"
     },
     {
-      label: 'Perangkat desa',
-      value: 'Perangkat desa',
+      label: "Perangkat desa",
+      value: "Perangkat desa"
     },
     {
-      label: 'Kepala desa',
-      value: 'Kepala desa',
+      label: "Kepala desa",
+      value: "Kepala desa"
     },
     {
-      label: 'Wiraswasta',
-      value: 'Wiraswasta',
+      label: "Wiraswasta",
+      value: "Wiraswasta"
     },
     {
-      label: 'Lainnya',
-      value: 'Lainnya',
-      showManualInput: true,
+      label: "Lainnya",
+      value: "Lainnya",
+      showManualInput: true
     }
   ],
   citizenship: [
     {
-      label: 'WNI',
-      value: 'WNI',
+      label: "WNI",
+      value: "WNI"
     },
     {
-      label: 'Lainnya',
-      value: 'Lainnya',
-      showManualInput: true,
+      label: "Lainnya",
+      value: "Lainnya",
+      showManualInput: true
     }
   ],
   month: [
     {
-      label: 'Januari',
-      value: '01',
+      label: "Januari",
+      value: "01"
     },
     {
-      label: 'Februari',
-      value: '02',
+      label: "Februari",
+      value: "02"
     },
     {
-      label: 'Maret',
-      value: '03',
+      label: "Maret",
+      value: "03"
     },
     {
-      label: 'April',
-      value: '04',
+      label: "April",
+      value: "04"
     },
     {
-      label: 'Mei',
-      value: '05',
+      label: "Mei",
+      value: "05"
     },
     {
-      label: 'Juni',
-      value: '06',
+      label: "Juni",
+      value: "06"
     },
     {
-      label: 'Juli',
-      value: '07',
+      label: "Juli",
+      value: "07"
     },
     {
-      label: 'Agustus',
-      value: '08',
+      label: "Agustus",
+      value: "08"
     },
     {
-      label: 'September',
-      value: '09',
+      label: "September",
+      value: "09"
     },
     {
-      label: 'Oktober',
-      value: '10',
+      label: "Oktober",
+      value: "10"
     },
     {
-      label: 'Nopember',
-      value: '11',
+      label: "Nopember",
+      value: "11"
     },
     {
-      label: 'Desember',
-      value: '12',
-    },
+      label: "Desember",
+      value: "12"
+    }
   ],
   areaStatus: {
-    OWN: 'own',
-    RENT: 'rent',
-    RENTED: 'rented',
+    OWN: "own",
+    RENT: "rent",
+    RENTED: "rented"
   },
-  areaType: [
-    'Sawah',
-    'Tegal',
-  ],
+  areaType: ["Sawah", "Tegal"],
   mapStyle: [
     {
-      "elementType": "geometry",
-      "stylers": [
+      elementType: "geometry",
+      stylers: [
         {
-          "color": "#ebe3cd"
+          color: "#ebe3cd"
         }
       ]
     },
     {
-      "elementType": "labels",
-      "stylers": [
+      elementType: "labels",
+      stylers: [
         {
-          "visibility": "off"
+          visibility: "off"
         }
       ]
     },
     {
-      "elementType": "labels.text.fill",
-      "stylers": [
+      elementType: "labels.text.fill",
+      stylers: [
         {
-          "color": "#523735"
+          color: "#523735"
         }
       ]
     },
     {
-      "elementType": "labels.text.stroke",
-      "stylers": [
+      elementType: "labels.text.stroke",
+      stylers: [
         {
-          "color": "#f5f1e6"
+          color: "#f5f1e6"
         }
       ]
     },
     {
-      "featureType": "administrative",
-      "elementType": "geometry.stroke",
-      "stylers": [
+      featureType: "administrative",
+      elementType: "geometry.stroke",
+      stylers: [
         {
-          "color": "#c9b2a6"
+          color: "#c9b2a6"
         }
       ]
     },
     {
-      "featureType": "administrative.land_parcel",
-      "elementType": "geometry.stroke",
-      "stylers": [
+      featureType: "administrative.land_parcel",
+      elementType: "geometry.stroke",
+      stylers: [
         {
-          "color": "#dcd2be"
+          color: "#dcd2be"
         }
       ]
     },
     {
-      "featureType": "administrative.land_parcel",
-      "elementType": "labels.text.fill",
-      "stylers": [
+      featureType: "administrative.land_parcel",
+      elementType: "labels.text.fill",
+      stylers: [
         {
-          "color": "#ae9e90"
+          color: "#ae9e90"
         }
       ]
     },
     {
-      "featureType": "administrative.neighborhood",
-      "stylers": [
+      featureType: "administrative.neighborhood",
+      stylers: [
         {
-          "visibility": "off"
+          visibility: "off"
         }
       ]
     },
     {
-      "featureType": "landscape.natural",
-      "elementType": "geometry",
-      "stylers": [
+      featureType: "landscape.natural",
+      elementType: "geometry",
+      stylers: [
         {
-          "color": "#dfd2ae"
+          color: "#dfd2ae"
         }
       ]
     },
     {
-      "featureType": "poi",
-      "elementType": "geometry",
-      "stylers": [
+      featureType: "poi",
+      elementType: "geometry",
+      stylers: [
         {
-          "color": "#dfd2ae"
+          color: "#dfd2ae"
         }
       ]
     },
     {
-      "featureType": "poi",
-      "elementType": "labels.text.fill",
-      "stylers": [
+      featureType: "poi",
+      elementType: "labels.text.fill",
+      stylers: [
         {
-          "color": "#93817c"
+          color: "#93817c"
         }
       ]
     },
     {
-      "featureType": "poi.park",
-      "elementType": "geometry.fill",
-      "stylers": [
+      featureType: "poi.park",
+      elementType: "geometry.fill",
+      stylers: [
         {
-          "color": "#a5b076"
+          color: "#a5b076"
         }
       ]
     },
     {
-      "featureType": "poi.park",
-      "elementType": "labels.text.fill",
-      "stylers": [
+      featureType: "poi.park",
+      elementType: "labels.text.fill",
+      stylers: [
         {
-          "color": "#447530"
+          color: "#447530"
         }
       ]
     },
     {
-      "featureType": "road",
-      "stylers": [
+      featureType: "road",
+      stylers: [
         {
-          "visibility": "off"
+          visibility: "off"
         }
       ]
     },
     {
-      "featureType": "road",
-      "elementType": "geometry",
-      "stylers": [
+      featureType: "road",
+      elementType: "geometry",
+      stylers: [
         {
-          "color": "#f5f1e6"
+          color: "#f5f1e6"
         }
       ]
     },
     {
-      "featureType": "road.arterial",
-      "elementType": "geometry",
-      "stylers": [
+      featureType: "road.arterial",
+      elementType: "geometry",
+      stylers: [
         {
-          "color": "#fdfcf8"
+          color: "#fdfcf8"
         }
       ]
     },
     {
-      "featureType": "road.highway",
-      "elementType": "geometry",
-      "stylers": [
+      featureType: "road.highway",
+      elementType: "geometry",
+      stylers: [
         {
-          "color": "#f8c967"
+          color: "#f8c967"
         }
       ]
     },
     {
-      "featureType": "road.highway",
-      "elementType": "geometry.stroke",
-      "stylers": [
+      featureType: "road.highway",
+      elementType: "geometry.stroke",
+      stylers: [
         {
-          "color": "#e9bc62"
+          color: "#e9bc62"
         }
       ]
     },
     {
-      "featureType": "road.highway.controlled_access",
-      "elementType": "geometry",
-      "stylers": [
+      featureType: "road.highway.controlled_access",
+      elementType: "geometry",
+      stylers: [
         {
-          "color": "#e98d58"
+          color: "#e98d58"
         }
       ]
     },
     {
-      "featureType": "road.highway.controlled_access",
-      "elementType": "geometry.stroke",
-      "stylers": [
+      featureType: "road.highway.controlled_access",
+      elementType: "geometry.stroke",
+      stylers: [
         {
-          "color": "#db8555"
+          color: "#db8555"
         }
       ]
     },
     {
-      "featureType": "road.local",
-      "elementType": "labels.text.fill",
-      "stylers": [
+      featureType: "road.local",
+      elementType: "labels.text.fill",
+      stylers: [
         {
-          "color": "#806b63"
+          color: "#806b63"
         }
       ]
     },
     {
-      "featureType": "transit.line",
-      "elementType": "geometry",
-      "stylers": [
+      featureType: "transit.line",
+      elementType: "geometry",
+      stylers: [
         {
-          "color": "#dfd2ae"
+          color: "#dfd2ae"
         }
       ]
     },
     {
-      "featureType": "transit.line",
-      "elementType": "labels.text.fill",
-      "stylers": [
+      featureType: "transit.line",
+      elementType: "labels.text.fill",
+      stylers: [
         {
-          "color": "#8f7d77"
+          color: "#8f7d77"
         }
       ]
     },
     {
-      "featureType": "transit.line",
-      "elementType": "labels.text.stroke",
-      "stylers": [
+      featureType: "transit.line",
+      elementType: "labels.text.stroke",
+      stylers: [
         {
-          "color": "#ebe3cd"
+          color: "#ebe3cd"
         }
       ]
     },
     {
-      "featureType": "transit.station",
-      "elementType": "geometry",
-      "stylers": [
+      featureType: "transit.station",
+      elementType: "geometry",
+      stylers: [
         {
-          "color": "#dfd2ae"
+          color: "#dfd2ae"
         }
       ]
     },
     {
-      "featureType": "water",
-      "elementType": "geometry.fill",
-      "stylers": [
+      featureType: "water",
+      elementType: "geometry.fill",
+      stylers: [
         {
-          "color": "#b9d3c2"
+          color: "#b9d3c2"
         }
       ]
     },
     {
-      "featureType": "water",
-      "elementType": "labels.text.fill",
-      "stylers": [
+      featureType: "water",
+      elementType: "labels.text.fill",
+      stylers: [
         {
-          "color": "#92998d"
+          color: "#92998d"
         }
       ]
     }
   ]
-}
+};
+
+export {
+  NOTIF_TYPE as notifType,
+  BASIC_RESPONSE as basicResponse,
+  ONE_SIGNAL_KEY as oneSignalKey
+};

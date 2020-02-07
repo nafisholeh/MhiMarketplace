@@ -1,39 +1,40 @@
-import React, { Component } from 'react';
-import { View, ScrollView, Text, Image, TouchableOpacity } from 'react-native';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
-import { Query } from 'react-apollo';
-import { withNavigation } from 'react-navigation';
+import React, { Component } from "react";
+import { View, ScrollView, Text, Image, TouchableOpacity } from "react-native";
+import { createStructuredSelector } from "reselect";
+import { connect } from "react-redux";
+import { Query } from "react-apollo";
+import { withNavigation } from "react-navigation";
 
-import ApolloClientProvider from 'Services/ApolloClientProvider';
-import { NOTIFICATION_BY_USER } from 'GraphQL/Notification/Query';
+import ApolloClientProvider from "Services/ApolloClientProvider";
+import { NOTIFICATION_BY_USER } from "GraphQL/Notification/Query";
 import {
   READING_NOTIFICATION,
   cacheReadAllNotification,
   cacheReadOneNotification,
-  cacheUpdateUnseenTotal,
-} from 'GraphQL/Notification/Mutation';
-import ListActions from 'Redux/ListRedux';
-import { getUserId } from 'Redux/SessionRedux';
-import { QueryEffectPage } from 'Components';
-import { NotificationItem } from 'CommonFarmer';
-import { Fonts, Images } from 'Themes';
-import { InAppNotification, moderateScale } from 'Lib';
+  cacheResetUnseenTotal
+} from "GraphQL/Notification/Mutation";
+import ListActions from "Redux/ListRedux";
+import { getUserId } from "Redux/SessionRedux";
+import { QueryEffectPage } from "Components";
+import { NotificationItem } from "CommonFarmer";
+import { Fonts, Images } from "Themes";
+import { InAppNotification, moderateScale } from "Lib";
 
 class NotificationHistory extends Component {
-  static navigationOptions = ({navigation}) => ({ header: null })
+  static navigationOptions = ({ navigation }) => ({ header: null });
 
   readingUnseenNotification = () => {
     const { userId } = this.props;
-    ApolloClientProvider.client.mutate({
-      mutation: READING_NOTIFICATION,
-      variables: { user_id: userId },
-      update: (cache, data) => cacheUpdateUnseenTotal(cache, userId),
-    })
-    .then(res => {})
-    .catch(err => {
-      InAppNotification.error();
-    })
+    ApolloClientProvider.client
+      .mutate({
+        mutation: READING_NOTIFICATION,
+        variables: { user_id: userId },
+        update: (cache, data) => cacheResetUnseenTotal(cache, userId)
+      })
+      .then(res => {})
+      .catch(err => {
+        InAppNotification.error();
+      });
   };
 
   componentWillUnmount() {
@@ -46,22 +47,20 @@ class NotificationHistory extends Component {
     cacheReadOneNotification(userId, notifId);
     selectListItem(postId);
     selectListObject({ highlightId });
-    navigation.navigate('NewsFeedDetail');
-  }
-  
+    navigation.navigate("NewsFeedDetail");
+  };
+
   render() {
     const { userId, navigation } = this.props;
     return (
       <View style={{ flex: 1 }}>
         <View
           style={{
-            flexDirection: 'row',
-            alignItems: 'center',
+            flexDirection: "row",
+            alignItems: "center"
           }}
         >
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-          >
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Image
               source={Images.back}
               style={{
@@ -86,16 +85,21 @@ class NotificationHistory extends Component {
           query={NOTIFICATION_BY_USER}
           variables={{ user_id: userId }}
           onCompleted={() => {
-            setTimeout(() => {this.readingUnseenNotification()}, 1000)
+            setTimeout(() => {
+              this.readingUnseenNotification();
+            }, 1000);
           }}
         >
           {({ loading, error, data, refetch }) => {
             const { userNotifications } = data || {};
             const { notification_history = [] } = userNotifications || {};
-            if (Array.isArray(notification_history) && notification_history.length) {
+            if (
+              Array.isArray(notification_history) &&
+              notification_history.length
+            ) {
               return (
                 <ScrollView>
-                  {notification_history.map((item) => {
+                  {notification_history.map(item => {
                     const {
                       _id,
                       post,
@@ -120,10 +124,10 @@ class NotificationHistory extends Component {
                         hasSeen={has_seen}
                         onPress={this.onPressNotification}
                       />
-                    )
+                    );
                   })}
                 </ScrollView>
-              )
+              );
             }
             return (
               <QueryEffectPage
@@ -137,17 +141,19 @@ class NotificationHistory extends Component {
           }}
         </Query>
       </View>
-    )
+    );
   }
 }
 
 const mapStateToProps = createStructuredSelector({
-  userId: getUserId(),
+  userId: getUserId()
 });
 
 const mapDispatchToProps = dispatch => ({
-  selectListItem: selectedId => dispatch(ListActions.selectListItem(selectedId)),
-  selectListObject: selectedObject => dispatch(ListActions.selectListObject(selectedObject)),
+  selectListItem: selectedId =>
+    dispatch(ListActions.selectListItem(selectedId)),
+  selectListObject: selectedObject =>
+    dispatch(ListActions.selectListObject(selectedObject))
 });
 
 export default connect(

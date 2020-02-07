@@ -1,18 +1,19 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
-import { NOTIFICATION_BY_USER, NOTIFICATION_UNSEEN_TOTAL } from './Query';
-import { extractGraphQLResponse } from 'Lib';
-import ApolloClientProvider from 'Services/ApolloClientProvider';
+import { store } from "Containers/App";
+import { NOTIFICATION_BY_USER, NOTIFICATION_UNSEEN_TOTAL } from "./Query";
+import { extractGraphQLResponse } from "Lib";
+import ApolloClientProvider from "Services/ApolloClientProvider";
 
 export const READING_NOTIFICATION = gql`
-  mutation readingNotifications($user_id:String!) {
-    readingNotifications(user_id:$user_id) {
+  mutation readingNotifications($user_id: String!) {
+    readingNotifications(user_id: $user_id) {
       message
     }
   }
-`
+`;
 
-export const cacheReadAllNotification = ( userId ) => {
+export const cacheReadAllNotification = userId => {
   try {
     const rawNotifications = ApolloClientProvider.client.cache.readQuery({
       query: NOTIFICATION_BY_USER,
@@ -20,11 +21,15 @@ export const cacheReadAllNotification = ( userId ) => {
     });
     const notifications = extractGraphQLResponse(rawNotifications);
     const { notification_history: notificationHistory } = notifications || {};
-    if (!Array.isArray(notificationHistory) || !notificationHistory.length) return;
+    if (!Array.isArray(notificationHistory) || !notificationHistory.length)
+      return;
     const newNotificationHistory = notificationHistory.map(item => {
       const { has_seen } = item || {};
       if (!has_seen) {
-        return Object.assign({}, item, { has_seen: true, __typename: "FarmerNotification" });
+        return Object.assign({}, item, {
+          has_seen: true,
+          __typename: "FarmerNotification"
+        });
       }
       return Object.assign({}, item, { __typename: "FarmerNotification" });
     });
@@ -38,12 +43,10 @@ export const cacheReadAllNotification = ( userId ) => {
         }
       }
     });
-  } catch (err) {
-    
-  }
-}
+  } catch (err) {}
+};
 
-export const cacheReadOneNotification = ( userId, itemId ) => {
+export const cacheReadOneNotification = (userId, itemId) => {
   try {
     const rawNotifications = ApolloClientProvider.client.cache.readQuery({
       query: NOTIFICATION_BY_USER,
@@ -51,11 +54,15 @@ export const cacheReadOneNotification = ( userId, itemId ) => {
     });
     const notifications = extractGraphQLResponse(rawNotifications);
     const { notification_history: notificationHistory } = notifications || {};
-    if (!Array.isArray(notificationHistory) || !notificationHistory.length) return;
+    if (!Array.isArray(notificationHistory) || !notificationHistory.length)
+      return;
     const newNotificationHistory = notificationHistory.map(item => {
       const { _id } = item || {};
       if (_id === itemId) {
-        return Object.assign({}, item, { has_seen: true, __typename: "FarmerNotification" });
+        return Object.assign({}, item, {
+          has_seen: true,
+          __typename: "FarmerNotification"
+        });
       }
       return Object.assign({}, item, { __typename: "FarmerNotification" });
     });
@@ -69,12 +76,10 @@ export const cacheReadOneNotification = ( userId, itemId ) => {
         }
       }
     });
-  } catch (err) {
-    
-  }
-}
+  } catch (err) {}
+};
 
-export const cacheUpdateUnseenTotal = (cache, userId) => {
+export const cacheResetUnseenTotal = (cache, userId) => {
   try {
     cache.writeQuery({
       query: NOTIFICATION_UNSEEN_TOTAL,
@@ -83,8 +88,22 @@ export const cacheUpdateUnseenTotal = (cache, userId) => {
         userNotificationUnseenTotal: 0
       }
     });
-  } catch (err) {
-    
-  }
-}
-cacheUpdateUnseenTotal
+  } catch (err) {}
+};
+
+export const cacheUpdateUnseenTotal = newTotal => {
+  try {
+    const {
+      session: {
+        user: { _id: user_id }
+      }
+    } = store.getState();
+    ApolloClientProvider.client.writeQuery({
+      query: NOTIFICATION_UNSEEN_TOTAL,
+      variables: { user_id },
+      data: {
+        userNotificationUnseenTotal: newTotal
+      }
+    });
+  } catch (err) {}
+};

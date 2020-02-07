@@ -26,6 +26,10 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 
+# Android
+android/app/src/main/assets/index.android.bundle
+android/app/src/main/assets/index.android.bundle.meta
+
 # Android/IntelliJ
 #
 build/

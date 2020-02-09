@@ -17,7 +17,10 @@ import {
   cacheNewComment,
   cacheNewReplyComment
 } from "GraphQL/Farmer/CacheMutation";
-import { cacheUpdateUnseenTotal } from "GraphQL/Notification/Mutation";
+import {
+  cacheUpdateUnseenTotal,
+  cacheAppendNotification
+} from "GraphQL/Notification/Mutation";
 import { openFeedDetail } from "Navigation/NotificationRouter/SocialFeed";
 
 // create our store
@@ -62,10 +65,12 @@ class App extends Component {
       case NOTIF_TYPE.REPLY_POST:
         cacheNewComment(additionalData);
         cacheUpdateUnseenTotal(1);
+        cacheAppendNotification(additionalData);
         break;
       case NOTIF_TYPE.REPLY_COMMENT:
         cacheNewReplyComment(additionalData);
         cacheUpdateUnseenTotal(1);
+        cacheAppendNotification(additionalData);
         break;
       default:
         break;

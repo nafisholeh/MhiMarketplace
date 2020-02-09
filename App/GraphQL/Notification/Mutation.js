@@ -107,3 +107,53 @@ export const cacheUpdateUnseenTotal = newTotal => {
     });
   } catch (err) {}
 };
+
+export const cacheAppendNotification = data => {
+  try {
+    const {
+      session: {
+        user: { _id: userId }
+      }
+    } = store.getState();
+    const rawNotifications = ApolloClientProvider.client.readQuery({
+      query: NOTIFICATION_BY_USER,
+      variables: { user_id: userId }
+    });
+    const notifications = extractGraphQLResponse(rawNotifications);
+    const { notification_history: notificationHistory } = notifications || {};
+    if (!Array.isArray(notificationHistory) || !notificationHistory.length)
+      return;
+
+    const { __purpose, dateCommented, content, postId, commentId, author } =
+      data || {};
+    const { ktp_photo_face_thumbnail, ktp_name } = author || {};
+    const newNotification = {
+      _id: Math.random() * -1000,
+      context: __purpose,
+      content_preview: content,
+      date: dateCommented,
+      user_target: null,
+      user_origin: {
+        ktp_name,
+        ktp_photo_face: ktp_photo_face_thumbnail,
+        __typename: "UserFarmer"
+      },
+      post: postId,
+      comment: commentId,
+      sub_comment: null,
+      has_seen: false,
+      __typename: "FarmerNotification"
+    };
+    notificationHistory.push(newNotification);
+    ApolloClientProvider.client.writeQuery({
+      query: NOTIFICATION_BY_USER,
+      variables: { user_id: userId },
+      data: {
+        userNotifications: {
+          notification_history: notificationHistory,
+          __typename: "UserFarmer"
+        }
+      }
+    });
+  } catch (err) {}
+};

@@ -124,8 +124,15 @@ export const cacheAppendNotification = data => {
     if (!Array.isArray(notificationHistory) || !notificationHistory.length)
       return;
 
-    const { __purpose, dateCommented, content, postId, commentId, author } =
-      data || {};
+    const {
+      __purpose,
+      dateCommented,
+      content,
+      postId,
+      commentId,
+      subCommentId,
+      author
+    } = data || {};
     const { ktp_photo_face_thumbnail, ktp_name } = author || {};
     const newNotification = {
       _id: Math.random() * -1000,
@@ -140,7 +147,7 @@ export const cacheAppendNotification = data => {
       },
       post: postId,
       comment: commentId,
-      sub_comment: null,
+      sub_comment: subCommentId,
       has_seen: false,
       __typename: "FarmerNotification"
     };

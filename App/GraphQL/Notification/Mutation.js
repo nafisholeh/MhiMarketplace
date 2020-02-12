@@ -125,6 +125,7 @@ export const cacheAppendNotification = data => {
       return;
 
     const {
+      _id,
       __purpose,
       dateCommented,
       content,
@@ -135,7 +136,7 @@ export const cacheAppendNotification = data => {
     } = data || {};
     const { ktp_photo_face_thumbnail, ktp_name } = author || {};
     const newNotification = {
-      _id: Math.random() * -1000,
+      _id,
       context: __purpose,
       content_preview: content,
       date: dateCommented,

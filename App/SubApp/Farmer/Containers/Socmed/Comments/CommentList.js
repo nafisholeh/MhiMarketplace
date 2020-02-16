@@ -1,12 +1,12 @@
-import React, { Component, Fragment } from 'react';
-import { Mutation } from 'react-apollo';
+import React, { Component, Fragment } from "react";
+import { Mutation } from "react-apollo";
 
-import { CommentItem } from '../Components';
+import { CommentItem } from "../Components";
 import {
   LIKE,
   cacheLikeComment,
-  cacheLikeSubComment,
-} from 'GraphQL/Farmer/Mutation';
+  cacheLikeSubComment
+} from "GraphQL/Farmer/Mutation";
 
 export default class Comments extends Component {
   render() {
@@ -17,21 +17,26 @@ export default class Comments extends Component {
       onCommentChild,
       highlightId,
       hideLikeButton,
-      hideCommentButton,
+      hideCommentButton
     } = this.props;
     return (
-      Array.isArray(comments) && comments.map((item, index) => {
+      Array.isArray(comments) &&
+      comments.map((item, index) => {
         return (
           <Mutation
             key={index}
             mutation={LIKE}
             ignoreResults={false}
-            errorPolicy='all'>
-            { (mutate, {loading, error, data}) => {
-              const { _id: commentId, content_reply, likes = [], author } = item || {};
+            errorPolicy="all"
+          >
+            {(mutate, { loading, error, data }) => {
+              const { _id: commentId, content_reply, likes = [], author } =
+                item || {};
               const { _id: commentAuthorId } = author || {};
               const isOurOwn = commentAuthorId === loggedInUserId;
-              const isLikedByMe = Array.isArray(likes) && likes.findIndex(({ _id }) => _id === loggedInUserId) >= 0;
+              const isLikedByMe =
+                Array.isArray(likes) &&
+                likes.findIndex(({ _id }) => _id === loggedInUserId) >= 0;
               return (
                 <Fragment>
                   <CommentItem
@@ -44,7 +49,7 @@ export default class Comments extends Component {
                           type: "COMMENT",
                           action: isLikedByMe ? "dislike" : "like"
                         },
-                        update: ((cache, data) => 
+                        update: (cache, data) =>
                           cacheLikeComment(
                             cache,
                             feedId,
@@ -52,7 +57,6 @@ export default class Comments extends Component {
                             loggedInUserId,
                             isLikedByMe ? "dislike" : "like"
                           )
-                        )
                       });
                     }}
                     onComment={onCommentParent}
@@ -63,18 +67,25 @@ export default class Comments extends Component {
                     hideLikeButton={hideLikeButton}
                     hideCommentButton={hideCommentButton}
                   />
-                  {Array.isArray(content_reply)
-                    && content_reply.map((item, index) => {
+                  {Array.isArray(content_reply) &&
+                    content_reply.map((item, index) => {
                       const { likes = [], author } = item || {};
                       const { _id: subCommentAuthorId } = author || {};
                       const isReplyLikedByMe =
-                        Array.isArray(likes)
-                        && likes.findIndex(({ _id }) => _id === loggedInUserId) >= 0;
-                      const isOurOwnSubComment = subCommentAuthorId === loggedInUserId;
+                        Array.isArray(likes) &&
+                        likes.findIndex(({ _id }) => _id === loggedInUserId) >=
+                          0;
+                      const isOurOwnSubComment =
+                        subCommentAuthorId === loggedInUserId;
                       return (
                         <CommentItem
                           data={item}
-                          onLike={(commentId, subCommentId, name, isLikedByMe) => 
+                          onLike={(
+                            commentId,
+                            subCommentId,
+                            name,
+                            isLikedByMe
+                          ) =>
                             mutate({
                               variables: {
                                 elementId: subCommentId,
@@ -82,7 +93,7 @@ export default class Comments extends Component {
                                 type: "COMMENT_REPLY",
                                 action: isLikedByMe ? "dislike" : "like"
                               },
-                              update: ((cache, data) => 
+                              update: (cache, data) =>
                                 cacheLikeSubComment(
                                   cache,
                                   feedId,
@@ -91,7 +102,6 @@ export default class Comments extends Component {
                                   loggedInUserId,
                                   isLikedByMe ? "dislike" : "like"
                                 )
-                              )
                             })
                           }
                           onComment={onCommentChild}
@@ -102,14 +112,14 @@ export default class Comments extends Component {
                           hideLikeButton={hideLikeButton}
                           hideCommentButton={hideCommentButton}
                         />
-                      )
-                  })}
+                      );
+                    })}
                 </Fragment>
               );
             }}
           </Mutation>
         );
-      }
-    )
-  )}
+      })
+    );
+  }
 }

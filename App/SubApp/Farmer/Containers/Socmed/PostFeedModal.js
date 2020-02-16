@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment } from "react";
 import {
   View,
   TextInput,
@@ -7,41 +7,41 @@ import {
   TouchableWithoutFeedback,
   Image,
   ScrollView
-} from 'react-native';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
+} from "react-native";
+import { createStructuredSelector } from "reselect";
+import { connect } from "react-redux";
 import Modal from "react-native-modal";
-import { Mutation } from 'react-apollo';
-import moment from 'moment';
-import { ReactNativeFile } from 'apollo-upload-client';
+import { Mutation } from "react-apollo";
+import moment from "moment";
+import { ReactNativeFile } from "apollo-upload-client";
 
-import { ViewShadow, ButtonPrimary, ImagePicker } from 'Components';
-import { Avatar, NotificationBar } from 'CommonFarmer';
-import { NewsFeedDivider } from './Components';
+import { ViewShadow, ButtonPrimary, ImagePicker } from "Components";
+import { Avatar, NotificationBar } from "CommonFarmer";
+import { NewsFeedDivider } from "./Components";
 import {
   moderateScale,
   screenWidth,
   screenHeight,
   getUTCDate,
-  combineFilenameMime,
-} from 'Lib';
-import { Colors, Fonts, Images } from 'Themes';
-import { POST_AS_FARMER, cachePostSubmit } from 'GraphQL/Farmer/Mutation';
-import { getUserId, getUserPhoto } from 'Redux/SessionRedux';
+  combineFilenameMime
+} from "Lib";
+import { Colors, Fonts, Images } from "Themes";
+import { POST_AS_FARMER, cachePostSubmit } from "GraphQL/Farmer/Mutation";
+import { getUserId, getUserPhoto } from "Redux/SessionRedux";
 
 class PostFeedModal extends Component {
   state = {
-    postContent: '',
+    postContent: "",
     isNeedToPost: false,
     photos: null,
     photosDeleted: [],
-    photoSelectedIndex: null,
+    photoSelectedIndex: null
   };
-  
+
   onChangeContent = text => {
     this.setState({ postContent: text });
   };
-  
+
   onPostContent = mutate => {
     const { postContent, photos } = this.state;
     const { userId } = this.props;
@@ -49,72 +49,68 @@ class PostFeedModal extends Component {
       data: {
         content: postContent,
         author: userId,
-        date_posted: getUTCDate(),
+        date_posted: getUTCDate()
       }
     };
     if (Array.isArray(photos) && photos.length) {
       const images = photos.map((item, index) => {
         const { path, mime } = item || {};
         return new ReactNativeFile({
-            uri: path,
-            name: combineFilenameMime(
-              `${moment().format('YYYYMMDDHHmmss')}_${index}_${userId}`,
-              mime
-            ),
-            type: mime
-          });
-        }
-      );
+          uri: path,
+          name: combineFilenameMime(
+            `${moment().format("YYYYMMDDHHmmss")}_${index}_${userId}`,
+            mime
+          ),
+          type: mime
+        });
+      });
       variables = Object.assign({}, variables, { images });
     }
     mutate({
       variables,
-      context: { hasUpload: true },
+      context: { hasUpload: true }
     });
-    this.setState({ isNeedToPost: false, postContent: '' });
+    this.setState({ isNeedToPost: false, postContent: "" });
   };
-  
-  onPostSuccess = data => {
-    
-  };
-  
+
+  onPostSuccess = data => {};
+
   onShowPostModal = () => {
     this.setState({ isNeedToPost: true });
   };
-  
+
   onHidePostModal = () => {
     this.setState({ isNeedToPost: false });
   };
-  
+
   selectPhoto = index => {
     const { photos, photosDeleted = [], photoSelectedIndex } = this.state;
     if (photoSelectedIndex === index) {
       this.setState({
         photos: [
           ...photos.slice(0, index),
-          ...photos.slice(index + 1, photos.length),
+          ...photos.slice(index + 1, photos.length)
         ],
         photosDeleted: Array.isArray(photosDeleted)
           ? photosDeleted.push(index)
           : [index],
-        photoSelectedIndex: null,
+        photoSelectedIndex: null
       });
     } else {
       this.setState({ photoSelectedIndex: index });
     }
   };
-  
+
   onPhotoChange = (name, raw = [], paths = []) => {
     const { [name]: currentPhotos, photosDeleted = [] } = this.state;
-    const imageData =
-      raw
+    const imageData = raw
       .map((item, i) => {
         const [{ mime, path, data }] = raw[i];
         return { mime, path };
       })
-      .filter(({ path }) => 
+      .filter(({ path }) =>
         Array.isArray(photosDeleted)
-          ? photosDeleted.findIndex(({ path: curPath }) => curPath === path ) < 0
+          ? photosDeleted.findIndex(({ path: curPath }) => curPath === path) < 0
           : true
       );
     this.setState({ [name]: imageData });
@@ -122,14 +118,19 @@ class PostFeedModal extends Component {
 
   render() {
     const { userPhoto } = this.props;
-    const { postContent, isNeedToPost, photos, photoSelectedIndex } = this.state;
+    const {
+      postContent,
+      isNeedToPost,
+      photos,
+      photoSelectedIndex
+    } = this.state;
     const isShowPhotos = Array.isArray(photos) && photos.length;
     return (
       <View>
         <View
           style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
+            flexDirection: "row",
+            justifyContent: "space-between"
           }}
         >
           <Text
@@ -144,7 +145,7 @@ class PostFeedModal extends Component {
           </Text>
           <NotificationBar
             style={{
-              alignSelf: 'center',
+              alignSelf: "center",
               marginRight: moderateScale(10)
             }}
           />
@@ -152,9 +153,9 @@ class PostFeedModal extends Component {
         <TouchableOpacity
           onPress={this.onShowPostModal}
           style={{
-            flexDirection: 'row',
+            flexDirection: "row",
             marginHorizontal: moderateScale(15),
-            marginBottom: moderateScale(15),
+            marginBottom: moderateScale(15)
           }}
         >
           <Avatar
@@ -162,7 +163,7 @@ class PostFeedModal extends Component {
             style={{ marginRight: moderateScale(10) }}
           />
           <TextInput
-            underlineColorAndroid='rgba(0,0,0,0)'
+            underlineColorAndroid="rgba(0,0,0,0)"
             placeholder="Apa yang anda pikirkan..."
             selectTextOnFocus
             clearTextOnFocus
@@ -171,7 +172,7 @@ class PostFeedModal extends Component {
             selectTextOnFocus={false}
             style={{
               flex: 1,
-              ...Fonts.TITLE_NORMAL,
+              ...Fonts.TITLE_NORMAL
             }}
           />
         </TouchableOpacity>
@@ -187,15 +188,16 @@ class PostFeedModal extends Component {
           backdropColor={Colors.disabled_dark}
           backdropOpacity={0.4}
           style={{
-            justifyContent: 'flex-end',
-            margin: 0,
+            justifyContent: "flex-end",
+            margin: 0
           }}
         >
           <View
             style={{
-              position: 'absolute',
+              position: "absolute",
               bottom: -10,
-              left: 0, right: 0,
+              left: 0,
+              right: 0
             }}
           >
             <ViewShadow
@@ -208,7 +210,7 @@ class PostFeedModal extends Component {
               mainColor={Colors.white}
               shadowColor={Colors.brown_light}
               style={{
-                marginBottom: moderateScale(10),
+                marginBottom: moderateScale(10)
               }}
             />
             <ViewShadow
@@ -222,59 +224,57 @@ class PostFeedModal extends Component {
               shadowColor={Colors.brown_light}
               styleChildren={{
                 paddingHorizontal: moderateScale(15),
-                paddingVertical: moderateScale(25),
+                paddingVertical: moderateScale(25)
               }}
             >
-            <Mutation
-              mutation={POST_AS_FARMER}
-              update={(cache, data) => cachePostSubmit(cache, data)}
-              onCompleted={this.onPostSuccess}
-              onError={error => {
-                
-              }}
-              ignoreResults={false}
-              errorPolicy='all'>
-              { (mutate, {loading, error, data}) => {
-                return (
-                  <Fragment>
-                    <TextInput
-                      underlineColorAndroid='rgba(0,0,0,0)'
-                      placeholder="Apa yang anda pikirkan..."
-                      onChangeText={this.onChangeContent}
-                      onSubmitEditing={this.onPostContent}
-                      value={postContent}
-                      style={{
-                        flex: isShowPhotos ? 1 : 2,
-                        marginRight: moderateScale(5),
-                        borderRadius: moderateScale(10),
-                        padding: moderateScale(10),
-                        ...Fonts.TITLE_NORMAL
-                      }}
-                      multiline={true}
-                      textAlignVertical="top"
-                    />
-                    {isShowPhotos
-                      ? (
+              <Mutation
+                mutation={POST_AS_FARMER}
+                update={(cache, data) => cachePostSubmit(cache, data)}
+                onCompleted={this.onPostSuccess}
+                onError={error => {}}
+                ignoreResults={false}
+                errorPolicy="all"
+              >
+                {(mutate, { loading, error, data }) => {
+                  return (
+                    <Fragment>
+                      <TextInput
+                        underlineColorAndroid="rgba(0,0,0,0)"
+                        placeholder="Apa yang anda pikirkan..."
+                        onChangeText={this.onChangeContent}
+                        onSubmitEditing={this.onPostContent}
+                        value={postContent}
+                        style={{
+                          flex: isShowPhotos ? 1 : 2,
+                          marginRight: moderateScale(5),
+                          borderRadius: moderateScale(10),
+                          padding: moderateScale(10),
+                          ...Fonts.TITLE_NORMAL
+                        }}
+                        multiline={true}
+                        textAlignVertical="top"
+                      />
+                      {isShowPhotos ? (
                         <ScrollView
                           horizontal={true}
                           showsHorizontalScrollIndicator={false}
                           style={{
-                            flex: 1,
+                            flex: 1
                           }}
                           contentContainerStyle={{
-                            flexGrow: 1,
+                            flexGrow: 1
                           }}
                         >
                           <TouchableWithoutFeedback
                             style={{
-                              flex: 1,
+                              flex: 1
                             }}
                           >
                             <View
                               style={{
                                 flex: 1,
-                                flexDirection: 'row',
-                                alignItems: 'center',
+                                flexDirection: "row",
+                                alignItems: "center"
                               }}
                             >
                               {photos.map((item, index) => {
@@ -286,10 +286,9 @@ class PostFeedModal extends Component {
                                     style={{
                                       marginRight: moderateScale(7),
                                       borderRadius: moderateScale(10),
-                                      backgroundColor: 
-                                        isSelected
-                                          ? 'rgba(255,255,255,0.8)'
-                                          : 'rgba(0,0,0,0)'
+                                      backgroundColor: isSelected
+                                        ? "rgba(255,255,255,0.8)"
+                                        : "rgba(0,0,0,0)"
                                     }}
                                   >
                                     <Image
@@ -298,106 +297,97 @@ class PostFeedModal extends Component {
                                       style={{
                                         width: moderateScale(100),
                                         height: moderateScale(70),
-                                        borderRadius: moderateScale(10),
+                                        borderRadius: moderateScale(10)
                                       }}
                                     />
-                                    {isSelected
-                                      ? (
-                                        <Image
-                                          source={Images.delete_flat}
-                                          style={{
-                                            position: 'absolute',
-                                            top: '25%',
-                                            left: '35%',
-                                            width: moderateScale(30),
-                                            height: moderateScale(30),
-                                            tintColor: Colors.red,
-                                          }}
-                                        />
-                                      )
-                                      : null
-                                    }
+                                    {isSelected ? (
+                                      <Image
+                                        source={Images.delete_flat}
+                                        style={{
+                                          position: "absolute",
+                                          top: "25%",
+                                          left: "35%",
+                                          width: moderateScale(30),
+                                          height: moderateScale(30),
+                                          tintColor: Colors.red
+                                        }}
+                                      />
+                                    ) : null}
                                   </TouchableOpacity>
                                 );
                               })}
                             </View>
                           </TouchableWithoutFeedback>
                         </ScrollView>
-                      )
-                      : null
-                    }
-                    <View
-                      style={{
-                        flex: 0.5,
-                        flexDirection: 'row',
-                      }}
-                    >
-                      <ImagePicker
-                        name="photos"
-                        onChange={this.onPhotoChange}
-                        data={photos}
-                        titleBottomSheet='Ambil foto'
-                        isMultiplePick={true}
-                        isShowCancelButton={false}
-                        isShowGallery
-                        styleContainer={{
-                          marginRight: moderateScale(10),
+                      ) : null}
+                      <View
+                        style={{
+                          flex: 0.5,
+                          flexDirection: "row"
                         }}
-                        isCustomComponent
-                        customComponent={
-                          (props) => (
+                      >
+                        <ImagePicker
+                          name="photos"
+                          onChange={this.onPhotoChange}
+                          data={photos}
+                          titleBottomSheet="Ambil foto"
+                          isMultiplePick={true}
+                          isShowCancelButton={false}
+                          isShowGallery
+                          styleContainer={{
+                            marginRight: moderateScale(10)
+                          }}
+                          isCustomComponent
+                          customComponent={props => (
                             <TouchableOpacity
                               onPress={() => props.onStartPick()}
                               style={{
                                 width: moderateScale(50),
                                 height: moderateScale(50),
-                                alignItems: 'center',
-                                justifyContent: 'center',
+                                alignItems: "center",
+                                justifyContent: "center",
                                 borderRadius: moderateScale(12),
-                                backgroundColor: Colors.disabled_light,
+                                backgroundColor: Colors.disabled_light
                               }}
                             >
                               <Image
-                                source={Images.camera}  
+                                source={Images.camera}
                                 style={{
                                   width: moderateScale(25),
                                   height: moderateScale(25),
-                                  tintColor: Colors.white,
+                                  tintColor: Colors.white
                                 }}
                               />
                             </TouchableOpacity>
-                          )
-                        }
-                      />
-                      <ButtonPrimary
-                        onPress={() => this.onPostContent(mutate)}
-                        title="Posting"
-                        loading={loading}
-                        style={{
-                          flex: 1,
-                          borderRadius: moderateScale(12),
-                        }}
-                      />
-                    </View>
-                  </Fragment>
-                );
-              }}
-            </Mutation>
+                          )}
+                        />
+                        <ButtonPrimary
+                          onPress={() => this.onPostContent(mutate)}
+                          title="Posting"
+                          loading={loading}
+                          style={{
+                            flex: 1,
+                            borderRadius: moderateScale(12)
+                          }}
+                        />
+                      </View>
+                    </Fragment>
+                  );
+                }}
+              </Mutation>
             </ViewShadow>
           </View>
         </Modal>
       </View>
-    )
-  };
+    );
+  }
 }
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
-  userPhoto: getUserPhoto(),
+  userPhoto: getUserPhoto()
 });
 
-const mapDispatchToProps = dispatch => ({
-  
-});
+const mapDispatchToProps = dispatch => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostFeedModal);

@@ -14,6 +14,7 @@ import {
   cacheResetUnseenTotal
 } from "GraphQL/Notification/Mutation";
 import ListActions from "Redux/ListRedux";
+import NotificationActions from "Redux/NotificationRedux";
 import { getUserId } from "Redux/SessionRedux";
 import { QueryEffectPage } from "Components";
 import { NotificationItem } from "CommonFarmer";
@@ -43,10 +44,15 @@ class NotificationHistory extends Component {
   }
 
   onPressNotification = (notifId, postId, highlightId) => {
-    const { userId, selectListItem, selectListObject, navigation } = this.props;
+    const {
+      userId,
+      selectListItem,
+      selectNotification,
+      navigation
+    } = this.props;
     cacheReadOneNotification(userId, notifId);
     selectListItem(postId);
-    selectListObject({ highlightId });
+    selectNotification({ notifId, postId, highlightId });
     navigation.navigate("NewsFeedDetail");
   };
 
@@ -152,8 +158,8 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = dispatch => ({
   selectListItem: selectedId =>
     dispatch(ListActions.selectListItem(selectedId)),
-  selectListObject: selectedObject =>
-    dispatch(ListActions.selectListObject(selectedObject))
+  selectNotification: notif =>
+    dispatch(NotificationActions.selectNotification(notif))
 });
 
 export default connect(

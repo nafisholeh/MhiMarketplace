@@ -147,18 +147,19 @@ export const cacheAppendNotification = data => {
         __typename: "UserFarmer"
       },
       post: postId,
-      comment: commentId,
-      sub_comment: subCommentId,
+      comment: commentId || null,
+      sub_comment: subCommentId || null,
       has_seen: false,
       __typename: "FarmerNotification"
     };
-    notificationHistory.push(newNotification);
+    const slicedNotificationHistory = notificationHistory.slice();
+    slicedNotificationHistory.unshift(newNotification);
     ApolloClientProvider.client.writeQuery({
       query: NOTIFICATION_BY_USER,
       variables: { user_id: userId },
       data: {
         userNotifications: {
-          notification_history: notificationHistory,
+          notification_history: slicedNotificationHistory,
           __typename: "UserFarmer"
         }
       }

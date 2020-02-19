@@ -46,8 +46,7 @@ class RootContainer extends Component {
     return (
       <View style={styles.applicationView}>
         <StatusBar barStyle="light-content" />
-        {/* {isRehydrated && <ReduxNavigation />} */}
-        <ReduxNavigation />
+        {isRehydrated && <ReduxNavigation />}
       </View>
     );
   }

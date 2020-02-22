@@ -23,6 +23,9 @@ export const store = createStore();
  *
  * We separate like this to play nice with React Native's hot reloading.
  */
+
+console.disableYellowBox = true;
+
 class App extends Component {
   constructor(props) {
     super(props);

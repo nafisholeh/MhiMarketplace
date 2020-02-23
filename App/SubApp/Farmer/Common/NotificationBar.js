@@ -20,7 +20,7 @@ class NotificationBar extends Component {
     const { style, userId } = this.props;
     return (
       <Query query={NOTIFICATION_UNSEEN_TOTAL} variables={{ user_id: userId }}>
-        {({ loading, error, data }) => {
+        {({ loading, data }) => {
           const { userNotificationUnseenTotal: unseenTotal = 0 } = data || {};
           return (
             <View style={{ ...style, ...{ position: "relative" } }}>

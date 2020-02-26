@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import { View, Image } from 'react-native';
-import { string, number, object, oneOfType, oneOf } from 'prop-types';
+import React, { Component } from "react";
+import { Image } from "react-native";
+import { string, number, object, oneOfType, oneOf } from "prop-types";
 
-import { Images } from 'Themes';
-import { moderateScale, generateValidServerFileUri } from 'Lib';
+import { Images } from "Themes";
+import { moderateScale, generateValidServerFileUri } from "Lib";
 
 const IMAGE_SIZE = {
   small: 30,
   medium: 50,
-  big: 75,
+  big: 75
 };
 
 class Avatar extends Component {
   render() {
-    const { source = null, size = 'medium', style } = this.props;
+    const { source = null, size = "medium", style } = this.props;
     const imageSize = moderateScale(IMAGE_SIZE[size]);
     const borderRadius = moderateScale(IMAGE_SIZE[size] / 2);
     const imageUri = generateValidServerFileUri(source);
@@ -28,18 +28,18 @@ class Avatar extends Component {
         }}
         source={imageUri ? { uri: imageUri } : Images.empty_profile}
       />
-    )
-  };
+    );
+  }
 }
 
 Avatar.propTypes = {
-  style: oneOfType([ string, number, object ]),
-  source: oneOfType([ string, number, object ]),
-  size: oneOf(['small','medium','big']),
+  style: oneOfType([string, number, object]),
+  source: oneOfType([string, number, object]),
+  size: oneOf(["small", "medium", "big"])
 };
 
 Avatar.defaultProps = {
-  size: 'medium',
+  size: "medium"
 };
 
 export default Avatar;

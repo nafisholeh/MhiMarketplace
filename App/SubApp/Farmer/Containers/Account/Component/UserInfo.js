@@ -1,13 +1,16 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 
 import { Avatar } from "CommonFarmer";
 import { Fonts, Metrics } from "Themes";
+import { getUserShortBio } from "Redux/SessionRedux";
 
 class UserInfo extends Component {
   render() {
-    const { userPhoto } = this.props;
+    const { shortBio } = this.props;
+    const { name, photo } = shortBio || {};
     return (
       <View
         style={{
@@ -17,10 +20,7 @@ class UserInfo extends Component {
           marginBottom: Metrics.mediumMargin
         }}
       >
-        <Avatar
-          source={userPhoto}
-          style={{ marginRight: Metrics.mediumMargin }}
-        />
+        <Avatar source={photo} style={{ marginRight: Metrics.mediumMargin }} />
         <View
           style={{
             justifyContent: "center"
@@ -32,7 +32,7 @@ class UserInfo extends Component {
               ...{ marginBottom: Metrics.smallMargin }
             }}
           >
-            Nama user
+            {name || "..."}
           </Text>
           <Text style={{ ...Fonts.TITLE_SMALL }}>Komoditas user</Text>
         </View>
@@ -41,6 +41,8 @@ class UserInfo extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = createStructuredSelector({
+  shortBio: getUserShortBio()
+});
 
 export default connect(mapStateToProps, null)(UserInfo);

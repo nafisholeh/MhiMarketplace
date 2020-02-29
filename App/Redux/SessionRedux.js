@@ -8,7 +8,7 @@ import Config from "Config/AppConfig";
 
 const { Types, Creators } = createActions({
   reset: null,
-  storeSession: ["user"],
+  storeSession: ["user", "user_type"],
   storeSignupEmail: ["email"],
   storeSubAppSession: ["subAppSession"]
 });
@@ -19,7 +19,8 @@ export default Creators;
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  user: undefined,
+  user: null,
+  user_type: null,
   signupEmail: null,
   subAppSession: "user"
 });
@@ -29,7 +30,7 @@ export const INITIAL_STATE = Immutable({
 export const sessionSelectors = () => state => state.session;
 
 export const getUser = () =>
-  createSelector(sessionSelectors(), state => state.user);
+  createSelector(sessionSelectors(), state => state.user || null);
 
 export const getMockUserId = () =>
   createSelector(sessionSelectors(), state => {
@@ -110,9 +111,8 @@ export const isKurir = () =>
 
 export const isFarmer = () =>
   createSelector(sessionSelectors(), state => {
-    const { user } = state;
+    const { user, user_type } = state;
     if (!user) return false;
-    const { user_type } = user;
     if (user_type && user_type === Config.userType.FARMER) return true;
     return false;
   });
@@ -135,7 +135,8 @@ export const getChosenSubApp = () =>
 export const reset = state => INITIAL_STATE;
 
 // store user session related data
-export const storeSession = (state, { user }) => state.merge({ user });
+export const storeSession = (state, { user, user_type }) =>
+  state.merge({ user, user_type });
 
 export const storeSignupEmail = (state, { email }) =>
   state.merge({ signupEmail: email });

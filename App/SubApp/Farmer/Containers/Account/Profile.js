@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import Config from "Config/AppConfig";
-import { withNoHeader } from "Hoc";
+import { withNoHeader, withSignout } from "Hoc";
 import { StatePage } from "Components";
 import { UserInfo, NavigationMenu } from "./Component";
 import { ButtonPrimary } from "Components";
@@ -18,7 +18,7 @@ class Profile extends Component {
   };
 
   render() {
-    const { userData, isFarmer } = this.props;
+    const { userData, isFarmer, onSignout, signoutLoading } = this.props;
     if (!userData || !isFarmer) {
       return (
         <StatePage
@@ -44,7 +44,11 @@ class Profile extends Component {
             right: Metrics.baseMargin
           }}
         >
-          <ButtonPrimary onPress={() => {}} title="Logout" />
+          <ButtonPrimary
+            loading={signoutLoading}
+            onPress={() => onSignout()}
+            title="Logout"
+          />
         </View>
       </ScrollView>
     );
@@ -56,4 +60,7 @@ const mapStateToProps = createStructuredSelector({
   isFarmer: isFarmer()
 });
 
-export default connect(mapStateToProps, null)(withNoHeader(Profile));
+export default connect(
+  mapStateToProps,
+  null
+)(withNoHeader(withSignout(Profile)));

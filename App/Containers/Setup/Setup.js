@@ -92,7 +92,6 @@ class Setup extends Component {
       isProductCategoryFinish,
       isProductPackagingFinish
     } = this.state;
-    console.tron.log("Setup/checkIfDone", this.props, this.state);
     if (
       isCourierCostFinish &&
       isFetchingCartSuccess &&
@@ -101,7 +100,6 @@ class Setup extends Component {
       isProductCategoryFinish &&
       isProductPackagingFinish
     ) {
-      console.tron.log("Setup/checkIfDone/DONE");
       if (!isLoggedin) navigation.navigate("SubAppChooser");
       else {
         if (isKurir) navigation.navigate("CourierNav");
@@ -257,7 +255,6 @@ class Setup extends Component {
       isFetchingProductPackaging,
       isUploadingToken
     } = this.state;
-    console.tron.log("Setup/render", this.props, this.state);
     return (
       <View
         style={{

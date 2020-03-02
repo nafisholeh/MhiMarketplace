@@ -1,15 +1,14 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity, Alert } from "react-native";
+import { View, Alert } from "react-native";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { shape, string, func } from "prop-types";
 import { Mutation } from "react-apollo";
-import { DotIndicator } from "react-native-indicators";
 import { withNavigation } from "react-navigation";
 
 import Config from "Config/AppConfig";
 import { StatePage, HeaderTitle } from "Components";
-import { Colors, Metrics, Images } from "Themes";
+import { Images } from "Themes";
 import { moderateScale } from "Lib";
 import SessionActions, { getUser, getUserId } from "Redux/SessionRedux";
 import CartActions from "Redux/CartRedux";

@@ -64,6 +64,31 @@ export const getUserShortBio = () =>
     };
   });
 
+export const getUserCommodities = () =>
+  createSelector(sessionSelectors(), state => {
+    const { user } = state;
+    if (!user) return null;
+    const { areas = [] } = user;
+    const distinctCommodities = areas.reduce((distinctCommodities, item) => {
+      const { commodity_id } = item || {};
+      const { name } = commodity_id || {};
+      return distinctCommodities.some(({ name: nameTemp }) => name === nameTemp)
+        ? distinctCommodities
+        : [...distinctCommodities, commodity_id];
+    }, []);
+    return distinctCommodities;
+  });
+
+export const getUserCommoditiesName = () =>
+  createSelector(
+    sessionSelectors(),
+    getUserCommodities(),
+    (state, commodities) => {
+      if (!Array.isArray(commodities) || commodities.length <= 0) return [];
+      return commodities.map(({ name }) => name);
+    }
+  );
+
 export const isAdmin = () =>
   createSelector(sessionSelectors(), state => {
     const { user } = state;

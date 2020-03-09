@@ -46,7 +46,7 @@ export default function withSignout(WrappedComponent) {
       await clearSession();
       await resetCart();
       await resetCheckout();
-      navigation.navigate("ConsumerNav");
+      navigation.navigate("SubAppChooser");
     };
 
     render() {

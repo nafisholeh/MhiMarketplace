@@ -1,41 +1,30 @@
-import React, { Component, Fragment } from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  Dimensions,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import React, { Component, Fragment } from "react";
+import { StyleSheet, View, Text, Dimensions, Image } from "react-native";
 import MapView, {
   MAP_TYPES,
   Polygon,
   ProviderPropType,
-  Marker,
-} from 'react-native-maps';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
-import { string, bool, object, oneOfType, array, func } from 'prop-types';
+  Marker
+} from "react-native-maps";
+import { connect } from "react-redux";
+import { string, bool, object, oneOfType, array, func } from "prop-types";
 
-import FarmerSignupActions from 'Redux/FarmerSignupRedux';
+import FarmerSignupActions from "Redux/FarmerSignupRedux";
 import {
   moderateScale,
   calcPolygonSize,
   calcPolygonCenter,
   normalizeAreaSize
-} from 'Lib';
-import { Colors, Images, Fonts } from 'Themes';
-import { ButtonPrimary, ButtonCircle } from 'Components';
+} from "Lib";
+import { Colors, Images, Fonts } from "Themes";
 import {
   HeaderWhite,
   AreaDrawInfo,
   AreaDrawControl,
-  AreaDrawInfoWrapper,
   withLocationListener
-} from 'CommonFarmer';
-import { getSelectedListId } from 'Redux/ListRedux';
+} from "CommonFarmer";
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = -8.209091;
@@ -48,13 +37,12 @@ const LNG_DELTA_THRESHOLD = 0.0009096041321754456;
 let id = 0;
 
 class AreaDraw extends Component {
-  
-  static navigationOptions = ({navigation}) => {
-    const {params = {}} = navigation.state
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
     return {
-      header: null,
-    }
-  }
+      header: null
+    };
+  };
 
   constructor(props) {
     super(props);
@@ -64,42 +52,42 @@ class AreaDraw extends Component {
         latitude: LATITUDE,
         longitude: LONGITUDE,
         latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
       },
       polygons: [],
       editing: null,
       centerPos: {
         latitude: LATITUDE,
-        longitude: LONGITUDE,
+        longitude: LONGITUDE
       },
       isAllowedZoom: false,
       isMapReady: false,
       isFinished: false,
       selectedPolygonIndex: -1,
       polygonAreaSize: -1,
-      polygonCenterPoint: null,
+      polygonCenterPoint: null
     };
   }
-  
+
   onRegionChange = region => {
     const { latitude, longitude } = region || {};
     this.setState({
-      centerPos: { latitude, longitude },
+      centerPos: { latitude, longitude }
     });
   };
-  
+
   onRegionChangeComplete = region => {
     const { longitudeDelta } = region || {};
     const currentZoom = Math.round(Math.log(360 / longitudeDelta) / Math.LN2);
     this.setState({
-      isAllowedZoom: currentZoom >= ZOOM_THRESHOLD,
+      isAllowedZoom: currentZoom >= ZOOM_THRESHOLD
     });
   };
-  
+
   onMapReady = () => {
     this.setState({ isMapReady: true });
   };
-  
+
   zoomToLocation = (latitude, longitude, latitudeDelta, longitudeDelta) => {
     if (!this.map || !latitude || !longitude) return;
     this.map.animateToRegion(
@@ -107,26 +95,28 @@ class AreaDraw extends Component {
         latitude,
         longitude,
         latitudeDelta: latitudeDelta || LAT_DELTA_THRESHOLD,
-        longitudeDelta: longitudeDelta || LNG_DELTA_THRESHOLD,
+        longitudeDelta: longitudeDelta || LNG_DELTA_THRESHOLD
       },
       1000
     );
   };
-  
+
   autoZoomIn = () => {
-    const { centerPos: { latitude, longitude } } = this.state;
+    const {
+      centerPos: { latitude, longitude }
+    } = this.state;
     if (!this.map) return;
     this.map.animateToRegion(
       {
         latitude,
         longitude,
         latitudeDelta: LAT_DELTA_THRESHOLD,
-        longitudeDelta: LNG_DELTA_THRESHOLD,
+        longitudeDelta: LNG_DELTA_THRESHOLD
       },
       1000
     );
   };
-  
+
   handleDrawing = () => {
     const { centerPos, isAllowedZoom, editing, isFinished } = this.state;
     if (!isAllowedZoom || isFinished) return;
@@ -134,9 +124,9 @@ class AreaDraw extends Component {
       this.setState({
         editing: {
           id: id++,
-          coordinates: [centerPos],
+          coordinates: [centerPos]
         },
-        polygonAreaSize: -1,
+        polygonAreaSize: -1
       });
       return;
     }
@@ -146,53 +136,52 @@ class AreaDraw extends Component {
     this.setState({
       editing: {
         ...editing,
-        coordinates: newCoordinates,
+        coordinates: newCoordinates
       },
       polygonAreaSizeM2: polygonSize,
-      polygonAreaSize: normalizeAreaSize(polygonSize, 'm2', 'ha') || '',
-      polygonCenterPoint,
+      polygonAreaSize: normalizeAreaSize(polygonSize, "m2", "ha") || "",
+      polygonCenterPoint
     });
   };
-  
+
   handleDrawingFinish = () => {
     const { editing, polygonAreaSizeM2 } = this.state;
     const { storeFarmerArea } = this.props;
     storeFarmerArea({
       polygon: editing.coordinates,
-      size: polygonAreaSizeM2,
+      size: polygonAreaSizeM2
     });
-    this.setState({
-      isFinished: true,
-    }, () => {
-      const { navigation } = this.props;
-      navigation.navigate('AreaType');
-    });
+    this.setState(
+      {
+        isFinished: true
+      },
+      () => {
+        const { navigation } = this.props;
+        navigation.navigate("AreaType");
+      }
+    );
   };
 
   render() {
     const {
       region,
-      centerPos: {
-        latitude: pivotLat,
-        longitude: pivotLng,
-      } = {},
+      centerPos: { latitude: pivotLat, longitude: pivotLng } = {},
       isAllowedZoom,
-      isMapReady,
-      polygons,
       editing,
       selectedPolygonIndex,
       polygonAreaSize,
-      polygonCenterPoint,
+      polygonCenterPoint
     } = this.state;
-    const { refreshLocation, locationCurrent } = this.props;
-    const { latitude: userLat, longitude: userLng } = locationCurrent || {};
+    const { locationCurrent } = this.props;
     const mapOptions = {
-      scrollEnabled: true,
+      scrollEnabled: true
     };
     return (
       <View style={styles.container}>
         <MapView
-          ref={map => { this.map = map }}
+          ref={map => {
+            this.map = map;
+          }}
           onMapReady={() => setTimeout(() => this.onMapReady())}
           provider={this.props.provider}
           style={styles.map}
@@ -202,84 +191,79 @@ class AreaDraw extends Component {
           onRegionChangeComplete={this.onRegionChangeComplete}
           {...mapOptions}
         >
-          {editing
-            ? (
-              <Polygon
-                key={editing.id}
-                coordinates={editing.coordinates}
-                strokeColor={Colors.polygon_border}
-                fillColor={Colors.polygon_fill_light}
-                strokeWidth={1}
-              />
-            )
-            : null
-          }
-          {editing && polygonCenterPoint
-            ? (
-              <Marker
-                coordinate={{
-                  latitude: polygonCenterPoint.latitude,
-                  longitude: polygonCenterPoint.longitude
+          {editing ? (
+            <Polygon
+              key={editing.id}
+              coordinates={editing.coordinates}
+              strokeColor={Colors.polygon_border}
+              fillColor={Colors.polygon_fill_light}
+              strokeWidth={1}
+            />
+          ) : null}
+          {editing && polygonCenterPoint ? (
+            <Marker
+              coordinate={{
+                latitude: polygonCenterPoint.latitude,
+                longitude: polygonCenterPoint.longitude
+              }}
+              trackViewChanges={false}
+              anchor={{ x: 0.4, y: 1.05 }}
+              centerOffset={{ x: 0, y: -40 }}
+            >
+              <Text
+                style={{
+                  ...Fonts.TITLE_HEADER__BOLD,
+                  color: Colors.white,
+                  textShadowColor: "rgba(0, 0, 0, 0.5)",
+                  textShadowOffset: { width: -3, height: 3 },
+                  textShadowRadius: 3,
+                  elevation: 10
                 }}
-                trackViewChanges={false}
-                anchor={{x: 0.4, y: 1.05}}
-                centerOffset={{x: 0, y: -40}}
-                >
-                <Text
-                  style={{
-                    ...Fonts.TITLE_HEADER__BOLD,
-                    color: Colors.white,
-                    textShadowColor: 'rgba(0, 0, 0, 0.5)',
-                    textShadowOffset: {width: -3, height: 3},
-                    textShadowRadius: 3,
-                    elevation: 10,
-                  }}
-                  numberOfLines={2}>
-                  {polygonAreaSize}
-                </Text>
-              </Marker>
-            ) : null
-          }
-          {isAllowedZoom
-            ? (
-              <Marker
-                key='pivot-marker'
-                coordinate={{
-                  latitude: pivotLat,
-                  longitude: pivotLng,
-                }}
-                trackViewChanges={false}
-                anchor={{x: 0.4, y: 1.05}}
-                centerOffset={{x: 0, y: -40}}
+                numberOfLines={2}
               >
-                <Image
-                  source={Images.pin_marker}
-                  style={{
-                    width: moderateScale(50),
-                    height: moderateScale(50),
-                  }}
-                />
-              </Marker>
-            )
-            : (<View />)
-          }
+                {polygonAreaSize}
+              </Text>
+            </Marker>
+          ) : null}
+          {isAllowedZoom ? (
+            <Marker
+              key="pivot-marker"
+              coordinate={{
+                latitude: pivotLat,
+                longitude: pivotLng
+              }}
+              trackViewChanges={false}
+              anchor={{ x: 0.4, y: 1.05 }}
+              centerOffset={{ x: 0, y: -40 }}
+            >
+              <Image
+                source={Images.pin_marker}
+                style={{
+                  width: moderateScale(50),
+                  height: moderateScale(50)
+                }}
+              />
+            </Marker>
+          ) : (
+            <View />
+          )}
         </MapView>
         <View
           style={{
-            position: 'absolute',
+            position: "absolute",
             top: 0,
-            left: moderateScale(10),
+            left: moderateScale(10)
           }}
         >
           <HeaderWhite />
         </View>
         <View
           style={{
-            position: 'absolute',
-            bottom: moderateScale(15),
+            position: "absolute",
+            bottom: moderateScale(15)
           }}
         >
-          <AreaDrawInfo 
+          <AreaDrawInfo
             isVisible={!isAllowedZoom}
             autoZoomIn={() => this.autoZoomIn()}
           />
@@ -297,39 +281,39 @@ class AreaDraw extends Component {
 }
 
 AreaDraw.propTypes = {
-  provider: ProviderPropType,
+  provider: ProviderPropType
 };
 
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    justifyContent: "flex-end",
+    alignItems: "center"
   },
   map: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFillObject
   },
   bubble: {
-    backgroundColor: 'rgba(255,255,255,0.7)',
+    backgroundColor: "rgba(255,255,255,0.7)",
     paddingHorizontal: 18,
     paddingVertical: 12,
-    borderRadius: 20,
+    borderRadius: 20
   },
   latlng: {
     width: 200,
-    alignItems: 'stretch',
+    alignItems: "stretch"
   },
   button: {
     width: 80,
     paddingHorizontal: 12,
-    alignItems: 'center',
-    marginHorizontal: 10,
+    alignItems: "center",
+    marginHorizontal: 10
   },
   buttonContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginVertical: 20,
-    backgroundColor: 'transparent',
-  },
+    backgroundColor: "transparent"
+  }
 });
 
 AreaDraw.propTypes = {
@@ -337,16 +321,17 @@ AreaDraw.propTypes = {
   locationEnabled: bool,
   locationCurrent: object,
   locationError: string,
-  locationName: oneOfType([ string, array ]),
+  locationName: oneOfType([string, array]),
   isListening: bool,
   refreshLocation: func,
-  storeFarmerArea: func,
+  storeFarmerArea: func
 };
 
 const mapDispatchToProps = dispatch => ({
-  storeFarmerArea: area => dispatch(
-    FarmerSignupActions.storeFarmerArea(area)
-  ),
+  storeFarmerArea: area => dispatch(FarmerSignupActions.storeFarmerArea(area))
 });
 
-export default connect(null, mapDispatchToProps)(withLocationListener(AreaDraw));
+export default connect(
+  null,
+  mapDispatchToProps
+)(withLocationListener(AreaDraw));

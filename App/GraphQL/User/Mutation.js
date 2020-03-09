@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export const SIGNIN = gql`
   mutation signin($email: String!, $password: String!, $token: String) {
@@ -9,7 +9,7 @@ export const SIGNIN = gql`
       user_type
     }
   }
-`
+`;
 
 export const SIGNIN_FARMER = gql`
   mutation signinFarmer($email: String!, $password: String!, $token: String) {
@@ -25,7 +25,7 @@ export const SIGNIN_FARMER = gql`
       ktp_birth_date
       ktp_gender
       ktp_blood_type
-      
+
       ktp_kecamatan_id
       ktp_address_detail
       ktp_rtrw
@@ -34,7 +34,7 @@ export const SIGNIN_FARMER = gql`
       ktp_kecamatan
       ktp_kabupaten
       ktp_provinsi
-      
+
       ktp_religion
       ktp_marriage_status
       ktp_occupation
@@ -42,9 +42,25 @@ export const SIGNIN_FARMER = gql`
       ktp_expired_date
       ktp_photo_face
       ktp_photo_ktp
+
+      areas {
+        type
+        status
+        size
+        polygon
+        name
+        date_start
+        date_end
+        commodity_id {
+          name
+          description
+          photo
+        }
+        commodity_other_name
+      }
     }
   }
-`
+`;
 
 export const SIGNOUT = gql`
   mutation signout($user_id: String!) {
@@ -52,7 +68,7 @@ export const SIGNOUT = gql`
       _id
     }
   }
-`
+`;
 
 export const SIGNUP = gql`
   mutation signup($email: String!, $password: String!, $name: String!) {
@@ -63,11 +79,21 @@ export const SIGNUP = gql`
       user_type
     }
   }
-`
+`;
 
 export const SIGNUP_FARMER = gql`
-  mutation signupFarmer($email: String, $phone: String!, $password: String!, $name: String!) {
-    signupFarmer(email: $email, phone: $phone, password: $password, name: $name) {
+  mutation signupFarmer(
+    $email: String
+    $phone: String!
+    $password: String!
+    $name: String!
+  ) {
+    signupFarmer(
+      email: $email
+      phone: $phone
+      password: $password
+      name: $name
+    ) {
       _id
       email
       name
@@ -75,7 +101,7 @@ export const SIGNUP_FARMER = gql`
       user_type
     }
   }
-`
+`;
 
 export const ADD_ONE_SIGNAL_TOKEN = gql`
   mutation addOneSignalToken($user_id: String!, $token: String!) {
@@ -83,4 +109,4 @@ export const ADD_ONE_SIGNAL_TOKEN = gql`
       _id
     }
   }
-`
+`;

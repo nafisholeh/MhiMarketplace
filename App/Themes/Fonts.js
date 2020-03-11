@@ -5,12 +5,9 @@ import { moderateScale } from "../Lib/Responsive";
 export default {
   PAGE_TITLE: {
     fontFamily: "CircularStd-Bold",
-    fontSize: 20,
+    fontSize: 22,
     color: "rgba(0,0,0,0.8)",
-    letterSpacing: 0.3,
-    marginLeft: moderateScale(15),
-    marginTop: moderateScale(15),
-    marginBottom: moderateScale(12)
+    letterSpacing: 0.3
   },
   HEADER_BOLD: {
     fontFamily: "CircularStd-Bold",

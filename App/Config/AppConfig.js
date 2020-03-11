@@ -45,7 +45,6 @@ export default {
     "Signup",
     "SignupFarmerFirst",
     "SignupFarmerSecond",
-    "SignupFarmerThird",
     "SignupCustomer",
     "SignupScholar",
     "AreaDraw",

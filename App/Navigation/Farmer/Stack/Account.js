@@ -15,6 +15,7 @@ import SignupFarmerThird from "SubApp/Farmer/Containers/Signup/Third";
 import FarmerFinalConfirm from "SubApp/Farmer/Containers/Signup/FinalConfirm";
 import NotificationHistory from "SubApp/Farmer/Containers/Socmed/NotificationHistory";
 import FarmerProfile from "SubApp/Farmer/Containers/Account/Profile";
+import BioList from "SubApp/Farmer/Containers/BioEdit/BioList";
 
 const AccountNav = createStackNavigator(
   {
@@ -28,7 +29,8 @@ const AccountNav = createStackNavigator(
     AreaType: { screen: AreaType },
     AreaCommodity: { screen: AreaCommodity },
     NotificationHistory: { screen: NotificationHistory },
-    FarmerProfile: { screen: FarmerProfile }
+    FarmerProfile: { screen: FarmerProfile },
+    BioList: { screen: BioList }
   },
   {
     initialRouteName: "FarmerProfile",

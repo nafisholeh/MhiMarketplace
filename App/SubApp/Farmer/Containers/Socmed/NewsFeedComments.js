@@ -4,7 +4,7 @@ import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
 
 import { CommentList } from "./Comments";
-import { Fonts } from "Themes";
+import { FONTS } from "Themes";
 import { moderateScale } from "Lib";
 import { CommentInput } from "./Components";
 import { getUserId, getUserPhoto } from "Redux/SessionRedux";
@@ -43,7 +43,7 @@ class NewsFeedComments extends Component {
           >
             <Text
               style={{
-                ...Fonts.BODY_NORMAL,
+                ...FONTS.BODY_NORMAL,
                 color: "rgba(0,0,0,0.3)"
               }}
             >

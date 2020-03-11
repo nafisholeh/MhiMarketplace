@@ -6,7 +6,7 @@ import convert from "convert-units";
 
 import AppConfig from "Config/AppConfig";
 import { moderateScale, screenWidth, normalizeAreaSize } from "Lib";
-import { Fonts, Images, Colors } from "Themes";
+import { FONTS, Images, Colors } from "Themes";
 import { ProductHorizontalWrapper } from "Components";
 
 const EDGE_PADDING = {
@@ -119,21 +119,21 @@ class AreaItem extends Component {
             >
               <Text
                 style={{
-                  ...Fonts.BODY_SMALL
+                  ...FONTS.BODY_SMALL
                 }}
               >
                 {title || "-"}
               </Text>
               <Text
                 style={{
-                  ...Fonts.BODY_BOLD
+                  ...FONTS.BODY_BOLD
                 }}
               >
                 {commodity || "-"}
               </Text>
               <Text
                 style={{
-                  ...Fonts.BODY_NORMAL
+                  ...FONTS.BODY_NORMAL
                 }}
               >
                 {sizeInUnit || "-"}

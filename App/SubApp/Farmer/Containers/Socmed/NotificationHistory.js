@@ -18,7 +18,7 @@ import NotificationActions from "Redux/NotificationRedux";
 import { getUserId } from "Redux/SessionRedux";
 import { QueryEffectPage } from "Components";
 import { NotificationItem } from "CommonFarmer";
-import { Fonts, Images } from "Themes";
+import { FONTS, Images } from "Themes";
 import { InAppNotification, moderateScale } from "Lib";
 
 class NotificationHistory extends Component {
@@ -81,7 +81,7 @@ class NotificationHistory extends Component {
             style={{
               marginTop: moderateScale(15),
               marginBottom: moderateScale(12),
-              ...Fonts.PAGE_TITLE
+              ...FONTS.PAGE_TITLE
             }}
           >
             Notifikasi

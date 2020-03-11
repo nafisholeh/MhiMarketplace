@@ -25,7 +25,7 @@ import {
   getUTCDate,
   combineFilenameMime
 } from "Lib";
-import { Colors, Fonts, Images } from "Themes";
+import { Colors, FONTS, Images } from "Themes";
 import { POST_AS_FARMER, cachePostSubmit } from "GraphQL/Farmer/Mutation";
 import { getUserId, getUserPhoto } from "Redux/SessionRedux";
 
@@ -138,7 +138,7 @@ class PostFeedModal extends Component {
               marginLeft: moderateScale(15),
               marginTop: moderateScale(15),
               marginBottom: moderateScale(12),
-              ...Fonts.PAGE_TITLE
+              ...FONTS.PAGE_TITLE
             }}
           >
             Komoditasmu
@@ -172,7 +172,7 @@ class PostFeedModal extends Component {
             selectTextOnFocus={false}
             style={{
               flex: 1,
-              ...Fonts.BODY_NORMAL
+              ...FONTS.BODY_NORMAL
             }}
           />
         </TouchableOpacity>
@@ -249,7 +249,7 @@ class PostFeedModal extends Component {
                           marginRight: moderateScale(5),
                           borderRadius: moderateScale(10),
                           padding: moderateScale(10),
-                          ...Fonts.BODY_NORMAL
+                          ...FONTS.BODY_NORMAL
                         }}
                         multiline={true}
                         textAlignVertical="top"

@@ -8,7 +8,7 @@ import {
   TouchableOpacity
 } from "react-native";
 
-import { Colors, Images, Fonts } from "Themes";
+import { Colors, Images, FONTS } from "Themes";
 import { moderateScale } from "Lib";
 import { Avatar } from "CommonFarmer";
 
@@ -67,7 +67,7 @@ class CommentInput extends Component {
           >
             <Text
               style={{
-                ...Fonts.BODY_SMALL,
+                ...FONTS.BODY_SMALL,
                 fontStyle: "italic",
                 marginRight: moderateScale(15)
               }}

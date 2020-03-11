@@ -16,7 +16,7 @@ import {
   calcPolygonCenter,
   normalizeAreaSize
 } from "Lib";
-import { Colors, Images, Fonts } from "Themes";
+import { Colors, Images, FONTS } from "Themes";
 import {
   HeaderWhite,
   AreaDrawInfo,
@@ -212,7 +212,7 @@ class AreaDraw extends Component {
             >
               <Text
                 style={{
-                  ...Fonts.HEADER_BOLD,
+                  ...FONTS.HEADER_BOLD,
                   color: Colors.white,
                   textShadowColor: "rgba(0, 0, 0, 0.5)",
                   textShadowOffset: { width: -3, height: 3 },

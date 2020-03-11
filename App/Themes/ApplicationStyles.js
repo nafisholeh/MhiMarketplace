@@ -1,4 +1,4 @@
-import Fonts from "./Fonts";
+import FONTS from "./Fonts";
 import METRICS from "./Metrics";
 import Colors from "./Colors";
 

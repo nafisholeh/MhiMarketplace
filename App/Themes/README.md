@@ -3,7 +3,7 @@
 Application specific themes
 
 - Base Styles
-- Fonts
+- FONTS
 - METRICS
 - Colors
 

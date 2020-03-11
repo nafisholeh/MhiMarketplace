@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import FBCollage from "react-native-fb-collage";
 
-import { Fonts, Colors, Images } from "Themes";
+import { FONTS, Colors, Images } from "Themes";
 import {
   moderateScale,
   getIntervalTimeToday,
@@ -131,7 +131,7 @@ class NewsFeedContent extends Component {
           >
             <Text
               style={{
-                ...Fonts.BODY_NORMAL
+                ...FONTS.BODY_NORMAL
               }}
             >
               {userName}
@@ -139,7 +139,7 @@ class NewsFeedContent extends Component {
             {dateCreated ? (
               <Text
                 style={{
-                  ...Fonts.BODY_SMALL
+                  ...FONTS.BODY_SMALL
                 }}
               >
                 {getIntervalTimeToday(dateCreated)}
@@ -149,7 +149,7 @@ class NewsFeedContent extends Component {
         </View>
         <Text
           style={{
-            ...Fonts.BODY_NORMAL,
+            ...FONTS.BODY_NORMAL,
             color: Colors.text,
             lineHeight: moderateScale(18),
             letterSpacing: 0.3,
@@ -170,7 +170,7 @@ class NewsFeedContent extends Component {
         >
           <Text
             style={{
-              ...Fonts.BODY_SMALL
+              ...FONTS.BODY_SMALL
             }}
           >
             {statistic}

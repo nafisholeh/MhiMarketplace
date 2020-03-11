@@ -4,7 +4,7 @@ import { Mutation } from "react-apollo";
 import { PulseIndicator } from "react-native-indicators";
 import * as Animatable from "react-native-animatable";
 
-import { Fonts, Colors, Images } from "Themes";
+import { FONTS, Colors, Images } from "Themes";
 import { moderateScale } from "Lib";
 import { LIKE, cacheLike, cacheDislike } from "GraphQL/Farmer/Mutation";
 
@@ -83,7 +83,7 @@ class NewsFeedAction extends PureComponent {
       )}
       <Text
         style={{
-          ...Fonts.BODY_NORMAL
+          ...FONTS.BODY_NORMAL
         }}
       >
         {title}

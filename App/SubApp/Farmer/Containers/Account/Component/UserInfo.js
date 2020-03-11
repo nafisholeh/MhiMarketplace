@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import { Avatar } from "CommonFarmer";
-import { Fonts, METRICS } from "Themes";
+import { FONTS, METRICS } from "Themes";
 import { getUserShortBio, getUserCommoditiesName } from "Redux/SessionRedux";
 
 class UserInfo extends PureComponent {
@@ -31,13 +31,13 @@ class UserInfo extends PureComponent {
         >
           <Text
             style={{
-              ...Fonts.BODY_NORMAL,
+              ...FONTS.BODY_NORMAL,
               ...{ marginBottom: METRICS.TINY }
             }}
           >
             {name || "..."}
           </Text>
-          <Text style={{ ...Fonts.BODY_SMALL }}>{commodities}</Text>
+          <Text style={{ ...FONTS.BODY_SMALL }}>{commodities}</Text>
         </View>
       </View>
     );

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, TouchableOpacity, Image, Text } from "react-native";
 import { string } from "prop-types";
 
-import { Fonts, Colors } from "Themes";
+import { FONTS, Colors } from "Themes";
 import { moderateScale } from "Lib";
 
 class FloatNavigation extends Component {
@@ -39,7 +39,7 @@ class FloatNavigation extends Component {
         />
         <Text
           style={{
-            ...Fonts.BODY_SMALL,
+            ...FONTS.BODY_SMALL,
             color: Colors.white
           }}
         >

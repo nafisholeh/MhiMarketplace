@@ -12,7 +12,7 @@ import {
   InputPicker
 } from "Components";
 import AppConfig from "Config/AppConfig";
-import { Fonts, Colors } from "Themes";
+import { FONTS, Colors } from "Themes";
 import { moderateScale, screenWidth } from "Lib";
 import { HillHeaderWrapper, AreaItem } from "CommonFarmer";
 
@@ -111,7 +111,7 @@ class AreaType extends Component {
         >
           <Text
             style={{
-              ...Fonts.HEADER_SMALL,
+              ...FONTS.HEADER_SMALL,
               color: Colors.veggie_dark
             }}
           >
@@ -146,7 +146,7 @@ class AreaType extends Component {
         >
           <Text
             style={{
-              ...Fonts.HEADER_SMALL,
+              ...FONTS.HEADER_SMALL,
               color: Colors.veggie_dark
             }}
           >

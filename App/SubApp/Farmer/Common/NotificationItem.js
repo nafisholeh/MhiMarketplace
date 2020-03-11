@@ -3,7 +3,7 @@ import { Text, TouchableOpacity } from "react-native";
 
 import Avatar from "./Avatar";
 import { moderateScale } from "Lib";
-import { Fonts, Colors } from "Themes";
+import { FONTS, Colors } from "Themes";
 
 export default class NotificationItem extends Component {
   state = {
@@ -63,7 +63,7 @@ export default class NotificationItem extends Component {
         <Text
           style={{
             flex: 1,
-            ...Fonts.BODY_NORMAL
+            ...FONTS.BODY_NORMAL
           }}
         >
           <Text style={{ fontWeight: "bold" }}>{subjectName}</Text>

@@ -5,7 +5,7 @@ import LinearGradient from "react-native-linear-gradient";
 
 import { ProductHorizontalWrapper, ImageRadius } from "Components";
 import { moderateScale, screenWidth } from "Lib";
-import { Colors, Fonts } from "Themes";
+import { Colors, FONTS } from "Themes";
 
 const BORDER_RADIUS = 8;
 
@@ -85,7 +85,7 @@ class FileItem extends Component {
                     flexWrap: "wrap",
                     marginHorizontal: moderateScale(10),
                     marginBottom: moderateScale(8),
-                    ...Fonts.HEADER_SMALL,
+                    ...FONTS.HEADER_SMALL,
                     color: Colors.white
                   }
                 : {
@@ -93,7 +93,7 @@ class FileItem extends Component {
                     flexWrap: "wrap",
                     marginHorizontal: moderateScale(10),
                     marginBottom: moderateScale(13),
-                    ...Fonts.HEADER_SMALL
+                    ...FONTS.HEADER_SMALL
                   }
             )}
             numberOfLines={2}

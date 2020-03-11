@@ -15,7 +15,7 @@ import {
 } from "CommonFarmer";
 import { moderateScale, screenWidth } from "Lib";
 import { THEORY_CATEGORIES, SEARCH_THEORIES } from "GraphQL/Theory/Query";
-import { Fonts, Images } from "Themes";
+import { FONTS, Images } from "Themes";
 import ListActions, { getSelectedListId } from "Redux/ListRedux";
 
 class Dashboard extends Component {
@@ -85,7 +85,7 @@ class Dashboard extends Component {
                       <Text
                         style={{
                           marginHorizontal: moderateScale(23),
-                          ...Fonts.BODY_SMALL
+                          ...FONTS.BODY_SMALL
                         }}
                       >
                         Ditemukan {items.length} hasil

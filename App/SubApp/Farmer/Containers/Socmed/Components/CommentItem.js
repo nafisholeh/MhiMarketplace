@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Animated } from "react-native";
 import { PulseIndicator } from "react-native-indicators";
 import { ScrollIntoView } from "react-native-scroll-into-view";
 
-import { Colors, Fonts } from "Themes";
+import { Colors, FONTS } from "Themes";
 import { moderateScale, getIntervalTimeToday, unixToDate } from "Lib";
 import { Avatar } from "CommonFarmer";
 
@@ -113,7 +113,7 @@ class CommentItem extends Component {
               >
                 <Text
                   style={{
-                    ...Fonts.BODY_NORMAL,
+                    ...FONTS.BODY_NORMAL,
                     fontWeight: "bold"
                   }}
                 >
@@ -133,7 +133,7 @@ class CommentItem extends Component {
               </View>
               <Text
                 style={{
-                  ...Fonts.BODY_NORMAL,
+                  ...FONTS.BODY_NORMAL,
                   lineHeight: moderateScale(18),
                   letterSpacing: 0.3
                 }}
@@ -155,7 +155,7 @@ class CommentItem extends Component {
           {date ? (
             <Text
               style={{
-                ...Fonts.BODY_SMALL,
+                ...FONTS.BODY_SMALL,
                 marginRight: moderateScale(15)
               }}
             >
@@ -171,7 +171,7 @@ class CommentItem extends Component {
             >
               <Text
                 style={{
-                  ...Fonts.BODY_SMALL,
+                  ...FONTS.BODY_SMALL,
                   color: isLikedByMe ? Colors.veggie_dark : Colors.text,
                   fontWeight: "bold"
                 }}
@@ -184,7 +184,7 @@ class CommentItem extends Component {
             <TouchableOpacity onPress={() => onComment(feedId, authorId, name)}>
               <Text
                 style={{
-                  ...Fonts.BODY_SMALL,
+                  ...FONTS.BODY_SMALL,
                   color: Colors.text,
                   fontWeight: "bold"
                 }}

@@ -16,7 +16,7 @@ import {
   getAreas
 } from "Redux/FarmerSignupRedux";
 import { getUserId } from "Redux/SessionRedux";
-import { Images, Colors, Fonts } from "Themes";
+import { Images, Colors, FONTS } from "Themes";
 import {
   moderateScale,
   screenWidth,
@@ -89,7 +89,7 @@ class FinalConfirm extends Component {
             marginHorizontal: moderateScale(30),
             textAlign: "center",
             lineHeight: 30,
-            ...Fonts.HEADER_BOLD,
+            ...FONTS.HEADER_BOLD,
             color: Colors.veggie_dark
           }}
         >
@@ -133,7 +133,7 @@ class FinalConfirm extends Component {
                     progress={0.6}
                     strokeCap="square"
                     color={Colors.veggie_dark}
-                    textStyle={Fonts.HEADER_NORMAL}
+                    textStyle={FONTS.HEADER_NORMAL}
                     style={{
                       position: "absolute",
                       alignSelf: "center"

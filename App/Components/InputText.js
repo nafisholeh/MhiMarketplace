@@ -34,16 +34,34 @@ export default class InputText extends Component {
       styleBorder,
       styleInput,
       iconStyle,
-      onChangeText
+      onChangeText,
+      isAllBorderShown
     } = this.props;
     return (
       <View style={{ ...styles.container, ...styleContainer }}>
-        {title ? <Text style={styles.title}>{title}</Text> : <View></View>}
+        {title ? (
+          <Text
+            style={{
+              ...styles.title,
+              ...{ marginBottom: moderateScale(isAllBorderShown ? 5 : 0) }
+            }}
+          >
+            {title}
+          </Text>
+        ) : (
+          <View></View>
+        )}
         <View
           style={
             error
               ? [styles.inputContentError, styleBorder, styleInput]
-              : [styles.inputContent, styleBorder, styleInput]
+              : [
+                  isAllBorderShown
+                    ? styles.inputContentAllBorder
+                    : styles.inputContent,
+                  styleBorder,
+                  styleInput
+                ]
           }
         >
           {prefixIcon ? (
@@ -127,6 +145,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderBottomWidth: 0.5,
     borderBottomColor: Colors.brown_light,
+    backgroundColor: Colors.white,
+    paddingLeft: 0
+  },
+  inputContentAllBorder: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 0.5,
+    borderColor: Colors.brown_light,
+    borderRadius: 5,
     backgroundColor: Colors.white,
     paddingLeft: 0
   },

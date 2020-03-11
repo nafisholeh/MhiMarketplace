@@ -1,70 +1,74 @@
-import React, { Component, Fragment } from 'react';
-import { View, Text } from 'react-native';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
-import { string } from 'prop-types';
-import { Query } from 'react-apollo';
+import React, { Component, Fragment } from "react";
+import { View, Text } from "react-native";
+import { createStructuredSelector } from "reselect";
+import { connect } from "react-redux";
+import { string } from "prop-types";
+import { Query } from "react-apollo";
 
-import AppConfig from 'Config/AppConfig';
-import { OptimizedList, QueryEffectPage } from 'Components';
-import { FileItem, SearchHeader, FloatNavigation, withPageAccess } from 'CommonFarmer';
-import { moderateScale, screenWidth } from 'Lib';
-import { THEORY_CATEGORIES, SEARCH_THEORIES } from 'GraphQL/Theory/Query';
-import { Fonts, Images } from 'Themes';
-import ListActions, { getSelectedListId } from 'Redux/ListRedux';
+import AppConfig from "Config/AppConfig";
+import { OptimizedList, QueryEffectPage } from "Components";
+import {
+  FileItem,
+  SearchHeader,
+  FloatNavigation,
+  withPageAccess
+} from "CommonFarmer";
+import { moderateScale, screenWidth } from "Lib";
+import { THEORY_CATEGORIES, SEARCH_THEORIES } from "GraphQL/Theory/Query";
+import { Fonts, Images } from "Themes";
+import ListActions, { getSelectedListId } from "Redux/ListRedux";
 
 class Dashboard extends Component {
-  static navigationOptions = ({navigation}) => ({ header: null })
-  
+  static navigationOptions = ({ navigation }) => ({ header: null });
+
   state = {
     isShowTheories: false,
     isSearchMode: false,
     searchTerm: null,
-    categoryId: null,
-  }
-  
+    categoryId: null
+  };
+
   onSearchSOP = value => {
     this.setState({
       isSearchMode: value ? true : false,
       searchTerm: value,
-      categoryId: null,
+      categoryId: null
     });
   };
-  
+
   onOpenSOP = url => {
     const { navigation, selectListItem } = this.props;
     selectListItem(AppConfig.uri.basic + url);
-    navigation.navigate('SopViewer');
+    navigation.navigate("SopViewer");
   };
-  
+
   onOpenCategories = () => {
     this.setState({
       isShowTheories: false,
       isSearchMode: false,
       categoryId: null,
-      searchTerm: null,
+      searchTerm: null
     });
   };
-  
+
   onOpenTheories = categoryId => {
     this.setState({
       isShowTheories: true,
       isSearchMode: false,
       categoryId,
-      searchTerm: null,
+      searchTerm: null
     });
   };
-  
+
   render() {
     const { isShowTheories, isSearchMode, searchTerm, categoryId } = this.state;
     return (
       <View style={{ flex: 1, paddingVertical: moderateScale(20) }}>
-      <SearchHeader
-        style={{ marginBottom: moderateScale(15) }}
-        onSearch={this.onSearchSOP}
-      />
-      {(isShowTheories || isSearchMode)
-        ? (
+        <SearchHeader
+          style={{ marginBottom: moderateScale(15) }}
+          onSearch={this.onSearchSOP}
+        />
+        {isShowTheories || isSearchMode ? (
           <Query
             query={SEARCH_THEORIES}
             variables={{
@@ -77,19 +81,16 @@ class Dashboard extends Component {
               if (Array.isArray(items) && items.length > 0) {
                 return (
                   <Fragment>
-                    { isSearchMode
-                      ? (
-                        <Text
-                          style={{
-                            marginHorizontal: moderateScale(23),
-                            ...Fonts.TITLE_SMALL
-                          }}
-                        >
-                          Ditemukan {items.length} hasil
-                        </Text>
-                      )
-                      : null
-                    }
+                    {isSearchMode ? (
+                      <Text
+                        style={{
+                          marginHorizontal: moderateScale(23),
+                          ...Fonts.BODY_SMALL
+                        }}
+                      >
+                        Ditemukan {items.length} hasil
+                      </Text>
+                    ) : null}
                     <OptimizedList
                       isHorizontal={false}
                       itemWidth={screenWidth / 2 - moderateScale(10)}
@@ -108,33 +109,31 @@ class Dashboard extends Component {
                         );
                       }}
                       style={{
-                        flex: 1,
+                        flex: 1
                       }}
                       contentContainerStyle={{
                         paddingBottom: moderateScale(20),
                         paddingTop: moderateScale(15),
-                        marginHorizontal: moderateScale(10),
+                        marginHorizontal: moderateScale(10)
                       }}
                     />
-                    {isShowTheories
-                      ? (
-                        <View
-                          style={{
-                            position: 'absolute', 
-                            bottom: moderateScale(20),
-                            left: 0, right: 0,
-                          }}
-                        >
-                          <FloatNavigation
-                            title="Kembali ke daftar kategori"
-                            icon={Images.back}
-                            onPress={this.onOpenCategories}
-                            style={{ marginHorizontal: moderateScale(30) }}
-                          />
-                        </View>
-                      )
-                      : null
-                    }
+                    {isShowTheories ? (
+                      <View
+                        style={{
+                          position: "absolute",
+                          bottom: moderateScale(20),
+                          left: 0,
+                          right: 0
+                        }}
+                      >
+                        <FloatNavigation
+                          title="Kembali ke daftar kategori"
+                          icon={Images.back}
+                          onPress={this.onOpenCategories}
+                          style={{ marginHorizontal: moderateScale(30) }}
+                        />
+                      </View>
+                    ) : null}
                   </Fragment>
                 );
               }
@@ -148,14 +147,14 @@ class Dashboard extends Component {
               );
             }}
           </Query>
-        )
-        : (
-          <Query
-            query={THEORY_CATEGORIES}
-          >
+        ) : (
+          <Query query={THEORY_CATEGORIES}>
             {({ loading, error, data, refetch }) => {
               const { theoryCategories = [] } = data || {};
-              if (Array.isArray(theoryCategories) && theoryCategories.length > 0) {
+              if (
+                Array.isArray(theoryCategories) &&
+                theoryCategories.length > 0
+              ) {
                 return (
                   <OptimizedList
                     isHorizontal={false}
@@ -174,12 +173,12 @@ class Dashboard extends Component {
                       );
                     }}
                     style={{
-                      flex: 1,
+                      flex: 1
                     }}
                     contentContainerStyle={{
                       paddingBottom: moderateScale(20),
                       paddingTop: moderateScale(15),
-                      marginHorizontal: moderateScale(10),
+                      marginHorizontal: moderateScale(10)
                     }}
                   />
                 );
@@ -194,19 +193,19 @@ class Dashboard extends Component {
               );
             }}
           </Query>
-        )
-      }
+        )}
       </View>
-    )
-  };
+    );
+  }
 }
 
-const mapStateToProps = createStructuredSelector({
-  
-});
+const mapStateToProps = createStructuredSelector({});
 
 const mapDispatchToProps = dispatch => ({
-  selectListItem: selectedId => dispatch(ListActions.selectListItem(selectedId)),
+  selectListItem: selectedId => dispatch(ListActions.selectListItem(selectedId))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withPageAccess(Dashboard));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withPageAccess(Dashboard));

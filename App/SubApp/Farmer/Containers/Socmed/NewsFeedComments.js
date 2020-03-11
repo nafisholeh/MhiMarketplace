@@ -43,7 +43,7 @@ class NewsFeedComments extends Component {
           >
             <Text
               style={{
-                ...Fonts.TITLE_NORMAL,
+                ...Fonts.BODY_NORMAL,
                 color: "rgba(0,0,0,0.3)"
               }}
             >

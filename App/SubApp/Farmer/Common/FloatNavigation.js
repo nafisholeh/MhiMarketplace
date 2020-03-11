@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { View, TouchableOpacity, Image, Text } from 'react-native';
-import { string } from 'prop-types';
+import React, { Component } from "react";
+import { View, TouchableOpacity, Image, Text } from "react-native";
+import { string } from "prop-types";
 
-import { Fonts, Colors } from 'Themes'; 
-import { moderateScale } from 'Lib';
+import { Fonts, Colors } from "Themes";
+import { moderateScale } from "Lib";
 
 class FloatNavigation extends Component {
   onPress = () => {
@@ -19,35 +19,35 @@ class FloatNavigation extends Component {
       <TouchableOpacity
         onPress={this.onPress}
         style={{
-          flexDirection: 'row',
-          alignItems: 'center',
+          flexDirection: "row",
+          alignItems: "center",
           paddingVertical: moderateScale(8),
           paddingHorizontal: moderateScale(15),
           borderRadius: moderateScale(5),
           backgroundColor: Colors.text_light,
-          ...style,
+          ...style
         }}
       >
         <Image
           source={icon}
           style={{
-            width: moderateScale(17), 
+            width: moderateScale(17),
             height: moderateScale(13),
             marginRight: moderateScale(20),
-            tintColor: Colors.white,
+            tintColor: Colors.white
           }}
         />
         <Text
           style={{
-            ...Fonts.TITLE_SMALL,
-            color: Colors.white,
+            ...Fonts.BODY_SMALL,
+            color: Colors.white
           }}
         >
           {title}
         </Text>
       </TouchableOpacity>
-    )
-  };
+    );
+  }
 }
 
 export default FloatNavigation;

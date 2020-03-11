@@ -1,37 +1,44 @@
-import React, { Component } from 'react';
-import { View, Text, Keyboard, TextInput, Image, TouchableOpacity } from 'react-native';
+import React, { Component } from "react";
+import {
+  View,
+  Text,
+  Keyboard,
+  TextInput,
+  Image,
+  TouchableOpacity
+} from "react-native";
 
-import { Colors, Images, Fonts } from 'Themes';
-import { moderateScale } from 'Lib';
-import { Avatar } from 'CommonFarmer';
+import { Colors, Images, Fonts } from "Themes";
+import { moderateScale } from "Lib";
+import { Avatar } from "CommonFarmer";
 
 class CommentInput extends Component {
   state = {
-    comment: '',
-    showSendButton: false,
+    comment: "",
+    showSendButton: false
   };
-  
+
   onChangeComment = text => {
     this.setState({ comment: text });
   };
-  
+
   onSubmitComment = () => {
     const { onSubmitComment } = this.props;
     const { comment } = this.state;
     if (onSubmitComment) {
       onSubmitComment(comment);
-      this.setState({ comment: '', showSendButton: false });
+      this.setState({ comment: "", showSendButton: false });
       Keyboard.dismiss();
     }
   };
-  
+
   onFocus = () => {
     this.setState({ showSendButton: true });
   };
-  
+
   onBlur = () => {
     const { comment } = this.state;
-    if (!comment || comment === '') {
+    if (!comment || comment === "") {
       this.setState({ showSendButton: false });
     }
   };
@@ -43,46 +50,43 @@ class CommentInput extends Component {
       info,
       onClosingInfo,
       disabled,
-      photo,
+      photo
     } = this.props;
     const { comment, showSendButton } = this.state;
     return (
       <View>
-        {showInfo
-          ? (
-            <TouchableOpacity
+        {showInfo ? (
+          <TouchableOpacity
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginLeft: moderateScale(50),
+              marginBottom: moderateScale(5)
+            }}
+            onPress={onClosingInfo}
+          >
+            <Text
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginLeft: moderateScale(50),
-                marginBottom: moderateScale(5)
+                ...Fonts.BODY_SMALL,
+                fontStyle: "italic",
+                marginRight: moderateScale(15)
               }}
-              onPress={onClosingInfo}
             >
-              <Text
-                style={{
-                  ...Fonts.TITLE_SMALL,
-                  fontStyle: 'italic',
-                  marginRight: moderateScale(15),
-                }}
-              >
-                {info}
-              </Text>
-              <Image
-                source={Images.cross}
-                style={{
-                  width: moderateScale(10),
-                  height: moderateScale(10),
-                }}
-              />
-            </TouchableOpacity>
-          )
-          : null
-        }
+              {info}
+            </Text>
+            <Image
+              source={Images.cross}
+              style={{
+                width: moderateScale(10),
+                height: moderateScale(10)
+              }}
+            />
+          </TouchableOpacity>
+        ) : null}
         <View
           style={{
-            flexDirection: 'row',
-            alignItems: 'center',
+            flexDirection: "row",
+            alignItems: "center",
             marginLeft: moderateScale(10),
             marginRight: moderateScale(5),
             marginBottom: moderateScale(10),
@@ -95,7 +99,7 @@ class CommentInput extends Component {
             style={{ marginRight: moderateScale(10) }}
           />
           <TextInput
-            underlineColorAndroid='rgba(0,0,0,0)'
+            underlineColorAndroid="rgba(0,0,0,0)"
             placeholder="Balas postingan..."
             onChangeText={this.onChangeComment}
             onSubmitEditing={this.onSubmitComment}
@@ -115,30 +119,27 @@ class CommentInput extends Component {
               paddingVertical: moderateScale(5)
             }}
           />
-          {showSendButton
-            ? (
-              <TouchableOpacity
-                onPress={this.onSubmitComment}
+          {showSendButton ? (
+            <TouchableOpacity
+              onPress={this.onSubmitComment}
+              style={{
+                marginLeft: moderateScale(5),
+                marginRight: moderateScale(5)
+              }}
+            >
+              <Image
+                source={Images.send}
                 style={{
-                  marginLeft: moderateScale(5),
-                  marginRight: moderateScale(5),
+                  width: moderateScale(25),
+                  height: moderateScale(20)
                 }}
-              >
-                <Image
-                  source={Images.send}
-                  style={{
-                    width: moderateScale(25),
-                    height: moderateScale(20),
-                  }}
-                />
-              </TouchableOpacity>
-            )
-            : null
-          }
+              />
+            </TouchableOpacity>
+          ) : null}
         </View>
       </View>
-    )
-  };
+    );
+  }
 }
 
 export default CommentInput;

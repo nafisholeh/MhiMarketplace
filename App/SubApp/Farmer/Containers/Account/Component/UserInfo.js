@@ -31,13 +31,13 @@ class UserInfo extends PureComponent {
         >
           <Text
             style={{
-              ...Fonts.TITLE_NORMAL,
+              ...Fonts.BODY_NORMAL,
               ...{ marginBottom: METRICS.TINY }
             }}
           >
             {name || "..."}
           </Text>
-          <Text style={{ ...Fonts.TITLE_SMALL }}>{commodities}</Text>
+          <Text style={{ ...Fonts.BODY_SMALL }}>{commodities}</Text>
         </View>
       </View>
     );

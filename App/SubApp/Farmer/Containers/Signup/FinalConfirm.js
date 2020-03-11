@@ -1,34 +1,38 @@
-import React, { Component, Fragment } from 'react';
-import { ScrollView, Image, TouchableOpacity, Text } from 'react-native';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
-import * as Progress from 'react-native-progress';
-import { DotIndicator } from 'react-native-indicators';
-import { withNavigation } from 'react-navigation';
-import { Mutation } from 'react-apollo';
-import { ReactNativeFile } from 'apollo-upload-client';
-import moment from 'moment';
+import React, { Component, Fragment } from "react";
+import { ScrollView, Image, TouchableOpacity, Text } from "react-native";
+import { createStructuredSelector } from "reselect";
+import { connect } from "react-redux";
+import * as Progress from "react-native-progress";
+import { DotIndicator } from "react-native-indicators";
+import { withNavigation } from "react-navigation";
+import { Mutation } from "react-apollo";
+import { ReactNativeFile } from "apollo-upload-client";
+import moment from "moment";
 
-import { SIGNUP_FARMER } from 'GraphQL/Farmer/Mutation';
-import { getFarmerSignupData, getFarmerSignupImages, getAreas } from 'Redux/FarmerSignupRedux';
-import { getUserId } from 'Redux/SessionRedux';
-import { Images, Colors, Fonts } from 'Themes';
+import { SIGNUP_FARMER } from "GraphQL/Farmer/Mutation";
+import {
+  getFarmerSignupData,
+  getFarmerSignupImages,
+  getAreas
+} from "Redux/FarmerSignupRedux";
+import { getUserId } from "Redux/SessionRedux";
+import { Images, Colors, Fonts } from "Themes";
 import {
   moderateScale,
   screenWidth,
   screenHeight,
   saveBase64AsImage,
-  combineFilenameMime,
-} from 'Lib';
+  combineFilenameMime
+} from "Lib";
 
 class FinalConfirm extends Component {
-  static navigationOptions = ({navigation}) => {
-    const {params = {}} = navigation.state
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
     return {
-      header: null,
-    }
-  }
-  
+      header: null
+    };
+  };
+
   submit = async mutate => {
     const { signupData, signupImages } = this.props;
     let variables = {};
@@ -38,56 +42,55 @@ class FinalConfirm extends Component {
       if (signupImages.hasOwnProperty(key)) {
         const { mime, data } = value || {};
         const imagePath = await saveBase64AsImage(data, key, mime);
-        const imageName = `${moment().format('YYYYMMDDHHmmss')}_${key}`;
+        const imageName = `${moment().format("YYYYMMDDHHmmss")}_${key}`;
         images.push(
           new ReactNativeFile({
-            uri: 'file:///'+imagePath,
+            uri: "file:///" + imagePath,
             name: combineFilenameMime(imageName, mime),
             type: mime
           })
-        )
+        );
       }
     }
-    variables = Object.assign({}, {data: signupData} , {images});
+    variables = Object.assign({}, { data: signupData }, { images });
     mutate({
       variables,
       context: {
-        hasUpload: true,
+        hasUpload: true
       }
     });
   };
-  
+
   onUploadCompleted = () => {
     this.openFarmerSubApp();
   };
-  
+
   openFarmerSubApp = () => {
     const { navigation } = this.props;
-    navigation.navigate('SopFarmer');
+    navigation.navigate("SopFarmer");
   };
-  
-  onUploadError = (error) => {
-  };
+
+  onUploadError = error => {};
 
   render() {
     return (
       <ScrollView
         contentContainerStyle={{
           flex: 1,
-          flexDirection: 'column',
-          position: 'relative',
-          alignItems: 'center'
+          flexDirection: "column",
+          position: "relative",
+          alignItems: "center"
         }}
       >
         <Text
           style={{
-            position: 'absolute',
-            top: '10%',
+            position: "absolute",
+            top: "10%",
             marginHorizontal: moderateScale(30),
-            textAlign: 'center',
+            textAlign: "center",
             lineHeight: 30,
-            ...Fonts.TITLE_HEADER__BOLD,
-            color: Colors.veggie_dark,
+            ...Fonts.HEADER_BOLD,
+            color: Colors.veggie_dark
           }}
         >
           Tekan logo untuk bergabung dengan keluarga besar MHI...
@@ -98,20 +101,21 @@ class FinalConfirm extends Component {
           onError={this.onUploadError}
           awaitRefetchQueries={true}
           ignoreResults={false}
-          errorPolicy='all'>
-          { (mutate, {loading, error, data}) => {
+          errorPolicy="all"
+        >
+          {(mutate, { loading, error, data }) => {
             return (
               <Fragment>
                 <TouchableOpacity
                   style={{
-                    position: 'absolute',
-                    top: '25%',
+                    position: "absolute",
+                    top: "25%",
                     width: moderateScale(screenWidth * 0.8),
                     height: moderateScale(screenHeight * 0.5),
                     borderRadius: moderateScale(screenWidth * 0.4),
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center"
                   }}
                   onPress={async () => this.submit(mutate)}
                 >
@@ -119,7 +123,7 @@ class FinalConfirm extends Component {
                     source={Images.mhi}
                     style={{
                       width: moderateScale(screenWidth * 0.7),
-                      height: moderateScale(screenHeight * 0.4),
+                      height: moderateScale(screenHeight * 0.4)
                     }}
                   />
                   <Progress.Circle
@@ -127,12 +131,12 @@ class FinalConfirm extends Component {
                     thickness={7}
                     showsText={false}
                     progress={0.6}
-                    strokeCap='square'
+                    strokeCap="square"
                     color={Colors.veggie_dark}
-                    textStyle={Fonts.TITLE_HEADER__NORMAL}
+                    textStyle={Fonts.HEADER_NORMAL}
                     style={{
-                      position: 'absolute',
-                      alignSelf: 'center',
+                      position: "absolute",
+                      alignSelf: "center"
                     }}
                   />
                 </TouchableOpacity>
@@ -142,8 +146,8 @@ class FinalConfirm extends Component {
                   color={Colors.veggie_dark}
                   animationDuration={800}
                   style={{
-                    position: 'absolute',
-                    bottom: '8%',
+                    position: "absolute",
+                    bottom: "8%"
                   }}
                 />
               </Fragment>
@@ -151,18 +155,19 @@ class FinalConfirm extends Component {
           }}
         </Mutation>
       </ScrollView>
-    )
-  };
+    );
+  }
 }
 
 const mapStateToProps = createStructuredSelector({
   areas: getAreas(),
   signupData: getFarmerSignupData(),
-  signupImages: getFarmerSignupImages(),
+  signupImages: getFarmerSignupImages()
 });
 
-const mapDispatchToProps = dispatch => ({
-  
-});
+const mapDispatchToProps = dispatch => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(FinalConfirm));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withNavigation(FinalConfirm));

@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import React, { Component } from "react";
+import { Text, TouchableOpacity } from "react-native";
 
-import Avatar from './Avatar';
-import { moderateScale } from 'Lib';
-import { Fonts, Colors } from 'Themes';
+import Avatar from "./Avatar";
+import { moderateScale } from "Lib";
+import { Fonts, Colors } from "Themes";
 
 export default class NotificationItem extends Component {
   state = {
-    verb: ''
-  }
+    verb: ""
+  };
 
   componentDidMount() {
-    this.normalizeContent();  
+    this.normalizeContent();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -22,14 +22,14 @@ export default class NotificationItem extends Component {
 
   normalizeContent = () => {
     const { context } = this.props;
-    let verb = '';
-    if (context === 'reply_post') {
-      verb = 'membalas postingan Anda';
-    } else if (context === 'reply_comment') {
-      verb = 'membalas komentar Anda';
+    let verb = "";
+    if (context === "reply_post") {
+      verb = "membalas postingan Anda";
+    } else if (context === "reply_comment") {
+      verb = "membalas komentar Anda";
     }
     this.setState({ verb });
-  }
+  };
 
   onPress = () => {
     const { onPress, notifId, postId, commentId, subCommentId } = this.props;
@@ -37,7 +37,7 @@ export default class NotificationItem extends Component {
     if (onPress) {
       onPress(notifId, postId, highlightId);
     }
-  }
+  };
 
   render() {
     const { thumbnail, content, subjectName, hasSeen } = this.props;
@@ -45,8 +45,8 @@ export default class NotificationItem extends Component {
     return (
       <TouchableOpacity
         style={{
-          flexDirection: 'row',
-          alignItems: 'center',
+          flexDirection: "row",
+          alignItems: "center",
           paddingHorizontal: moderateScale(10),
           paddingVertical: moderateScale(15),
           backgroundColor: hasSeen ? null : Colors.veggie_bg
@@ -57,13 +57,13 @@ export default class NotificationItem extends Component {
           source={thumbnail}
           size="medium"
           style={{
-            marginRight: moderateScale(10),
+            marginRight: moderateScale(10)
           }}
         />
         <Text
           style={{
             flex: 1,
-            ...Fonts.TITLE_NORMAL,
+            ...Fonts.BODY_NORMAL
           }}
         >
           <Text style={{ fontWeight: "bold" }}>{subjectName}</Text>

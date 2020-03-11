@@ -212,7 +212,7 @@ class AreaDraw extends Component {
             >
               <Text
                 style={{
-                  ...Fonts.TITLE_HEADER__BOLD,
+                  ...Fonts.HEADER_BOLD,
                   color: Colors.white,
                   textShadowColor: "rgba(0, 0, 0, 0.5)",
                   textShadowOffset: { width: -3, height: 3 },

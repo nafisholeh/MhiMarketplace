@@ -1,31 +1,43 @@
-import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
-import FBCollage from 'react-native-fb-collage';
+import React, { Component } from "react";
+import { View, Text, TouchableOpacity, Image } from "react-native";
+import FBCollage from "react-native-fb-collage";
 
-import { Fonts, Colors, Images } from 'Themes';
-import { moderateScale, getIntervalTimeToday, unixToDate, generateValidServerFileUri } from 'Lib';
-import { Avatar } from 'CommonFarmer';
-import NewsFeedAction from './NewsFeedAction';
+import { Fonts, Colors, Images } from "Themes";
+import {
+  moderateScale,
+  getIntervalTimeToday,
+  unixToDate,
+  generateValidServerFileUri
+} from "Lib";
+import { Avatar } from "CommonFarmer";
+import NewsFeedAction from "./NewsFeedAction";
 
 class NewsFeedContent extends Component {
   state = {
-    statistic: '',
+    statistic: "",
     isLiked: false,
-    photoUri: [],
+    photoUri: []
   };
-  
+
   componentDidMount() {
     this.drawStatistic();
     this.handleCreatedDate();
     this.handlePhoto();
   }
-  
+
   componentDidUpdate(prevProps) {
-    const { likeTotal, commentTotal, shareTotal, dateCreated, likes, photo } = this.props;
+    const {
+      likeTotal,
+      commentTotal,
+      shareTotal,
+      dateCreated,
+      likes,
+      photo
+    } = this.props;
     if (
-      prevProps.likeTotal !== likeTotal
-      ||prevProps.commentTotal !== commentTotal
-      || prevProps.shareTotal !== shareTotal
+      prevProps.likeTotal !== likeTotal ||
+      prevProps.commentTotal !== commentTotal ||
+      prevProps.shareTotal !== shareTotal
     ) {
       this.drawStatistic();
     }
@@ -36,28 +48,30 @@ class NewsFeedContent extends Component {
       this.handlePhoto();
     }
   }
-  
+
   handlePhoto = () => {
     const { photo } = this.props;
     if (!photo) return;
-    const photoUri = photo.split(',').map((item) => generateValidServerFileUri(item));
+    const photoUri = photo
+      .split(",")
+      .map(item => generateValidServerFileUri(item));
     this.setState({ photoUri });
   };
-  
+
   handleCreatedDate = () => {
     const { dateCreated } = this.props;
-    this.setState({ 
+    this.setState({
       dateCreated: unixToDate(dateCreated)
     });
   };
-  
+
   drawStatistic = () => {
     const { likeTotal, commentTotal, shareTotal } = this.props;
     this.setState({
       statistic:
-        `${likeTotal ? `${likeTotal} suka ` : ``}`
-        + `${commentTotal ? `${commentTotal} balasan ` : ``}`
-        + `${shareTotal ? `${shareTotal} share` : ``}`
+        `${likeTotal ? `${likeTotal} suka ` : ``}` +
+        `${commentTotal ? `${commentTotal} balasan ` : ``}` +
+        `${shareTotal ? `${shareTotal} share` : ``}`
     });
   };
 
@@ -74,7 +88,7 @@ class NewsFeedContent extends Component {
       content,
       showBackButton,
       onBackPressed,
-      avatar,
+      avatar
     } = this.props;
     const { statistic, dateCreated, photoUri } = this.state;
     return (
@@ -82,34 +96,29 @@ class NewsFeedContent extends Component {
         onPress={this.onPressWrapper}
         disabled={showBackButton}
         style={{
-          paddingHorizontal: moderateScale(10),
+          paddingHorizontal: moderateScale(10)
         }}
       >
         <View
           style={{
             flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingVertical: moderateScale(15),
+            flexDirection: "row",
+            alignItems: "center",
+            paddingVertical: moderateScale(15)
           }}
         >
-          {showBackButton
-            ? (
-              <TouchableOpacity
-                onPress={onBackPressed}
-              >
-                <Image
-                  source={Images.back}
-                  style={{
-                    width: moderateScale(20),
-                    height: moderateScale(20),
-                    marginRight: moderateScale(18),
-                  }}
-                />
-              </TouchableOpacity>
-            )
-            : null
-          }
+          {showBackButton ? (
+            <TouchableOpacity onPress={onBackPressed}>
+              <Image
+                source={Images.back}
+                style={{
+                  width: moderateScale(20),
+                  height: moderateScale(20),
+                  marginRight: moderateScale(18)
+                }}
+              />
+            </TouchableOpacity>
+          ) : null}
           <Avatar
             size="small"
             source={avatar}
@@ -117,60 +126,51 @@ class NewsFeedContent extends Component {
           />
           <View
             style={{
-              justifyContent: 'space-between'
+              justifyContent: "space-between"
             }}
           >
             <Text
               style={{
-                ...Fonts.TITLE_NORMAL,
+                ...Fonts.BODY_NORMAL
               }}
             >
               {userName}
             </Text>
-            {dateCreated
-              ? (
-                <Text
-                  style={{
-                    ...Fonts.TITLE_SMALL,
-                  }}
-                >
-                  {getIntervalTimeToday(dateCreated)}
-                </Text>
-              )
-              : null
-            }
+            {dateCreated ? (
+              <Text
+                style={{
+                  ...Fonts.BODY_SMALL
+                }}
+              >
+                {getIntervalTimeToday(dateCreated)}
+              </Text>
+            ) : null}
           </View>
         </View>
         <Text
           style={{
-            ...Fonts.TITLE_NORMAL,
+            ...Fonts.BODY_NORMAL,
             color: Colors.text,
             lineHeight: moderateScale(18),
             letterSpacing: 0.3,
-            marginBottom: moderateScale(10),
+            marginBottom: moderateScale(10)
           }}
         >
           {content}
         </Text>
-        {Array.isArray(photoUri) && photoUri.length
-          ? (
-            <FBCollage 
-              images={photoUri}
-              imageOnPress={() => {}}
-            />
-          )
-          : null
-        }
+        {Array.isArray(photoUri) && photoUri.length ? (
+          <FBCollage images={photoUri} imageOnPress={() => {}} />
+        ) : null}
         <View
           style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-            marginBottom: moderateScale(5),
+            flexDirection: "row",
+            justifyContent: "flex-end",
+            marginBottom: moderateScale(5)
           }}
         >
           <Text
             style={{
-              ...Fonts.TITLE_SMALL
+              ...Fonts.BODY_SMALL
             }}
           >
             {statistic}
@@ -178,8 +178,8 @@ class NewsFeedContent extends Component {
         </View>
         <NewsFeedAction {...this.props} />
       </TouchableOpacity>
-    )
-  };
+    );
+  }
 }
 
 export default NewsFeedContent;

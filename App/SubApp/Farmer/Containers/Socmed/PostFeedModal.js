@@ -172,7 +172,7 @@ class PostFeedModal extends Component {
             selectTextOnFocus={false}
             style={{
               flex: 1,
-              ...Fonts.TITLE_NORMAL
+              ...Fonts.BODY_NORMAL
             }}
           />
         </TouchableOpacity>
@@ -249,7 +249,7 @@ class PostFeedModal extends Component {
                           marginRight: moderateScale(5),
                           borderRadius: moderateScale(10),
                           padding: moderateScale(10),
-                          ...Fonts.TITLE_NORMAL
+                          ...Fonts.BODY_NORMAL
                         }}
                         multiline={true}
                         textAlignVertical="top"

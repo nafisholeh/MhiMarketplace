@@ -15,7 +15,7 @@ class NavigationMenu extends Component {
           paddingVertical: METRICS.LARGE
         }}
       >
-        <Text style={{ ...Fonts.TITLE_HEADER__SMALL }}>{title}</Text>
+        <Text style={{ ...Fonts.HEADER_SMALL }}>{title}</Text>
       </TouchableOpacity>
     );
   }

@@ -1,25 +1,25 @@
-import { StyleSheet } from 'react-native'
-import { Metrics, ApplicationStyles } from '../../Themes/'
+import { StyleSheet } from "react-native";
+import { METRICS, ApplicationStyles } from "../../Themes/";
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   container: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: Metrics.doubleBaseMargin,
+    flexDirection: "row",
+    alignItems: "center",
+    padding: METRICS.LARGE
   },
   image: {
     width: 60,
     height: 75,
-    marginRight: Metrics.doubleBaseMargin,
+    marginRight: METRICS.LARGE
   },
   detail: {
     flex: 1,
-    flexDirection: 'column',
+    flexDirection: "column"
   },
-  detailTitle: { },
+  detailTitle: {},
   detailPrice: {
-    marginBottom: Metrics.baseMargin,
+    marginBottom: METRICS.SMALL
   }
-})
+});

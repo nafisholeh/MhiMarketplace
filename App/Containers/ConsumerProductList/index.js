@@ -1,32 +1,36 @@
-import React, { Component } from 'react';
-import { View, TouchableOpacity, Image, Text } from 'react-native';
-import { connect } from 'react-redux';
-import { withNavigation } from 'react-navigation';
-import { func, string, bool } from 'prop-types';
-import { createStructuredSelector } from 'reselect';
+import React, { Component } from "react";
+import { View, TouchableOpacity, Image, Text } from "react-native";
+import { connect } from "react-redux";
+import { withNavigation } from "react-navigation";
+import { func, string, bool } from "prop-types";
+import { createStructuredSelector } from "reselect";
 
-import ProductActions from 'Redux/ProductRedux';
-import ProductList from 'Containers/Product/List';
-import FilterItem from './FilterItem';
-import { HeaderButton, SearchBar, ConsumerPageHeader } from 'Components';
-import { getUserId, isKurir } from 'Redux/SessionRedux';
-import { getProductTitle, getProductCategory, getTermFilter } from 'Redux/ProductRedux';
-import { Images, Metrics } from 'Themes';
-import { moderateScale } from 'Lib';
-    
+import ProductActions from "Redux/ProductRedux";
+import ProductList from "Containers/Product/List";
+import FilterItem from "./FilterItem";
+import { HeaderButton, SearchBar, ConsumerPageHeader } from "Components";
+import { getUserId, isKurir } from "Redux/SessionRedux";
+import {
+  getProductTitle,
+  getProductCategory,
+  getTermFilter
+} from "Redux/ProductRedux";
+import { Images, METRICS } from "Themes";
+import { moderateScale } from "Lib";
+
 class ConsumerProductList extends Component {
-  static navigationOptions = ({navigation}) => {
-    const { params } = navigation.state
+  static navigationOptions = ({ navigation }) => {
+    const { params } = navigation.state;
     const { isKurir = false } = params || {};
     return {
-      header: null,
-    }
-  }
-  
+      header: null
+    };
+  };
+
   constructor(props) {
     super(props);
     this.state = {
-      searchTerm: '',
+      searchTerm: ""
     };
   }
 
@@ -34,42 +38,36 @@ class ConsumerProductList extends Component {
     const { navigation, isKurir } = this.props;
     navigation.setParams({ isKurir });
   }
-  
+
   clearFilter = () => {
     const { selectCategory } = this.props;
     selectCategory(null, null);
   };
-  
+
   onSearch = value => {
     this.setState({
       searchTerm: value
     });
-  }
-  
+  };
+
   render() {
     const { isKurir, navigation, productTitle, productCategory } = this.props;
     const { searchTerm } = this.state;
     return (
-      <View 
-        style={{ flex: 1 }}
-      >
+      <View style={{ flex: 1 }}>
         <ConsumerPageHeader
           icon={isKurir ? Images.cart : Images.delivery}
-          onIconPress={() => navigation.navigate(isKurir ? 'Cart' : 'ConsumerOrder')}
+          onIconPress={() =>
+            navigation.navigate(isKurir ? "Cart" : "ConsumerOrder")
+          }
           onSearch={this.onSearch}
         />
         {productTitle ? (
-          <FilterItem
-            title={productTitle}
-            onPress={this.clearFilter}
-          />
+          <FilterItem title={productTitle} onPress={this.clearFilter} />
         ) : null}
-        <ProductList
-          searchTerm={searchTerm}
-          category={productCategory}
-        />
+        <ProductList searchTerm={searchTerm} category={productCategory} />
       </View>
-    )
+    );
   }
 }
 
@@ -79,19 +77,22 @@ ConsumerProductList.propTypes = {
   isKurir: bool,
   productTitle: string,
   productCategory: string,
-  selectCategory: func,
-}
+  selectCategory: func
+};
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
   isKurir: isKurir(),
   productTitle: getProductTitle(),
-  productCategory: getProductCategory(),
+  productCategory: getProductCategory()
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   selectCategory: (category_id, category_title) =>
-    dispatch(ProductActions.selectCategory(category_id, category_title)),
+    dispatch(ProductActions.selectCategory(category_id, category_title))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(ConsumerProductList));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withNavigation(ConsumerProductList));

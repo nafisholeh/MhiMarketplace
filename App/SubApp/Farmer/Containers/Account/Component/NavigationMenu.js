@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { TouchableOpacity, Text } from "react-native";
 import { connect } from "react-redux";
 
-import { Fonts, Metrics } from "Themes";
+import { Fonts, METRICS } from "Themes";
 
 class NavigationMenu extends Component {
   render() {
@@ -11,8 +11,8 @@ class NavigationMenu extends Component {
       <TouchableOpacity
         onPress={() => {}}
         style={{
-          paddingHorizontal: Metrics.mediumMargin,
-          paddingVertical: Metrics.doubleBaseMargin
+          paddingHorizontal: METRICS.MEDIUM,
+          paddingVertical: METRICS.LARGE
         }}
       >
         <Text style={{ ...Fonts.TITLE_HEADER__SMALL }}>{title}</Text>

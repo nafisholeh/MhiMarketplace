@@ -1,29 +1,38 @@
-import React, { PureComponent } from 'react'
-import { object, string, array, number, oneOfType, func } from 'prop-types'
-import { Platform, StyleSheet, View, Text, ActivityIndicator, Image, TextInput, TouchableOpacity } from 'react-native'
-import FlexImage from 'react-native-flex-image';
-import { DotIndicator, WaveIndicator } from 'react-native-indicators';
-var _ = require('lodash');
+import React, { PureComponent } from "react";
+import { object, string, array, number, oneOfType, func } from "prop-types";
+import {
+  Platform,
+  StyleSheet,
+  View,
+  Text,
+  ActivityIndicator,
+  Image,
+  TextInput,
+  TouchableOpacity
+} from "react-native";
+import FlexImage from "react-native-flex-image";
+import { DotIndicator, WaveIndicator } from "react-native-indicators";
+var _ = require("lodash");
 
-import { Colors, Metrics, Images } from 'Themes';
-import { getFirstParam, isLocalImage, isAssetImage } from '../helper';
+import { Colors, METRICS, Images } from "Themes";
+import { getFirstParam, isLocalImage, isAssetImage } from "../helper";
 
 export default class ImageFlexible extends PureComponent {
-
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       source: null,
       fetching: false,
       finished: false,
-      loaded: 0, total: 0
-    }
+      loaded: 0,
+      total: 0
+    };
   }
 
   componentWillMount() {
-    this._showMainImage()
+    this._showMainImage();
   }
-  
+
   componentDidUpdate(prevProps) {
     if (prevProps.path !== this.props.path) {
       this._showMainImage();
@@ -32,48 +41,46 @@ export default class ImageFlexible extends PureComponent {
 
   _showMainImage() {
     const { path, urlNormalizer, urlBase } = this.props;
-    if(_.isEmpty(path)) {
-      this._showDefaultImage()
-      return
+    if (_.isEmpty(path)) {
+      this._showDefaultImage();
+      return;
     }
-    if(isAssetImage(path)) {
-      this.setState({ source: path })
-    } else if(isLocalImage(path)) {
-      this.setState({ source: { uri: path }})
+    if (isAssetImage(path)) {
+      this.setState({ source: path });
+    } else if (isLocalImage(path)) {
+      this.setState({ source: { uri: path } });
     } else {
-      this.setState({ source:
-        { uri: urlBase + urlNormalizer(path) }
-      })
+      this.setState({ source: { uri: urlBase + urlNormalizer(path) } });
     }
   }
 
   _showDefaultImage() {
     const { urlDefault } = this.props;
-    if(_.isNil(urlDefault)) return
-    if(isAssetImage(urlDefault)) {
-      this.setState({ source: urlDefault })
+    if (_.isNil(urlDefault)) return;
+    if (isAssetImage(urlDefault)) {
+      this.setState({ source: urlDefault });
     } else {
-      this.setState({ source: { uri: urlDefault }})
+      this.setState({ source: { uri: urlDefault } });
     }
   }
 
   _getLoadingComponent() {
     const { loadingComponent, loadingColor } = this.props;
-    switch(loadingComponent) {
-      case 'wave':
-        return <WaveIndicator color={loadingColor} count={4} size={40} />
-      case 'dot':
-        return <DotIndicator color={loadingColor} count={4} size={4} />
+    switch (loadingComponent) {
+      case "wave":
+        return <WaveIndicator color={loadingColor} count={4} size={40} />;
+      case "dot":
+        return <DotIndicator color={loadingColor} count={4} size={4} />;
       default: {
-        return <ActivityIndicator color={loadingColor} size='large' />
+        return <ActivityIndicator color={loadingColor} size="large" />;
       }
     }
   }
 
-  render () {
+  render() {
     const { source } = this.state;
     const { style, onPress } = this.props;
-    let loading = this._getLoadingComponent()
+    let loading = this._getLoadingComponent();
     if (!source) return null;
     return (
       <FlexImage
@@ -87,24 +94,24 @@ export default class ImageFlexible extends PureComponent {
 }
 
 ImageFlexible.propTypes = {
-  name: oneOfType([ object, string ]),
-  path: oneOfType([ object, array, string ]),
-  urlBase: oneOfType([ object, string ]),
-  urlDefault: oneOfType([ object, string, number ]),
+  name: oneOfType([object, string]),
+  path: oneOfType([object, array, string]),
+  urlBase: oneOfType([object, string]),
+  urlDefault: oneOfType([object, string, number]),
   urlNormalizer: func,
-  style: oneOfType([ array, object, string, number ]),
-  styleContainer: oneOfType([ array, object, string, number ]),
+  style: oneOfType([array, object, string, number]),
+  styleContainer: oneOfType([array, object, string, number]),
   token: string,
   loadingComponent: string,
-  loadingColor: oneOfType([ number, string ]),
-  onPress: func,
-}
+  loadingColor: oneOfType([number, string]),
+  onPress: func
+};
 
 ImageFlexible.defaultProps = {
-  name: 'Foto',
+  name: "Foto",
   urlNormalizer: getFirstParam,
   style: { flex: 1 },
   styleContainer: { flex: 1 },
-  loadingComponent: 'default',
-  loadingColor: 'red',
-}
+  loadingComponent: "default",
+  loadingColor: "red"
+};

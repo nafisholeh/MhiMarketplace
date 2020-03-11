@@ -1,49 +1,49 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
-import { Metrics, ApplicationStyles } from '../../Themes/';
-import { moderateScale } from 'Lib';
+import { METRICS, ApplicationStyles } from "../../Themes/";
+import { moderateScale } from "Lib";
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: "white"
   },
   scrollView: {
-    // paddingHorizontal: Metrics.baseMargin,
-    paddingBottom: Metrics.baseMargin,
+    // paddingHorizontal: METRICS.SMALL,
+    paddingBottom: METRICS.SMALL
   },
   logo: {
-    marginTop: Metrics.doubleSection,
-    height: Metrics.images.logo,
-    width: Metrics.images.logo,
-    resizeMode: 'contain'
+    marginTop: METRICS.EXTRA_HUGE,
+    height: METRICS.IMAGE_XL,
+    width: METRICS.IMAGE_XL,
+    resizeMode: "contain"
   },
   centered: {
-    alignItems: 'center'
+    alignItems: "center"
   },
   section: {
     flex: 1,
-    backgroundColor: 'white',
-    minHeight: 100,
+    backgroundColor: "white",
+    minHeight: 100
     // minWidth: 100,
   },
   product__item_content: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
   product__item_detail: {
     flex: 1,
-    paddingHorizontal: Metrics.baseMargin,
-    flexDirection:'column',
-    alignItems: 'flex-end',
-    justifyContent: 'center'
+    paddingHorizontal: METRICS.SMALL,
+    flexDirection: "column",
+    alignItems: "flex-end",
+    justifyContent: "center"
   },
   product__item_cart: {
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end"
   },
   itemImage: {
     width: 20,
-    height: 20,
+    height: 20
   }
-})
+});

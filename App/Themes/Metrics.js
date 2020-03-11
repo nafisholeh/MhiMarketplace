@@ -2,36 +2,29 @@ import { Dimensions, Platform } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 
-// Used via Metrics.baseMargin
 const metrics = {
-  marginHorizontal: 10,
-  marginVertical: 10,
-  section: 25,
-  baseMargin: 10,
-  mediumMargin: 15,
-  doubleBaseMargin: 20,
-  smallMargin: 5,
-  doubleSection: 50,
-  horizontalLineHeight: 1,
-  deviceWidth: width < height ? width : height,
-  deviceHeight: width < height ? height : width,
-  vw: width / 100,
-  vh: height / 100,
-  navBarHeight: Platform.OS === "ios" ? 64 : 54,
-  buttonRadius: 4,
-  icons: {
-    tiny: 15,
-    small: 20,
-    medium: 30,
-    large: 45,
-    xl: 50
-  },
-  images: {
-    small: 20,
-    medium: 40,
-    large: 60,
-    logo: 200
-  }
+  TINY: 5,
+  SMALL: 10,
+  MEDIUM: 15,
+  LARGE: 20,
+  HUGE: 25,
+  EXTRA_HUGE: 50,
+
+  DEVICE_WIDTH: width < height ? width : height,
+  DEVICE_HEIGHT: width < height ? height : width,
+
+  NAV_BAR_HEIGHT: Platform.OS === "ios" ? 64 : 54,
+
+  ICON_TINY: 15,
+  ICON_SMALL: 20,
+  ICON_MEDIUM: 30,
+  ICON_LARGE: 45,
+  ICON_XL: 50,
+
+  IMAGE_SMALL: 20,
+  IMAGE_MEDIUM: 40,
+  IMAGE_LARGE: 60,
+  IMAGE_XL: 200
 };
 
 export default metrics;

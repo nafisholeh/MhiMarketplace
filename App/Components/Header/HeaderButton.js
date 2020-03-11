@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { func, number, string, oneOfType, bool } from 'prop-types';
-import { SkypeIndicator } from 'react-native-indicators';
+import React, { Component } from "react";
+import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { func, number, string, oneOfType, bool } from "prop-types";
+import { SkypeIndicator } from "react-native-indicators";
 
-import { Metrics, Colors } from 'Themes';
-import { moderateScale } from 'Lib';
+import { METRICS, Colors } from "Themes";
+import { moderateScale } from "Lib";
 
 class HeaderButton extends Component {
   render() {
@@ -16,32 +16,32 @@ class HeaderButton extends Component {
         {...this.props}
       >
         {!loading && <Image source={icon} style={styles.icon} />}
-        {loading && 
+        {loading && (
           <SkypeIndicator
             color={Colors.veggie_dark}
             count={5}
             size={moderateScale(20)}
           />
-        }
+        )}
       </TouchableOpacity>
-    )
+    );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: Metrics.baseMargin,
+    marginHorizontal: METRICS.SMALL
   },
   icon: {
     width: moderateScale(30),
-    height: moderateScale(30),
+    height: moderateScale(30)
   }
 });
 
 HeaderButton.propTypes = {
   onPress: func.isRequired,
-  icon: oneOfType([ number, string ]).isRequired,
-  loading: bool,
+  icon: oneOfType([number, string]).isRequired,
+  loading: bool
 };
 
 export default HeaderButton;

@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { func } from 'prop-types';
+import React, { Component } from "react";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { func } from "prop-types";
 
 import {
   FETCH_ALL_PROVINSI,
   FETCH_KABUPATEN_BY_PROVINSI,
-  FETCH_KECAMATAN_BY_KABUPATEN,
-} from 'GraphQL/Address/Query';
-import { Colors, Metrics, Images } from 'Themes';
-import { moderateScale } from 'Lib';
-import { KeyboardFriendlyView, InputText, InputPicker } from 'Components';
+  FETCH_KECAMATAN_BY_KABUPATEN
+} from "GraphQL/Address/Query";
+import { Colors, METRICS, Images } from "Themes";
+import { moderateScale } from "Lib";
+import { KeyboardFriendlyView, InputText, InputPicker } from "Components";
 
 class AutoAddressInput extends Component {
   constructor(props) {
@@ -19,31 +19,27 @@ class AutoAddressInput extends Component {
       trigger_fetch_provinsi: false,
       trigger_fetch_kabupaten: false,
       trigger_fetch_kecamatan: false,
-      kodepos: '',
-      kelurahan: '',
-      rtrw: '',
-      alamat: '',
-    }
+      kodepos: "",
+      kelurahan: "",
+      rtrw: "",
+      alamat: ""
+    };
   }
-  
+
   componentWillMount() {
     this.onFetchProvinsi();
   }
-  
+
   validateData = () => {
-    const {
-      id_address,
-      rtrw,
-      alamat,
-    } = this.state;
+    const { id_address, rtrw, alamat } = this.state;
     this.setState({
       error_alamat: id_address ? false : true,
       error_rtrw: rtrw ? false : true,
-      error_alamat_detail: alamat ? false : true,
-    })
+      error_alamat_detail: alamat ? false : true
+    });
     return id_address && rtrw && alamat;
-  }
-  
+  };
+
   onFetchProvinsi() {
     this.setState(prevState => {
       return {
@@ -51,10 +47,10 @@ class AutoAddressInput extends Component {
       };
     });
   }
-  
+
   onProvinsiChange = (val, i) => {
     const { onProvinsiChanged } = this.props;
-    const [id, nama] = val.split('||') || [];
+    const [id, nama] = val.split("||") || [];
     this.setState(prevState => {
       return {
         provinsi: nama,
@@ -63,15 +59,15 @@ class AutoAddressInput extends Component {
         trigger_reset_kecamatan: !prevState.trigger_reset_kecamatan,
         id_address: null,
         kelurahan: null,
-        kodepos: null,
+        kodepos: null
       };
     });
     onProvinsiChanged(nama);
   };
-  
+
   onKabupatenChange = (val, i) => {
     const { onKabupatenChanged } = this.props;
-    const [id, nama] = val.split('||') || [];
+    const [id, nama] = val.split("||") || [];
     this.setState(prevState => {
       return {
         kabupaten: nama,
@@ -80,20 +76,20 @@ class AutoAddressInput extends Component {
         trigger_fetch_kecamatan: !prevState.trigger_fetch_kecamatan,
         id_address: null,
         kelurahan: null,
-        kodepos: null,
+        kodepos: null
       };
     });
     onKabupatenChanged(nama);
   };
-  
+
   onKecamatanChange = (val, i) => {
     const {
       onKecamatanIdChanged,
       onKecamatanChanged,
       onKelurahanChanged,
-      onKodeposChanged,
+      onKodeposChanged
     } = this.props;
-    const [idAddress, kodepos, kelurahan, kecamatan] = val.split('||') || [];
+    const [idAddress, kodepos, kelurahan, kecamatan] = val.split("||") || [];
     this.setState({
       id_address: idAddress,
       kecamatan,
@@ -105,7 +101,7 @@ class AutoAddressInput extends Component {
     onKelurahanChanged(kelurahan);
     onKodeposChanged(kodepos);
   };
-  
+
   render() {
     const {
       trigger_fetch_provinsi,
@@ -121,11 +117,10 @@ class AutoAddressInput extends Component {
       error_alamat,
       error_rtrw,
       error_alamat_detail
-    } = this.state; 
+    } = this.state;
     const { onRtRwChanged, onAddressDetailChanged } = this.props;
     return (
       <KeyboardFriendlyView>
-        
         <InputPicker
           title="Provinsi"
           placeholder="Pilih provinsi"
@@ -134,7 +129,7 @@ class AutoAddressInput extends Component {
           triggerFetch={trigger_fetch_provinsi}
           isInitialFetching
         />
-      
+
         <InputPicker
           title="Kabupaten/Kota"
           placeholder="Pilih kabupaten/kota"
@@ -144,7 +139,7 @@ class AutoAddressInput extends Component {
           triggerFetch={trigger_fetch_kabupaten}
           // triggerReset={trigger_reset_kabupaten}
         />
-      
+
         <InputPicker
           title="Kecamatan"
           placeholder="Pilih kecamatan"
@@ -155,53 +150,52 @@ class AutoAddressInput extends Component {
           triggerReset={trigger_reset_kecamatan}
           isKeyDisplayed
         />
-      
+
         <InputText
-          refs={(ref) => this._kelurahan = ref}
-          title='Kelurahan'
+          refs={ref => (this._kelurahan = ref)}
+          title="Kelurahan"
           value={kelurahan}
-          placeholder='Kelurahan'
+          placeholder="Kelurahan"
           error={error_alamat}
           editable={false}
         />
-      
+
         <InputText
-          refs={(ref) => this._kodepos = ref}
-          title='Kode Pos'
+          refs={ref => (this._kodepos = ref)}
+          title="Kode Pos"
           value={kodepos}
-          placeholder='Kode Pos'
+          placeholder="Kode Pos"
           error={error_alamat}
           editable={false}
         />
-        
+
         <InputText
-          title='RT/RW'
+          title="RT/RW"
           value={rtrw}
-          onChangeText={(rtrw) => {
+          onChangeText={rtrw => {
             onRtRwChanged(rtrw);
             this.setState({ rtrw });
           }}
-          placeholder='RT/RW'
+          placeholder="RT/RW"
           error={error_rtrw}
           onSubmitEditing={() => this._alamat.focus()}
-          returnKeyType='next'
+          returnKeyType="next"
         />
-        
+
         <InputText
-          refs={(ref) => this._alamat = ref}
-          title='Alamat lengkap'
+          refs={ref => (this._alamat = ref)}
+          title="Alamat lengkap"
           value={alamat}
-          onChangeText={(alamat) => {
+          onChangeText={alamat => {
             onAddressDetailChanged(alamat);
             this.setState({ alamat });
           }}
-          placeholder='Nama Gedung, jalan dan lainnya'
+          placeholder="Nama Gedung, jalan dan lainnya"
           multiline={true}
           error={error_alamat_detail}
           styleContainer={{ height: moderateScale(120) }}
-          styleBorder={{ height: moderateScale(100), alignItems: 'flex-start' }}
+          styleBorder={{ height: moderateScale(100), alignItems: "flex-start" }}
         />
-
       </KeyboardFriendlyView>
     );
   }
@@ -215,7 +209,7 @@ AutoAddressInput.propTypes = {
   onKelurahanChanged: func.isRequired,
   onKodeposChanged: func.isRequired,
   onKabupatenChanged: func.isRequired,
-  onProvinsiChanged: func.isRequired,
+  onProvinsiChanged: func.isRequired
 };
 
 export default AutoAddressInput;

@@ -1,37 +1,41 @@
-import { StyleSheet } from 'react-native'
-import { ApplicationStyles, Metrics, Colors } from '../../../../../DevScreens/DevTheme/'
+import { StyleSheet } from "react-native";
+import {
+  ApplicationStyles,
+  METRICS,
+  Colors
+} from "../../../../../DevScreens/DevTheme/";
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   container: {
     flex: 1,
-    marginTop: Metrics.navBarHeight,
+    marginTop: METRICS.NAV_BAR_HEIGHT,
     backgroundColor: Colors.background
   },
   row: {
     width: 100,
     height: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: Metrics.baseMargin,
+    justifyContent: "center",
+    alignItems: "center",
+    margin: METRICS.SMALL,
     backgroundColor: Colors.fire,
-    borderRadius: Metrics.smallMargin
+    borderRadius: METRICS.TINY
   },
   boldLabel: {
-    fontWeight: 'bold',
-    alignSelf: 'center',
+    fontWeight: "bold",
+    alignSelf: "center",
     color: Colors.snow,
-    textAlign: 'center',
-    marginBottom: Metrics.smallMargin
+    textAlign: "center",
+    marginBottom: METRICS.TINY
   },
   label: {
-    alignSelf: 'center',
+    alignSelf: "center",
     color: Colors.snow,
-    textAlign: 'center'
+    textAlign: "center"
   },
   listContent: {
-    justifyContent: 'space-around',
-    flexDirection: 'row',
-    flexWrap: 'wrap'
+    justifyContent: "space-around",
+    flexDirection: "row",
+    flexWrap: "wrap"
   }
-})
+});

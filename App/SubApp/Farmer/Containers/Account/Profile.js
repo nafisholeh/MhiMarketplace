@@ -8,7 +8,7 @@ import { withNoHeader, withSignout } from "Hoc";
 import { StatePage } from "Components";
 import { UserInfo, NavigationMenu } from "./Component";
 import { ButtonPrimary } from "Components";
-import { Metrics } from "Themes";
+import { METRICS } from "Themes";
 import { isFarmer, getUser } from "Redux/SessionRedux";
 
 class Profile extends Component {
@@ -39,9 +39,9 @@ class Profile extends Component {
         <View
           style={{
             position: "absolute",
-            bottom: Metrics.baseMargin,
-            left: Metrics.baseMargin,
-            right: Metrics.baseMargin
+            bottom: METRICS.SMALL,
+            left: METRICS.SMALL,
+            right: METRICS.SMALL
           }}
         >
           <ButtonPrimary

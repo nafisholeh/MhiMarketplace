@@ -1,6 +1,6 @@
-import Fonts from './Fonts'
-import Metrics from './Metrics'
-import Colors from './Colors'
+import Fonts from "./Fonts";
+import METRICS from "./Metrics";
+import Colors from "./Colors";
 
 // This file is for a reusable grouping of Theme items.
 // Similar to an XML fragment layout in Android
@@ -12,7 +12,7 @@ const ApplicationStyles = {
       backgroundColor: Colors.transparent
     },
     backgroundImage: {
-      position: 'absolute',
+      position: "absolute",
       top: 0,
       left: 0,
       bottom: 0,
@@ -20,24 +20,24 @@ const ApplicationStyles = {
     },
     container: {
       flex: 1,
-      paddingTop: Metrics.baseMargin,
+      paddingTop: METRICS.SMALL,
       backgroundColor: Colors.transparent
     },
     section: {
-      margin: Metrics.section,
-      padding: Metrics.baseMargin
+      margin: METRICS.HUGE,
+      padding: METRICS.SMALL
     },
     sectionText: {
-      paddingVertical: Metrics.doubleBaseMargin,
+      paddingVertical: METRICS.LARGE,
       color: Colors.snow,
-      marginVertical: Metrics.smallMargin,
-      textAlign: 'center'
+      marginVertical: METRICS.TINY,
+      textAlign: "center"
     },
     subtitle: {
       color: Colors.snow,
-      padding: Metrics.smallMargin,
-      marginBottom: Metrics.smallMargin,
-      marginHorizontal: Metrics.smallMargin
+      padding: METRICS.TINY,
+      marginBottom: METRICS.TINY,
+      marginHorizontal: METRICS.TINY
     },
     titleText: {
       fontSize: 14,
@@ -45,32 +45,32 @@ const ApplicationStyles = {
     }
   },
   darkLabelContainer: {
-    padding: Metrics.smallMargin,
-    paddingBottom: Metrics.doubleBaseMargin,
+    padding: METRICS.TINY,
+    paddingBottom: METRICS.LARGE,
     borderBottomColor: Colors.border,
     borderBottomWidth: 1,
-    marginBottom: Metrics.baseMargin
+    marginBottom: METRICS.SMALL
   },
   darkLabel: {
     color: Colors.snow
   },
   groupContainer: {
-    margin: Metrics.smallMargin,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center'
+    margin: METRICS.TINY,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center"
   },
   sectionTitle: {
     color: Colors.coal,
     backgroundColor: Colors.ricePaper,
-    padding: Metrics.smallMargin,
-    marginTop: Metrics.smallMargin,
-    marginHorizontal: Metrics.baseMargin,
+    padding: METRICS.TINY,
+    marginTop: METRICS.TINY,
+    marginHorizontal: METRICS.SMALL,
     borderWidth: 1,
     borderColor: Colors.ember,
-    alignItems: 'center',
-    textAlign: 'center'
+    alignItems: "center",
+    textAlign: "center"
   }
-}
+};
 
-export default ApplicationStyles
+export default ApplicationStyles;

@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { View, Text } from 'react-native';
-import { string } from 'prop-types';
+import React, { Component } from "react";
+import { View, Text } from "react-native";
+import { string } from "prop-types";
 
-import { Metrics, Colors } from 'Themes';
-import { moderateScale } from 'Lib';
+import { METRICS, Colors } from "Themes";
+import { moderateScale } from "Lib";
 
 class CheckoutTitle extends Component {
   render() {
@@ -13,14 +13,14 @@ class CheckoutTitle extends Component {
         style={{
           marginTop: moderateScale(15),
           marginBottom: moderateScale(10),
-          marginHorizontal: moderateScale(15),
+          marginHorizontal: moderateScale(15)
         }}
       >
         <Text
           style={{
-            fontFamily: 'CircularStd-Book',
+            fontFamily: "CircularStd-Book",
             fontSize: 16,
-            color: Colors.black,
+            color: Colors.black
           }}
         >
           {title}
@@ -31,7 +31,7 @@ class CheckoutTitle extends Component {
 }
 
 CheckoutTitle.propTypes = {
-  title: string,
+  title: string
 };
 
 export default CheckoutTitle;

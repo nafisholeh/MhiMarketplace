@@ -1,23 +1,23 @@
-import { StyleSheet } from 'react-native'
-import { Metrics, Colors, ApplicationStyles } from 'Themes'
+import { StyleSheet } from "react-native";
+import { METRICS, Colors, ApplicationStyles } from "Themes";
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   container: {
     flex: 1,
-    paddingLeft: Metrics.baseMargin,
-    paddingRight: Metrics.baseMargin,
+    paddingLeft: METRICS.SMALL,
+    paddingRight: METRICS.SMALL
   },
   button: {
     height: 50,
-    marginTop: Metrics.doubleBaseMargin,
+    marginTop: METRICS.LARGE,
     backgroundColor: Colors.green_light,
-    paddingVertical: Metrics.marginVertical,
-    paddingHorizontal: Metrics.marginHorizontal,
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingVertical: METRICS.SMALL,
+    paddingHorizontal: METRICS.SMALL,
+    justifyContent: "center",
+    alignItems: "center"
   },
   buttonTitle: {
-    color: Colors.white,
+    color: Colors.white
   }
-})
+});

@@ -1,115 +1,139 @@
-import React, { Component, Fragment } from 'react'
-import { Alert, ScrollView, Text, Image, View, TouchableOpacity } from 'react-native'
-import { connect } from 'react-redux'
-import { createStructuredSelector } from 'reselect'
-import { object, arrayOf, string, bool } from 'prop-types'
-import { Query, Mutation, compose } from 'react-apollo';
-import { DotIndicator } from 'react-native-indicators';
+import React, { Component, Fragment } from "react";
+import {
+  Alert,
+  ScrollView,
+  Text,
+  Image,
+  View,
+  TouchableOpacity
+} from "react-native";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+import { object, arrayOf, string, bool } from "prop-types";
+import { Query, Mutation, compose } from "react-apollo";
+import { DotIndicator } from "react-native-indicators";
 
-import ApolloClientProvider from 'Services/ApolloClientProvider';
-import { FETCH_PRODUCT_DETAIL } from 'GraphQL/Product/Query';
-import { UPDATE_CART_ITEM, UPDATE_CART_ITEM_SCHEMA, cacheUpdateCartItem } from 'GraphQL/Cart/Mutation';
-import { LOG_PRODUCT_VISIT } from 'GraphQL/Logs/Mutation';
-import { getUser, isAdmin } from 'Redux/SessionRedux';
-import { getCartItemIds } from 'Redux/CartRedux';
+import ApolloClientProvider from "Services/ApolloClientProvider";
+import { FETCH_PRODUCT_DETAIL } from "GraphQL/Product/Query";
+import {
+  UPDATE_CART_ITEM,
+  UPDATE_CART_ITEM_SCHEMA,
+  cacheUpdateCartItem
+} from "GraphQL/Cart/Mutation";
+import { LOG_PRODUCT_VISIT } from "GraphQL/Logs/Mutation";
+import { getUser, isAdmin } from "Redux/SessionRedux";
+import { getCartItemIds } from "Redux/CartRedux";
 
-import { Images, Metrics, Colors } from 'Themes';
+import { Images, METRICS, Colors } from "Themes";
 import {
   OptimizedList,
   HeaderButton,
   ProductDetailWrapper,
   ButtonPrimary,
   ProductImage,
-  CustomHeader,
-} from 'Components';
-import { parseToRupiah, calcDiscount, getReadableDate, moderateScale } from 'Lib';
-import styles from './Styles';
+  CustomHeader
+} from "Components";
+import {
+  parseToRupiah,
+  calcDiscount,
+  getReadableDate,
+  moderateScale
+} from "Lib";
+import styles from "./Styles";
 
 class Detail extends Component {
-  
-  static navigationOptions = ({navigation}) => {
-    const {params = {}} = navigation.state
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
     return {
       header: <View></View>,
       headerRight: (
         <HeaderButton
-          onPress={() => navigation.navigate('Cart')}
+          onPress={() => navigation.navigate("Cart")}
           icon={Images.cart}
         />
-      ),
-    }
-  }
-  
+      )
+    };
+  };
+
   componentDidMount() {
     this.logProductVisit();
   }
-  
+
   logProductVisit = () => {
-    const { 
-      navigation: { state: { params: { data: { _id: productId } }}},
-      user: { _id: userId } = {},
+    const {
+      navigation: {
+        state: {
+          params: {
+            data: { _id: productId }
+          }
+        }
+      },
+      user: { _id: userId } = {}
     } = this.props;
     let variables = { product_id: productId };
     if (userId) {
-      variables = { ...variables, ...{user_id: userId}};
+      variables = { ...variables, ...{ user_id: userId } };
     }
-    ApolloClientProvider.client.mutate({
-      mutation: LOG_PRODUCT_VISIT,
-      variables,
-    })
-    .then(res => {})
-    .catch(err => {});
-  }
-  
+    ApolloClientProvider.client
+      .mutate({
+        mutation: LOG_PRODUCT_VISIT,
+        variables
+      })
+      .then(res => {})
+      .catch(err => {});
+  };
+
   onAddToCart = (updateCartItem, isInsideCart) => {
     const { user, navigation } = this.props;
     if (!user) {
       Alert.alert(
-        'Belum terdaftar',
-        'Silahkan login terlebih dahulu sebelum memesan',
-        [
-          {text: 'OK', onPress: this.openSignin, },
-        ],
-        {cancelable: false},
+        "Belum terdaftar",
+        "Silahkan login terlebih dahulu sebelum memesan",
+        [{ text: "OK", onPress: this.openSignin }],
+        { cancelable: false }
       );
     } else {
       if (isInsideCart) {
-        navigation.navigate('Cart');
+        navigation.navigate("Cart");
       } else {
         updateCartItem();
       }
     }
-  }
-  
+  };
+
   openSignin = () => {
     const { navigation } = this.props;
-    navigation.navigate('Signin');
-  }
-  
-  render () {
-    const { 
-      navigation: { state: { params: { data: { _id: productId } }}},
+    navigation.navigate("Signin");
+  };
+
+  render() {
+    const {
+      navigation: {
+        state: {
+          params: {
+            data: { _id: productId }
+          }
+        }
+      },
       cartItemIds,
       user: { _id: userId } = {},
       navigation,
-      isAdmin,
+      isAdmin
     } = this.props;
-    const isInsideCart = cartItemIds.indexOf(productId ) > -1;
+    const isInsideCart = cartItemIds.indexOf(productId) > -1;
     return (
       <View
         style={{
           flex: 1,
-          backgroundColor: isInsideCart ? '#FC9000' : '#a8de1c',
+          backgroundColor: isInsideCart ? "#FC9000" : "#a8de1c"
         }}
       >
         <CustomHeader title="Detail" />
-        <Query 
-          variables={{ _id: productId }}
-          query={FETCH_PRODUCT_DETAIL}>
+        <Query variables={{ _id: productId }} query={FETCH_PRODUCT_DETAIL}>
           {({ loading, error, data, refetch }) => {
-            if(loading) {
+            if (loading) {
               return <View></View>;
-            } else if(error) {
+            } else if (error) {
               return <View></View>;
             } else {
               const { product } = data;
@@ -127,14 +151,16 @@ class Detail extends Component {
                 category,
                 packaging
               } = product;
-              const { title: categoryTitle = ''  } = category || {};
+              const { title: categoryTitle = "" } = category || {};
               const priceRupiah = parseToRupiah(price);
-              const discountRupiah = parseToRupiah(calcDiscount(price, discount));
+              const discountRupiah = parseToRupiah(
+                calcDiscount(price, discount)
+              );
               return (
                 <Fragment>
-                  <ScrollView 
+                  <ScrollView
                     contentContainerStyle={{
-                      alignItems: 'center',
+                      alignItems: "center"
                     }}
                     showsVerticalScrollIndicator={false}
                   >
@@ -144,61 +170,60 @@ class Detail extends Component {
                         style={{
                           width: moderateScale(260),
                           height: moderateScale(260),
-                          resizeMode: 'contain',
-                          alignSelf: 'center',
+                          resizeMode: "contain",
+                          alignSelf: "center"
                         }}
                       />
-                      <View 
+                      <View
                         style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
+                          flexDirection: "row",
+                          alignItems: "center",
                           marginHorizontal: moderateScale(30),
-                          marginBottom: moderateScale(3),
+                          marginBottom: moderateScale(3)
                         }}
                       >
                         <Text
                           style={{
-                            fontFamily: 'CircularStd-Book',
+                            fontFamily: "CircularStd-Book",
                             fontSize: 18,
-                            color: 'rgba(0,0,0,0.68)',
-                            marginRight: moderateScale(5),
+                            color: "rgba(0,0,0,0.68)",
+                            marginRight: moderateScale(5)
                           }}
                         >
                           {discount ? discountRupiah : priceRupiah}
                         </Text>
-                        { packaging ? (
-                            <Text 
-                              style={{
-                                fontFamily: 'CircularStd-Book',
-                                fontSize: 16,
-                                color: Colors.text_light,
-                              }}
-                              numberOfLines={1}
-                            >
-                              {`/${packaging} ${unit}`}
-                            </Text>
-                          ) : null
-                        }
+                        {packaging ? (
+                          <Text
+                            style={{
+                              fontFamily: "CircularStd-Book",
+                              fontSize: 16,
+                              color: Colors.text_light
+                            }}
+                            numberOfLines={1}
+                          >
+                            {`/${packaging} ${unit}`}
+                          </Text>
+                        ) : null}
                         {discount ? (
                           <View
                             style={{
-                              position: 'absolute',
+                              position: "absolute",
                               right: moderateScale(-15),
                               top: moderateScale(-10),
                               height: moderateScale(35),
                               width: moderateScale(35),
                               borderRadius: moderateScale(17.5),
                               backgroundColor: Colors.fruit_dark,
-                              alignItems: 'center',
-                              justifyContent: 'center',
+                              alignItems: "center",
+                              justifyContent: "center",
                               elevation: 5
                             }}
                           >
-                            <Text 
+                            <Text
                               style={{
-                                fontFamily: 'CircularStd-Book',
+                                fontFamily: "CircularStd-Book",
                                 fontSize: 14,
-                                color: Colors.white,
+                                color: Colors.white
                               }}
                               numberOfLines={1}
                             >
@@ -209,21 +234,21 @@ class Detail extends Component {
                       </View>
                       <Text
                         style={{
-                          fontFamily: 'CircularStd-Bold',
+                          fontFamily: "CircularStd-Bold",
                           fontSize: 20,
                           color: Colors.black,
                           marginHorizontal: moderateScale(30),
-                          marginBottom: moderateScale(5),
+                          marginBottom: moderateScale(5)
                         }}
                       >
                         {title}
                       </Text>
                       <Text
                         style={{
-                          fontFamily: 'CircularStd-Book',
+                          fontFamily: "CircularStd-Book",
                           fontSize: 16,
-                          color: 'rgba(0,0,0,0.3)',
-                          marginHorizontal: moderateScale(30),
+                          color: "rgba(0,0,0,0.3)",
+                          marginHorizontal: moderateScale(30)
                         }}
                       >
                         Stok tersedia: {stock} {unit}
@@ -232,52 +257,58 @@ class Detail extends Component {
                         <Image
                           source={Images.bebas_peskim}
                           style={{
-                            position: 'absolute',
+                            position: "absolute",
                             top: moderateScale(10),
                             left: moderateScale(10),
                             height: moderateScale(60),
                             width: moderateScale(60),
-                            resizeMode: 'contain',
+                            resizeMode: "contain"
                           }}
                         />
                       ) : null}
                     </ProductDetailWrapper>
-                    
+
                     <View
-                      style={{ 
+                      style={{
                         marginTop: moderateScale(20),
                         marginBottom: moderateScale(30),
                         marginHorizontal: moderateScale(40),
-                        alignSelf: 'flex-start',
+                        alignSelf: "flex-start"
                       }}
                     >
                       {categoryTitle ? (
-                        <Text 
+                        <Text
                           style={{
-                            fontFamily: 'CircularStd-Book',
+                            fontFamily: "CircularStd-Book",
                             fontSize: 14,
-                            color: 'rgba(0,0,0,0.3)',
-                            marginBottom: moderateScale(5),
+                            color: "rgba(0,0,0,0.3)",
+                            marginBottom: moderateScale(5)
                           }}
                         >
                           Kategori: {categoryTitle}
                         </Text>
-                      ) : null }
-                      <Text 
+                      ) : null}
+                      <Text
                         style={{
-                          fontFamily: 'CircularStd-Book',
+                          fontFamily: "CircularStd-Book",
                           fontSize: 14,
-                          color: 'rgba(0,0,0,0.3)',
-                          marginBottom: moderateScale(15),
+                          color: "rgba(0,0,0,0.3)",
+                          marginBottom: moderateScale(15)
                         }}
                       >
-                        Kadaluarsa: {getReadableDate(expired_date, 'DD-MM-YYYY', 'id', 'DD MMM YYYY')}
+                        Kadaluarsa:{" "}
+                        {getReadableDate(
+                          expired_date,
+                          "DD-MM-YYYY",
+                          "id",
+                          "DD MMM YYYY"
+                        )}
                       </Text>
-                      <Text 
+                      <Text
                         style={{
-                          fontFamily: 'CircularStd-Book',
+                          fontFamily: "CircularStd-Book",
                           fontSize: 14,
-                          color: 'rgba(0,0,0,0.5)',
+                          color: "rgba(0,0,0,0.5)"
                         }}
                       >
                         {description}
@@ -287,19 +318,34 @@ class Detail extends Component {
                   {!isAdmin && userId && stock ? (
                     <Mutation
                       mutation={UPDATE_CART_ITEM_SCHEMA}
-                      variables={{ user_id: userId, product_id: productId, qty: null }}
-                      update={(cache, data) => cacheUpdateCartItem(cache, data, productId)}
+                      variables={{
+                        user_id: userId,
+                        product_id: productId,
+                        qty: null
+                      }}
+                      update={(cache, data) =>
+                        cacheUpdateCartItem(cache, data, productId)
+                      }
                       onCompleted={this.onUpdateCartItem}
-                      onError={(error) => {}}
+                      onError={error => {}}
                       ignoreResults={false}
-                      errorPolicy='all'>
-                      { (updateCartItem, {loading, error, data}) => {
+                      errorPolicy="all"
+                    >
+                      {(updateCartItem, { loading, error, data }) => {
                         const isAdded = isInsideCart || data;
                         return (
                           <ButtonPrimary
-                            onPress={() => this.onAddToCart(updateCartItem, isAdded)}
-                            title={isAdded ? 'Lihat di Keranjang' : 'Pesan Sekarang'}
-                            colors={isAdded ? ['#FC9000', '#FDAD00'] : ['#a8de1c', '#50ac02']}
+                            onPress={() =>
+                              this.onAddToCart(updateCartItem, isAdded)
+                            }
+                            title={
+                              isAdded ? "Lihat di Keranjang" : "Pesan Sekarang"
+                            }
+                            colors={
+                              isAdded
+                                ? ["#FC9000", "#FDAD00"]
+                                : ["#a8de1c", "#50ac02"]
+                            }
                             loading={loading}
                           />
                         );
@@ -307,25 +353,25 @@ class Detail extends Component {
                     </Mutation>
                   ) : null}
                 </Fragment>
-              )
+              );
             }
           }}
         </Query>
       </View>
-    )
+    );
   }
 }
 
 Detail.propTypes = {
   user: object,
   cartItemIds: arrayOf(string),
-  isAdmin: bool,
-}
+  isAdmin: bool
+};
 
 const mapStateToProps = createStructuredSelector({
   user: getUser(),
   cartItemIds: getCartItemIds(),
-  isAdmin: isAdmin(),
+  isAdmin: isAdmin()
 });
 
 export default compose(

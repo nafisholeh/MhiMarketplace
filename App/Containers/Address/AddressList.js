@@ -1,22 +1,33 @@
-import React, { Component } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Image, FlatList } from 'react-native';
-import { Query } from 'react-apollo';
-import { string } from 'prop-types';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import React, { Component } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  FlatList
+} from "react-native";
+import { Query } from "react-apollo";
+import { string } from "prop-types";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 
-import { StatePage, ToolbarButton, HeaderTitle, QueryEffectPage } from 'Components';
-import Item from './Item';
-import { FETCH_ADDRESS } from 'GraphQL/Address/Query';
-import Config from 'Config/AppConfig';
-import { Images, Metrics } from 'Themes';
-import { getUserId } from 'Redux/SessionRedux';
-import { moderateScale } from 'Lib';
+import {
+  StatePage,
+  ToolbarButton,
+  HeaderTitle,
+  QueryEffectPage
+} from "Components";
+import Item from "./Item";
+import { FETCH_ADDRESS } from "GraphQL/Address/Query";
+import Config from "Config/AppConfig";
+import { Images, METRICS } from "Themes";
+import { getUserId } from "Redux/SessionRedux";
+import { moderateScale } from "Lib";
 
 class AddressList extends Component {
-  
-  static navigationOptions = ({navigation}) => {
-    const {params = {}} = navigation.state
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
     return {
       header: (
         <HeaderTitle
@@ -24,36 +35,32 @@ class AddressList extends Component {
           isEnableBack
           isEnableRightNav
           iconRightNav={Images.add}
-          onRightNavigate={() => navigation.navigate('AddressInput')} 
+          onRightNavigate={() => navigation.navigate("AddressInput")}
         />
-      ),
-    }
-  }
-  
+      )
+    };
+  };
+
   startAddingAddress = () => {
     const { navigation } = this.props;
-    navigation.navigate('AddressInput');
+    navigation.navigate("AddressInput");
   };
-  
-  renderAddressItems = ({item, index}) => {
-    return (
-      <Item data={item} index={index} />
-    );
+
+  renderAddressItems = ({ item, index }) => {
+    return <Item data={item} index={index} />;
   };
-  
+
   render() {
     const { userId } = this.props;
     return (
-      <Query 
-        query={FETCH_ADDRESS}
-        variables={{ user_id: userId }}>
+      <Query query={FETCH_ADDRESS} variables={{ user_id: userId }}>
         {({ loading, error, data, refetch }) => {
           const { address = [] } = data || {};
           if (Array.isArray(address) && address.length) {
             return (
               <FlatList
                 keyExtractor={(item, id) => item._id.toString()}
-                data={address} 
+                data={address}
                 renderItem={this.renderAddressItems}
               />
             );
@@ -75,16 +82,16 @@ class AddressList extends Component {
           );
         }}
       </Query>
-    )
+    );
   }
 }
 
 AddressList.propTypes = {
-  userId: string,
+  userId: string
 };
 
 const mapStateToProps = createStructuredSelector({
-  userId: getUserId(),
+  userId: getUserId()
 });
 
 export default connect(mapStateToProps, null)(AddressList);

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import { Avatar } from "CommonFarmer";
-import { Fonts, Metrics } from "Themes";
+import { Fonts, METRICS } from "Themes";
 import { getUserShortBio, getUserCommoditiesName } from "Redux/SessionRedux";
 
 class UserInfo extends PureComponent {
@@ -18,12 +18,12 @@ class UserInfo extends PureComponent {
       <View
         style={{
           flexDirection: "row",
-          marginHorizontal: Metrics.mediumMargin,
-          marginTop: Metrics.doubleBaseMargin,
-          marginBottom: Metrics.mediumMargin
+          marginHorizontal: METRICS.MEDIUM,
+          marginTop: METRICS.LARGE,
+          marginBottom: METRICS.MEDIUM
         }}
       >
-        <Avatar source={photo} style={{ marginRight: Metrics.mediumMargin }} />
+        <Avatar source={photo} style={{ marginRight: METRICS.MEDIUM }} />
         <View
           style={{
             justifyContent: "center"
@@ -32,7 +32,7 @@ class UserInfo extends PureComponent {
           <Text
             style={{
               ...Fonts.TITLE_NORMAL,
-              ...{ marginBottom: Metrics.smallMargin }
+              ...{ marginBottom: METRICS.TINY }
             }}
           >
             {name || "..."}

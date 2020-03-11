@@ -1,38 +1,43 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { ActionSheetIOS, Platform, StyleSheet, View, Animated, Text, Image, TextInput, TouchableOpacity } from 'react-native';
-import ImagePickers from 'react-native-image-crop-picker';
-import BottomSheet from 'react-native-js-bottom-sheet';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-var _ = require('lodash');
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import {
+  ActionSheetIOS,
+  Platform,
+  StyleSheet,
+  View,
+  Animated,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity
+} from "react-native";
+import ImagePickers from "react-native-image-crop-picker";
+import BottomSheet from "react-native-js-bottom-sheet";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+var _ = require("lodash");
 
-import { Colors, Metrics, Images } from 'Themes';
-import ImageFlexible from '../ImageFlexible';
-import ImageGrid from '../ImageGrid';
+import { Colors, METRICS, Images } from "Themes";
+import ImageFlexible from "../ImageFlexible";
+import ImageGrid from "../ImageGrid";
 
 class ImagePicker extends PureComponent {
-
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       image: this.props.data ? this.props.data : [],
-      imageRaw: [],
-    }
+      imageRaw: []
+    };
   }
 
   componentDidUpdate(prevProps) {
-    if(prevProps.isStartPick !== this.props.isStartPick) {
-      this._startPick()
+    if (prevProps.isStartPick !== this.props.isStartPick) {
+      this._startPick();
     }
   }
 
   // tampilkan opsi cara ambil gambar untuk ios
   _onOpenOptionIOS = () => {
-    const options = [
-      'Kamera',
-      'Pilih dari Galeri Foto',
-      'Batal'
-    ]
+    const options = ["Kamera", "Pilih dari Galeri Foto", "Batal"];
     ActionSheetIOS.showActionSheetWithOptions(
       {
         options,
@@ -40,84 +45,64 @@ class ImagePicker extends PureComponent {
       },
       (buttonIndex: number) => {
         if (buttonIndex === 0) {
-          ImagePickers
-          .openCamera({
+          ImagePickers.openCamera({
             compressImageQuality: 0.5,
-            includeBase64: true,
+            includeBase64: true
           })
-          .then((image: Object) =>
-            this._saveImages(image)
-          )
-          .catch((error) => {
-
-          })
+            .then((image: Object) => this._saveImages(image))
+            .catch(error => {});
         } else if (buttonIndex === 1) {
-          ImagePickers
-          .openPicker({
+          ImagePickers.openPicker({
             multiple: this.props.isMultiplePick ? true : false,
             compressImageQuality: 0.5,
-            includeBase64: true,
+            includeBase64: true
           })
-          .then(image =>
-            this._saveImages(image)
-          )
-          .catch((error) => {
-
-          })
+            .then(image => this._saveImages(image))
+            .catch(error => {});
         } else {
-          this._onCancelPick()
+          this._onCancelPick();
         }
       }
-    )
-  }
+    );
+  };
 
   // tampilkan opsi cara ambil gambar untuk android
   _onOpenOptionAndroid = (): Array<Object> => {
-    const options = ['Kamera', 'Pilih dari Galeri Foto']
+    const options = ["Kamera", "Pilih dari Galeri Foto"];
     return [
       {
         title: options[0],
         onPress: () =>
-          ImagePickers
-          .openCamera({
+          ImagePickers.openCamera({
             compressImageQuality: 0.5,
-            includeBase64: true,
+            includeBase64: true
           })
-          .then((image: Object) =>
-            this._saveImages(image)
-          )
-          .catch((error) => {
-
-          }) && this.bottomSheet.close(),
+            .then((image: Object) => this._saveImages(image))
+            .catch(error => {}) && this.bottomSheet.close(),
         icon: (
-          <MaterialIcons name={'photo-camera'} size={24} style={styles.icon} />
+          <MaterialIcons name={"photo-camera"} size={24} style={styles.icon} />
         )
       },
       {
         title: options[1],
         onPress: () =>
-          ImagePickers
-          .openPicker({
+          ImagePickers.openPicker({
             multiple: this.props.isMultiplePick ? true : false,
             compressImageQuality: 0.5,
-            includeBase64: true,
+            includeBase64: true
           })
-          .then(image =>
-            this._saveImages(image)
-          )
-          .catch((error) => {
-
-          }) && this.bottomSheet.close(),
+            .then(image => this._saveImages(image))
+            .catch(error => {}) && this.bottomSheet.close(),
         icon: (
-          <MaterialIcons name={'photo-library'} size={24} style={styles.icon} />
+          <MaterialIcons name={"photo-library"} size={24} style={styles.icon} />
         )
       }
-    ]
-  }
+    ];
+  };
 
   _onCancelPick() {
-    if(this.props.hasOwnProperty('onPressCancel')) {
-      this.props.onPressCancel()
+    if (this.props.hasOwnProperty("onPressCancel")) {
+      this.props.onPressCancel();
     }
   }
 
@@ -128,83 +113,81 @@ class ImagePicker extends PureComponent {
       width: 200,
       height: 200,
       cropperCircleOverlay: true,
-      cropperChooseText: 'Ok',
-      cropperCancelText: 'Batal'
+      cropperChooseText: "Ok",
+      cropperCancelText: "Batal"
     })
-    .then(image => {
-      this._replaceImages(image)
-    })
-    .catch((error) => {
-
-    })
+      .then(image => {
+        this._replaceImages(image);
+      })
+      .catch(error => {});
   }
 
   // ganti dengan image yang hasil dicrop
-  _replaceImages = (image) => {
-    let outputImages = []
-    let rawOutputImages = []
-    outputImages.push(this._getImagePath(image))
-    rawOutputImages.push(image)
+  _replaceImages = image => {
+    let outputImages = [];
+    let rawOutputImages = [];
+    outputImages.push(this._getImagePath(image));
+    rawOutputImages.push(image);
     this.setState({ image: outputImages, imageRaw: rawOutputImages }, () => {
       const { imageRaw, image } = this.state;
-      const { name, onChange } = this.props; 
-      onChange(name, imageRaw, image)
-    })
-  }
+      const { name, onChange } = this.props;
+      onChange(name, imageRaw, image);
+    });
+  };
 
   // simpan image ke state
-  _saveImages = (images) => {
-    let newImages = []
-    let rawNewImages = []
-    if(_.isArray(images)) {
-      newImages = images.map((item) => this._getImagePath(item))
+  _saveImages = images => {
+    let newImages = [];
+    let rawNewImages = [];
+    if (_.isArray(images)) {
+      newImages = images.map(item => this._getImagePath(item));
       rawNewImages = rawNewImages.concat(images);
-    }
-    else {
-      newImages.push(this._getImagePath(images))
+    } else {
+      newImages.push(this._getImagePath(images));
       rawNewImages.push(images);
     }
-    
+
     const { isMultiplePick, isCropping, onChange, name } = this.props;
     const { imageRaw, image } = this.state;
-    
-    let outputImages = isMultiplePick ?
-                          [...image, newImages] :
-                          newImages
-    let rawOutputImages = isMultiplePick ?
-                          [...imageRaw, rawNewImages] :
-                          rawNewImages
+
+    let outputImages = isMultiplePick ? [...image, newImages] : newImages;
+    let rawOutputImages = isMultiplePick
+      ? [...imageRaw, rawNewImages]
+      : rawNewImages;
     this.setState({ image: outputImages, imageRaw: rawOutputImages }, () => {
       const { imageRaw, image } = this.state;
-      if(isCropping) this._onOpenCropImage()
-      if(!isCropping) onChange(name, imageRaw, image)
-    })
-  }
+      if (isCropping) this._onOpenCropImage();
+      if (!isCropping) onChange(name, imageRaw, image);
+    });
+  };
 
   // tambahkan ekstensi file didepan path image nya
   _getImagePath(image) {
-    if(_.isNull(image)) return '';
-    const { path = '' } = image || {};
-    return path.includes('file://') ? image.path : 'file://'+image.path;
+    if (_.isNull(image)) return "";
+    const { path = "" } = image || {};
+    return path.includes("file://") ? image.path : "file://" + image.path;
   }
 
   // tereksekusi ketika image ada yg terhapus, sebab fitur hapus pada ImageGrid
   _onDeleteImage = index => {
     const { onChange, name } = this.props;
     const { imageRaw, image } = this.state;
-    this.setState({
-      image: image.splice(index, 1),
-      imageRaw: imageRaw.splice(index, 1),
-    }, () => {
-      const { imageRaw, image } = this.state;
-      onChange(name, imageRaw, image);
-    })
-  }
+    this.setState(
+      {
+        image: image.splice(index, 1),
+        imageRaw: imageRaw.splice(index, 1)
+      },
+      () => {
+        const { imageRaw, image } = this.state;
+        onChange(name, imageRaw, image);
+      }
+    );
+  };
 
   // mulai mengambil image
   _startPick() {
-    if(Platform.OS === 'ios') this._onOpenOptionIOS()
-    else this.bottomSheet.open()
+    if (Platform.OS === "ios") this._onOpenOptionIOS();
+    else this.bottomSheet.open();
   }
 
   // render image gallery untuk multiple image
@@ -214,107 +197,139 @@ class ImagePicker extends PureComponent {
       isShowGallery,
       isCustomComponent,
       isMultiplePick,
-      singlePhotoButtonStyle,
+      singlePhotoButtonStyle
     } = this.props;
-    if(!isCustomComponent) {
-      if(isMultiplePick) {
+    if (!isCustomComponent) {
+      if (isMultiplePick) {
         return (
           <View>
-            { (Array.isArray(image) && image.length && this.props.isShowGallery) ?
+            {Array.isArray(image) &&
+            image.length &&
+            this.props.isShowGallery ? (
               <ImageGrid
                 data={image}
                 onDeleteImage={this._onDeleteImage}
-                styleContainer={{flex:1}}
+                styleContainer={{ flex: 1 }}
               />
-              : null
-            }
+            ) : null}
             <View style={this.props.styleButtonContainer}>
-              { this.props.isShowCancelButton &&
+              {this.props.isShowCancelButton && (
                 <TouchableOpacity
                   onPress={this.props.onPressCancel}
                   style={this.props.styleButtonCancel}
                 >
                   <Text>{this.props.titleButtonCancel}</Text>
                 </TouchableOpacity>
-              }
+              )}
               <TouchableOpacity
-                onPress={Platform.OS === 'ios' ? this._onOpenOptionIOS : () => this.bottomSheet.open()}
+                onPress={
+                  Platform.OS === "ios"
+                    ? this._onOpenOptionIOS
+                    : () => this.bottomSheet.open()
+                }
                 style={this.props.styleButtonOk}
               >
-                <Text style={this.props.styleTitleOk}>{this.props.titleButtonOk}</Text>
+                <Text style={this.props.styleTitleOk}>
+                  {this.props.titleButtonOk}
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
-        )
+        );
       } else {
         return (
           <ImageFlexible
             path={image[0]}
             urlDefault={Images.photo_add_button}
             style={singlePhotoButtonStyle}
-            onPress={Platform.OS === 'ios' ? this._onOpenOptionIOS : () => this.bottomSheet.open()}
+            onPress={
+              Platform.OS === "ios"
+                ? this._onOpenOptionIOS
+                : () => this.bottomSheet.open()
+            }
           />
-        )
+        );
       }
     } else {
       return (
         <this.props.customComponent
           onStartPick={() => {
-            if(this.props.hasOwnProperty('onPressPicker')) this.props.onPressPicker()
-            this._startPick()
+            if (this.props.hasOwnProperty("onPressPicker"))
+              this.props.onPressPicker();
+            this._startPick();
           }}
         />
-      )
+      );
     }
-  }
+  };
 
-  render () {
+  render() {
     return (
       <View style={this.props.styleContainer}>
-        { this.props.title &&
-          <Text style={[{color: 'gray'}]}>{this.props.title}</Text>
-        }
-        {
-          this._renderGallery()
-        }
-        {Platform.OS === 'android' ? (
+        {this.props.title && (
+          <Text style={[{ color: "gray" }]}>{this.props.title}</Text>
+        )}
+        {this._renderGallery()}
+        {Platform.OS === "android" ? (
           <BottomSheet
-            ref={(ref: any) => { this.bottomSheet = ref }}
+            ref={(ref: any) => {
+              this.bottomSheet = ref;
+            }}
             title={this.props.titleBottomSheet}
             options={this._onOpenOptionAndroid()}
             coverScreen={true}
           />
         ) : null}
       </View>
-    )
+    );
   }
 }
 
-const styles = StyleSheet.create({ });
+const styles = StyleSheet.create({});
 
 ImagePicker.propTypes = {
   name: PropTypes.string,
   onChange: PropTypes.func,
   title: PropTypes.string,
   titleBottomSheet: PropTypes.string,
-  data: PropTypes.oneOfType([ PropTypes.string, PropTypes.array ]), // format: {path: xxx.jpg, type: xxx}
-  styleContainer: PropTypes.oneOfType([ PropTypes.string, PropTypes.number, PropTypes.object, PropTypes.array ]),
-  styleButtonContainer: PropTypes.oneOfType([ PropTypes.string, PropTypes.number, PropTypes.object, PropTypes.array ]),
-  styleButtonCancel: PropTypes.oneOfType([ PropTypes.string, PropTypes.number, PropTypes.object, PropTypes.array ]),
-  styleButtonOk: PropTypes.oneOfType([ PropTypes.string, PropTypes.number, PropTypes.object, PropTypes.array ]),
-  colorButtonCancel: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
-  colorButtonOk: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
-  isCropping: PropTypes.bool,     // kasih fitur crop image, hanya bisa diaktifkan kalau isMultiple diset ke false
-  isShowGallery: PropTypes.bool,  // tampilkan galeri foto atau tidak
+  data: PropTypes.oneOfType([PropTypes.string, PropTypes.array]), // format: {path: xxx.jpg, type: xxx}
+  styleContainer: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.object,
+    PropTypes.array
+  ]),
+  styleButtonContainer: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.object,
+    PropTypes.array
+  ]),
+  styleButtonCancel: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.object,
+    PropTypes.array
+  ]),
+  styleButtonOk: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.object,
+    PropTypes.array
+  ]),
+  colorButtonCancel: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  colorButtonOk: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  isCropping: PropTypes.bool, // kasih fitur crop image, hanya bisa diaktifkan kalau isMultiple diset ke false
+  isShowGallery: PropTypes.bool, // tampilkan galeri foto atau tidak
   isShowCancelButton: PropTypes.bool, // tampilkan tombol batal disebelah tombol ambil image
-  isStartPick: PropTypes.bool,  // trigger retake foto dari parent's component
+  isStartPick: PropTypes.bool, // trigger retake foto dari parent's component
   onPressCancel: PropTypes.func,
   onPressPicker: PropTypes.func,
   titleButtonOk: PropTypes.string,
   titleButtonCancel: PropTypes.string,
   isMultiplePick: PropTypes.bool,
   isCustomComponent: PropTypes.bool,
-  customComponent: PropTypes.func,
+  customComponent: PropTypes.func
 };
 
 ImagePicker.defaultProps = {
@@ -322,13 +337,13 @@ ImagePicker.defaultProps = {
   isCropping: false,
   isShowGallery: true,
   isShowCancelButton: false,
-  colorButtonCancel: 'gray',
-  colorButtonOk: 'blue',
-  titleButtonOk: 'Ambil Foto',
-  titleButtonCancel: 'Batal',
-  titleBottomSheet: '',
+  colorButtonCancel: "gray",
+  colorButtonOk: "blue",
+  titleButtonOk: "Ambil Foto",
+  titleButtonCancel: "Batal",
+  titleBottomSheet: "",
   isMultiplePick: true,
-  isCustomComponent: false,
+  isCustomComponent: false
 };
 
 export default ImagePicker;

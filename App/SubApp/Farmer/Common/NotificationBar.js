@@ -5,7 +5,7 @@ import { Query } from "react-apollo";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import { Images, Metrics, Colors } from "Themes";
+import { Images, METRICS, Colors } from "Themes";
 import { NOTIFICATION_UNSEEN_TOTAL } from "GraphQL/Notification/Query";
 import { getUserId } from "Redux/SessionRedux";
 import { moderateScale } from "Lib";
@@ -28,8 +28,8 @@ class NotificationBar extends Component {
                 <Image
                   source={Images.notification}
                   style={{
-                    width: Metrics.icons.medium,
-                    height: Metrics.icons.medium,
+                    width: METRICS.ICON_MEDIUM,
+                    height: METRICS.ICON_MEDIUM
                   }}
                 />
               </TouchableOpacity>
@@ -42,7 +42,7 @@ class NotificationBar extends Component {
                     width: moderateScale(12),
                     height: moderateScale(12),
                     borderRadius: moderateScale(6),
-                    backgroundColor: Colors.veggie_dark,
+                    backgroundColor: Colors.veggie_dark
                   }}
                 />
               ) : null}
@@ -55,7 +55,7 @@ class NotificationBar extends Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-  userId: getUserId(),
+  userId: getUserId()
 });
 
 export default connect(mapStateToProps, null)(withNavigation(NotificationBar));

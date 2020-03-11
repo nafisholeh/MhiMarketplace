@@ -1,42 +1,41 @@
-import React, { Component } from 'react';
-import { ScrollView, Text, Image, View, TouchableOpacity } from 'react-native';
-import { Query } from 'react-apollo';
-import { connect } from 'react-redux';
-import { string } from 'prop-types';
+import React, { Component } from "react";
+import { ScrollView, Text, Image, View, TouchableOpacity } from "react-native";
+import { Query } from "react-apollo";
+import { connect } from "react-redux";
+import { string } from "prop-types";
 
-import Item from './Item';
+import Item from "./Item";
 import {
   INITIAL_CHECKOUT_LIST,
   COMPLETED_CHECKOUT_LIST,
-  PAID_OFF_CHECKOUT_LIST,
-} from 'GraphQL/Order/Query';
-import { Images, Metrics } from 'Themes';
-import { OptimizedList, LoadingSection } from 'Components';
-import ApolloClientProvider from 'Services/ApolloClientProvider';
-import styles from './Styles';
+  PAID_OFF_CHECKOUT_LIST
+} from "GraphQL/Order/Query";
+import { Images, METRICS } from "Themes";
+import { OptimizedList, LoadingSection } from "Components";
+import ApolloClientProvider from "Services/ApolloClientProvider";
+import styles from "./Styles";
 
-const types = ['initial', 'completed', 'paid-off'];
+const types = ["initial", "completed", "paid-off"];
 
 class List extends Component {
-  
-  _renderRow = (type, data) => <Item data={data} />
+  _renderRow = (type, data) => <Item data={data} />;
 
   render() {
-    const { type = 'completed' } = this.props;
+    const { type = "completed" } = this.props;
     let queryTitle = COMPLETED_CHECKOUT_LIST;
-    let responseTitle = 'completedCheckouts';
+    let responseTitle = "completedCheckouts";
     switch (type) {
-      case 'initial':
+      case "initial":
         queryTitle = INITIAL_CHECKOUT_LIST;
-        responseTitle = 'initialCheckouts';
+        responseTitle = "initialCheckouts";
         break;
-      case 'paid-off':
+      case "paid-off":
         queryTitle = PAID_OFF_CHECKOUT_LIST;
-        responseTitle = 'paidOffCheckouts';
+        responseTitle = "paidOffCheckouts";
         break;
       default:
         queryTitle = COMPLETED_CHECKOUT_LIST;
-        responseTitle = 'completedCheckouts';
+        responseTitle = "completedCheckouts";
         break;
     }
     return (
@@ -44,14 +43,20 @@ class List extends Component {
         <Query query={queryTitle}>
           {({ loading, error, data, refetch }) => {
             if (loading) {
-              return (<LoadingSection />);
+              return <LoadingSection />;
             } else if (error) {
-              return (<View></View>)
-            } else if(data) {
+              return <View></View>;
+            } else if (data) {
               const dataParsed = data[responseTitle] || [];
               if (dataParsed.length === 0) {
                 return (
-                  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                  >
                     <Text>(Kosong)</Text>
                   </View>
                 );
@@ -60,24 +65,24 @@ class List extends Component {
                 <OptimizedList
                   itemWidth={160}
                   itemHeight={90}
-                  data={dataParsed} 
+                  data={dataParsed}
                   renderRow={this._renderRow}
                   isHorizontal={true}
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={{ paddingRight: 30 }}
                   style={{ padding: 10 }}
                 />
-              )
+              );
             }
           }}
         </Query>
       </View>
-    )
+    );
   }
 }
 
 List.propTypes = {
-  type: string,
+  type: string
 };
 
 export default connect(null, null)(List);

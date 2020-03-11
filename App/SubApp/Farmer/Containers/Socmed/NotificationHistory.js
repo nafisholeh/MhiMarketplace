@@ -79,8 +79,6 @@ class NotificationHistory extends Component {
           </TouchableOpacity>
           <Text
             style={{
-              marginTop: moderateScale(15),
-              marginBottom: moderateScale(12),
               ...FONTS.PAGE_TITLE
             }}
           >

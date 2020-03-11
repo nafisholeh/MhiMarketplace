@@ -6,10 +6,10 @@ import { FONTS, METRICS } from "Themes";
 
 class NavigationMenu extends Component {
   render() {
-    const { title } = this.props;
+    const { title, onPress } = this.props;
     return (
       <TouchableOpacity
-        onPress={() => {}}
+        onPress={onPress}
         style={{
           paddingHorizontal: METRICS.MEDIUM,
           paddingVertical: METRICS.LARGE

@@ -1,11 +1,16 @@
 import Colors from "./Colors";
 
+import { moderateScale } from "../Lib/Responsive";
+
 export default {
   PAGE_TITLE: {
     fontFamily: "CircularStd-Bold",
     fontSize: 20,
     color: "rgba(0,0,0,0.8)",
-    letterSpacing: 0.3
+    letterSpacing: 0.3,
+    marginLeft: moderateScale(15),
+    marginTop: moderateScale(15),
+    marginBottom: moderateScale(12)
   },
   HEADER_BOLD: {
     fontFamily: "CircularStd-Bold",

@@ -135,9 +135,6 @@ class PostFeedModal extends Component {
         >
           <Text
             style={{
-              marginLeft: moderateScale(15),
-              marginTop: moderateScale(15),
-              marginBottom: moderateScale(12),
               ...FONTS.PAGE_TITLE
             }}
           >

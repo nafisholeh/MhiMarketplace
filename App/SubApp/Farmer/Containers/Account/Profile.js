@@ -18,7 +18,13 @@ class Profile extends Component {
   };
 
   render() {
-    const { userData, isFarmer, onSignout, signoutLoading } = this.props;
+    const {
+      userData,
+      isFarmer,
+      onSignout,
+      signoutLoading,
+      navigation
+    } = this.props;
     if (!userData || !isFarmer) {
       return (
         <StatePage
@@ -33,7 +39,10 @@ class Profile extends Component {
     return (
       <ScrollView contentContainerStyle={{ flex: 1 }}>
         <UserInfo />
-        <NavigationMenu title="Ubah biodata" />
+        <NavigationMenu
+          title="Ubah biodata"
+          onPress={() => navigation.navigate("BioList")}
+        />
         <NavigationMenu title="Ubah lahan" />
         <NavigationMenu title="Simpanan" />
         <View

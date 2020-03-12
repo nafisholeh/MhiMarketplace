@@ -33,6 +33,7 @@ import HeaderTitleSecondary from "./Header/HeaderTitleSecondary";
 import ViewShadow from "./Shadow/ViewShadow";
 import InputText from "./InputText";
 import InputPicker from "./InputPicker";
+import ChipSelects from "./ChipSelects";
 import KeyboardFriendlyView from "./KeyboardFriendlyView";
 import BackButton from "./Header/BackButton";
 import CustomHeader from "./Header/CustomHeader";
@@ -75,6 +76,7 @@ export {
   ViewShadow,
   InputText,
   InputPicker,
+  ChipSelects,
   KeyboardFriendlyView,
   BackButton,
   CustomHeader,

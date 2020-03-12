@@ -11,7 +11,7 @@ import {
 import { bool, object, func, number, string, oneOfType } from "prop-types";
 import { SkypeIndicator } from "react-native-indicators";
 
-import { Colors, Images, Servers, Strings, FONTS } from "Themes";
+import { Colors, Images, METRICS } from "Themes";
 import { moderateScale } from "Lib";
 
 export default class InputText extends Component {
@@ -83,7 +83,9 @@ export default class InputText extends Component {
             underlineColorAndroid="transparent"
             inputColorPlaceholder={Colors.border}
             placeholderTextColor={Colors.disabled_light}
-            style={styles.inputValue}
+            style={
+              isAllBorderShown ? styles.inputValueAllBorder : styles.inputValue
+            }
             {...this.props}
             onChangeText={text => onChangeText(text, name)}
           />
@@ -126,7 +128,7 @@ export default class InputText extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: moderateScale(24)
+    marginBottom: METRICS.HUGE
   },
   prefix: {
     color: Colors.text,
@@ -173,6 +175,15 @@ const styles = StyleSheet.create({
     paddingBottom: moderateScale(4),
     paddingTop: moderateScale(4),
     paddingLeft: 0
+  },
+  inputValueAllBorder: {
+    flex: 1,
+    color: Colors.text,
+    fontFamily: "CircularStd-Book",
+    fontSize: 14,
+    paddingBottom: moderateScale(4),
+    paddingTop: moderateScale(4),
+    paddingLeft: METRICS.SMALL
   },
   inputError: {
     position: "absolute",

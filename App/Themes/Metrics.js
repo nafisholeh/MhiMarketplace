@@ -26,7 +26,15 @@ const metrics = {
   IMAGE_SMALL: moderateScale(20),
   IMAGE_MEDIUM: moderateScale(40),
   IMAGE_LARGE: moderateScale(60),
-  IMAGE_XL: moderateScale(200)
+  IMAGE_XL: moderateScale(200),
+
+  RADIUS_SMALL: moderateScale(3),
+  RADIUS_MEDIUM: moderateScale(5),
+  RADIUS_LARGE: moderateScale(10),
+
+  BORDER_THIN: moderateScale(0.5),
+  BORDER_MEDIUM: moderateScale(1),
+  BORDER_BOLD: moderateScale(2)
 };
 
 export default metrics;

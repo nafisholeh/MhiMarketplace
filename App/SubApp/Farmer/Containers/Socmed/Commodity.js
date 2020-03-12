@@ -16,7 +16,6 @@ class CommoditySocmed extends Component {
   };
 
   render() {
-    console.tron.log("Commodity/render", this.props);
     return (
       <ScrollView>
         <PostFeedModal />

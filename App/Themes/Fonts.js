@@ -7,7 +7,7 @@ export default {
     fontFamily: "CircularStd-Bold",
     fontSize: 22,
     color: "rgba(0,0,0,0.8)",
-    letterSpacing: 0.3
+    letterSpacing: 0.2
   },
   HEADER_BOLD: {
     fontFamily: "CircularStd-Bold",
@@ -52,5 +52,10 @@ export default {
     textAlign: "center",
     lineHeight: 30,
     letterSpacing: 1.5
+  },
+  INPUT_TITLE: {
+    color: Colors.veggie_dark,
+    fontFamily: "CircularStd-Book",
+    fontSize: 13
   }
 };

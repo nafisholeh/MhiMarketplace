@@ -35,7 +35,6 @@ export default class SignupIndicator extends Component {
           currentPosition={currentPosition}
           renderStepIndicator={({ position, stepStatus }) => {
             if (position === currentPosition) {
-              console.tron.log("Teststs");
               return (
                 <ImageRadius
                   source={Images.check_flat}

@@ -1,27 +1,13 @@
 import React, { Component } from "react";
-import {
-  ScrollView,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Image
-} from "react-native";
+import { View } from "react-native";
 import { func } from "prop-types";
 import { connect } from "react-redux";
 import { withNavigation } from "react-navigation";
 
 import FarmerSignupActions from "Redux/FarmerSignupRedux";
 import { isEmailError, moderateScale } from "Lib";
-import {
-  InputText,
-  ButtonPrimary,
-  KeyboardFriendlyView,
-  HeaderTitleSecondary
-} from "Components";
-import { SignupBoxWrapper } from "CommonFarmer";
-import { METRICS } from "Themes";
-import SignupIndicator from "./SignupIndicator";
+import { InputText, ButtonPrimary } from "Components";
+import SignupWrapper from "./SignupWrapper";
 
 class Farmer extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -110,68 +96,59 @@ class Farmer extends Component {
     const { navigation } = this.props;
     return (
       <View style={{ flex: 1 }}>
-        <HeaderTitleSecondary title="Kunci nya akun" />
-        <SignupIndicator />
-        <ScrollView>
-          <KeyboardFriendlyView
-            style={{
-              paddingVertical: METRICS.HUGE,
-              paddingHorizontal: METRICS.HUGE
+        <SignupWrapper>
+          <InputText
+            refs={ref => (this._phone = ref)}
+            isAllBorderShown
+            title="Nomor HP"
+            value={phone || ""}
+            error={error_phone}
+            onChangeText={text => this.setState({ phone: text })}
+            returnKeyType="next"
+            keyboardType="numeric"
+            onSubmitEditing={() => this._email.focus()}
+          />
+
+          <InputText
+            refs={ref => (this._email = ref)}
+            isAllBorderShown
+            title="Email"
+            value={email || ""}
+            error={error_email || isEmailError(email)}
+            onChangeText={text => this.setState({ email: text })}
+            returnKeyType="next"
+            keyboardType="email-address"
+            onSubmitEditing={() => this._password.focus()}
+          />
+
+          <InputText
+            refs={ref => (this._password = ref)}
+            isAllBorderShown
+            title="Password"
+            value={password || ""}
+            error={error_password}
+            secureTextEntry={true}
+            onChangeText={text => this.setState({ password: text })}
+            onSubmitEditing={() => this._password_repeat.focus()}
+            returnKeyType="next"
+          />
+
+          <InputText
+            refs={ref => (this._password_repeat = ref)}
+            isAllBorderShown
+            title="Ulangi Password"
+            value={password_repeat || ""}
+            error={error_password_repeat}
+            secureTextEntry={true}
+            onChangeText={text => this.setState({ password_repeat: text })}
+            onSubmitEditing={this.onStartSignup}
+            returnKeyType="go"
+            containerStyle={{
+              marginHorizontal: moderateScale(40),
+              marginBottom: moderateScale(25)
             }}
-          >
-            <InputText
-              refs={ref => (this._phone = ref)}
-              isAllBorderShown
-              title="Nomor HP"
-              value={phone || ""}
-              error={error_phone}
-              onChangeText={text => this.setState({ phone: text })}
-              returnKeyType="next"
-              keyboardType="numeric"
-              onSubmitEditing={() => this._email.focus()}
-            />
-
-            <InputText
-              refs={ref => (this._email = ref)}
-              isAllBorderShown
-              title="Email"
-              value={email || ""}
-              error={error_email || isEmailError(email)}
-              onChangeText={text => this.setState({ email: text })}
-              returnKeyType="next"
-              keyboardType="email-address"
-              onSubmitEditing={() => this._password.focus()}
-            />
-
-            <InputText
-              refs={ref => (this._password = ref)}
-              isAllBorderShown
-              title="Password"
-              value={password || ""}
-              error={error_password}
-              secureTextEntry={true}
-              onChangeText={text => this.setState({ password: text })}
-              onSubmitEditing={() => this._password_repeat.focus()}
-              returnKeyType="next"
-            />
-
-            <InputText
-              refs={ref => (this._password_repeat = ref)}
-              isAllBorderShown
-              title="Ulangi Password"
-              value={password_repeat || ""}
-              error={error_password_repeat}
-              secureTextEntry={true}
-              onChangeText={text => this.setState({ password_repeat: text })}
-              onSubmitEditing={this.onStartSignup}
-              returnKeyType="go"
-              containerStyle={{
-                marginHorizontal: moderateScale(40),
-                marginBottom: moderateScale(25)
-              }}
-            />
-          </KeyboardFriendlyView>
-        </ScrollView>
+          />
+        </SignupWrapper>
         <ButtonPrimary
           onPress={this.onSignup}
           disabled={loading}

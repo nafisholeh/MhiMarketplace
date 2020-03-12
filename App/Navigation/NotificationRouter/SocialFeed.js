@@ -5,7 +5,6 @@ import ListActions from "Redux/ListRedux";
 import NotificationActions from "Redux/NotificationRedux";
 
 export const openFeedDetail = data => {
-  console.tron.log("SocialFeed/openFeedDetail", data);
   const { postId, commentId, subCommentId } = data || {};
   if (!postId) return;
   const highlightId = subCommentId || commentId;

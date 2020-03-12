@@ -19,8 +19,8 @@ import AreaCommodity from "SubApp/Farmer/Containers/AreaCommodity";
 import AreaType from "SubApp/Farmer/Containers/AreaType";
 import AreaDraw from "SubApp/Farmer/Containers/AreaDraw";
 import AreaList from "SubApp/Farmer/Containers/AreaList";
-import SignupFarmerFirst from "SubApp/Farmer/Containers/Signup/First";
-import SignupFarmerSecond from "SubApp/Farmer/Containers/Signup/Second";
+import SignupFarmerFirst from "SubApp/Farmer/Containers/Signup/AccountCredsForm";
+import SignupFarmerSecond from "SubApp/Farmer/Containers/Signup/CardIdentityForm";
 import FarmerFinalConfirm from "SubApp/Farmer/Containers/Signup/FinalConfirm";
 
 const AccountNav = createStackNavigator(

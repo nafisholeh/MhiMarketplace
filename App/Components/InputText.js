@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { bool, object, func, number, string, oneOfType } from "prop-types";
 import { SkypeIndicator } from "react-native-indicators";
+import TextInputMask from "react-native-text-input-mask";
 
 import { Colors, Images, METRICS } from "Themes";
 import { moderateScale } from "Lib";
@@ -35,7 +36,8 @@ export default class InputText extends Component {
       styleInput,
       iconStyle,
       onChangeText,
-      isAllBorderShown
+      isAllBorderShown,
+      mask
     } = this.props;
     return (
       <View style={{ ...styles.container, ...styleContainer }}>
@@ -78,17 +80,39 @@ export default class InputText extends Component {
             />
           ) : null}
           {prefix ? <Text style={styles.prefix}>{prefix}</Text> : null}
-          <TextInput
-            ref={refs ? refs : ref => (this._input = ref)}
-            underlineColorAndroid="transparent"
-            inputColorPlaceholder={Colors.border}
-            placeholderTextColor={Colors.disabled_light}
-            style={
-              isAllBorderShown ? styles.inputValueAllBorder : styles.inputValue
-            }
-            {...this.props}
-            onChangeText={text => onChangeText(text, name)}
-          />
+
+          {!mask ? (
+            <TextInput
+              ref={refs ? refs : ref => (this._input = ref)}
+              underlineColorAndroid="transparent"
+              inputColorPlaceholder={Colors.border}
+              placeholderTextColor={Colors.disabled_light}
+              style={
+                isAllBorderShown
+                  ? styles.inputValueAllBorder
+                  : styles.inputValue
+              }
+              {...this.props}
+              onChangeText={text => onChangeText(text, name)}
+            />
+          ) : (
+            <TextInputMask
+              ref={refs ? refs : ref => (this._input = ref)}
+              underlineColorAndroid="transparent"
+              inputColorPlaceholder={Colors.border}
+              placeholderTextColor={Colors.disabled_light}
+              style={
+                isAllBorderShown
+                  ? styles.inputValueAllBorder
+                  : styles.inputValue
+              }
+              {...this.props}
+              onChangeText={(formatted, extracted) =>
+                onChangeText(formatted, name)
+              }
+              mask={mask}
+            />
+          )}
           {suffix ? <Text style={styles.prefix}>{suffix || ""}</Text> : null}
           {isLoading && ( // tampilkan UI loading ketika sedang fetching
             <SkypeIndicator

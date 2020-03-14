@@ -106,6 +106,10 @@ class AutoAddressInput extends Component {
     onKodeposChanged(kodepos);
   };
 
+  onDaerahChange = ({ key, value }) => {
+    this.setState({ id_address: key });
+  };
+
   render() {
     const {
       trigger_fetch_provinsi,
@@ -132,6 +136,7 @@ class AutoAddressInput extends Component {
           queryVariables="term"
           dropdownKey="kab_key"
           dropdownValue="daerah_lengkap"
+          onValueChange={this.onDaerahChange}
         />
 
         <InputText

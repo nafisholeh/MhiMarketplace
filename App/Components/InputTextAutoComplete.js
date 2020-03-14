@@ -19,7 +19,8 @@ export default class InputTextAutoComplete extends Component {
     super(props);
     this.state = {
       isCharSufficient: false,
-      dropdownData: null
+      dropdownData: null,
+      value: ""
     };
   }
 
@@ -39,23 +40,31 @@ export default class InputTextAutoComplete extends Component {
         }));
         this.setState({ dropdownData: normalisedData });
       })
-      .catch(error => {
-        console.tron.log("fetchOptionDropdown/error", error);
-      });
+      .catch(error => {});
   };
 
   onChangeText = text => {
     if (text.length >= MIN_CHAR_THRESHOLD) {
-      this.setState({ isCharSufficient: true, dropdownData: null });
+      this.setState({
+        value: text,
+        isCharSufficient: true,
+        dropdownData: null
+      });
       this.fetchOptionDropdown(text);
     } else {
-      this.setState({ isCharSufficient: false, dropdownData: null });
+      this.setState({
+        value: text,
+        isCharSufficient: false,
+        dropdownData: null
+      });
     }
   };
 
   onSelectDropdown = item => {
+    const { onValueChange } = this.props;
     const { key, value } = item;
-    console.tron.log("onSelectDropdown/key, value", key, value);
+    this.setState({ value, dropdownData: null });
+    onValueChange(item);
   };
 
   render() {
@@ -65,9 +74,10 @@ export default class InputTextAutoComplete extends Component {
       isAllBorderShown,
       styleContainer,
       styleBorder,
-      styleInput
+      styleInput,
+      onValueChange
     } = this.props;
-    const { dropdownData } = this.state;
+    const { dropdownData, value } = this.state;
     return (
       <View style={{ ...styles.container, ...styleContainer }}>
         {title ? (
@@ -97,6 +107,7 @@ export default class InputTextAutoComplete extends Component {
         >
           <TextInput
             ref={el => (this._textInput = el)}
+            value={value}
             underlineColorAndroid="transparent"
             inputColorPlaceholder={Colors.border}
             placeholderTextColor={Colors.disabled_light}

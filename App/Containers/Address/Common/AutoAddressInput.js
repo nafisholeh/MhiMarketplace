@@ -145,6 +145,7 @@ class AutoAddressInput extends Component {
           isAllBorderShown
           mask={"[000]/[000]"}
           maskValidator={"\\d{3}/\\d{3}"}
+          keyboardType="numeric"
         />
 
         <InputText

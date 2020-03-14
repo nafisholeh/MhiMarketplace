@@ -9,14 +9,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { AutoAddressInput } from "Containers/Address/Common";
 import FarmerSignupActions from "Redux/FarmerSignupRedux";
 import { moderateScale, generateBase64Thumbnail } from "Lib";
-import {
-  InputText,
-  InputPicker,
-  ButtonPrimary,
-  RadioButton,
-  ImagePicker
-} from "Components";
-import { HillHeaderWrapper, SignupBoxWrapper } from "CommonFarmer";
+import { InputText, InputPicker, ButtonPrimary, RadioButton } from "Components";
 import { Images, Colors } from "Themes";
 import AppConfig from "Config/AppConfig";
 import SignupWrapper from "./SignupWrapper";
@@ -300,6 +293,9 @@ class CardIdentityForm extends Component {
                   marginHorizontal: 0
                 }}
                 editable={false}
+                isShowIcon
+                icon={Images.calendar}
+                iconStyle={{ tintColor: null }}
               />
             </TouchableOpacity>
           </View>

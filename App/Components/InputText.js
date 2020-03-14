@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingBottom: moderateScale(4),
     paddingTop: moderateScale(4),
-    paddingLeft: METRICS.SMALL
+    paddingHorizontal: METRICS.SMALL
   },
   inputError: {
     position: "absolute",
@@ -197,7 +197,8 @@ const styles = StyleSheet.create({
     width: moderateScale(20),
     height: moderateScale(14),
     alignSelf: "center",
-    tintColor: Colors.veggie_light
+    tintColor: Colors.veggie_light,
+    marginRight: METRICS.TINY
   },
   loading: {
     flex: 0

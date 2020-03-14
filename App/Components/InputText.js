@@ -56,7 +56,13 @@ export default class InputText extends Component {
         <View
           style={
             error
-              ? [styles.inputContentError, styleBorder, styleInput]
+              ? [
+                  isAllBorderShown
+                    ? styles.inputContentErrorAllBorder
+                    : styles.inputContentError,
+                  styleBorder,
+                  styleInput
+                ]
               : [
                   isAllBorderShown
                     ? styles.inputContentAllBorder
@@ -188,6 +194,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderBottomWidth: 0.5,
     borderBottomColor: Colors.red2,
+    backgroundColor: Colors.white,
+    paddingLeft: 0
+  },
+  inputContentErrorAllBorder: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 0.5,
+    borderColor: Colors.red2,
+    borderRadius: 5,
     backgroundColor: Colors.white,
     paddingLeft: 0
   },

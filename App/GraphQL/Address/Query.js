@@ -1,4 +1,4 @@
-import gql from 'graphql-tag'
+import gql from "graphql-tag";
 
 export const FETCH_ADDRESS = gql`
   query fetchAddress($user_id: ID!) {
@@ -15,7 +15,7 @@ export const FETCH_ADDRESS = gql`
       location
     }
   }
-`
+`;
 
 export const FETCH_SELECTED_ADDRESS = gql`
   query($user_id: ID!) {
@@ -32,7 +32,7 @@ export const FETCH_SELECTED_ADDRESS = gql`
       location
     }
   }
-`
+`;
 
 export const FETCH_ALL_PROVINSI = gql`
   query fetchAllProvinsi {
@@ -41,19 +41,19 @@ export const FETCH_ALL_PROVINSI = gql`
       nama
     }
   }
-`
+`;
 
 export const FETCH_KABUPATEN_BY_PROVINSI = gql`
-  query fetchKabupatenByProvinsi($prov_key:String!) {
+  query fetchKabupatenByProvinsi($prov_key: String!) {
     kabupatenByProvinsi(prov_key: $prov_key) {
       key
       nama
     }
   }
-`
+`;
 
 export const FETCH_KECAMATAN_BY_KABUPATEN = gql`
-  query fetchKecamatanByKabupaten($kab_key:String!) {
+  query fetchKecamatanByKabupaten($kab_key: String!) {
     kecamatanByKabupaten(kab_key: $kab_key) {
       _id
       key
@@ -61,4 +61,14 @@ export const FETCH_KECAMATAN_BY_KABUPATEN = gql`
       kelurahan
     }
   }
-`
+`;
+
+export const FETCH_DAERAH_LENGKAP = gql`
+  query addressLocator($term: String!) {
+    addressLocator(term: $term) {
+      _id
+      daerah_lengkap
+      kab_key
+    }
+  }
+`;

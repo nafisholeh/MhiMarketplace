@@ -1,11 +1,10 @@
 import React, { Component, Fragment } from "react";
-import { View, Image, Text } from "react-native";
+import { View, Text } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { bool, arrayOf, shape, string, object, func } from "prop-types";
 
 import InputText from "./InputText";
 import ChipSelects from "./ChipSelects";
-import { moderateScale } from "Lib";
 import { InAppNotification, graphqlToRNPickerSelect } from "Lib";
 import { Images, Colors, FONTS, METRICS } from "Themes";
 import ApolloClientProvider from "Services/ApolloClientProvider";

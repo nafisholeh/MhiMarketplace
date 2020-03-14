@@ -32,6 +32,7 @@ import HeaderTitle from "./Header/HeaderTitle";
 import HeaderTitleSecondary from "./Header/HeaderTitleSecondary";
 import ViewShadow from "./Shadow/ViewShadow";
 import InputText from "./InputText";
+import InputTextAutoComplete from "./InputTextAutoComplete";
 import InputPicker from "./InputPicker";
 import ChipSelects from "./ChipSelects";
 import KeyboardFriendlyView from "./KeyboardFriendlyView";
@@ -75,6 +76,7 @@ export {
   CartSubtractButton,
   ViewShadow,
   InputText,
+  InputTextAutoComplete,
   InputPicker,
   ChipSelects,
   KeyboardFriendlyView,

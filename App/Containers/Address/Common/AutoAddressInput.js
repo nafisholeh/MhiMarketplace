@@ -5,11 +5,15 @@ import { func } from "prop-types";
 import {
   FETCH_ALL_PROVINSI,
   FETCH_KABUPATEN_BY_PROVINSI,
-  FETCH_KECAMATAN_BY_KABUPATEN
+  FETCH_DAERAH_LENGKAP
 } from "GraphQL/Address/Query";
-import { Colors, METRICS, Images } from "Themes";
 import { moderateScale } from "Lib";
-import { KeyboardFriendlyView, InputText, InputPicker } from "Components";
+import {
+  KeyboardFriendlyView,
+  InputText,
+  InputTextAutoComplete,
+  InputPicker
+} from "Components";
 
 class AutoAddressInput extends Component {
   constructor(props) {
@@ -121,7 +125,44 @@ class AutoAddressInput extends Component {
     const { onRtRwChanged, onAddressDetailChanged } = this.props;
     return (
       <KeyboardFriendlyView>
-        <InputPicker
+        <InputTextAutoComplete
+          title="Kelurahan/Kecamatan/Kodepos"
+          isAllBorderShown
+          query={FETCH_DAERAH_LENGKAP}
+          queryVariables="term"
+          dropdownKey="kab_key"
+          dropdownValue="daerah_lengkap"
+        />
+
+        <InputText
+          title="RT/RW"
+          value={rtrw}
+          onChangeText={rtrw => {
+            onRtRwChanged(rtrw);
+            this.setState({ rtrw });
+          }}
+          error={error_rtrw}
+          onSubmitEditing={() => this._alamat.focus()}
+          returnKeyType="next"
+          isAllBorderShown
+        />
+
+        <InputText
+          refs={ref => (this._alamat = ref)}
+          title="Alamat lengkap"
+          value={alamat}
+          onChangeText={alamat => {
+            onAddressDetailChanged(alamat);
+            this.setState({ alamat });
+          }}
+          multiline={true}
+          error={error_alamat_detail}
+          styleContainer={{ height: moderateScale(120) }}
+          styleBorder={{ height: moderateScale(100), alignItems: "flex-start" }}
+          isAllBorderShown
+        />
+
+        {/* <InputPicker
           title="Provinsi"
           placeholder="Pilih provinsi"
           query={FETCH_ALL_PROVINSI}
@@ -167,35 +208,7 @@ class AutoAddressInput extends Component {
           placeholder="Kode Pos"
           error={error_alamat}
           editable={false}
-        />
-
-        <InputText
-          title="RT/RW"
-          value={rtrw}
-          onChangeText={rtrw => {
-            onRtRwChanged(rtrw);
-            this.setState({ rtrw });
-          }}
-          placeholder="RT/RW"
-          error={error_rtrw}
-          onSubmitEditing={() => this._alamat.focus()}
-          returnKeyType="next"
-        />
-
-        <InputText
-          refs={ref => (this._alamat = ref)}
-          title="Alamat lengkap"
-          value={alamat}
-          onChangeText={alamat => {
-            onAddressDetailChanged(alamat);
-            this.setState({ alamat });
-          }}
-          placeholder="Nama Gedung, jalan dan lainnya"
-          multiline={true}
-          error={error_alamat_detail}
-          styleContainer={{ height: moderateScale(120) }}
-          styleBorder={{ height: moderateScale(100), alignItems: "flex-start" }}
-        />
+        /> */}
       </KeyboardFriendlyView>
     );
   }

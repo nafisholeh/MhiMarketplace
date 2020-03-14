@@ -1,19 +1,12 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { func } from "prop-types";
-import TextInputMask from "react-native-text-input-mask";
 
-import {
-  FETCH_ALL_PROVINSI,
-  FETCH_KABUPATEN_BY_PROVINSI,
-  FETCH_DAERAH_LENGKAP
-} from "GraphQL/Address/Query";
+import { FETCH_DAERAH_LENGKAP } from "GraphQL/Address/Query";
 import { moderateScale } from "Lib";
 import {
   KeyboardFriendlyView,
   InputText,
-  InputTextAutoComplete,
-  InputPicker
+  InputTextAutoComplete
 } from "Components";
 
 class AutoAddressInput extends Component {
@@ -111,22 +104,18 @@ class AutoAddressInput extends Component {
     this.setState({ id_address: key });
   };
 
+  validateRTRW = () => {
+    const { rtrw, error_rtrw } = this.state;
+    const condition = new RegExp("\\d{3}/\\d{3}", "g");
+    this.setState({
+      error_rtrw: !condition.test(rtrw)
+        ? "Harap periksa formatnya kembali"
+        : null
+    });
+  };
+
   render() {
-    const {
-      trigger_fetch_provinsi,
-      trigger_fetch_kabupaten,
-      trigger_fetch_kecamatan,
-      trigger_reset_kecamatan,
-      prov_key_selected,
-      kab_key_selected,
-      rtrw,
-      alamat,
-      kelurahan,
-      kodepos,
-      error_alamat,
-      error_rtrw,
-      error_alamat_detail
-    } = this.state;
+    const { rtrw, alamat, error_rtrw, error_alamat_detail } = this.state;
     const { onRtRwChanged, onAddressDetailChanged } = this.props;
     return (
       <KeyboardFriendlyView>
@@ -148,10 +137,14 @@ class AutoAddressInput extends Component {
             this.setState({ rtrw });
           }}
           error={error_rtrw}
-          onSubmitEditing={() => this._alamat.focus()}
+          onSubmitEditing={() => {
+            this.validateRTRW();
+            this._alamat.focus();
+          }}
           returnKeyType="next"
           isAllBorderShown
           mask={"[000]/[000]"}
+          maskValidator={"\\d{3}/\\d{3}"}
         />
 
         <InputText
@@ -168,54 +161,6 @@ class AutoAddressInput extends Component {
           styleBorder={{ height: moderateScale(100), alignItems: "flex-start" }}
           isAllBorderShown
         />
-
-        {/* <InputPicker
-          title="Provinsi"
-          placeholder="Pilih provinsi"
-          query={FETCH_ALL_PROVINSI}
-          onSelectionChange={this.onProvinsiChange}
-          triggerFetch={trigger_fetch_provinsi}
-          isInitialFetching
-        />
-
-        <InputPicker
-          title="Kabupaten/Kota"
-          placeholder="Pilih kabupaten/kota"
-          query={FETCH_KABUPATEN_BY_PROVINSI}
-          queryVariables={{ prov_key: prov_key_selected }}
-          onSelectionChange={this.onKabupatenChange}
-          triggerFetch={trigger_fetch_kabupaten}
-          // triggerReset={trigger_reset_kabupaten}
-        />
-
-        <InputPicker
-          title="Kecamatan"
-          placeholder="Pilih kecamatan"
-          query={FETCH_KECAMATAN_BY_KABUPATEN}
-          queryVariables={{ kab_key: kab_key_selected }}
-          onSelectionChange={this.onKecamatanChange}
-          triggerFetch={trigger_fetch_kecamatan}
-          triggerReset={trigger_reset_kecamatan}
-          isKeyDisplayed
-        />
-
-        <InputText
-          refs={ref => (this._kelurahan = ref)}
-          title="Kelurahan"
-          value={kelurahan}
-          placeholder="Kelurahan"
-          error={error_alamat}
-          editable={false}
-        />
-
-        <InputText
-          refs={ref => (this._kodepos = ref)}
-          title="Kode Pos"
-          value={kodepos}
-          placeholder="Kode Pos"
-          error={error_alamat}
-          editable={false}
-        /> */}
       </KeyboardFriendlyView>
     );
   }

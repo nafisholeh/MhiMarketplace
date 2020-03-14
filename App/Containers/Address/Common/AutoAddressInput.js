@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { func } from "prop-types";
+import TextInputMask from "react-native-text-input-mask";
 
 import {
   FETCH_ALL_PROVINSI,
@@ -150,6 +151,7 @@ class AutoAddressInput extends Component {
           onSubmitEditing={() => this._alamat.focus()}
           returnKeyType="next"
           isAllBorderShown
+          mask={"[000]/[000]"}
         />
 
         <InputText

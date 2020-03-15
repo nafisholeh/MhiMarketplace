@@ -1,13 +1,10 @@
 import React, { Component } from "react";
+import { View } from "react-native";
 import { func } from "prop-types";
 
 import { FETCH_DAERAH_LENGKAP } from "GraphQL/Address/Query";
 import { moderateScale } from "Lib";
-import {
-  KeyboardFriendlyView,
-  InputText,
-  InputTextAutoComplete
-} from "Components";
+import { InputText, InputTextAutoComplete } from "Components";
 
 class AutoAddressInput extends Component {
   constructor(props) {
@@ -24,10 +21,6 @@ class AutoAddressInput extends Component {
     };
   }
 
-  componentWillMount() {
-    this.onFetchProvinsi();
-  }
-
   validateData = () => {
     const { id_address, rtrw, alamat } = this.state;
     this.setState({
@@ -36,68 +29,6 @@ class AutoAddressInput extends Component {
       error_alamat_detail: alamat ? false : true
     });
     return id_address && rtrw && alamat;
-  };
-
-  onFetchProvinsi() {
-    this.setState(prevState => {
-      return {
-        trigger_fetch_provinsi: !prevState.trigger_fetch_provinsi
-      };
-    });
-  }
-
-  onProvinsiChange = (val, i) => {
-    const { onProvinsiChanged } = this.props;
-    const [id, nama] = val.split("||") || [];
-    this.setState(prevState => {
-      return {
-        provinsi: nama,
-        prov_key_selected: id,
-        trigger_fetch_kabupaten: !prevState.trigger_fetch_kabupaten,
-        trigger_reset_kecamatan: !prevState.trigger_reset_kecamatan,
-        id_address: null,
-        kelurahan: null,
-        kodepos: null
-      };
-    });
-    onProvinsiChanged(nama);
-  };
-
-  onKabupatenChange = (val, i) => {
-    const { onKabupatenChanged } = this.props;
-    const [id, nama] = val.split("||") || [];
-    this.setState(prevState => {
-      return {
-        kabupaten: nama,
-        kab_key_selected: id,
-        trigger_reset_kecamatan: !prevState.trigger_reset_kecamatan,
-        trigger_fetch_kecamatan: !prevState.trigger_fetch_kecamatan,
-        id_address: null,
-        kelurahan: null,
-        kodepos: null
-      };
-    });
-    onKabupatenChanged(nama);
-  };
-
-  onKecamatanChange = (val, i) => {
-    const {
-      onKecamatanIdChanged,
-      onKecamatanChanged,
-      onKelurahanChanged,
-      onKodeposChanged
-    } = this.props;
-    const [idAddress, kodepos, kelurahan, kecamatan] = val.split("||") || [];
-    this.setState({
-      id_address: idAddress,
-      kecamatan,
-      kelurahan,
-      kodepos
-    });
-    onKecamatanIdChanged(idAddress);
-    onKecamatanChanged(kecamatan);
-    onKelurahanChanged(kelurahan);
-    onKodeposChanged(kodepos);
   };
 
   onDaerahChange = ({ key, value }) => {
@@ -118,7 +49,7 @@ class AutoAddressInput extends Component {
     const { rtrw, alamat, error_rtrw, error_alamat_detail } = this.state;
     const { onRtRwChanged, onAddressDetailChanged } = this.props;
     return (
-      <KeyboardFriendlyView>
+      <View>
         <InputTextAutoComplete
           title="Kelurahan/Kecamatan/Kodepos"
           isAllBorderShown
@@ -162,7 +93,7 @@ class AutoAddressInput extends Component {
           styleBorder={{ height: moderateScale(100), alignItems: "flex-start" }}
           isAllBorderShown
         />
-      </KeyboardFriendlyView>
+      </View>
     );
   }
 }

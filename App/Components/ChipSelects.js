@@ -11,6 +11,7 @@ class ChipSelects extends Component {
       selectedIndex: 0
     };
   }
+
   onSelectionChange = (value, index) => {
     this.setState({ selectedIndex: index });
   };
@@ -31,7 +32,7 @@ class ChipSelects extends Component {
           const isFirst = index === 0;
           const isLast = index === data.length - 1;
           const isSelected = selectedIndex === index;
-          const { label, value } = item || {};
+          const { label, value, showManualInput } = item || {};
           return (
             <TouchableHighlight
               style={{

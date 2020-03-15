@@ -43,7 +43,9 @@ export default class InputTextAutoComplete extends Component {
       .catch(error => {});
   };
 
-  onChangeText = text => {
+  onChangeTextWillFetch = text => {
+    const { onValueChange, name } = this.props;
+    onValueChange({ key: null, name: text }, name);
     if (text.length >= MIN_CHAR_THRESHOLD) {
       this.setState({
         value: text,
@@ -51,20 +53,50 @@ export default class InputTextAutoComplete extends Component {
         dropdownData: null
       });
       this.fetchOptionDropdown(text);
-    } else {
+      return;
+    }
+    this.setState({
+      value: text,
+      isCharSufficient: false,
+      dropdownData: null
+    });
+  };
+
+  onChangeTextShowDataLocal = text => {
+    const { dataLocal } = this.props;
+    if (text.length >= MIN_CHAR_THRESHOLD) {
+      const filteredDropdown = (dataLocal || []).filter(item => {
+        const { value } = item || {};
+        return new RegExp(text, "i").test(value);
+      });
       this.setState({
         value: text,
-        isCharSufficient: false,
-        dropdownData: null
+        isCharSufficient: true,
+        dropdownData: filteredDropdown
       });
+      return;
+    }
+    this.setState({
+      value: text,
+      isCharSufficient: false,
+      dropdownData: null
+    });
+  };
+
+  onChangeText = text => {
+    const { dataLocal } = this.props;
+    if (dataLocal) {
+      this.onChangeTextShowDataLocal(text);
+    } else {
+      this.onChangeTextWillFetch(text);
     }
   };
 
   onSelectDropdown = item => {
-    const { onValueChange } = this.props;
-    const { key, value } = item;
+    const { onValueChange, name } = this.props;
+    const { value } = item || {};
     this.setState({ value, dropdownData: null });
-    onValueChange(item);
+    onValueChange(item, name);
   };
 
   render() {
@@ -74,8 +106,7 @@ export default class InputTextAutoComplete extends Component {
       isAllBorderShown,
       styleContainer,
       styleBorder,
-      styleInput,
-      onValueChange
+      styleInput
     } = this.props;
     const { dropdownData, value } = this.state;
     return (

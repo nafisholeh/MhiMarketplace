@@ -9,7 +9,14 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { AutoAddressInput } from "Containers/Address/Common";
 import FarmerSignupActions from "Redux/FarmerSignupRedux";
 import { moderateScale, generateBase64Thumbnail } from "Lib";
-import { InputText, InputPicker, ButtonPrimary, RadioButton } from "Components";
+import {
+  InputText,
+  InputTextAutoComplete,
+  InputPicker,
+  ButtonPrimary,
+  RadioButton,
+  KeyboardFriendlyView
+} from "Components";
 import { Images, Colors } from "Themes";
 import AppConfig from "Config/AppConfig";
 import SignupWrapper from "./SignupWrapper";
@@ -186,6 +193,10 @@ class CardIdentityForm extends Component {
     this.setState({ [stateName]: value });
   };
 
+  onAutoCompleteChange = ({ value }, stateName) => {
+    this.setState({ [stateName]: value });
+  };
+
   onPhotoChange = async (name, raw = [], paths = []) => {
     if (!Array.isArray(raw)) return;
     const photos = raw.map((item, i) => {
@@ -228,7 +239,7 @@ class CardIdentityForm extends Component {
       heightBox2
     } = this.state;
     return (
-      <View style={{ flex: 1 }}>
+      <KeyboardFriendlyView style={{ flex: 1 }}>
         <SignupWrapper title="Data KTP">
           <InputText
             refs={ref => (this._nik = ref)}
@@ -329,18 +340,12 @@ class CardIdentityForm extends Component {
             onProvinsiChanged={text => this.setState({ provinsi: text })}
           />
 
-          <InputPicker
+          <InputTextAutoComplete
             name="religion"
             title="Agama"
-            placeholder="Pilih agama yang dianut"
+            isAllBorderShown
             dataLocal={AppConfig.religion}
-            onSelectionChange={this.onSelectionChange}
-            onShowManualInput={() =>
-              this.setState({ heightBox1: heightBox1 + 50 })
-            }
-            onHideManualInput={() =>
-              this.setState({ heightBox1: heightBox1 - 50 })
-            }
+            onValueChange={this.onAutoCompleteChange}
           />
 
           <InputPicker
@@ -357,12 +362,6 @@ class CardIdentityForm extends Component {
             placeholder="Pilih pekerjaan"
             dataLocal={AppConfig.occupation}
             onSelectionChange={this.onSelectionChange}
-            onShowManualInput={() =>
-              this.setState({ heightBox1: heightBox1 + 50 })
-            }
-            onHideManualInput={() =>
-              this.setState({ heightBox1: heightBox1 - 50 })
-            }
           />
 
           <InputPicker
@@ -371,13 +370,21 @@ class CardIdentityForm extends Component {
             placeholder="Pilih kewarganegaraan"
             dataLocal={AppConfig.citizenship}
             onSelectionChange={this.onSelectionChange}
-            onShowManualInput={() =>
-              this.setState({ heightBox1: heightBox1 + 50 })
-            }
-            onHideManualInput={() =>
-              this.setState({ heightBox1: heightBox1 - 50 })
-            }
           />
+
+          {/* <InputPicker
+            name="expired_date"
+            title="Masa berlaku"
+            dataLocal={AppConfig.expiredDate}
+            onSelectionChange={(value, stateName) => {
+              console.tron.log(
+                "onSelectionChange/value/stateName",
+                value,
+                stateName
+              );
+            }}
+          /> */}
+
           <Text
             style={{
               color: Colors.veggie_dark,
@@ -467,7 +474,7 @@ class CardIdentityForm extends Component {
         ) : (
           <View />
         )}
-      </View>
+      </KeyboardFriendlyView>
     );
   }
 }

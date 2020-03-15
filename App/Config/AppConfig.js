@@ -155,39 +155,34 @@ export default {
   ],
   religion: [
     {
-      label: "Islam",
+      key: "Islam",
       value: "Islam"
     },
     {
-      label: "Kristen",
+      key: "Kristen",
       value: "Kristen"
     },
     {
-      label: "Katholik",
+      key: "Katholik",
       value: "Katholik"
     },
     {
-      label: "Hindu",
+      key: "Hindu",
       value: "Hindu"
     },
     {
-      label: "Budha",
+      key: "Budha",
       value: "Budha"
     },
     {
-      label: "Khong Hucu",
+      key: "Khong Hucu",
       value: "Khong Hucu"
-    },
-    {
-      label: "Penghayat kepercayaan",
-      value: "Penghayat Kepercayaan",
-      showManualInput: true
-    },
-    {
-      label: "Lainnya",
-      value: "Lainnya",
-      showManualInput: true
     }
+    // {
+    //   key: "Penghayat kepercayaan",
+    //   value: "Penghayat Kepercayaan",
+    //   showManualInput: true
+    // }
   ],
   marriageStatus: [
     {
@@ -205,6 +200,17 @@ export default {
     {
       label: "Cerai mati",
       value: "Cerai mati"
+    }
+  ],
+  expiredDate: [
+    {
+      label: "Seumur hidup",
+      value: "Seumur hidup"
+    },
+    {
+      label: "Isi tanggal...",
+      value: "Isi tanggal",
+      showManualInput: true
     }
   ],
   occupation: [

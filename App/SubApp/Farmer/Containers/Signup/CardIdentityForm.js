@@ -188,7 +188,12 @@ class CardIdentityForm extends Component {
     });
   };
 
-  onSelectionChange = (value, stateName) => {
+  onChangeText = (value, stateName) => {
+    this.setState({ [stateName]: value });
+  };
+
+  onSelectionChange = (key, value, stateName) => {
+    console.tron.log("onSelectionChange", key, value, stateName);
     this.setState({ [stateName]: value });
   };
 
@@ -247,7 +252,7 @@ class CardIdentityForm extends Component {
             title="NIK"
             value={nik || ""}
             error={nik_error}
-            onChangeText={this.onSelectionChange}
+            onChangeText={this.onChangeText}
             onSubmitEditing={() => this._name.focus()}
             keyboardType="numeric"
             returnKeyType="next"
@@ -260,7 +265,7 @@ class CardIdentityForm extends Component {
             title="Nama"
             value={name || ""}
             error={name_error}
-            onChangeText={this.onSelectionChange}
+            onChangeText={this.onChangeText}
             returnKeyType="done"
           />
 
@@ -276,7 +281,7 @@ class CardIdentityForm extends Component {
               title="Tempat"
               value={birth_place || ""}
               error={birth_place_error}
-              onChangeText={this.onSelectionChange}
+              onChangeText={this.onChangeText}
               returnKeyType="done"
               styleContainer={{
                 flex: 1,
@@ -297,7 +302,7 @@ class CardIdentityForm extends Component {
                 name="birth_date"
                 value={moment(birth_date).format("DD MMM YYYY") || ""}
                 error={birth_date_error}
-                onChangeText={this.onSelectionChange}
+                onChangeText={this.onChangeText}
                 styleContainer={{
                   flex: 1,
                   marginHorizontal: 0
@@ -375,7 +380,7 @@ class CardIdentityForm extends Component {
             name="expired_date"
             title="Masa berlaku"
             dataLocal={AppConfig.expiredDate}
-            onSelectionChange={({ value }) => {
+            onSelectionChange={(key, value) => {
               const isLifeTime = value === "Seumur hidup";
               this.setState({
                 expired_date: isLifeTime ? LIFETIME : new Date(),
@@ -396,7 +401,7 @@ class CardIdentityForm extends Component {
                 name="expired_date"
                 value={moment(expired_date).format("DD MMM YYYY") || ""}
                 error={expired_date_error}
-                onChangeText={this.onSelectionChange}
+                onChangeText={this.onChangeText}
                 editable={false}
                 withBorder={false}
                 prefixIcon={Images.edit_small}

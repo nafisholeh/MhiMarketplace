@@ -161,7 +161,8 @@ class InputPicker extends Component {
       placeholder,
       styleContainer,
       styleText,
-      CustomManualInput
+      CustomManualInput,
+      isAllBorderShown
     } = this.props;
     const isFewSelection = Array.isArray(data)
       ? data.length <= FEW_THRESHOLD && data.length !== 1
@@ -208,7 +209,6 @@ class InputPicker extends Component {
               icon={Images.arrow_thin}
               isLoading={fetching}
               isShowIcon
-              withBorder={false}
               styleContainer={Object.assign(
                 {},
                 showManualInput
@@ -226,8 +226,7 @@ class InputPicker extends Component {
           <InputText
             value={manual_text}
             onChangeText={this.onManualTextChange}
-            placeholder="Isi disini"
-            withBorder={false}
+            isAllBorderShown={isAllBorderShown}
             error={error}
             styleContainer={{
               marginBottom: METRICS.HUGE,

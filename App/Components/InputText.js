@@ -79,7 +79,8 @@ export default class InputText extends Component {
                 ...{
                   width: moderateScale(20),
                   height: moderateScale(20),
-                  marginRight: moderateScale(10)
+                  marginRight: moderateScale(10),
+                  marginLeft: isAllBorderShown ? moderateScale(10) : 0
                 },
                 ...prefixIconStyle
               }}
@@ -245,7 +246,6 @@ const styles = StyleSheet.create({
 });
 
 InputText.propTypes = {
-  withBorder: bool,
   error: object,
   isLoading: bool,
   isShowIcon: bool,

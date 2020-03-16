@@ -376,6 +376,7 @@ class CardIdentityForm extends Component {
           <InputPicker
             name="citizenship"
             title="Kewarganegaraan"
+            isAllBorderShown
             placeholder="Pilih kewarganegaraan"
             dataLocal={AppConfig.citizenship}
             onSelectionChange={this.onSelectionChange}
@@ -384,6 +385,7 @@ class CardIdentityForm extends Component {
           <InputPicker
             name="expired_date"
             title="Masa berlaku"
+            isAllBorderShown
             dataLocal={AppConfig.expiredDate}
             onSelectionChange={this.setLifetimeExpiredDate}
             CustomManualInput={() => (
@@ -397,9 +399,9 @@ class CardIdentityForm extends Component {
                 <InputText
                   value={moment(expired_date).format("DD MMM YYYY") || ""}
                   error={expired_date_error}
+                  isAllBorderShown
                   editable={false}
-                  withBorder={false}
-                  prefixIcon={Images.edit_small}
+                  prefixIcon={Images.calendar}
                   prefixIconStyle={{
                     tintColor: Colors.disabled_light
                   }}

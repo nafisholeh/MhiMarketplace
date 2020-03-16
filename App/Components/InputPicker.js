@@ -153,7 +153,14 @@ class InputPicker extends Component {
       error_fetch,
       showManualInput
     } = this.state;
-    const { title, placeholder, styleContainer, styleText } = this.props;
+    const {
+      name,
+      onSelectionChange,
+      title,
+      placeholder,
+      styleContainer,
+      styleText
+    } = this.props;
     const isFewSelection = Array.isArray(data)
       ? data.length <= FEW_THRESHOLD && data.length !== 1
       : false;
@@ -169,7 +176,11 @@ class InputPicker extends Component {
             <Text style={{ ...FONTS.INPUT_TITLE, marginBottom: METRICS.TINY }}>
               {title}
             </Text>
-            <ChipSelects data={data} />
+            <ChipSelects
+              name={name}
+              data={data}
+              onSelectionChange={(item, name) => onSelectionChange(item, name)}
+            />
           </View>
         ) : (
           <RNPickerSelect

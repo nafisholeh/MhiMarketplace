@@ -12,8 +12,10 @@ class ChipSelects extends Component {
     };
   }
 
-  onSelectionChange = (value, index) => {
+  onSelectionChange = (item, index) => {
+    const { onSelectionChange, name } = this.props;
     this.setState({ selectedIndex: index });
+    onSelectionChange(item, name);
   };
 
   render() {
@@ -49,7 +51,7 @@ class ChipSelects extends Component {
                 justifyContent: "center",
                 paddingVertical: METRICS.SMALL
               }}
-              onPress={() => this.onSelectionChange(value, index)}
+              onPress={() => this.onSelectionChange(item, index)}
               underlayColor={Colors.green_light}
             >
               <Text

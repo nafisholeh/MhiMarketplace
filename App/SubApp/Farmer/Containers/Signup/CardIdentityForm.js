@@ -14,10 +14,9 @@ import {
   InputTextAutoComplete,
   InputPicker,
   ButtonPrimary,
-  RadioButton,
   KeyboardFriendlyView
 } from "Components";
-import { Images, Colors } from "Themes";
+import { Images, Colors, METRICS } from "Themes";
 import AppConfig from "Config/AppConfig";
 import SignupWrapper from "./SignupWrapper";
 
@@ -372,66 +371,24 @@ class CardIdentityForm extends Component {
             onSelectionChange={this.onSelectionChange}
           />
 
-          {/* <InputPicker
+          <InputPicker
             name="expired_date"
             title="Masa berlaku"
             dataLocal={AppConfig.expiredDate}
-            onSelectionChange={(value, stateName) => {
-              console.tron.log(
-                "onSelectionChange/value/stateName",
-                value,
-                stateName
-              );
+            onSelectionChange={({ value }) => {
+              const isLifeTime = value === "Seumur hidup";
+              this.setState({
+                expired_date: isLifeTime ? LIFETIME : new Date(),
+                expired_date_lifetime: isLifeTime
+              });
             }}
-          /> */}
-
-          <Text
-            style={{
-              color: Colors.veggie_dark,
-              fontFamily: "CircularStd-Book",
-              fontSize: 13,
-              marginBottom: moderateScale(8)
-            }}
-          >
-            Masa Berlaku
-          </Text>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginBottom: moderateScale(expired_date_lifetime ? 20 : 5)
-            }}
-          >
-            <RadioButton
-              title="Seumur hidup"
-              isSelected={expired_date_lifetime}
-              onPress={() =>
-                this.setState({
-                  expired_date: LIFETIME,
-                  expired_date_lifetime: true,
-                  heightBox2: heightBox2 - 50
-                })
-              }
-            />
-            <RadioButton
-              title="Tanggal..."
-              isSelected={!expired_date_lifetime}
-              onPress={() =>
-                this.setState({
-                  expired_date: new Date(),
-                  expired_date_lifetime: false,
-                  heightBox2: heightBox2 + 50
-                })
-              }
-            />
-          </View>
+          />
 
           {!expired_date_lifetime ? (
             <TouchableOpacity
               onPress={this.openExpiredDate}
               style={{
-                marginTop: moderateScale(10),
-                marginBottom: moderateScale(24),
+                marginBottom: METRICS.NORMAL,
                 marginHorizontal: 0
               }}
             >

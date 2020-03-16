@@ -88,7 +88,7 @@ class InputPicker extends Component {
           },
           () => {
             if (Array.isArray(normalizedData) && normalizedData.length === 1) {
-              this.onSelectionChange(normalizedData[0].value, 0);
+              this.onSelectionChange(normalizedData[0], 0);
             }
           }
         );
@@ -106,29 +106,31 @@ class InputPicker extends Component {
       });
   };
 
-  onSelectionChange = (val, i) => {
-    const { data, showManualInput: prevShowManualInput } = this.state;
-    const {
-      onSelectionChange,
-      onShowManualInput,
-      onHideManualInput,
-      name
-    } = this.props;
-    if (!val) return;
-    const selectedData = data.find(n => n.value === val);
+  onSelectionChange = ({ value }, i) => {
+    const { data } = this.state;
+    const { onSelectionChange, name } = this.props;
+    if (!value) return;
+    const selectedData = data.find(({ valueIt }) => valueIt === value);
     const { label: selectedLabel, showManualInput } = selectedData || {};
     this.setState({
-      selected: val,
+      selected: value,
       selected_text: selectedLabel,
       showManualInput
     });
     if (onSelectionChange) {
-      onSelectionChange(showManualInput ? null : val, name, showManualInput);
-      if (showManualInput) {
-        if (onShowManualInput) onShowManualInput();
-      } else if (prevShowManualInput && !showManualInput) {
-        if (onHideManualInput) onHideManualInput();
-      }
+      const keyOutput = showManualInput ? null : value;
+      onSelectionChange(keyOutput, name, showManualInput);
+    }
+  };
+
+  onChipSelectionChange = (item, name) => {
+    const { onSelectionChange } = this.props;
+    const { key, value, showManualInput } = item || {};
+    if (showManualInput) {
+      this.setState({ showManualInput: true });
+    } else {
+      this.setState({ showManualInput: false });
+      onSelectionChange(key, value, name);
     }
   };
 
@@ -137,7 +139,7 @@ class InputPicker extends Component {
     const { showManualInput } = this.state;
     this.setState({ manual_text: text });
     if (onSelectionChange) {
-      onSelectionChange(text, name, showManualInput);
+      onSelectionChange(null, text, name, showManualInput);
     }
   };
 
@@ -179,7 +181,7 @@ class InputPicker extends Component {
             <ChipSelects
               name={name}
               data={data}
-              onSelectionChange={(item, name) => onSelectionChange(item, name)}
+              onSelectionChange={this.onChipSelectionChange}
             />
           </View>
         ) : (
@@ -248,8 +250,6 @@ InputPicker.propTypes = {
   isInitialFetching: bool,
   isKeyDisplayed: bool,
   isManualInputDisplayed: bool, // show manual input upon clicking `Lainnya`
-  onShowManualInput: func,
-  onHideManualInput: func,
   name: string, // align with the parent's state title
   /*
    ** enable the picker to use constant data

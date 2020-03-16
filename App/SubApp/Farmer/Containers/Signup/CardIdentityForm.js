@@ -356,12 +356,12 @@ class CardIdentityForm extends Component {
             onSelectionChange={this.onSelectionChange}
           />
 
-          <InputPicker
+          <InputTextAutoComplete
             name="occupation"
             title="Jenis Pekerjaan"
-            placeholder="Pilih pekerjaan"
+            isAllBorderShown
             dataLocal={AppConfig.occupation}
-            onSelectionChange={this.onSelectionChange}
+            onValueChange={this.onAutoCompleteChange}
           />
 
           <InputPicker

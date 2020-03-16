@@ -51,7 +51,6 @@ class CardIdentityForm extends Component {
     occupation_error: null,
     citizenship: null,
     citizenship_error: null,
-    expired_date_lifetime: true,
     expired_date: LIFETIME,
     expired_date_error: null,
     photo_face: null,
@@ -238,7 +237,6 @@ class CardIdentityForm extends Component {
       show_date_modal,
       expired_date,
       expired_date_error,
-      expired_date_lifetime,
       heightBox1,
       heightBox2
     } = this.state;
@@ -383,36 +381,32 @@ class CardIdentityForm extends Component {
             onSelectionChange={(key, value) => {
               const isLifeTime = value === "Seumur hidup";
               this.setState({
-                expired_date: isLifeTime ? LIFETIME : new Date(),
-                expired_date_lifetime: isLifeTime
+                expired_date: isLifeTime ? LIFETIME : new Date()
               });
             }}
-          />
-
-          {!expired_date_lifetime ? (
-            <TouchableOpacity
-              onPress={this.openExpiredDate}
-              style={{
-                marginBottom: METRICS.NORMAL,
-                marginHorizontal: 0
-              }}
-            >
-              <InputText
-                name="expired_date"
-                value={moment(expired_date).format("DD MMM YYYY") || ""}
-                error={expired_date_error}
-                onChangeText={this.onChangeText}
-                editable={false}
-                withBorder={false}
-                prefixIcon={Images.edit_small}
-                prefixIconStyle={{
-                  tintColor: Colors.disabled_light
+            CustomManualInput={() => (
+              <TouchableOpacity
+                onPress={this.openExpiredDate}
+                style={{
+                  marginBottom: METRICS.NORMAL,
+                  marginHorizontal: 0
                 }}
-              />
-            </TouchableOpacity>
-          ) : (
-            <View />
-          )}
+              >
+                <InputText
+                  name="expired_date"
+                  value={moment(expired_date).format("DD MMM YYYY") || ""}
+                  error={expired_date_error}
+                  onChangeText={this.onChangeText}
+                  editable={false}
+                  withBorder={false}
+                  prefixIcon={Images.edit_small}
+                  prefixIconStyle={{
+                    tintColor: Colors.disabled_light
+                  }}
+                />
+              </TouchableOpacity>
+            )}
+          />
         </SignupWrapper>
 
         {show_expired_modal ? (

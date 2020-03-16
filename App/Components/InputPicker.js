@@ -157,11 +157,11 @@ class InputPicker extends Component {
     } = this.state;
     const {
       name,
-      onSelectionChange,
       title,
       placeholder,
       styleContainer,
-      styleText
+      styleText,
+      CustomManualInput
     } = this.props;
     const isFewSelection = Array.isArray(data)
       ? data.length <= FEW_THRESHOLD && data.length !== 1
@@ -172,7 +172,7 @@ class InputPicker extends Component {
           <View
             style={{
               justifyContent: "space-around",
-              marginBottom: METRICS.HUGE
+              marginBottom: showManualInput ? METRICS.NORMAL : METRICS.HUGE
             }}
           >
             <Text style={{ ...FONTS.INPUT_TITLE, marginBottom: METRICS.TINY }}>
@@ -221,7 +221,8 @@ class InputPicker extends Component {
             />
           </RNPickerSelect>
         )}
-        {showManualInput ? (
+        {showManualInput && CustomManualInput ? <CustomManualInput /> : null}
+        {showManualInput && !CustomManualInput ? (
           <InputText
             value={manual_text}
             onChangeText={this.onManualTextChange}
@@ -229,7 +230,6 @@ class InputPicker extends Component {
             withBorder={false}
             error={error}
             styleContainer={{
-              marginTop: METRICS.SMALL,
               marginBottom: METRICS.HUGE,
               marginHorizontal: 0
             }}

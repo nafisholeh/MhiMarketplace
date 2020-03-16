@@ -171,6 +171,13 @@ class CardIdentityForm extends Component {
     });
   };
 
+  setLifetimeExpiredDate = (key, value) => {
+    const isLifeTime = value === "Seumur hidup";
+    this.setState({
+      expired_date: isLifeTime ? LIFETIME : new Date()
+    });
+  };
+
   openBirthDate = () => {
     this.setState(prevState => {
       return {
@@ -378,12 +385,7 @@ class CardIdentityForm extends Component {
             name="expired_date"
             title="Masa berlaku"
             dataLocal={AppConfig.expiredDate}
-            onSelectionChange={(key, value) => {
-              const isLifeTime = value === "Seumur hidup";
-              this.setState({
-                expired_date: isLifeTime ? LIFETIME : new Date()
-              });
-            }}
+            onSelectionChange={this.setLifetimeExpiredDate}
             CustomManualInput={() => (
               <TouchableOpacity
                 onPress={this.openExpiredDate}
@@ -393,10 +395,8 @@ class CardIdentityForm extends Component {
                 }}
               >
                 <InputText
-                  name="expired_date"
                   value={moment(expired_date).format("DD MMM YYYY") || ""}
                   error={expired_date_error}
-                  onChangeText={this.onChangeText}
                   editable={false}
                   withBorder={false}
                   prefixIcon={Images.edit_small}
@@ -416,9 +416,7 @@ class CardIdentityForm extends Component {
             display="default"
             onChange={this.setExpiredDate}
           />
-        ) : (
-          <View />
-        )}
+        ) : null}
 
         {show_date_modal ? (
           <DateTimePicker
@@ -427,9 +425,7 @@ class CardIdentityForm extends Component {
             display="default"
             onChange={this.setBirthDate}
           />
-        ) : (
-          <View />
-        )}
+        ) : null}
       </KeyboardFriendlyView>
     );
   }

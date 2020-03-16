@@ -172,7 +172,7 @@ class InputPicker extends Component {
           <View
             style={{
               justifyContent: "space-around",
-              marginBottom: showManualInput ? METRICS.NORMAL : METRICS.HUGE
+              marginBottom: showManualInput ? METRICS.MEDIUM : METRICS.HUGE
             }}
           >
             <Text style={{ ...FONTS.INPUT_TITLE, marginBottom: METRICS.TINY }}>

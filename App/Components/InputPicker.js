@@ -126,12 +126,9 @@ class InputPicker extends Component {
   onChipSelectionChange = (item, name) => {
     const { onSelectionChange } = this.props;
     const { key, value, showManualInput } = item || {};
-    if (showManualInput) {
-      this.setState({ showManualInput: true });
-    } else {
-      this.setState({ showManualInput: false });
-      onSelectionChange(key, value, name);
-    }
+    onSelectionChange(key, value, name);
+    const showManualInputTemp = showManualInput ? true : false;
+    this.setState({ showManualInput: showManualInputTemp });
   };
 
   onManualTextChange = text => {

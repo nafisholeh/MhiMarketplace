@@ -173,9 +173,8 @@ class CardIdentityForm extends Component {
 
   setLifetimeExpiredDate = (key, value) => {
     const isLifeTime = value === "Seumur hidup";
-    this.setState({
-      expired_date: isLifeTime ? LIFETIME : new Date()
-    });
+    const expired_date = isLifeTime ? LIFETIME : new Date();
+    this.setState({ expired_date });
   };
 
   openBirthDate = () => {
@@ -243,9 +242,7 @@ class CardIdentityForm extends Component {
       show_expired_modal,
       show_date_modal,
       expired_date,
-      expired_date_error,
-      heightBox1,
-      heightBox2
+      expired_date_error
     } = this.state;
     return (
       <KeyboardFriendlyView style={{ flex: 1 }}>

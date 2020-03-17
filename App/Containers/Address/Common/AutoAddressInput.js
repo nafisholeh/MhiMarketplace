@@ -89,8 +89,9 @@ class AutoAddressInput extends Component {
           }}
           multiline={true}
           error={error_alamat_detail}
-          styleContainer={{ height: moderateScale(120) }}
-          styleBorder={{ height: moderateScale(100), alignItems: "flex-start" }}
+          styleContainer={{
+            height: moderateScale(120)
+          }}
           isAllBorderShown
         />
       </View>

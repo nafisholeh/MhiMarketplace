@@ -37,7 +37,8 @@ export default class InputText extends Component {
       iconStyle,
       onChangeText,
       isAllBorderShown,
-      mask
+      mask,
+      multiline
     } = this.props;
     return (
       <View style={{ ...styles.container, ...styleContainer }}>
@@ -60,15 +61,15 @@ export default class InputText extends Component {
                   isAllBorderShown
                     ? styles.inputContentErrorAllBorder
                     : styles.inputContentError,
-                  styleBorder,
-                  styleInput
+                  multiline ? styles.multiline : null,
+                  styleBorder
                 ]
               : [
                   isAllBorderShown
                     ? styles.inputContentAllBorder
                     : styles.inputContent,
-                  styleBorder,
-                  styleInput
+                  multiline ? styles.multiline : null,
+                  styleBorder
                 ]
           }
         >
@@ -96,10 +97,11 @@ export default class InputText extends Component {
               placeholderTextColor={Colors.disabled_light}
               style={
                 isAllBorderShown
-                  ? styles.inputValueAllBorder
-                  : styles.inputValue
+                  ? [styles.inputValueAllBorder, styleInput]
+                  : [styles.inputValue, styleInput]
               }
               {...this.props}
+              textAlignVertical={multiline ? "top" : "center"}
               onChangeText={text => onChangeText(text, name)}
             />
           ) : (
@@ -160,6 +162,11 @@ export default class InputText extends Component {
 const styles = StyleSheet.create({
   container: {
     marginBottom: METRICS.HUGE
+  },
+  multiline: {
+    flex: 1,
+    alignItems: "stretch",
+    paddingVertical: moderateScale(5)
   },
   prefix: {
     color: Colors.text,

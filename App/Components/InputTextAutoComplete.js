@@ -92,6 +92,10 @@ export default class InputTextAutoComplete extends Component {
     }
   };
 
+  onFocus = () => {
+    this.setState({ value: "", isCharSufficient: false, dropdownData: null });
+  };
+
   onSelectDropdown = item => {
     const { onValueChange, name } = this.props;
     const { value } = item || {};
@@ -143,6 +147,7 @@ export default class InputTextAutoComplete extends Component {
             inputColorPlaceholder={Colors.border}
             placeholderTextColor={Colors.disabled_light}
             onChangeText={this.onChangeText}
+            onFocus={this.onFocus}
             style={
               isAllBorderShown ? styles.inputValueAllBorder : styles.inputValue
             }

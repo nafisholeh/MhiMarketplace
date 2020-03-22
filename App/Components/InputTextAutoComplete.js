@@ -7,6 +7,7 @@ import {
   StyleSheet,
   FlatList
 } from "react-native";
+import _ from "lodash";
 
 import { Colors, METRICS } from "Themes";
 import { moderateScale, extractGraphQLResponse } from "Lib";
@@ -22,6 +23,7 @@ export default class InputTextAutoComplete extends Component {
       dropdownData: null,
       value: ""
     };
+    this.fetchOptionDropdown = _.throttle(this.fetchOptionDropdown, 2000);
   }
 
   fetchOptionDropdown = text => {

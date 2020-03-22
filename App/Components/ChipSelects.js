@@ -43,9 +43,11 @@ class ChipSelects extends Component {
                 borderBottomLeftRadius: isFirst ? METRICS.RADIUS_MEDIUM : 0,
                 borderTopRightRadius: isLast ? METRICS.RADIUS_MEDIUM : 0,
                 borderBottomRightRadius: isLast ? METRICS.RADIUS_MEDIUM : 0,
-                borderWidth: METRICS.BORDER_MEDIUM,
-                borderLeftWidth: isFirst ? METRICS.BORDER_MEDIUM : 0,
-                borderColor: isSelected ? Colors.green_light : Colors.border,
+                borderWidth: METRICS.BORDER_THIN,
+                borderLeftWidth: isFirst ? METRICS.BORDER_THIN : 0,
+                borderColor: isSelected
+                  ? Colors.green_light
+                  : Colors.brown_light,
                 backgroundColor: isSelected ? Colors.green_light : Colors.white,
                 alignItems: "center",
                 justifyContent: "center",
@@ -57,7 +59,7 @@ class ChipSelects extends Component {
               <Text
                 style={{
                   ...FONTS.BODY_SMALL,
-                  color: isSelected ? Colors.white : Colors.green_light
+                  color: isSelected ? Colors.white : Colors.text
                 }}
               >
                 {label}

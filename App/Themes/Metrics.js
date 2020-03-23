@@ -32,9 +32,9 @@ const metrics = {
   RADIUS_MEDIUM: moderateScale(5),
   RADIUS_LARGE: moderateScale(10),
 
-  BORDER_THIN: moderateScale(0.5),
-  BORDER_MEDIUM: moderateScale(1),
-  BORDER_BOLD: moderateScale(2)
+  BORDER_THIN: 0.5,
+  BORDER_MEDIUM: 1,
+  BORDER_BOLD: 2
 };
 
 export default metrics;

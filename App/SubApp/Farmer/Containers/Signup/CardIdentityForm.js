@@ -245,7 +245,7 @@ class CardIdentityForm extends Component {
       expired_date_error
     } = this.state;
     return (
-      <KeyboardFriendlyView style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
         <SignupWrapper title="Data KTP">
           <InputText
             refs={ref => (this._nik = ref)}
@@ -425,7 +425,7 @@ class CardIdentityForm extends Component {
             onChange={this.setBirthDate}
           />
         ) : null}
-      </KeyboardFriendlyView>
+      </View>
     );
   }
 }

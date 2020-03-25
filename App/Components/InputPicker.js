@@ -45,7 +45,9 @@ class InputPicker extends Component {
     if (!Array.isArray(dataLocal) || dataLocal.length <= 0) return;
     this.setState({ data: dataLocal }, () => {
       if (dataLocal.length >= 1) {
-        this.onSelectionChange(dataLocal[0], 0);
+        setTimeout(() => {
+          this.onSelectionChange(dataLocal[0], 0);
+        }, 500);
       }
     });
   };

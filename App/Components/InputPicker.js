@@ -29,8 +29,7 @@ class InputPicker extends Component {
   componentDidMount() {
     const { isInitialFetching, dataLocal } = this.props;
     if (isInitialFetching) this.onFetchData();
-    if (Array.isArray(dataLocal) && dataLocal.length > 0)
-      this.setupData(dataLocal);
+    this.setupData(dataLocal);
   }
 
   componentDidUpdate(prevProps) {
@@ -43,7 +42,12 @@ class InputPicker extends Component {
   }
 
   setupData = dataLocal => {
-    this.setState({ data: dataLocal });
+    if (!Array.isArray(dataLocal) || dataLocal.length <= 0) return;
+    this.setState({ data: dataLocal }, () => {
+      if (dataLocal.length >= 1) {
+        this.onSelectionChange(dataLocal[0], 0);
+      }
+    });
   };
 
   resetData = () => {
@@ -110,16 +114,19 @@ class InputPicker extends Component {
     const { data } = this.state;
     const { onSelectionChange, name } = this.props;
     if (!value) return;
-    const selectedData = data.find(({ valueIt }) => valueIt === value);
-    const { label: selectedLabel, showManualInput } = selectedData || {};
+    const selectedData = (data || []).find(
+      ({ value: valueIt }) => valueIt === value
+    );
+    const { label: selectedLabel, value: selectedValue, showManualInput } =
+      selectedData || {};
     this.setState({
-      selected: value,
+      selected: selectedValue,
       selected_text: selectedLabel,
       showManualInput
     });
     if (onSelectionChange) {
-      const keyOutput = showManualInput ? null : value;
-      onSelectionChange(keyOutput, name, showManualInput);
+      const keyOutput = showManualInput ? null : selectedValue;
+      onSelectionChange(keyOutput, selectedValue, name, showManualInput);
     }
   };
 

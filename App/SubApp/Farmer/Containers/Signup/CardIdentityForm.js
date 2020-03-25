@@ -80,7 +80,7 @@ class CardIdentityForm extends Component {
 
     show_expired_modal: false,
     show_date_modal: false,
-    loading: false
+    is_can_continue: false
   };
 
   onSubmit = async () => {
@@ -123,35 +123,34 @@ class CardIdentityForm extends Component {
         photo_ktp_thumbnail: photo_ktp_thumbnail
       });
     }
-    storeFarmerKtp(
-      Object.assign(
-        {},
-        {
-          nik,
-          name,
-          birth_place,
-          birth_date,
-          gender,
-          blood_type,
-          religion,
-          marriage_status,
-          occupation,
-          citizenship,
-          expired_date,
-          photo_face,
-          photo_ktp,
-          address_detail,
-          rtrw,
-          kodepos,
-          kelurahan,
-          kecamatan,
-          kecamatan_id,
-          kabupaten,
-          provinsi
-        },
-        photo
-      )
+    const ktpData = Object.assign(
+      {},
+      {
+        nik,
+        name,
+        birth_place,
+        birth_date,
+        gender,
+        blood_type,
+        religion,
+        marriage_status,
+        occupation,
+        citizenship,
+        expired_date,
+        photo_face,
+        photo_ktp,
+        address_detail,
+        rtrw,
+        kodepos,
+        kelurahan,
+        kecamatan,
+        kecamatan_id,
+        kabupaten,
+        provinsi
+      },
+      photo
     );
+    storeFarmerKtp(ktpData);
     navigation.navigate("AreaList");
   };
 
@@ -198,7 +197,6 @@ class CardIdentityForm extends Component {
   };
 
   onSelectionChange = (key, value, stateName) => {
-    console.tron.log("onSelectionChange", key, value, stateName);
     this.setState({ [stateName]: value });
   };
 
@@ -217,18 +215,6 @@ class CardIdentityForm extends Component {
     this.setState({ [name]: photos, [`${name}_thumbnail`]: thumbnail });
   };
 
-  renderBottom = () => {
-    const { loading } = this.state;
-    return (
-      <ButtonPrimary
-        onPress={this.onSubmit}
-        disabled={loading}
-        loading={loading}
-        title="Selanjutnya"
-      />
-    );
-  };
-
   render() {
     const {
       nik,
@@ -242,7 +228,8 @@ class CardIdentityForm extends Component {
       show_expired_modal,
       show_date_modal,
       expired_date,
-      expired_date_error
+      expired_date_error,
+      is_can_continue
     } = this.state;
     return (
       <View style={{ flex: 1 }}>
@@ -425,6 +412,12 @@ class CardIdentityForm extends Component {
             onChange={this.setBirthDate}
           />
         ) : null}
+
+        <ButtonPrimary
+          onPress={this.onSubmit}
+          disabled={is_can_continue}
+          title="Selanjutnya"
+        />
       </View>
     );
   }

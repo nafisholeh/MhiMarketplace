@@ -33,6 +33,8 @@ class AutoAddressInput extends Component {
 
   onDaerahChange = ({ key, value }) => {
     this.setState({ id_address: key });
+    const { onKecamatanIdChanged } = this.props;
+    onKecamatanIdChanged(key);
   };
 
   validateRTRW = () => {
@@ -102,12 +104,7 @@ class AutoAddressInput extends Component {
 AutoAddressInput.propTypes = {
   onRtRwChanged: func.isRequired,
   onAddressDetailChanged: func.isRequired,
-  onKecamatanIdChanged: func.isRequired,
-  onKecamatanChanged: func.isRequired,
-  onKelurahanChanged: func.isRequired,
-  onKodeposChanged: func.isRequired,
-  onKabupatenChanged: func.isRequired,
-  onProvinsiChanged: func.isRequired
+  onKecamatanIdChanged: func.isRequired
 };
 
 export default AutoAddressInput;

@@ -31,52 +31,38 @@ class CardIdentityForm extends Component {
   };
 
   state = {
-    nik: null,
-    nik_error: null,
-    name: null,
-    name_error: null,
-    birth_place: null,
-    birth_place_error: null,
-    birth_date: new Date("1990-01-01"),
-    birth_date_error: null,
-    gender: null,
-    gender_error: null,
-    blood_type: null,
-    blood_type_error: null,
-    religion: null,
-    religion_error: null,
-    marriage_status: null,
-    marriage_status_error: null,
-    occupation: null,
-    occupation_error: null,
-    citizenship: null,
-    citizenship_error: null,
-    expired_date: LIFETIME,
-    expired_date_error: null,
-    photo_face: null,
-    photo_face_thumbnail: null,
-    photo_face_error: null,
-    photo_ktp: null,
-    photo_ktp_thumbnail: null,
-    photo_ktp_error: null,
-    address_detail: null,
-    address_detail_error: null,
-    rtrw: null,
-    rtrw_error: null,
-    kodepos: null,
-    kodepos_error: null,
-    kelurahan: null,
-    kelurahan_error: null,
-    kecamatan: null,
-    kecamatan_error: null,
-    kecamatan_id: null,
-    kecamatan_id_error: null,
-    kabupaten: null,
-    kabupaten_error: null,
-    provinsi: null,
-    provinsi_error: null,
-    heightBox1: 325,
-    heightBox2: 85,
+    form: {
+      nik: null,
+      name: null,
+      birth_place: null,
+      birth_date: new Date("1990-01-01"),
+      gender: null,
+      blood_type: null,
+      religion: null,
+      marriage_status: null,
+      occupation: null,
+      citizenship: null,
+      expired_date: LIFETIME,
+      address_detail: null,
+      rtrw: null,
+      kecamatan_id: null
+    },
+    error: {
+      nik: null,
+      name: null,
+      birth_place: null,
+      birth_date: null,
+      gender: null,
+      blood_type: null,
+      religion: null,
+      marriage_status: null,
+      occupation: null,
+      citizenship: null,
+      expired_date: null,
+      address_detail: null,
+      rtrw: null,
+      kecamatan_id: null
+    },
 
     show_expired_modal: false,
     show_date_modal: false,
@@ -86,46 +72,7 @@ class CardIdentityForm extends Component {
   onSubmit = async () => {
     const { navigation, storeFarmerKtp } = this.props;
     const {
-      nik,
-      name,
-      birth_place,
-      birth_date,
-      gender,
-      blood_type,
-      religion,
-      marriage_status,
-      occupation,
-      citizenship,
-      expired_date,
-      photo_face,
-      photo_face_thumbnail,
-      photo_ktp,
-      photo_ktp_thumbnail,
-      address_detail,
-      rtrw,
-      kodepos,
-      kelurahan,
-      kecamatan,
-      kecamatan_id,
-      kabupaten,
-      provinsi
-    } = this.state;
-    let photo = {};
-    if (Array.isArray(photo_face) && photo_face.length) {
-      photo = Object.assign({}, photo, {
-        photo_face: photo_face[0],
-        photo_face_thumbnail: photo_face_thumbnail
-      });
-    }
-    if (Array.isArray(photo_ktp) && photo_ktp.length) {
-      photo = Object.assign({}, photo, {
-        photo_ktp: photo_ktp[0],
-        photo_ktp_thumbnail: photo_ktp_thumbnail
-      });
-    }
-    const ktpData = Object.assign(
-      {},
-      {
+      form: {
         nik,
         name,
         birth_place,
@@ -137,19 +84,27 @@ class CardIdentityForm extends Component {
         occupation,
         citizenship,
         expired_date,
-        photo_face,
-        photo_ktp,
         address_detail,
         rtrw,
-        kodepos,
-        kelurahan,
-        kecamatan,
-        kecamatan_id,
-        kabupaten,
-        provinsi
-      },
-      photo
-    );
+        kecamatan_id
+      }
+    } = this.state;
+    const ktpData = {
+      nik,
+      name,
+      birth_place,
+      birth_date,
+      gender,
+      blood_type,
+      religion,
+      marriage_status,
+      occupation,
+      citizenship,
+      expired_date,
+      address_detail,
+      rtrw,
+      kecamatan_id
+    };
     storeFarmerKtp(ktpData);
     navigation.navigate("AreaList");
   };
@@ -166,14 +121,14 @@ class CardIdentityForm extends Component {
     date = date || this.state.date;
     this.setState({
       show_expired_modal: false,
-      expired_date: date
+      form: { ...this.state.form, expired_date: date }
     });
   };
 
   setLifetimeExpiredDate = (key, value) => {
     const isLifeTime = value === "Seumur hidup";
     const expired_date = isLifeTime ? LIFETIME : new Date();
-    this.setState({ expired_date });
+    this.setState({ form: { ...this.state.form, expired_date } });
   };
 
   openBirthDate = () => {
@@ -188,20 +143,37 @@ class CardIdentityForm extends Component {
     date = date || this.state.date;
     this.setState({
       show_date_modal: false,
-      birth_date: date
+      form: { ...this.state.form, birth_date: date }
+    });
+  };
+
+  onCanContinue = () => {
+    const { form } = this.state;
+    const isCanContinue = Object.values(form).every(o => o && o !== "");
+    this.setState({
+      is_can_continue: isCanContinue
     });
   };
 
   onChangeText = (value, stateName) => {
-    this.setState({ [stateName]: value });
+    this.setState(
+      { form: { ...this.state.form, [stateName]: value } },
+      this.onCanContinue
+    );
   };
 
   onSelectionChange = (key, value, stateName) => {
-    this.setState({ [stateName]: value });
+    this.setState(
+      { form: { ...this.state.form, [stateName]: value } },
+      this.onCanContinue
+    );
   };
 
   onAutoCompleteChange = ({ value }, stateName) => {
-    this.setState({ [stateName]: value });
+    this.setState(
+      { form: { ...this.state.form, [stateName]: value } },
+      this.onCanContinue
+    );
   };
 
   onPhotoChange = async (name, raw = [], paths = []) => {
@@ -212,23 +184,26 @@ class CardIdentityForm extends Component {
     });
     const { data: dataBase64, mime } = photos.length ? photos[0] : null;
     const thumbnail = await generateBase64Thumbnail(dataBase64);
-    this.setState({ [name]: photos, [`${name}_thumbnail`]: thumbnail });
+    this.setState({
+      form: {
+        ...this.state.form,
+        [name]: photos,
+        [`${name}_thumbnail`]: thumbnail
+      }
+    });
   };
 
   render() {
     const {
-      nik,
-      nik_error,
-      name,
-      name_error,
-      birth_place,
-      birth_place_error,
-      birth_date,
-      birth_date_error,
-      show_expired_modal,
-      show_date_modal,
-      expired_date,
-      expired_date_error,
+      form: {
+        nik,
+        name,
+        birth_place,
+        birth_date,
+        show_expired_modal,
+        show_date_modal,
+        expired_date
+      },
       is_can_continue
     } = this.state;
     return (
@@ -240,7 +215,7 @@ class CardIdentityForm extends Component {
             name="nik"
             title="NIK"
             value={nik || ""}
-            error={nik_error}
+            // error={nik_error}
             onChangeText={this.onChangeText}
             onSubmitEditing={() => this._name.focus()}
             keyboardType="numeric"
@@ -253,7 +228,7 @@ class CardIdentityForm extends Component {
             name="name"
             title="Nama"
             value={name || ""}
-            error={name_error}
+            // error={name_error}
             onChangeText={this.onChangeText}
             returnKeyType="done"
           />
@@ -269,7 +244,7 @@ class CardIdentityForm extends Component {
               name="birth_place"
               title="Tempat"
               value={birth_place || ""}
-              error={birth_place_error}
+              // error={birth_place_error}
               onChangeText={this.onChangeText}
               returnKeyType="done"
               styleContainer={{
@@ -290,7 +265,7 @@ class CardIdentityForm extends Component {
                 title="Tanggal Lahir"
                 name="birth_date"
                 value={moment(birth_date).format("DD MMM YYYY") || ""}
-                error={birth_date_error}
+                // error={birth_date_error}
                 onChangeText={this.onChangeText}
                 styleContainer={{
                   flex: 1,
@@ -322,15 +297,12 @@ class CardIdentityForm extends Component {
 
           <AutoAddressInput
             onAddressDetailChanged={text =>
-              this.setState({ address_detail: text })
+              this.onChangeText(text, "address_detail")
             }
-            onRtRwChanged={text => this.setState({ rtrw: text })}
-            onKodeposChanged={text => this.setState({ kodepos: text })}
-            onKelurahanChanged={text => this.setState({ kelurahan: text })}
-            onKecamatanChanged={text => this.setState({ kecamatan: text })}
-            onKecamatanIdChanged={text => this.setState({ kecamatan_id: text })}
-            onKabupatenChanged={text => this.setState({ kabupaten: text })}
-            onProvinsiChanged={text => this.setState({ provinsi: text })}
+            onRtRwChanged={text => this.onChangeText(text, "rtrw")}
+            onKecamatanIdChanged={text =>
+              this.onChangeText(text, "kecamatan_id")
+            }
           />
 
           <InputTextAutoComplete
@@ -382,7 +354,7 @@ class CardIdentityForm extends Component {
               >
                 <InputText
                   value={moment(expired_date).format("DD MMM YYYY") || ""}
-                  error={expired_date_error}
+                  // error={expired_date_error}
                   isAllBorderShown
                   editable={false}
                   prefixIcon={Images.calendar}
@@ -415,7 +387,7 @@ class CardIdentityForm extends Component {
 
         <ButtonPrimary
           onPress={this.onSubmit}
-          disabled={is_can_continue}
+          disabled={!is_can_continue}
           title="Selanjutnya"
         />
       </View>

@@ -230,7 +230,8 @@ class CardIdentityForm extends Component {
             value={name || ""}
             // error={name_error}
             onChangeText={this.onChangeText}
-            returnKeyType="done"
+            onSubmitEditing={() => this._birth_place.focus()}
+            returnKeyType="next"
           />
 
           <View

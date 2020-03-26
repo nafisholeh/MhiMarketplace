@@ -208,7 +208,7 @@ class CardIdentityForm extends Component {
     } = this.state;
     return (
       <View style={{ flex: 1 }}>
-        <SignupWrapper title="Data KTP">
+        <SignupWrapper title="Data KTP" currentPosition={1}>
           <InputText
             refs={ref => (this._nik = ref)}
             isAllBorderShown

@@ -34,7 +34,7 @@ export default class SignupIndicator extends Component {
           customStyles={customStyles}
           currentPosition={currentPosition}
           renderStepIndicator={({ position, stepStatus }) => {
-            if (position === currentPosition) {
+            if (stepStatus === "finished") {
               return (
                 <ImageRadius
                   source={Images.check_flat}
@@ -52,7 +52,10 @@ export default class SignupIndicator extends Component {
                   width: METRICS.MEDIUM,
                   height: METRICS.MEDIUM,
                   borderRadius: METRICS.MEDIUM / 2,
-                  backgroundColor: Colors.disabled_light
+                  backgroundColor:
+                    position === currentPosition
+                      ? Colors.green_light
+                      : Colors.disabled_light
                 }}
               ></View>
             );

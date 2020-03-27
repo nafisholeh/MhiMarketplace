@@ -132,11 +132,16 @@ class CardIdentityForm extends Component {
   };
 
   openBirthDate = () => {
-    this.setState(prevState => {
-      return {
-        show_date_modal: !prevState.show_date_modal
-      };
-    });
+    this.setState(
+      prevState => {
+        return {
+          show_date_modal: !prevState.show_date_modal
+        };
+      },
+      () => {
+        console.tron.log("openBirthDate", this.state.show_date_modal);
+      }
+    );
   };
 
   setBirthDate = (event, date) => {
@@ -195,16 +200,10 @@ class CardIdentityForm extends Component {
 
   render() {
     const {
-      form: {
-        nik,
-        name,
-        birth_place,
-        birth_date,
-        show_expired_modal,
-        show_date_modal,
-        expired_date
-      },
-      is_can_continue
+      form: { nik, name, birth_place, birth_date, expired_date },
+      is_can_continue,
+      show_expired_modal,
+      show_date_modal
     } = this.state;
     return (
       <View style={{ flex: 1 }}>
@@ -366,25 +365,25 @@ class CardIdentityForm extends Component {
               </TouchableOpacity>
             )}
           />
+
+          {show_expired_modal ? (
+            <DateTimePicker
+              value={expired_date}
+              mode="date"
+              display="default"
+              onChange={this.setExpiredDate}
+            />
+          ) : null}
+
+          {show_date_modal ? (
+            <DateTimePicker
+              value={birth_date}
+              mode="date"
+              display="default"
+              onChange={this.setBirthDate}
+            />
+          ) : null}
         </SignupWrapper>
-
-        {show_expired_modal ? (
-          <DateTimePicker
-            value={expired_date}
-            mode="date"
-            display="default"
-            onChange={this.setExpiredDate}
-          />
-        ) : null}
-
-        {show_date_modal ? (
-          <DateTimePicker
-            value={birth_date}
-            mode="date"
-            display="default"
-            onChange={this.setBirthDate}
-          />
-        ) : null}
 
         <ButtonPrimary
           onPress={this.onSubmit}

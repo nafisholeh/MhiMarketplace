@@ -33,6 +33,7 @@ import HeaderTitleSecondary from "./Header/HeaderTitleSecondary";
 import ViewShadow from "./Shadow/ViewShadow";
 import InputText from "./InputText";
 import InputTextAutoComplete from "./InputTextAutoComplete";
+import InputDate from "./InputDate";
 import InputPicker from "./InputPicker";
 import ChipSelects from "./ChipSelects";
 import KeyboardFriendlyView from "./KeyboardFriendlyView";
@@ -77,6 +78,7 @@ export {
   ViewShadow,
   InputText,
   InputTextAutoComplete,
+  InputDate,
   InputPicker,
   ChipSelects,
   KeyboardFriendlyView,

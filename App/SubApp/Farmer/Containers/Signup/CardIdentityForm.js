@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { func } from "prop-types";
 import { connect } from "react-redux";
 import { withNavigation } from "react-navigation";
@@ -12,9 +12,9 @@ import { moderateScale, generateBase64Thumbnail } from "Lib";
 import {
   InputText,
   InputTextAutoComplete,
+  InputDate,
   InputPicker,
-  ButtonPrimary,
-  KeyboardFriendlyView
+  ButtonPrimary
 } from "Components";
 import { Images, Colors, METRICS } from "Themes";
 import AppConfig from "Config/AppConfig";
@@ -131,27 +131,6 @@ class CardIdentityForm extends Component {
     this.setState({ form: { ...this.state.form, expired_date } });
   };
 
-  openBirthDate = () => {
-    this.setState(
-      prevState => {
-        return {
-          show_date_modal: !prevState.show_date_modal
-        };
-      },
-      () => {
-        console.tron.log("openBirthDate", this.state.show_date_modal);
-      }
-    );
-  };
-
-  setBirthDate = (event, date) => {
-    date = date || this.state.date;
-    this.setState({
-      show_date_modal: false,
-      form: { ...this.state.form, birth_date: date }
-    });
-  };
-
   onCanContinue = () => {
     const { form } = this.state;
     const isCanContinue = Object.values(form).every(o => o && o !== "");
@@ -254,29 +233,12 @@ class CardIdentityForm extends Component {
               }}
             />
 
-            <TouchableOpacity
-              onPress={this.openBirthDate}
-              style={{
-                flex: 1
-              }}
-            >
-              <InputText
-                isAllBorderShown
-                title="Tanggal Lahir"
-                name="birth_date"
-                value={moment(birth_date).format("DD MMM YYYY") || ""}
-                // error={birth_date_error}
-                onChangeText={this.onChangeText}
-                styleContainer={{
-                  flex: 1,
-                  marginHorizontal: 0
-                }}
-                editable={false}
-                isShowIcon
-                icon={Images.calendar}
-                iconStyle={{ tintColor: null }}
-              />
-            </TouchableOpacity>
+            <InputDate
+              isAllBorderShown
+              title="Tanggal Lahir"
+              name="birth_date"
+              onChangeDate={this.onChangeText}
+            />
           </View>
 
           <InputPicker
@@ -372,15 +334,6 @@ class CardIdentityForm extends Component {
               mode="date"
               display="default"
               onChange={this.setExpiredDate}
-            />
-          ) : null}
-
-          {show_date_modal ? (
-            <DateTimePicker
-              value={birth_date}
-              mode="date"
-              display="default"
-              onChange={this.setBirthDate}
             />
           ) : null}
         </SignupWrapper>

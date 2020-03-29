@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View } from "react-native";
 import { func } from "prop-types";
 import { connect } from "react-redux";
 import { withNavigation } from "react-navigation";
-import moment from "moment";
-import DateTimePicker from "@react-native-community/datetimepicker";
 
 import { AutoAddressInput } from "Containers/Address/Common";
 import FarmerSignupActions from "Redux/FarmerSignupRedux";
@@ -16,7 +14,6 @@ import {
   InputPicker,
   ButtonPrimary
 } from "Components";
-import { Images, Colors, METRICS } from "Themes";
 import AppConfig from "Config/AppConfig";
 import SignupWrapper from "./SignupWrapper";
 
@@ -109,22 +106,6 @@ class CardIdentityForm extends Component {
     navigation.navigate("AreaList");
   };
 
-  openExpiredDate = () => {
-    this.setState(prevState => {
-      return {
-        show_expired_modal: !prevState.show_expired_modal
-      };
-    });
-  };
-
-  setExpiredDate = (event, date) => {
-    date = date || this.state.date;
-    this.setState({
-      show_expired_modal: false,
-      form: { ...this.state.form, expired_date: date }
-    });
-  };
-
   setLifetimeExpiredDate = (key, value) => {
     const isLifeTime = value === "Seumur hidup";
     const expired_date = isLifeTime ? LIFETIME : new Date();
@@ -180,9 +161,7 @@ class CardIdentityForm extends Component {
   render() {
     const {
       form: { nik, name, birth_place, birth_date, expired_date },
-      is_can_continue,
-      show_expired_modal,
-      show_date_modal
+      is_can_continue
     } = this.state;
     return (
       <View style={{ flex: 1 }}>
@@ -238,6 +217,7 @@ class CardIdentityForm extends Component {
               title="Tanggal Lahir"
               name="birth_date"
               onChangeDate={this.onChangeText}
+              value={birth_date}
             />
           </View>
 
@@ -307,35 +287,15 @@ class CardIdentityForm extends Component {
             dataLocal={AppConfig.expiredDate}
             onSelectionChange={this.setLifetimeExpiredDate}
             CustomManualInput={() => (
-              <TouchableOpacity
-                onPress={this.openExpiredDate}
-                style={{
-                  marginBottom: METRICS.NORMAL,
-                  marginHorizontal: 0
-                }}
-              >
-                <InputText
-                  value={moment(expired_date).format("DD MMM YYYY") || ""}
-                  // error={expired_date_error}
-                  isAllBorderShown
-                  editable={false}
-                  prefixIcon={Images.calendar}
-                  prefixIconStyle={{
-                    tintColor: Colors.disabled_light
-                  }}
-                />
-              </TouchableOpacity>
+              <InputDate
+                isAllBorderShown
+                title="Tanggal Lahir"
+                name="expired_date"
+                onChangeDate={this.onChangeText}
+                value={expired_date}
+              />
             )}
           />
-
-          {show_expired_modal ? (
-            <DateTimePicker
-              value={expired_date}
-              mode="date"
-              display="default"
-              onChange={this.setExpiredDate}
-            />
-          ) : null}
         </SignupWrapper>
 
         <ButtonPrimary

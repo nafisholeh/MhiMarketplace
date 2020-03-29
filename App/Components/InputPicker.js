@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { PureComponent, Fragment } from "react";
 import { View, Text } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { bool, arrayOf, shape, string, object, func } from "prop-types";
@@ -11,7 +11,7 @@ import ApolloClientProvider from "Services/ApolloClientProvider";
 
 const FEW_THRESHOLD = 4;
 
-class InputPicker extends Component {
+class InputPicker extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { PureComponent, Fragment } from "react";
 import { TouchableOpacity } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
@@ -6,35 +6,44 @@ import moment from "moment";
 import InputText from "./InputText";
 import { Images } from "Themes";
 
-export default class InputDate extends Component {
+export default class InputDate extends PureComponent {
   state = {
     date_raw: new Date(),
     date_formatted: moment().format("DD MMM YYYY"),
     is_open_modal: false
   };
 
+  componentDidMount() {
+    this.onParseDate();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.value !== this.props.value) {
+      this.onParseDate();
+    }
+  }
+
   openDateModal = () => {
-    this.setState(prevState => {
-      return {
-        is_open_modal: !prevState.is_open_modal
-      };
+    this.setState({ is_open_modal: true });
+  };
+
+  onParseDate = () => {
+    const { value: rawValue } = this.props;
+    if (!rawValue) return;
+    const formattedValue = moment(rawValue).format("DD MMM YYYY") || "";
+    this.setState({
+      is_open_modal: false,
+      date_raw: rawValue,
+      date_formatted: formattedValue
     });
   };
 
   onChangeDate = (event, date) => {
     const { onChangeDate, name } = this.props;
-    const dateValue =
-      moment(date || this.state.date).format("DD MMM YYYY") || "";
-    this.setState(
-      {
-        is_open_modal: false,
-        date_raw: date,
-        date_formatted: dateValue
-      },
-      () => {
-        if (onChangeDate) onChangeDate(date, name);
-      }
-    );
+    this.setState({ is_open_modal: false });
+    if (onChangeDate) {
+      onChangeDate(date, name);
+    }
   };
 
   render() {

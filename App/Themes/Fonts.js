@@ -1,7 +1,5 @@
 import Colors from "./Colors";
 
-import { moderateScale } from "../Lib/Responsive";
-
 export default {
   PAGE_TITLE: {
     fontFamily: "CircularStd-Bold",

@@ -4,9 +4,10 @@ import { func } from "prop-types";
 import { connect } from "react-redux";
 import { withNavigation } from "react-navigation";
 
+import { withNoHeader } from "Hoc";
 import { AutoAddressInput } from "Containers/Address/Common";
 import FarmerSignupActions from "Redux/FarmerSignupRedux";
-import { moderateScale, generateBase64Thumbnail } from "Lib";
+import { moderateScale } from "Lib";
 import {
   InputText,
   InputTextAutoComplete,
@@ -20,13 +21,6 @@ import SignupWrapper from "./SignupWrapper";
 const LIFETIME = new Date("3000-01-01");
 
 class CardIdentityForm extends Component {
-  static navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation.state;
-    return {
-      header: null
-    };
-  };
-
   state = {
     form: {
       nik: null,
@@ -141,23 +135,6 @@ class CardIdentityForm extends Component {
     );
   };
 
-  onPhotoChange = async (name, raw = [], paths = []) => {
-    if (!Array.isArray(raw)) return;
-    const photos = raw.map((item, i) => {
-      const { mime, path, data } = raw[i];
-      return { mime, path, data };
-    });
-    const { data: dataBase64, mime } = photos.length ? photos[0] : null;
-    const thumbnail = await generateBase64Thumbnail(dataBase64);
-    this.setState({
-      form: {
-        ...this.state.form,
-        [name]: photos,
-        [`${name}_thumbnail`]: thumbnail
-      }
-    });
-  };
-
   render() {
     const {
       form: { nik, name, birth_place, birth_date, expired_date },
@@ -172,7 +149,6 @@ class CardIdentityForm extends Component {
             name="nik"
             title="NIK"
             value={nik || ""}
-            // error={nik_error}
             onChangeText={this.onChangeText}
             onSubmitEditing={() => this._name.focus()}
             keyboardType="numeric"
@@ -185,7 +161,6 @@ class CardIdentityForm extends Component {
             name="name"
             title="Nama"
             value={name || ""}
-            // error={name_error}
             onChangeText={this.onChangeText}
             onSubmitEditing={() => this._birth_place.focus()}
             returnKeyType="next"
@@ -202,7 +177,6 @@ class CardIdentityForm extends Component {
               name="birth_place"
               title="Tempat"
               value={birth_place || ""}
-              // error={birth_place_error}
               onChangeText={this.onChangeText}
               returnKeyType="done"
               styleContainer={{
@@ -319,4 +293,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   null,
   mapDispatchToProps
-)(withNavigation(CardIdentityForm));
+)(withNavigation(withNoHeader(CardIdentityForm)));

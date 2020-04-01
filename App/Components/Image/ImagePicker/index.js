@@ -1,23 +1,20 @@
 import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
 import {
   ActionSheetIOS,
   Platform,
-  StyleSheet,
   View,
-  Animated,
   Text,
+  StyleSheet,
   Image,
-  TextInput,
   TouchableOpacity
 } from "react-native";
+import PropTypes from "prop-types";
 import ImagePickers from "react-native-image-crop-picker";
 import BottomSheet from "react-native-js-bottom-sheet";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 var _ = require("lodash");
 
-import { Colors, METRICS, Images } from "Themes";
-import ImageFlexible from "../ImageFlexible";
+import { METRICS, Colors, Images } from "Themes";
 import ImageGrid from "../ImageGrid";
 
 class ImagePicker extends PureComponent {
@@ -193,12 +190,7 @@ class ImagePicker extends PureComponent {
   // render image gallery untuk multiple image
   _renderGallery = () => {
     const { image } = this.state;
-    const {
-      isShowGallery,
-      isCustomComponent,
-      isMultiplePick,
-      singlePhotoButtonStyle
-    } = this.props;
+    const { isCustomComponent, isMultiplePick } = this.props;
     if (!isCustomComponent) {
       if (isMultiplePick) {
         return (
@@ -238,16 +230,32 @@ class ImagePicker extends PureComponent {
         );
       } else {
         return (
-          <ImageFlexible
-            path={image[0]}
-            urlDefault={Images.photo_add_button}
-            style={singlePhotoButtonStyle}
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              height: 225,
+              borderWidth: 1,
+              borderColor: Colors.border,
+              backgroundColor: "rgba(133, 133, 133, 0.05)",
+              borderRadius: 5,
+              alignItems: "center",
+              justifyContent: "center"
+            }}
             onPress={
               Platform.OS === "ios"
                 ? this._onOpenOptionIOS
                 : () => this.bottomSheet.open()
             }
-          />
+          >
+            <Image
+              source={image[0] ? { source: image[0] } : Images.camera}
+              style={{
+                width: METRICS.EXTRA_HUGE,
+                height: METRICS.EXTRA_HUGE,
+                tintColor: "rgba(133, 133, 133, 0.3)"
+              }}
+            />
+          </TouchableOpacity>
         );
       }
     } else {

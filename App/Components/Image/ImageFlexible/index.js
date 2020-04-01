@@ -1,20 +1,10 @@
 import React, { PureComponent } from "react";
 import { object, string, array, number, oneOfType, func } from "prop-types";
-import {
-  Platform,
-  StyleSheet,
-  View,
-  Text,
-  ActivityIndicator,
-  Image,
-  TextInput,
-  TouchableOpacity
-} from "react-native";
+import { ActivityIndicator } from "react-native";
 import FlexImage from "react-native-flex-image";
 import { DotIndicator, WaveIndicator } from "react-native-indicators";
 var _ = require("lodash");
 
-import { Colors, METRICS, Images } from "Themes";
 import { getFirstParam, isLocalImage, isAssetImage } from "../helper";
 
 export default class ImageFlexible extends PureComponent {

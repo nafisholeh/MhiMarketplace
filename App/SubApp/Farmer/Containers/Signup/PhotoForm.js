@@ -5,31 +5,22 @@ import { withNavigation } from "react-navigation";
 
 import { withNoHeader } from "Hoc";
 import { ImagePicker, ButtonPrimary } from "Components";
-import { generateBase64Thumbnail, moderateScale } from "Lib";
 import { Colors, METRICS } from "Themes";
 import SignupWrapper from "./SignupWrapper";
 
 class PhotoForm extends Component {
   state = {
     photo_face: null,
-    photo_ktp: null
+    photo_ktp: null,
   };
 
-  onPhotoChange = async (name, raw = [], paths = []) => {
+  onPhotoChange = async (name, raw = []) => {
     if (!Array.isArray(raw)) return;
     const photos = raw.map((item, i) => {
-      const { mime, path, data } = raw[i];
+      const { mime, path, data } = item;
       return { mime, path, data };
     });
-    const { data: dataBase64, mime } = photos.length ? photos[0] : null;
-    const thumbnail = await generateBase64Thumbnail(dataBase64);
-    this.setState({
-      form: {
-        ...this.state.form,
-        [name]: photos,
-        [`${name}_thumbnail`]: thumbnail
-      }
-    });
+    this.setState({ [name]: photos });
   };
 
   render() {
@@ -42,7 +33,7 @@ class PhotoForm extends Component {
               color: Colors.veggie_dark,
               fontFamily: "CircularStd-Book",
               fontSize: 13,
-              marginBottom: METRICS.SMALL
+              marginBottom: METRICS.SMALL,
             }}
           >
             Ambil Foto KTP
@@ -56,7 +47,7 @@ class PhotoForm extends Component {
             isShowCancelButton={false}
             isShowGallery
             styleContainer={{
-              marginBottom: METRICS.LARGE
+              marginBottom: METRICS.LARGE,
             }}
           />
 
@@ -65,7 +56,7 @@ class PhotoForm extends Component {
               color: Colors.veggie_dark,
               fontFamily: "CircularStd-Book",
               fontSize: 13,
-              marginBottom: METRICS.SMALL
+              marginBottom: METRICS.SMALL,
             }}
           >
             Ambil Foto Muka
@@ -79,7 +70,7 @@ class PhotoForm extends Component {
             isShowCancelButton={false}
             isShowGallery
             styleContainer={{
-              marginBottom: METRICS.HUGE
+              marginBottom: METRICS.HUGE,
             }}
           />
         </SignupWrapper>
@@ -93,6 +84,6 @@ class PhotoForm extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = (state) => ({});
 
 export default connect(null, null)(withNavigation(withNoHeader(PhotoForm)));

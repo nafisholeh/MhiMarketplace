@@ -6,7 +6,7 @@ import {
   Text,
   StyleSheet,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import PropTypes from "prop-types";
 import ImagePickers from "react-native-image-crop-picker";
@@ -14,6 +14,7 @@ import BottomSheet from "react-native-js-bottom-sheet";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 var _ = require("lodash");
 
+import { ImageRadius } from "Components";
 import { METRICS, Colors, Images } from "Themes";
 import ImageGrid from "../ImageGrid";
 
@@ -21,14 +22,17 @@ class ImagePicker extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      image: this.props.data ? this.props.data : [],
-      imageRaw: []
+      image: this.props.data,
+      imageRaw: [],
     };
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.isStartPick !== this.props.isStartPick) {
       this._startPick();
+    }
+    if (prevProps.data !== this.props.data) {
+      this.setState({ image: this.props.data });
     }
   }
 
@@ -38,24 +42,24 @@ class ImagePicker extends PureComponent {
     ActionSheetIOS.showActionSheetWithOptions(
       {
         options,
-        cancelButtonIndex: 2
+        cancelButtonIndex: 2,
       },
       (buttonIndex: number) => {
         if (buttonIndex === 0) {
           ImagePickers.openCamera({
             compressImageQuality: 0.5,
-            includeBase64: true
+            includeBase64: true,
           })
             .then((image: Object) => this._saveImages(image))
-            .catch(error => {});
+            .catch((error) => {});
         } else if (buttonIndex === 1) {
           ImagePickers.openPicker({
             multiple: this.props.isMultiplePick ? true : false,
             compressImageQuality: 0.5,
-            includeBase64: true
+            includeBase64: true,
           })
-            .then(image => this._saveImages(image))
-            .catch(error => {});
+            .then((image) => this._saveImages(image))
+            .catch((error) => {});
         } else {
           this._onCancelPick();
         }
@@ -72,13 +76,13 @@ class ImagePicker extends PureComponent {
         onPress: () =>
           ImagePickers.openCamera({
             compressImageQuality: 0.5,
-            includeBase64: true
+            includeBase64: true,
           })
             .then((image: Object) => this._saveImages(image))
-            .catch(error => {}) && this.bottomSheet.close(),
+            .catch((error) => {}) && this.bottomSheet.close(),
         icon: (
           <MaterialIcons name={"photo-camera"} size={24} style={styles.icon} />
-        )
+        ),
       },
       {
         title: options[1],
@@ -86,14 +90,14 @@ class ImagePicker extends PureComponent {
           ImagePickers.openPicker({
             multiple: this.props.isMultiplePick ? true : false,
             compressImageQuality: 0.5,
-            includeBase64: true
+            includeBase64: true,
           })
-            .then(image => this._saveImages(image))
-            .catch(error => {}) && this.bottomSheet.close(),
+            .then((image) => this._saveImages(image))
+            .catch((error) => {}) && this.bottomSheet.close(),
         icon: (
           <MaterialIcons name={"photo-library"} size={24} style={styles.icon} />
-        )
-      }
+        ),
+      },
     ];
   };
 
@@ -111,16 +115,16 @@ class ImagePicker extends PureComponent {
       height: 200,
       cropperCircleOverlay: true,
       cropperChooseText: "Ok",
-      cropperCancelText: "Batal"
+      cropperCancelText: "Batal",
     })
-      .then(image => {
+      .then((image) => {
         this._replaceImages(image);
       })
-      .catch(error => {});
+      .catch((error) => {});
   }
 
   // ganti dengan image yang hasil dicrop
-  _replaceImages = image => {
+  _replaceImages = (image) => {
     let outputImages = [];
     let rawOutputImages = [];
     outputImages.push(this._getImagePath(image));
@@ -133,11 +137,11 @@ class ImagePicker extends PureComponent {
   };
 
   // simpan image ke state
-  _saveImages = images => {
+  _saveImages = (images) => {
     let newImages = [];
     let rawNewImages = [];
     if (_.isArray(images)) {
-      newImages = images.map(item => this._getImagePath(item));
+      newImages = images.map((item) => this._getImagePath(item));
       rawNewImages = rawNewImages.concat(images);
     } else {
       newImages.push(this._getImagePath(images));
@@ -166,13 +170,13 @@ class ImagePicker extends PureComponent {
   }
 
   // tereksekusi ketika image ada yg terhapus, sebab fitur hapus pada ImageGrid
-  _onDeleteImage = index => {
+  _onDeleteImage = (index) => {
     const { onChange, name } = this.props;
     const { imageRaw, image } = this.state;
     this.setState(
       {
         image: image.splice(index, 1),
-        imageRaw: imageRaw.splice(index, 1)
+        imageRaw: imageRaw.splice(index, 1),
       },
       () => {
         const { imageRaw, image } = this.state;
@@ -229,6 +233,9 @@ class ImagePicker extends PureComponent {
           </View>
         );
       } else {
+        const imageGallery = Array.isArray(image)
+          ? { uri: image[0].path }
+          : null;
         return (
           <TouchableOpacity
             style={{
@@ -239,7 +246,7 @@ class ImagePicker extends PureComponent {
               backgroundColor: "rgba(133, 133, 133, 0.05)",
               borderRadius: 5,
               alignItems: "center",
-              justifyContent: "center"
+              justifyContent: "center",
             }}
             onPress={
               Platform.OS === "ios"
@@ -248,12 +255,26 @@ class ImagePicker extends PureComponent {
             }
           >
             <Image
-              source={image[0] ? { source: image[0] } : Images.camera}
-              style={{
-                width: METRICS.EXTRA_HUGE,
-                height: METRICS.EXTRA_HUGE,
-                tintColor: "rgba(133, 133, 133, 0.3)"
-              }}
+              source={imageGallery || Images.camera}
+              style={
+                imageGallery
+                  ? {
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      bottom: 0,
+                      right: 0,
+                      borderTopLeftRadius: 5,
+                      borderTopRightRadius: 5,
+                      borderBottomLeftRadius: 5,
+                      borderBottomRightRadius: 5,
+                    }
+                  : {
+                      width: METRICS.EXTRA_HUGE,
+                      height: METRICS.EXTRA_HUGE,
+                      tintColor: "rgba(133, 133, 133, 0.3)",
+                    }
+              }
             />
           </TouchableOpacity>
         );
@@ -305,25 +326,25 @@ ImagePicker.propTypes = {
     PropTypes.string,
     PropTypes.number,
     PropTypes.object,
-    PropTypes.array
+    PropTypes.array,
   ]),
   styleButtonContainer: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
     PropTypes.object,
-    PropTypes.array
+    PropTypes.array,
   ]),
   styleButtonCancel: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
     PropTypes.object,
-    PropTypes.array
+    PropTypes.array,
   ]),
   styleButtonOk: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
     PropTypes.object,
-    PropTypes.array
+    PropTypes.array,
   ]),
   colorButtonCancel: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   colorButtonOk: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -337,7 +358,7 @@ ImagePicker.propTypes = {
   titleButtonCancel: PropTypes.string,
   isMultiplePick: PropTypes.bool,
   isCustomComponent: PropTypes.bool,
-  customComponent: PropTypes.func
+  customComponent: PropTypes.func,
 };
 
 ImagePicker.defaultProps = {
@@ -351,7 +372,7 @@ ImagePicker.defaultProps = {
   titleButtonCancel: "Batal",
   titleBottomSheet: "",
   isMultiplePick: true,
-  isCustomComponent: false
+  isCustomComponent: false,
 };
 
 export default ImagePicker;

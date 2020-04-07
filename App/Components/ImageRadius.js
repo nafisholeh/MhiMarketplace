@@ -1,9 +1,5 @@
 import React, { Component } from "react";
-import { Platform, StyleSheet, View, Image } from "react-native";
-import PropTypes from "prop-types";
-
-import { Colors, Images, METRICS, Constants } from "Themes";
-import { moderateScale } from "Lib";
+import { StyleSheet, View, Image } from "react-native";
 var _ = require("lodash");
 
 /*
@@ -37,15 +33,15 @@ export default class ImageRadius extends Component {
   }
 }
 
-const styles = props =>
+const styles = (props) =>
   StyleSheet.create({
     imageContainer: {
       width: props.width,
       height: props.height,
-      overflow: "hidden"
+      overflow: "hidden",
     },
     imageContainerAuto: {
-      overflow: "hidden"
+      overflow: "hidden",
     },
     image: {
       width: props.width,
@@ -53,14 +49,14 @@ const styles = props =>
       borderTopLeftRadius: props.borderTopLeftRadius,
       borderTopRightRadius: props.borderTopRightRadius,
       borderBottomLeftRadius: props.borderBottomLeftRadius,
-      borderBottomRightRadius: props.borderBottomRightRadius
+      borderBottomRightRadius: props.borderBottomRightRadius,
     },
     imageAuto: {
       borderTopLeftRadius: props.borderTopLeftRadius,
       borderTopRightRadius: props.borderTopRightRadius,
       borderBottomLeftRadius: props.borderBottomLeftRadius,
-      borderBottomRightRadius: props.borderBottomRightRadius
-    }
+      borderBottomRightRadius: props.borderBottomRightRadius,
+    },
   });
 
 ImageRadius.propTypes = {};
@@ -69,5 +65,5 @@ ImageRadius.defaultProps = {
   borderTopLeftRadius: 0,
   borderTopRightRadius: 0,
   borderBottomLeftRadius: 0,
-  borderBottomRightRadius: 0
+  borderBottomRightRadius: 0,
 };

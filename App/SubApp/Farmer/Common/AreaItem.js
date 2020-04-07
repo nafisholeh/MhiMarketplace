@@ -1,24 +1,22 @@
 import React, { Component, Fragment } from "react";
-import { Text, View, Image, TouchableOpacity } from "react-native";
-import MapView, { Polygon, MAP_TYPES } from "react-native-maps";
-import ViewOverflow from "react-native-view-overflow";
-import convert from "convert-units";
+import { Text, View } from "react-native";
+import MapView, { Polygon } from "react-native-maps";
 
 import AppConfig from "Config/AppConfig";
 import { moderateScale, screenWidth, normalizeAreaSize } from "Lib";
-import { FONTS, Images, Colors } from "Themes";
+import { FONTS, Colors } from "Themes";
 import { ProductHorizontalWrapper } from "Components";
 
 const EDGE_PADDING = {
   top: 1000,
   right: 0,
   bottom: 1000,
-  left: screenWidth - moderateScale(20)
+  left: screenWidth - moderateScale(20),
 };
 
 class AreaItem extends Component {
   state = {
-    sizeInUnit: "-"
+    sizeInUnit: "-",
   };
 
   componentDidMount() {
@@ -35,7 +33,7 @@ class AreaItem extends Component {
     const { size } = this.props;
     if (!size) return;
     this.setState({
-      sizeInUnit: normalizeAreaSize(size, "m2", "ha") || ""
+      sizeInUnit: normalizeAreaSize(size, "m2", "ha") || "",
     });
   };
 
@@ -43,7 +41,7 @@ class AreaItem extends Component {
     const { polygon } = this.props;
     const options = {
       edgePadding: EDGE_PADDING,
-      animated: false
+      animated: false,
     };
     if (Array.isArray(polygon)) {
       this.map.fitToCoordinates(polygon, options);
@@ -56,27 +54,27 @@ class AreaItem extends Component {
       title,
       commodity,
       polygon,
-      onDelete = () => {},
       onPress = () => {},
-      style
+      style,
     } = this.props;
     const { sizeInUnit } = this.state;
     return (
       <ProductHorizontalWrapper
-        width={screenWidth - moderateScale(20)}
+        width={screenWidth - moderateScale(70)}
         height={moderateScale(110)}
-        borderRadius={10}
-        shadowRadiusAndroid={13}
+        borderRadius={8}
+        shadowRadiusAndroid={8}
         style={{
+          marginTop: moderateScale(10),
           marginBottom: moderateScale(10),
-          marginHorizontal: moderateScale(10)
+          marginHorizontal: moderateScale(10),
         }}
         styleChildren={{
           ...{
             flexDirection: "row",
-            alignItems: "center"
+            alignItems: "center",
           },
-          ...style
+          ...style,
         }}
         onPress={onPress}
       >
@@ -85,14 +83,14 @@ class AreaItem extends Component {
         ) : (
           <Fragment>
             <MapView
-              ref={map => {
+              ref={(map) => {
                 this.map = map;
               }}
               onMapReady={() => setTimeout(() => this.onMapReady())}
               style={{
                 marginLeft: screenWidth * 0.25,
                 width: screenWidth - moderateScale(screenWidth * 0.35),
-                height: moderateScale(85)
+                height: moderateScale(85),
               }}
               customMapStyle={AppConfig.mapStyle}
               liteMode
@@ -114,26 +112,26 @@ class AreaItem extends Component {
                 backgroundColor: "white",
                 marginVertical: moderateScale(10),
                 paddingLeft: moderateScale(20),
-                paddingVertical: moderateScale(15)
+                paddingVertical: moderateScale(15),
               }}
             >
               <Text
                 style={{
-                  ...FONTS.BODY_SMALL
+                  ...FONTS.BODY_SMALL,
                 }}
               >
                 {title || "-"}
               </Text>
               <Text
                 style={{
-                  ...FONTS.BODY_BOLD
+                  ...FONTS.BODY_BOLD,
                 }}
               >
                 {commodity || "-"}
               </Text>
               <Text
                 style={{
-                  ...FONTS.BODY_NORMAL
+                  ...FONTS.BODY_NORMAL,
                 }}
               >
                 {sizeInUnit || "-"}

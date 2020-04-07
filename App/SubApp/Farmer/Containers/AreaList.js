@@ -4,20 +4,15 @@ import { withNavigation } from "react-navigation";
 import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
 
+import { withNoHeader } from "Hoc";
 import { getAreas, isAnyAreaDrawn } from "Redux/FarmerSignupRedux";
 import { Images, Colors, FONTS } from "Themes";
 import { moderateScale } from "Lib";
-import { ProductHorizontalWrapper } from "Components";
-import { HillHeaderWrapper, AreaItem, SignupBottomButton } from "CommonFarmer";
+import { ButtonPrimary } from "Components";
+import { AreaItem, SignupBottomButton } from "CommonFarmer";
+import SignupWrapper from "./Signup/SignupWrapper";
 
 class AreaList extends Component {
-  static navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation.state;
-    return {
-      header: null
-    };
-  };
-
   renderBottom = () => {
     const { navigation, areas, isAnyAreaDrawn } = this.props;
     return (
@@ -34,56 +29,66 @@ class AreaList extends Component {
   render() {
     const { navigation, areas, isAnyAreaDrawn } = this.props;
     return (
-      <HillHeaderWrapper title="Area Lahan" ChildrenBottom={this.renderBottom}>
-        <AreaItem
-          style={{
-            justifyContent: "center",
-            alignItems: "center"
-          }}
-          onPress={() => navigation.navigate("AreaDraw")}
-        >
-          <Image
-            source={Images.plus}
+      <View style={{ flex: 1 }}>
+        <SignupWrapper title="Area lahan" currentPosition={3}>
+          <AreaItem
             style={{
-              width: moderateScale(35),
-              height: moderateScale(35),
-              tintColor: Colors.disabled_light
+              justifyContent: "center",
+              alignItems: "center",
             }}
-          />
-        </AreaItem>
-
-        {isAnyAreaDrawn ? (
-          areas.map((item, index) => {
-            const { polygon, size, commodity_name } = item;
-            return (
-              <AreaItem
-                key={index}
-                title={`Lahan ${index + 1}`}
-                polygon={polygon}
-                size={size}
-                commodity={commodity_name}
-              />
-            );
-          })
-        ) : (
-          <Text
-            style={{
-              ...FONTS.INSTRUCTION,
-              marginHorizontal: moderateScale(5),
-              marginTop: moderateScale(10)
-            }}
+            onPress={() => navigation.navigate("AreaDraw")}
           >
-            Tekan tombol diatas untuk menambahkan area lahan
-          </Text>
-        )}
-      </HillHeaderWrapper>
+            <Image
+              source={Images.plus}
+              style={{
+                width: moderateScale(35),
+                height: moderateScale(35),
+                tintColor: Colors.disabled_light,
+              }}
+            />
+          </AreaItem>
+
+          {isAnyAreaDrawn && Array.isArray(areas) ? (
+            areas.map((item, index) => {
+              const { polygon, size, commodity_name } = item;
+              return (
+                <AreaItem
+                  key={index}
+                  title={`Lahan ${index + 1}`}
+                  polygon={polygon}
+                  size={size}
+                  commodity={commodity_name}
+                />
+              );
+            })
+          ) : (
+            <Text
+              style={{
+                ...FONTS.INSTRUCTION,
+                marginHorizontal: moderateScale(5),
+                marginTop: moderateScale(10),
+              }}
+            >
+              Tekan tombol diatas untuk menambahkan area lahan
+            </Text>
+          )}
+        </SignupWrapper>
+        <ButtonPrimary
+          onPress={this.onSubmit}
+          disabled={!isAnyAreaDrawn}
+          title="Selanjutnya"
+        />
+      </View>
     );
   }
 }
 
 const mapStateToProps = createStructuredSelector({
   areas: getAreas(),
-  isAnyAreaDrawn: isAnyAreaDrawn()
+  isAnyAreaDrawn: isAnyAreaDrawn(),
 });
 
-export default connect(mapStateToProps, null)(withNavigation(AreaList));
+export default connect(
+  mapStateToProps,
+  null
+)(withNavigation(withNoHeader(AreaList)));

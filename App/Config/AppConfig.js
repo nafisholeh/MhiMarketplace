@@ -3,13 +3,13 @@ import { Colors, Images } from "Themes";
 export const BASIC_RESPONSE = {
   SUCCESS: "sukses",
   FAILED: "gagal",
-  NOTHING: "kosong"
+  NOTHING: "kosong",
 };
 
 export const NOTIF_TYPE = {
   NEW_ORDER: "newReadyToProcess",
   REPLY_POST: "reply_post",
-  REPLY_COMMENT: "reply_comment"
+  REPLY_COMMENT: "reply_comment",
 };
 
 export const ONE_SIGNAL_KEY = "63d5eb55-3ba8-4489-bfba-ce4d74c3bd40";
@@ -19,7 +19,7 @@ export default {
   uri: {
     basic: "http://192.168.1.4:4001/",
     graphql: "http://192.168.1.4:4001/graphql",
-    image: "http://192.168.1.4:4001"
+    image: "http://192.168.1.4:4001",
   },
   sentryKey: "https://acfc9528eb164f6d8cb3c02a5294b6cd@sentry.io/1498313",
   allowTextFontScaling: true,
@@ -46,6 +46,7 @@ export default {
     "SignupFarmerFirst",
     "SignupFarmerSecond",
     "SignupFarmerThird",
+    "SignupFarmerFourth",
     "SignupCustomer",
     "SignupScholar",
     "AreaDraw",
@@ -55,7 +56,7 @@ export default {
     "FarmerFinalConfirm",
     "SopViewer",
     "NewsFeedDetail",
-    "NotificationHistory"
+    "NotificationHistory",
   ],
   pageState: {
     ERROR: "error",
@@ -66,7 +67,7 @@ export default {
     LOCATION: "location",
     EMPTY_LOCATION: "location",
     NEED_CHECKOUT: "cashier",
-    NO_ACCOUNT: "needLogin"
+    NO_ACCOUNT: "needLogin",
   },
   debounceInterval: 0,
   defaulCourierCost: 25000,
@@ -78,12 +79,12 @@ export default {
     KONSUMEN: "user",
     RESELLER: "reseller",
     ADMIN: "admin",
-    FARMER: "farmer"
+    FARMER: "farmer",
   },
   weightType: {
     KILOGRAM: "kg",
     GRAM: "gram",
-    PIECES: "pcs"
+    PIECES: "pcs",
   },
   MIN_WEIGHT_FREE_COURIER: 10,
   timelineTitle: {
@@ -92,93 +93,93 @@ export default {
     processing: "Kurir telah konfirmasi pengiriman",
     ready_to_send: "Barang diambil dari gudang",
     sending: "Pesanan sedang dikirim",
-    complete: "Barang telah sampai di konsumen"
+    complete: "Barang telah sampai di konsumen",
   },
   notifPurpose: {
     NEW_ORDER: "newReadyToProcess",
     REPLY_POST: "reply_post",
-    REPLY_COMMENT: "reply_comment"
+    REPLY_COMMENT: "reply_comment",
   },
   category: {
     sayuran: {
       title: "Sayuran",
       icon: Images.veggie,
-      color: Colors.veggie_bg
+      color: Colors.veggie_bg,
     },
     buah: {
       title: "Buah",
       icon: Images.fruit,
-      color: Colors.fruit_bg
+      color: Colors.fruit_bg,
     },
     hortikultura: {
       title: "Hortikultura",
       icon: Images.horti,
-      color: Colors.horti_bg
+      color: Colors.horti_bg,
     },
     default: {
       title: "Lain-lain",
       icon: Images.veggie,
-      color: Colors.veggie_bg
-    }
+      color: Colors.veggie_bg,
+    },
   },
   location: {
     timeout: 900000, // expired time to obtain location, in millisecond
     maximumAge: 900000, // maximum expired time for last location cache, in millisecond
-    distanceFilter: 10 // minimum distance from the previous location to exceed before returning a new location, in meters
+    distanceFilter: 10, // minimum distance from the previous location to exceed before returning a new location, in meters
   },
   gender: [
     {
       label: "Laki-laki",
-      value: "L"
+      value: "L",
     },
     {
       label: "Perempuan",
-      value: "P"
-    }
+      value: "P",
+    },
   ],
   bloodType: [
     {
       label: "A",
-      value: "A"
+      value: "A",
     },
     {
       label: "B",
-      value: "B"
+      value: "B",
     },
     {
       label: "AB",
-      value: "AB"
+      value: "AB",
     },
     {
       label: "O",
-      value: "O"
-    }
+      value: "O",
+    },
   ],
   religion: [
     {
       key: "Islam",
-      value: "Islam"
+      value: "Islam",
     },
     {
       key: "Kristen",
-      value: "Kristen"
+      value: "Kristen",
     },
     {
       key: "Katholik",
-      value: "Katholik"
+      value: "Katholik",
     },
     {
       key: "Hindu",
-      value: "Hindu"
+      value: "Hindu",
     },
     {
       key: "Budha",
-      value: "Budha"
+      value: "Budha",
     },
     {
       key: "Khong Hucu",
-      value: "Khong Hucu"
-    }
+      value: "Khong Hucu",
+    },
     // {
     //   key: "Penghayat kepercayaan",
     //   value: "Penghayat Kepercayaan",
@@ -188,176 +189,176 @@ export default {
   marriageStatus: [
     {
       label: "Belum kawin",
-      value: "Belum kawin"
+      value: "Belum kawin",
     },
     {
       label: "Kawin",
-      value: "Kawin"
+      value: "Kawin",
     },
     {
       label: "Cerai hidup",
-      value: "Cerai hidup"
+      value: "Cerai hidup",
     },
     {
       label: "Cerai mati",
-      value: "Cerai mati"
-    }
+      value: "Cerai mati",
+    },
   ],
   expiredDate: [
     {
       label: "Seumur hidup",
-      value: "Seumur hidup"
+      value: "Seumur hidup",
     },
     {
       label: "Isi tanggal...",
       value: "Isi tanggal",
-      showManualInput: true
-    }
+      showManualInput: true,
+    },
   ],
   occupation: [
     {
       label: "Petani/Pekebun",
-      value: "Petani/Pekebun"
+      value: "Petani/Pekebun",
     },
     {
       label: "Peternak",
-      value: "Peternak"
+      value: "Peternak",
     },
     {
       label: "Nelayan/Perikanan",
-      value: "Nelayan/Perikanan"
+      value: "Nelayan/Perikanan",
     },
     {
       label: "Karyawan swasta",
-      value: "Karyawan swasta"
+      value: "Karyawan swasta",
     },
     {
       label: "Karyawan BUMN",
-      value: "Karyawan BUMN"
+      value: "Karyawan BUMN",
     },
     {
       label: "Karyawan BUMD",
-      value: "Karyawan BUMD"
+      value: "Karyawan BUMD",
     },
     {
       label: "Karyawan honorer",
-      value: "Karyawan honorer"
+      value: "Karyawan honorer",
     },
     {
       label: "Buruh harian lepas",
-      value: "Buruh harian lepas"
+      value: "Buruh harian lepas",
     },
     {
       label: "Buruh tani/perkebunan",
-      value: "Buruh tani/perkebunan"
+      value: "Buruh tani/perkebunan",
     },
     {
       label: "Buruh nelayan/perikanan",
-      value: "Buruh nelayan/perikanan"
+      value: "Buruh nelayan/perikanan",
     },
     {
       label: "Buruh peternakan",
-      value: "Buruh peternakan"
+      value: "Buruh peternakan",
     },
     {
       label: "Dosen",
-      value: "Dosen"
+      value: "Dosen",
     },
     {
       label: "Guru",
-      value: "Guru"
+      value: "Guru",
     },
     {
       label: "Pelaut",
-      value: "Pelaut"
+      value: "Pelaut",
     },
     {
       label: "Pedagang",
-      value: "Pedagang"
+      value: "Pedagang",
     },
     {
       label: "Perangkat desa",
-      value: "Perangkat desa"
+      value: "Perangkat desa",
     },
     {
       label: "Kepala desa",
-      value: "Kepala desa"
+      value: "Kepala desa",
     },
     {
       label: "Wiraswasta",
-      value: "Wiraswasta"
+      value: "Wiraswasta",
     },
     {
       label: "Lainnya",
       value: "Lainnya",
-      showManualInput: true
-    }
+      showManualInput: true,
+    },
   ],
   citizenship: [
     {
       label: "WNI",
-      value: "WNI"
+      value: "WNI",
     },
     {
       label: "Lainnya",
       value: "Lainnya",
-      showManualInput: true
-    }
+      showManualInput: true,
+    },
   ],
   month: [
     {
       label: "Januari",
-      value: "01"
+      value: "01",
     },
     {
       label: "Februari",
-      value: "02"
+      value: "02",
     },
     {
       label: "Maret",
-      value: "03"
+      value: "03",
     },
     {
       label: "April",
-      value: "04"
+      value: "04",
     },
     {
       label: "Mei",
-      value: "05"
+      value: "05",
     },
     {
       label: "Juni",
-      value: "06"
+      value: "06",
     },
     {
       label: "Juli",
-      value: "07"
+      value: "07",
     },
     {
       label: "Agustus",
-      value: "08"
+      value: "08",
     },
     {
       label: "September",
-      value: "09"
+      value: "09",
     },
     {
       label: "Oktober",
-      value: "10"
+      value: "10",
     },
     {
       label: "Nopember",
-      value: "11"
+      value: "11",
     },
     {
       label: "Desember",
-      value: "12"
-    }
+      value: "12",
+    },
   ],
   areaStatus: {
     OWN: "own",
     RENT: "rent",
-    RENTED: "rented"
+    RENTED: "rented",
   },
   areaType: ["Sawah", "Tegal"],
   mapStyle: [
@@ -365,244 +366,244 @@ export default {
       elementType: "geometry",
       stylers: [
         {
-          color: "#ebe3cd"
-        }
-      ]
+          color: "#ebe3cd",
+        },
+      ],
     },
     {
       elementType: "labels",
       stylers: [
         {
-          visibility: "off"
-        }
-      ]
+          visibility: "off",
+        },
+      ],
     },
     {
       elementType: "labels.text.fill",
       stylers: [
         {
-          color: "#523735"
-        }
-      ]
+          color: "#523735",
+        },
+      ],
     },
     {
       elementType: "labels.text.stroke",
       stylers: [
         {
-          color: "#f5f1e6"
-        }
-      ]
+          color: "#f5f1e6",
+        },
+      ],
     },
     {
       featureType: "administrative",
       elementType: "geometry.stroke",
       stylers: [
         {
-          color: "#c9b2a6"
-        }
-      ]
+          color: "#c9b2a6",
+        },
+      ],
     },
     {
       featureType: "administrative.land_parcel",
       elementType: "geometry.stroke",
       stylers: [
         {
-          color: "#dcd2be"
-        }
-      ]
+          color: "#dcd2be",
+        },
+      ],
     },
     {
       featureType: "administrative.land_parcel",
       elementType: "labels.text.fill",
       stylers: [
         {
-          color: "#ae9e90"
-        }
-      ]
+          color: "#ae9e90",
+        },
+      ],
     },
     {
       featureType: "administrative.neighborhood",
       stylers: [
         {
-          visibility: "off"
-        }
-      ]
+          visibility: "off",
+        },
+      ],
     },
     {
       featureType: "landscape.natural",
       elementType: "geometry",
       stylers: [
         {
-          color: "#dfd2ae"
-        }
-      ]
+          color: "#dfd2ae",
+        },
+      ],
     },
     {
       featureType: "poi",
       elementType: "geometry",
       stylers: [
         {
-          color: "#dfd2ae"
-        }
-      ]
+          color: "#dfd2ae",
+        },
+      ],
     },
     {
       featureType: "poi",
       elementType: "labels.text.fill",
       stylers: [
         {
-          color: "#93817c"
-        }
-      ]
+          color: "#93817c",
+        },
+      ],
     },
     {
       featureType: "poi.park",
       elementType: "geometry.fill",
       stylers: [
         {
-          color: "#a5b076"
-        }
-      ]
+          color: "#a5b076",
+        },
+      ],
     },
     {
       featureType: "poi.park",
       elementType: "labels.text.fill",
       stylers: [
         {
-          color: "#447530"
-        }
-      ]
+          color: "#447530",
+        },
+      ],
     },
     {
       featureType: "road",
       stylers: [
         {
-          visibility: "off"
-        }
-      ]
+          visibility: "off",
+        },
+      ],
     },
     {
       featureType: "road",
       elementType: "geometry",
       stylers: [
         {
-          color: "#f5f1e6"
-        }
-      ]
+          color: "#f5f1e6",
+        },
+      ],
     },
     {
       featureType: "road.arterial",
       elementType: "geometry",
       stylers: [
         {
-          color: "#fdfcf8"
-        }
-      ]
+          color: "#fdfcf8",
+        },
+      ],
     },
     {
       featureType: "road.highway",
       elementType: "geometry",
       stylers: [
         {
-          color: "#f8c967"
-        }
-      ]
+          color: "#f8c967",
+        },
+      ],
     },
     {
       featureType: "road.highway",
       elementType: "geometry.stroke",
       stylers: [
         {
-          color: "#e9bc62"
-        }
-      ]
+          color: "#e9bc62",
+        },
+      ],
     },
     {
       featureType: "road.highway.controlled_access",
       elementType: "geometry",
       stylers: [
         {
-          color: "#e98d58"
-        }
-      ]
+          color: "#e98d58",
+        },
+      ],
     },
     {
       featureType: "road.highway.controlled_access",
       elementType: "geometry.stroke",
       stylers: [
         {
-          color: "#db8555"
-        }
-      ]
+          color: "#db8555",
+        },
+      ],
     },
     {
       featureType: "road.local",
       elementType: "labels.text.fill",
       stylers: [
         {
-          color: "#806b63"
-        }
-      ]
+          color: "#806b63",
+        },
+      ],
     },
     {
       featureType: "transit.line",
       elementType: "geometry",
       stylers: [
         {
-          color: "#dfd2ae"
-        }
-      ]
+          color: "#dfd2ae",
+        },
+      ],
     },
     {
       featureType: "transit.line",
       elementType: "labels.text.fill",
       stylers: [
         {
-          color: "#8f7d77"
-        }
-      ]
+          color: "#8f7d77",
+        },
+      ],
     },
     {
       featureType: "transit.line",
       elementType: "labels.text.stroke",
       stylers: [
         {
-          color: "#ebe3cd"
-        }
-      ]
+          color: "#ebe3cd",
+        },
+      ],
     },
     {
       featureType: "transit.station",
       elementType: "geometry",
       stylers: [
         {
-          color: "#dfd2ae"
-        }
-      ]
+          color: "#dfd2ae",
+        },
+      ],
     },
     {
       featureType: "water",
       elementType: "geometry.fill",
       stylers: [
         {
-          color: "#b9d3c2"
-        }
-      ]
+          color: "#b9d3c2",
+        },
+      ],
     },
     {
       featureType: "water",
       elementType: "labels.text.fill",
       stylers: [
         {
-          color: "#92998d"
-        }
-      ]
-    }
-  ]
+          color: "#92998d",
+        },
+      ],
+    },
+  ],
 };
 
 export {
   NOTIF_TYPE as notifType,
   BASIC_RESPONSE as basicResponse,
-  ONE_SIGNAL_KEY as oneSignalKey
+  ONE_SIGNAL_KEY as oneSignalKey,
 };

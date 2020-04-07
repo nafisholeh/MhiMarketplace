@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
-import { connect } from "react-redux";
 import { withNavigation } from "react-navigation";
 
 import { withNoHeader } from "Hoc";
@@ -29,6 +28,11 @@ class PhotoForm extends Component {
   isCanContinue = () => {
     const { photo_face, photo_ktp } = this.state;
     this.setState({ is_can_continue: photo_face && photo_ktp ? true : false });
+  };
+
+  onSubmit = () => {
+    const { navigation } = this.props;
+    navigation.navigate("SignupFarmerFourth");
   };
 
   render() {
@@ -92,6 +96,4 @@ class PhotoForm extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
-
-export default connect(null, null)(withNavigation(withNoHeader(PhotoForm)));
+export default withNavigation(withNoHeader(PhotoForm));

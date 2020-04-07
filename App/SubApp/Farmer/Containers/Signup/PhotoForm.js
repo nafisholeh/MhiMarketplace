@@ -12,6 +12,7 @@ class PhotoForm extends Component {
   state = {
     photo_face: null,
     photo_ktp: null,
+    is_can_continue: false,
   };
 
   onPhotoChange = async (name, raw = []) => {
@@ -20,11 +21,18 @@ class PhotoForm extends Component {
       const { mime, path, data } = item;
       return { mime, path, data };
     });
-    this.setState({ [name]: photos });
+    this.setState({ [name]: photos }, () => {
+      this.isCanContinue();
+    });
+  };
+
+  isCanContinue = () => {
+    const { photo_face, photo_ktp } = this.state;
+    this.setState({ is_can_continue: photo_face && photo_ktp ? true : false });
   };
 
   render() {
-    const { photo_ktp, photo_face } = this.state;
+    const { photo_ktp, photo_face, is_can_continue } = this.state;
     return (
       <View style={{ flex: 1 }}>
         <SignupWrapper title="Unggah foto" currentPosition={2}>
@@ -76,7 +84,7 @@ class PhotoForm extends Component {
         </SignupWrapper>
         <ButtonPrimary
           onPress={this.onSubmit}
-          // disabled={!is_can_continue}
+          disabled={!is_can_continue}
           title="Selanjutnya"
         />
       </View>

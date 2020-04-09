@@ -11,16 +11,14 @@ class AreaDrawInfo extends PureComponent {
     const { isVisible, autoZoomIn } = this.props;
     if (!isVisible) return <View />;
     return (
-      <AreaDrawInfoWrapper>
-        <TouchableOpacity onPress={() => autoZoomIn()}>
-          <Image
-            source={Images.zoom_in}
-            style={{
-              width: moderateScale(60),
-              height: moderateScale(60),
-            }}
-          />
-        </TouchableOpacity>
+      <AreaDrawInfoWrapper onPress={() => autoZoomIn()}>
+        <Image
+          source={Images.zoom_in}
+          style={{
+            width: moderateScale(60),
+            height: moderateScale(60),
+          }}
+        />
         <Text style={FONTS.BODY_NORMAL}>posisi kamera peta kurang dekat</Text>
       </AreaDrawInfoWrapper>
     );

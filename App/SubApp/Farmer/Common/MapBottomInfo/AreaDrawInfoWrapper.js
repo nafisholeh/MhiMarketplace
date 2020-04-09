@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { func } from "prop-types";
 
 import { screenWidth } from "Lib";
@@ -7,11 +7,28 @@ import { Colors, METRICS } from "Themes";
 
 class AreaDrawInfoWrapper extends Component {
   render() {
-    const { height, borderRadius, children, styleWrapper } = this.props;
+    const {
+      height,
+      borderRadius,
+      children,
+      styleWrapper,
+      onPress,
+    } = this.props;
     return (
       <View
         style={{
           ...{
+            flex: 1,
+            width: screenWidth,
+            height: height || 140,
+            borderRadius: borderRadius || 4,
+            backgroundColor: Colors.white,
+          },
+          ...styleWrapper,
+        }}
+      >
+        <TouchableOpacity
+          style={{
             flex: 1,
             flexDirection: "column",
             justifyContent: "space-around",
@@ -21,11 +38,11 @@ class AreaDrawInfoWrapper extends Component {
             borderRadius: borderRadius || 4,
             backgroundColor: Colors.white,
             paddingVertical: METRICS.MEDIUM,
-          },
-          ...styleWrapper,
-        }}
-      >
-        {children}
+          }}
+          onPress={onPress}
+        >
+          {children}
+        </TouchableOpacity>
       </View>
     );
   }

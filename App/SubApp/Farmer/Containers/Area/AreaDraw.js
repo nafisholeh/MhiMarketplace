@@ -4,7 +4,7 @@ import MapView, {
   MAP_TYPES,
   Polygon,
   ProviderPropType,
-  Marker
+  Marker,
 } from "react-native-maps";
 import { connect } from "react-redux";
 import { string, bool, object, oneOfType, array, func } from "prop-types";
@@ -14,14 +14,14 @@ import {
   moderateScale,
   calcPolygonSize,
   calcPolygonCenter,
-  normalizeAreaSize
+  normalizeAreaSize,
 } from "Lib";
 import { Colors, Images, FONTS } from "Themes";
 import {
   HeaderWhite,
   AreaDrawInfo,
   AreaDrawControl,
-  withLocationListener
+  withLocationListener,
 } from "CommonFarmer";
 
 const { width, height } = Dimensions.get("window");
@@ -40,7 +40,7 @@ class AreaDraw extends Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
     return {
-      header: null
+      header: null,
     };
   };
 
@@ -52,35 +52,35 @@ class AreaDraw extends Component {
         latitude: LATITUDE,
         longitude: LONGITUDE,
         latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA
+        longitudeDelta: LONGITUDE_DELTA,
       },
       polygons: [],
       editing: null,
       centerPos: {
         latitude: LATITUDE,
-        longitude: LONGITUDE
+        longitude: LONGITUDE,
       },
       isAllowedZoom: false,
       isMapReady: false,
       isFinished: false,
       selectedPolygonIndex: -1,
       polygonAreaSize: -1,
-      polygonCenterPoint: null
+      polygonCenterPoint: null,
     };
   }
 
-  onRegionChange = region => {
+  onRegionChange = (region) => {
     const { latitude, longitude } = region || {};
     this.setState({
-      centerPos: { latitude, longitude }
+      centerPos: { latitude, longitude },
     });
   };
 
-  onRegionChangeComplete = region => {
+  onRegionChangeComplete = (region) => {
     const { longitudeDelta } = region || {};
     const currentZoom = Math.round(Math.log(360 / longitudeDelta) / Math.LN2);
     this.setState({
-      isAllowedZoom: currentZoom >= ZOOM_THRESHOLD
+      isAllowedZoom: currentZoom >= ZOOM_THRESHOLD,
     });
   };
 
@@ -95,7 +95,7 @@ class AreaDraw extends Component {
         latitude,
         longitude,
         latitudeDelta: latitudeDelta || LAT_DELTA_THRESHOLD,
-        longitudeDelta: longitudeDelta || LNG_DELTA_THRESHOLD
+        longitudeDelta: longitudeDelta || LNG_DELTA_THRESHOLD,
       },
       1000
     );
@@ -103,7 +103,7 @@ class AreaDraw extends Component {
 
   autoZoomIn = () => {
     const {
-      centerPos: { latitude, longitude }
+      centerPos: { latitude, longitude },
     } = this.state;
     if (!this.map) return;
     this.map.animateToRegion(
@@ -111,7 +111,7 @@ class AreaDraw extends Component {
         latitude,
         longitude,
         latitudeDelta: LAT_DELTA_THRESHOLD,
-        longitudeDelta: LNG_DELTA_THRESHOLD
+        longitudeDelta: LNG_DELTA_THRESHOLD,
       },
       1000
     );
@@ -124,9 +124,9 @@ class AreaDraw extends Component {
       this.setState({
         editing: {
           id: id++,
-          coordinates: [centerPos]
+          coordinates: [centerPos],
         },
-        polygonAreaSize: -1
+        polygonAreaSize: -1,
       });
       return;
     }
@@ -136,11 +136,11 @@ class AreaDraw extends Component {
     this.setState({
       editing: {
         ...editing,
-        coordinates: newCoordinates
+        coordinates: newCoordinates,
       },
       polygonAreaSizeM2: polygonSize,
       polygonAreaSize: normalizeAreaSize(polygonSize, "m2", "ha") || "",
-      polygonCenterPoint
+      polygonCenterPoint,
     });
   };
 
@@ -149,11 +149,11 @@ class AreaDraw extends Component {
     const { storeFarmerArea } = this.props;
     storeFarmerArea({
       polygon: editing.coordinates,
-      size: polygonAreaSizeM2
+      size: polygonAreaSizeM2,
     });
     this.setState(
       {
-        isFinished: true
+        isFinished: true,
       },
       () => {
         const { navigation } = this.props;
@@ -170,16 +170,16 @@ class AreaDraw extends Component {
       editing,
       selectedPolygonIndex,
       polygonAreaSize,
-      polygonCenterPoint
+      polygonCenterPoint,
     } = this.state;
     const { locationCurrent } = this.props;
     const mapOptions = {
-      scrollEnabled: true
+      scrollEnabled: true,
     };
     return (
       <View style={styles.container}>
         <MapView
-          ref={map => {
+          ref={(map) => {
             this.map = map;
           }}
           onMapReady={() => setTimeout(() => this.onMapReady())}
@@ -204,7 +204,7 @@ class AreaDraw extends Component {
             <Marker
               coordinate={{
                 latitude: polygonCenterPoint.latitude,
-                longitude: polygonCenterPoint.longitude
+                longitude: polygonCenterPoint.longitude,
               }}
               trackViewChanges={false}
               anchor={{ x: 0.4, y: 1.05 }}
@@ -217,7 +217,7 @@ class AreaDraw extends Component {
                   textShadowColor: "rgba(0, 0, 0, 0.5)",
                   textShadowOffset: { width: -3, height: 3 },
                   textShadowRadius: 3,
-                  elevation: 10
+                  elevation: 10,
                 }}
                 numberOfLines={2}
               >
@@ -230,7 +230,7 @@ class AreaDraw extends Component {
               key="pivot-marker"
               coordinate={{
                 latitude: pivotLat,
-                longitude: pivotLng
+                longitude: pivotLng,
               }}
               trackViewChanges={false}
               anchor={{ x: 0.4, y: 1.05 }}
@@ -240,7 +240,7 @@ class AreaDraw extends Component {
                 source={Images.pin_marker}
                 style={{
                   width: moderateScale(50),
-                  height: moderateScale(50)
+                  height: moderateScale(50),
                 }}
               />
             </Marker>
@@ -252,7 +252,7 @@ class AreaDraw extends Component {
           style={{
             position: "absolute",
             top: 0,
-            left: moderateScale(10)
+            left: moderateScale(10),
           }}
         >
           <HeaderWhite />
@@ -260,7 +260,7 @@ class AreaDraw extends Component {
         <View
           style={{
             position: "absolute",
-            bottom: moderateScale(15)
+            bottom: 0,
           }}
         >
           <AreaDrawInfo
@@ -281,39 +281,39 @@ class AreaDraw extends Component {
 }
 
 AreaDraw.propTypes = {
-  provider: ProviderPropType
+  provider: ProviderPropType,
 };
 
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: "flex-end",
-    alignItems: "center"
+    alignItems: "center",
   },
   map: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
   },
   bubble: {
     backgroundColor: "rgba(255,255,255,0.7)",
     paddingHorizontal: 18,
     paddingVertical: 12,
-    borderRadius: 20
+    borderRadius: 20,
   },
   latlng: {
     width: 200,
-    alignItems: "stretch"
+    alignItems: "stretch",
   },
   button: {
     width: 80,
     paddingHorizontal: 12,
     alignItems: "center",
-    marginHorizontal: 10
+    marginHorizontal: 10,
   },
   buttonContainer: {
     flexDirection: "row",
     marginVertical: 20,
-    backgroundColor: "transparent"
-  }
+    backgroundColor: "transparent",
+  },
 });
 
 AreaDraw.propTypes = {
@@ -324,11 +324,12 @@ AreaDraw.propTypes = {
   locationName: oneOfType([string, array]),
   isListening: bool,
   refreshLocation: func,
-  storeFarmerArea: func
+  storeFarmerArea: func,
 };
 
-const mapDispatchToProps = dispatch => ({
-  storeFarmerArea: area => dispatch(FarmerSignupActions.storeFarmerArea(area))
+const mapDispatchToProps = (dispatch) => ({
+  storeFarmerArea: (area) =>
+    dispatch(FarmerSignupActions.storeFarmerArea(area)),
 });
 
 export default connect(

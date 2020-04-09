@@ -59,7 +59,9 @@ const images = {
   send: require(pathPrefix + "send.png"),
   camera: require(pathPrefix + "camera.png"),
   notification: require(pathPrefix + "notification.png"),
-  calendar: require(pathPrefix + "calendar.png")
+  calendar: require(pathPrefix + "calendar.png"),
+  marker_put: require(pathPrefix + "marker_put.png"),
+  zoom_in: require(pathPrefix + "zoom_in.png"),
 };
 
 export default images;

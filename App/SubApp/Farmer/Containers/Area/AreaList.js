@@ -10,7 +10,7 @@ import { Images, Colors, FONTS } from "Themes";
 import { moderateScale } from "Lib";
 import { ButtonPrimary } from "Components";
 import { AreaItem, SignupBottomButton } from "CommonFarmer";
-import SignupWrapper from "./Signup/SignupWrapper";
+import SignupWrapper from "../Signup/SignupWrapper";
 
 class AreaList extends Component {
   renderBottom = () => {

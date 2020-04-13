@@ -23,6 +23,7 @@ import {
   AreaDrawControl,
   withLocationListener,
 } from "CommonFarmer";
+import { MAP_DRAW_STATE } from "../../../../Config/AppConfig";
 
 const { width, height } = Dimensions.get("window");
 
@@ -60,6 +61,7 @@ class AreaDraw extends Component {
         latitude: LATITUDE,
         longitude: LONGITUDE,
       },
+      drawingState: MAP_DRAW_STATE.NOT_READY,
       isAllowedZoom: false,
       isMapReady: false,
       isFinished: false,
@@ -80,7 +82,10 @@ class AreaDraw extends Component {
     const { longitudeDelta } = region || {};
     const currentZoom = Math.round(Math.log(360 / longitudeDelta) / Math.LN2);
     this.setState({
-      isAllowedZoom: currentZoom >= ZOOM_THRESHOLD,
+      drawingState:
+        currentZoom >= ZOOM_THRESHOLD
+          ? MAP_DRAW_STATE.DRAWING
+          : MAP_DRAW_STATE.NOT_READY,
     });
   };
 
@@ -118,8 +123,8 @@ class AreaDraw extends Component {
   };
 
   handleDrawing = () => {
-    const { centerPos, isAllowedZoom, editing, isFinished } = this.state;
-    if (!isAllowedZoom || isFinished) return;
+    const { centerPos, drawingState, editing, isFinished } = this.state;
+    if (drawingState !== MAP_DRAW_STATE.NOT_READY || isFinished) return;
     if (!editing) {
       this.setState({
         editing: {
@@ -167,6 +172,7 @@ class AreaDraw extends Component {
       region,
       centerPos: { latitude: pivotLat, longitude: pivotLng } = {},
       isAllowedZoom,
+      drawingState,
       editing,
       selectedPolygonIndex,
       polygonAreaSize,
@@ -225,7 +231,7 @@ class AreaDraw extends Component {
               </Text>
             </Marker>
           ) : null}
-          {isAllowedZoom ? (
+          {drawingState === MAP_DRAW_STATE.DRAWING ? (
             <Marker
               key="pivot-marker"
               coordinate={{
@@ -264,16 +270,16 @@ class AreaDraw extends Component {
           }}
         >
           <AreaDrawInfo
-            isVisible={!isAllowedZoom}
+            drawingState={drawingState}
             autoZoomIn={() => this.autoZoomIn()}
           />
-          <AreaDrawControl
+          {/* <AreaDrawControl
             isVisible={isAllowedZoom}
             isPolygonSelected={selectedPolygonIndex >= 0}
             zoomToLocation={() => this.zoomToLocation()}
             handleDrawing={() => this.handleDrawing()}
             handleDrawingFinish={() => this.handleDrawingFinish()}
-          />
+          /> */}
         </View>
       </View>
     );

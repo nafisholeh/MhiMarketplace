@@ -84,7 +84,7 @@ class AreaDraw extends Component {
     this.setState({
       drawingState:
         currentZoom >= ZOOM_THRESHOLD
-          ? MAP_DRAW_STATE.DRAWING
+          ? MAP_DRAW_STATE.DRAWING_PIVOT
           : MAP_DRAW_STATE.NOT_READY,
     });
   };

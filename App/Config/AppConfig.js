@@ -14,12 +14,26 @@ export const NOTIF_TYPE = {
 
 export const ONE_SIGNAL_KEY = "63d5eb55-3ba8-4489-bfba-ce4d74c3bd40";
 
+export const MAP_DRAW_STATE = {
+  NOT_READY: "map_zoom_in",
+  DRAWING_PIVOT: "map_put_pivot",
+  DRAWING: "map_drawing",
+  DRAWING_FINISHED: "map_finish_drawing",
+};
+
+export const MAP_DRAW_STATE_INFO = {
+  NOT_READY: "posisi kamera peta kurang dekat",
+  DRAWING_PIVOT: "letakkan titik lahan",
+  DRAWING: "letakkan titik lain lahan",
+  DRAWING_FINISHED: "selesai",
+};
+
 export default {
   // uri: 'http://app-dev.metodehayati.id:4001/graphql',
   uri: {
-    basic: "http://192.168.1.4:4001/",
-    graphql: "http://192.168.1.4:4001/graphql",
-    image: "http://192.168.1.4:4001",
+    basic: "http://192.168.1.2:4001/",
+    graphql: "http://192.168.1.2:4001/graphql",
+    image: "http://192.168.1.2:4001",
   },
   sentryKey: "https://acfc9528eb164f6d8cb3c02a5294b6cd@sentry.io/1498313",
   allowTextFontScaling: true,
@@ -606,4 +620,6 @@ export {
   NOTIF_TYPE as notifType,
   BASIC_RESPONSE as basicResponse,
   ONE_SIGNAL_KEY as oneSignalKey,
+  MAP_DRAW_STATE as mapDrawState,
+  MAP_DRAW_STATE_INFO as mapDrawStateInfo,
 };

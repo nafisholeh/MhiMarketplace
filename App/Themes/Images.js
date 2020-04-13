@@ -61,7 +61,7 @@ const images = {
   notification: require(pathPrefix + "notification.png"),
   calendar: require(pathPrefix + "calendar.png"),
   marker_put: require(pathPrefix + "marker_put.png"),
-  zoom_in: require(pathPrefix + "zoom_in.png"),
+  map_zoom_in: require(pathPrefix + "zoom_in.png"),
 };
 
 export default images;

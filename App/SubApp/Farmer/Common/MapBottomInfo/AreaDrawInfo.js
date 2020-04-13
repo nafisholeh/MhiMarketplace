@@ -8,8 +8,8 @@ import AreaDrawInfoWrapper from "./AreaDrawInfoWrapper";
 
 class AreaDrawInfo extends PureComponent {
   render() {
-    const { isAllowedZoom, autoZoomIn } = this.props;
-    const image = isAllowedZoom ? null : Images.zoom_in;
+    const { drawingState, autoZoomIn } = this.props;
+    const image = Images[drawingState] || Images.map_zoom_in;
     return (
       <AreaDrawInfoWrapper onPress={() => autoZoomIn()}>
         <Image

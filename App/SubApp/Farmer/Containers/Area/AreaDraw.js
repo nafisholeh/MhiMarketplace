@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Dimensions, Image } from "react-native";
 import MapView, {
   MAP_TYPES,
   Polygon,
+  Polyline,
   ProviderPropType,
   Marker,
 } from "react-native-maps";
@@ -68,6 +69,7 @@ class AreaDraw extends Component {
       selectedPolygonIndex: -1,
       polygonAreaSize: -1,
       polygonCenterPoint: null,
+      polygonLastPoint: null,
     };
   }
 
@@ -146,6 +148,7 @@ class AreaDraw extends Component {
       polygonAreaSizeM2: polygonSize,
       polygonAreaSize: normalizeAreaSize(polygonSize, "m2", "ha") || "",
       polygonCenterPoint,
+      polygonLastPoint: centerPos,
     });
   };
 
@@ -170,6 +173,7 @@ class AreaDraw extends Component {
   render() {
     const {
       region,
+      centerPos,
       centerPos: { latitude: pivotLat, longitude: pivotLng } = {},
       isAllowedZoom,
       drawingState,
@@ -177,6 +181,7 @@ class AreaDraw extends Component {
       selectedPolygonIndex,
       polygonAreaSize,
       polygonCenterPoint,
+      polygonLastPoint,
     } = this.state;
     const { locationCurrent } = this.props;
     const mapOptions = {
@@ -254,6 +259,13 @@ class AreaDraw extends Component {
           ) : (
             <View />
           )}
+          {polygonLastPoint ? (
+            <Polyline
+              coordinates={[polygonLastPoint, centerPos]}
+              strokeWidth={2}
+              strokeColor={Colors.MAP_AREA}
+            />
+          ) : null}
         </MapView>
         <View
           style={{

@@ -70,6 +70,7 @@ class AreaDraw extends Component {
       polygonAreaSize: -1,
       polygonCenterPoint: null,
       polygonLastPoint: null,
+      polygonFirstPoint: null,
     };
   }
 
@@ -149,6 +150,7 @@ class AreaDraw extends Component {
       polygonAreaSize: normalizeAreaSize(polygonSize, "m2", "ha") || "",
       polygonCenterPoint,
       polygonLastPoint: centerPos,
+      polygonFirstPoint: editing.coordinates[0],
     });
   };
 
@@ -182,6 +184,7 @@ class AreaDraw extends Component {
       polygonAreaSize,
       polygonCenterPoint,
       polygonLastPoint,
+      polygonFirstPoint,
     } = this.state;
     const { locationCurrent } = this.props;
     const mapOptions = {
@@ -259,9 +262,9 @@ class AreaDraw extends Component {
           ) : (
             <View />
           )}
-          {polygonLastPoint ? (
+          {polygonLastPoint && polygonFirstPoint ? (
             <Polyline
-              coordinates={[polygonLastPoint, centerPos]}
+              coordinates={[polygonLastPoint, centerPos, polygonFirstPoint]}
               strokeWidth={2}
               strokeColor={Colors.MAP_AREA}
             />

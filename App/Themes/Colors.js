@@ -30,7 +30,10 @@ const colors = {
   text_bg: "rgba(133, 133, 133, 0.2)",
   text_loading: "rgba(133, 133, 133, 0.1)",
   text: "rgba(0,0,0,0.68)",
-  text_light: "rgba(0,0,0,0.3)"
+  text_light: "rgba(0,0,0,0.3)",
+
+  MAP_AREA_BORDER: "#00B074",
+  MAP_AREA: "rgba(181,226,217,0.3)",
 };
 
 export default colors;

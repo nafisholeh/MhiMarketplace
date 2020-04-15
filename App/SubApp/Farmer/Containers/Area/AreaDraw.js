@@ -201,9 +201,9 @@ class AreaDraw extends Component {
             <Polygon
               key={editing.id}
               coordinates={editing.coordinates}
-              strokeColor={Colors.polygon_border}
-              fillColor={Colors.polygon_fill_light}
-              strokeWidth={1}
+              strokeColor={Colors.MAP_AREA_BORDER}
+              fillColor={Colors.MAP_AREA}
+              strokeWidth={4}
             />
           ) : null}
           {editing && polygonCenterPoint ? (

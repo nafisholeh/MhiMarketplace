@@ -29,12 +29,24 @@ class AreaDrawInfo extends PureComponent {
     this.setState({ info: MAP_DRAW_STATE_INFO[mapDrawStateInfoKey] });
   };
 
+  onPress = () => {
+    const { drawingState, autoZoomIn, putPivotMarker } = this.props;
+    switch (drawingState) {
+      case MAP_DRAW_STATE.NOT_READY:
+        autoZoomIn();
+      case MAP_DRAW_STATE.DRAWING_PIVOT:
+        putPivotMarker();
+      default: {
+      }
+    }
+  };
+
   render() {
-    const { drawingState, autoZoomIn } = this.props;
+    const { drawingState } = this.props;
     const { info } = this.state;
     const image = Images[drawingState] || Images.map_zoom_in;
     return (
-      <AreaDrawInfoWrapper onPress={() => autoZoomIn()}>
+      <AreaDrawInfoWrapper onPress={this.onPress}>
         <Image
           source={image}
           style={{

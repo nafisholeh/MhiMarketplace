@@ -124,7 +124,7 @@ class AreaDraw extends Component {
 
   handleDrawing = () => {
     const { centerPos, drawingState, editing, isFinished } = this.state;
-    if (drawingState !== MAP_DRAW_STATE.NOT_READY || isFinished) return;
+    if (drawingState === MAP_DRAW_STATE.NOT_READY || isFinished) return;
     if (!editing) {
       this.setState({
         editing: {
@@ -273,6 +273,7 @@ class AreaDraw extends Component {
           <AreaDrawInfo
             drawingState={drawingState}
             autoZoomIn={() => this.autoZoomIn()}
+            putPivotMarker={() => this.handleDrawing()}
           />
           {/* <AreaDrawControl
             isVisible={isAllowedZoom}

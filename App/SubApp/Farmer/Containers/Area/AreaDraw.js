@@ -231,7 +231,8 @@ class AreaDraw extends Component {
               </Text>
             </Marker>
           ) : null}
-          {drawingState === MAP_DRAW_STATE.DRAWING ? (
+          {drawingState === MAP_DRAW_STATE.DRAWING ||
+          drawingState === MAP_DRAW_STATE.DRAWING_PIVOT ? (
             <Marker
               key="pivot-marker"
               coordinate={{

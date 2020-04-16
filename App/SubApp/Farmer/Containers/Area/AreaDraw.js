@@ -135,6 +135,8 @@ class AreaDraw extends Component {
           coordinates: [centerPos],
         },
         polygonAreaSize: -1,
+        polygonLastPoint: centerPos,
+        polygonFirstPoint: centerPos,
       });
       return;
     }

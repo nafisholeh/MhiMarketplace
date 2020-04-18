@@ -14,7 +14,6 @@ class AreaDrawInfoWrapper extends Component {
       styleWrapper,
       onPress,
       onLongPress,
-      onPressOut,
       isLongPressMode,
     } = this.props;
     return (
@@ -30,43 +29,28 @@ class AreaDrawInfoWrapper extends Component {
           ...styleWrapper,
         }}
       >
-        {isLongPressMode ? (
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              flexDirection: "column",
-              justifyContent: "space-around",
-              alignItems: "center",
-              width: screenWidth,
-              height: height || 140,
-              borderRadius: borderRadius || 4,
-              backgroundColor: Colors.white,
-              paddingVertical: METRICS.MEDIUM,
-            }}
-            onLongPress={onLongPress}
-            onPressOut={onPressOut}
-            delayLongPress={1500}
-          >
-            {children}
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              flexDirection: "column",
-              justifyContent: "space-around",
-              alignItems: "center",
-              width: screenWidth,
-              height: height || 140,
-              borderRadius: borderRadius || 4,
-              backgroundColor: Colors.white,
-              paddingVertical: METRICS.MEDIUM,
-            }}
-            onPress={onPress}
-          >
-            {children}
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity
+          style={{
+            flex: 1,
+            flexDirection: "column",
+            justifyContent: "space-around",
+            alignItems: "center",
+            width: screenWidth,
+            height: height || 140,
+            paddingVertical: METRICS.MEDIUM,
+          }}
+          onPress={() => {
+            if (onPress) onPress();
+          }}
+          onLongPress={() => {
+            if (isLongPressMode && onLongPress) {
+              onLongPress();
+            }
+          }}
+          delayLongPress={1500}
+        >
+          {children}
+        </TouchableOpacity>
       </View>
     );
   }

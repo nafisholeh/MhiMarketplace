@@ -17,7 +17,8 @@ export const ONE_SIGNAL_KEY = "63d5eb55-3ba8-4489-bfba-ce4d74c3bd40";
 export const MAP_DRAW_STATE = {
   NOT_READY: "map_zoom_in",
   DRAWING: "map_drawing",
-  DRAWING_QUALIFIED: "map_finish_drawing",
+  DRAWING_QUALIFIED: "map_drawing_qualified",
+  DRAWING_FINISHED: "map_drawing_finished",
 };
 
 export const MAP_DRAW_STATE_INFO = {
@@ -27,6 +28,7 @@ export const MAP_DRAW_STATE_INFO = {
     "Sentuh untuk meletakkan titik area",
     "Sentuh lama untuk mengakhiri",
   ],
+  DRAWING_FINISHED: "Sentuh untuk lanjut isi detil lahan",
 };
 
 export default {

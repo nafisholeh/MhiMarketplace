@@ -30,19 +30,27 @@ class AreaDrawInfo extends PureComponent {
   };
 
   onPress = () => {
-    const { drawingState, autoZoomIn, putPivotMarker } = this.props;
+    const {
+      drawingState,
+      autoZoomIn,
+      putPivotMarker,
+      ontoNextForm,
+    } = this.props;
     switch (drawingState) {
       case MAP_DRAW_STATE.NOT_READY:
         if (autoZoomIn) autoZoomIn();
+        break;
       case MAP_DRAW_STATE.DRAWING:
       case MAP_DRAW_STATE.DRAWING_QUALIFIED:
         if (putPivotMarker) putPivotMarker();
-      default: {
-      }
+        break;
+      case MAP_DRAW_STATE.DRAWING_FINISHED:
+        if (ontoNextForm) ontoNextForm();
+        break;
     }
   };
 
-  onPressOut = () => {
+  onLongPress = () => {
     const { drawingState, finishDrawing } = this.props;
     if (drawingState === MAP_DRAW_STATE.DRAWING_QUALIFIED) {
       finishDrawing();
@@ -57,7 +65,6 @@ class AreaDrawInfo extends PureComponent {
       <AreaDrawInfoWrapper
         onPress={this.onPress}
         onLongPress={this.onLongPress}
-        onPressOut={this.onPressOut}
         isLongPressMode={drawingState === MAP_DRAW_STATE.DRAWING_QUALIFIED}
       >
         <Image

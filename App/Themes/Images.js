@@ -62,7 +62,9 @@ const images = {
   calendar: require(pathPrefix + "calendar.png"),
   marker_put: require(pathPrefix + "marker_put.png"),
   map_zoom_in: require(pathPrefix + "zoom_in.png"),
-  map_put_pivot: require(pathPrefix + "map_put_pivot.png"),
+  map_drawing: require(pathPrefix + "map_drawing.png"),
+  map_drawing_qualified: require(pathPrefix + "map_drawing_qualified.png"),
+  map_drawing_finished: require(pathPrefix + "map_drawing_finished.png"),
 };
 
 export default images;

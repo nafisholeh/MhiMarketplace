@@ -82,11 +82,12 @@ class AreaDraw extends Component {
   };
 
   onRegionChangeComplete = (region) => {
-    const { editing } = this.state;
+    const { editing, drawingState } = this.state;
     const { coordinates } = editing || {};
     const { longitudeDelta } = region || {};
     const currentZoom = Math.round(Math.log(360 / longitudeDelta) / Math.LN2);
-    let newDrawingState = null;
+    if (drawingState === MAP_DRAW_STATE.DRAWING_FINISHED) return;
+    let newDrawingState = drawingState;
     if (currentZoom >= ZOOM_THRESHOLD) {
       newDrawingState =
         Array.isArray(coordinates) && coordinates.length >= 3
@@ -173,15 +174,15 @@ class AreaDraw extends Component {
       polygon: editing.coordinates,
       size: polygonAreaSizeM2,
     });
-    this.setState(
-      {
-        isFinished: true,
-      },
-      () => {
-        const { navigation } = this.props;
-        navigation.navigate("AreaType");
-      }
-    );
+    this.setState({
+      isFinished: true,
+      drawingState: MAP_DRAW_STATE.DRAWING_FINISHED,
+    });
+  };
+
+  ontoNextForm = () => {
+    const { navigation } = this.props;
+    navigation.navigate("AreaType");
   };
 
   render() {
@@ -302,14 +303,8 @@ class AreaDraw extends Component {
             autoZoomIn={() => this.autoZoomIn()}
             putPivotMarker={() => this.handleDrawing()}
             finishDrawing={() => this.handleDrawingFinish()}
+            ontoNextForm={() => this.ontoNextForm()}
           />
-          {/* <AreaDrawControl
-            isVisible={isAllowedZoom}
-            isPolygonSelected={selectedPolygonIndex >= 0}
-            zoomToLocation={() => this.zoomToLocation()}
-            handleDrawing={() => this.handleDrawing()}
-            handleDrawingFinish={() => this.handleDrawingFinish()}
-          /> */}
         </View>
       </View>
     );

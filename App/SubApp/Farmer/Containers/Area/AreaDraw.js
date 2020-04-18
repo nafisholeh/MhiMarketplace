@@ -176,6 +176,8 @@ class AreaDraw extends Component {
     });
     this.setState({
       isFinished: true,
+      polygonFirstPoint: null,
+      polygonLastPoint: null,
       drawingState: MAP_DRAW_STATE.DRAWING_FINISHED,
     });
   };
@@ -190,10 +192,8 @@ class AreaDraw extends Component {
       region,
       centerPos,
       centerPos: { latitude: pivotLat, longitude: pivotLng } = {},
-      isAllowedZoom,
       drawingState,
       editing,
-      selectedPolygonIndex,
       polygonAreaSize,
       polygonCenterPoint,
       polygonLastPoint,

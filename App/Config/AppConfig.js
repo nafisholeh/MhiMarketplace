@@ -16,16 +16,17 @@ export const ONE_SIGNAL_KEY = "63d5eb55-3ba8-4489-bfba-ce4d74c3bd40";
 
 export const MAP_DRAW_STATE = {
   NOT_READY: "map_zoom_in",
-  DRAWING_PIVOT: "map_put_pivot",
   DRAWING: "map_drawing",
-  DRAWING_FINISHED: "map_finish_drawing",
+  DRAWING_QUALIFIED: "map_finish_drawing",
 };
 
 export const MAP_DRAW_STATE_INFO = {
-  NOT_READY: "posisi kamera peta kurang dekat",
-  DRAWING_PIVOT: "letakkan titik lahan",
-  DRAWING: "letakkan titik lain lahan",
-  DRAWING_FINISHED: "selesai",
+  NOT_READY: "Sentuh untuk memulai",
+  DRAWING: "Sentuh untuk meletakkan titik area",
+  DRAWING_QUALIFIED: [
+    "Sentuh untuk meletakkan titik area",
+    "Sentuh lama untuk mengakhiri",
+  ],
 };
 
 export default {

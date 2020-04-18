@@ -301,6 +301,7 @@ class AreaDraw extends Component {
             drawingState={drawingState}
             autoZoomIn={() => this.autoZoomIn()}
             putPivotMarker={() => this.handleDrawing()}
+            finishDrawing={() => this.handleDrawingFinish()}
           />
           {/* <AreaDrawControl
             isVisible={isAllowedZoom}

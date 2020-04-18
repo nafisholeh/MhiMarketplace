@@ -34,6 +34,8 @@ const colors = {
 
   MAP_AREA_BORDER: "#00B074",
   MAP_AREA: "rgba(181,226,217,0.3)",
+  PROGRESS_BAR_FILL: "#00B074",
+  PROGRESS_BAR_COLOR: "#fc9000",
 };
 
 export default colors;

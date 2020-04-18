@@ -13,27 +13,26 @@ import { SIGNUP_FARMER } from "GraphQL/Farmer/Mutation";
 import {
   getFarmerSignupData,
   getFarmerSignupImages,
-  getAreas
+  getAreas,
 } from "Redux/FarmerSignupRedux";
-import { getUserId } from "Redux/SessionRedux";
 import { Images, Colors, FONTS } from "Themes";
 import {
   moderateScale,
   screenWidth,
   screenHeight,
   saveBase64AsImage,
-  combineFilenameMime
+  combineFilenameMime,
 } from "Lib";
 
 class FinalConfirm extends Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
     return {
-      header: null
+      header: null,
     };
   };
 
-  submit = async mutate => {
+  submit = async (mutate) => {
     const { signupData, signupImages } = this.props;
     let variables = {};
     let images = [];
@@ -47,7 +46,7 @@ class FinalConfirm extends Component {
           new ReactNativeFile({
             uri: "file:///" + imagePath,
             name: combineFilenameMime(imageName, mime),
-            type: mime
+            type: mime,
           })
         );
       }
@@ -56,8 +55,8 @@ class FinalConfirm extends Component {
     mutate({
       variables,
       context: {
-        hasUpload: true
-      }
+        hasUpload: true,
+      },
     });
   };
 
@@ -70,7 +69,7 @@ class FinalConfirm extends Component {
     navigation.navigate("SopFarmer");
   };
 
-  onUploadError = error => {};
+  onUploadError = (error) => {};
 
   render() {
     return (
@@ -79,7 +78,7 @@ class FinalConfirm extends Component {
           flex: 1,
           flexDirection: "column",
           position: "relative",
-          alignItems: "center"
+          alignItems: "center",
         }}
       >
         <Text
@@ -90,7 +89,7 @@ class FinalConfirm extends Component {
             textAlign: "center",
             lineHeight: 30,
             ...FONTS.HEADER_BOLD,
-            color: Colors.veggie_dark
+            color: Colors.veggie_dark,
           }}
         >
           Tekan logo untuk bergabung dengan keluarga besar MHI...
@@ -115,7 +114,7 @@ class FinalConfirm extends Component {
                     borderRadius: moderateScale(screenWidth * 0.4),
                     flexDirection: "row",
                     justifyContent: "center",
-                    alignItems: "center"
+                    alignItems: "center",
                   }}
                   onPress={async () => this.submit(mutate)}
                 >
@@ -123,7 +122,7 @@ class FinalConfirm extends Component {
                     source={Images.mhi}
                     style={{
                       width: moderateScale(screenWidth * 0.7),
-                      height: moderateScale(screenHeight * 0.4)
+                      height: moderateScale(screenHeight * 0.4),
                     }}
                   />
                   <Progress.Circle
@@ -136,7 +135,7 @@ class FinalConfirm extends Component {
                     textStyle={FONTS.HEADER_NORMAL}
                     style={{
                       position: "absolute",
-                      alignSelf: "center"
+                      alignSelf: "center",
                     }}
                   />
                 </TouchableOpacity>
@@ -147,7 +146,7 @@ class FinalConfirm extends Component {
                   animationDuration={800}
                   style={{
                     position: "absolute",
-                    bottom: "8%"
+                    bottom: "8%",
                   }}
                 />
               </Fragment>
@@ -162,10 +161,10 @@ class FinalConfirm extends Component {
 const mapStateToProps = createStructuredSelector({
   areas: getAreas(),
   signupData: getFarmerSignupData(),
-  signupImages: getFarmerSignupImages()
+  signupImages: getFarmerSignupImages(),
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = (dispatch) => ({});
 
 export default connect(
   mapStateToProps,

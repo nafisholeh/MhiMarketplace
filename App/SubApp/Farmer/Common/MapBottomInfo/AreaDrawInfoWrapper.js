@@ -4,8 +4,37 @@ import { func } from "prop-types";
 
 import { screenWidth } from "Lib";
 import { Colors, METRICS } from "Themes";
+import { ProgressBar } from "Components";
 
 class AreaDrawInfoWrapper extends Component {
+  state = {
+    progress: 0,
+  };
+  longPressAnimationInterval = null;
+  isLongPress = false;
+
+  startLongPressAnimation = () => {
+    this.longPressAnimationInterval = setInterval(() => {
+      this.setState(
+        (state) => ({ progress: state.progress + 0.25 }),
+        () => {
+          if (this.state.progress > 1) {
+            clearInterval(this.longPressAnimationInterval);
+          }
+        }
+      );
+    }, 500);
+  };
+
+  stopLongPressAnimation = () => {
+    clearInterval(this.longPressAnimationInterval);
+    this.setState({ progress: 0 });
+  };
+
+  componentWillUnmount() {
+    this.stopLongPressAnimation();
+  }
+
   render() {
     const {
       height,
@@ -16,6 +45,7 @@ class AreaDrawInfoWrapper extends Component {
       onLongPress,
       isLongPressMode,
     } = this.props;
+    const { progress } = this.state;
     return (
       <View
         style={{
@@ -39,18 +69,29 @@ class AreaDrawInfoWrapper extends Component {
             height: height || 140,
             paddingVertical: METRICS.MEDIUM,
           }}
+          onPressIn={() => {
+            this.startLongPressAnimation();
+          }}
+          onPressOut={() => {
+            if (this.isLongPress) {
+              onLongPress();
+            }
+            this.stopLongPressAnimation();
+          }}
           onPress={() => {
+            this.isLongPress = false;
             if (onPress) onPress();
           }}
           onLongPress={() => {
             if (isLongPressMode && onLongPress) {
-              onLongPress();
+              this.isLongPress = true;
             }
           }}
-          delayLongPress={1500}
+          delayLongPress={2000}
         >
           {children}
         </TouchableOpacity>
+        <ProgressBar progress={progress} duration={250} isRow />
       </View>
     );
   }

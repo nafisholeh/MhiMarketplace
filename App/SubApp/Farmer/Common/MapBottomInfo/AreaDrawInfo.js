@@ -34,7 +34,8 @@ class AreaDrawInfo extends PureComponent {
     switch (drawingState) {
       case MAP_DRAW_STATE.NOT_READY:
         autoZoomIn();
-      case MAP_DRAW_STATE.DRAWING_PIVOT:
+      case MAP_DRAW_STATE.DRAWING:
+      case MAP_DRAW_STATE.DRAWING_QUALIFIED:
         putPivotMarker();
       default: {
       }
@@ -54,7 +55,13 @@ class AreaDrawInfo extends PureComponent {
             height: moderateScale(60),
           }}
         />
-        <Text style={FONTS.BODY_NORMAL}>{info || ""}</Text>
+        {Array.isArray(info) ? (
+          info.map((text) => (
+            <Text style={FONTS.BODY_NORMAL}>{text || ""}</Text>
+          ))
+        ) : (
+          <Text style={FONTS.BODY_NORMAL}>{info || ""}</Text>
+        )}
       </AreaDrawInfoWrapper>
     );
   }

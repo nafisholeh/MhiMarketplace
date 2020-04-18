@@ -82,14 +82,20 @@ class AreaDraw extends Component {
   };
 
   onRegionChangeComplete = (region) => {
+    const { editing } = this.state;
+    const { coordinates } = editing || {};
     const { longitudeDelta } = region || {};
     const currentZoom = Math.round(Math.log(360 / longitudeDelta) / Math.LN2);
-    this.setState({
-      drawingState:
-        currentZoom >= ZOOM_THRESHOLD
-          ? MAP_DRAW_STATE.DRAWING_PIVOT
-          : MAP_DRAW_STATE.NOT_READY,
-    });
+    let newDrawingState = null;
+    if (currentZoom >= ZOOM_THRESHOLD) {
+      newDrawingState =
+        Array.isArray(coordinates) && coordinates.length >= 3
+          ? MAP_DRAW_STATE.DRAWING_QUALIFIED
+          : MAP_DRAW_STATE.DRAWING;
+    } else {
+      newDrawingState = MAP_DRAW_STATE.NOT_READY;
+    }
+    this.setState({ drawingState: newDrawingState });
   };
 
   onMapReady = () => {
@@ -153,6 +159,10 @@ class AreaDraw extends Component {
       polygonCenterPoint,
       polygonLastPoint: centerPos,
       polygonFirstPoint: editing.coordinates[0],
+      drawingState:
+        newCoordinates.length >= 3
+          ? MAP_DRAW_STATE.DRAWING_QUALIFIED
+          : MAP_DRAW_STATE.DRAWING,
     });
   };
 
@@ -242,7 +252,7 @@ class AreaDraw extends Component {
             </Marker>
           ) : null}
           {drawingState === MAP_DRAW_STATE.DRAWING ||
-          drawingState === MAP_DRAW_STATE.DRAWING_PIVOT ? (
+          drawingState === MAP_DRAW_STATE.DRAWING_QUALIFIED ? (
             <Marker
               key="pivot-marker"
               coordinate={{

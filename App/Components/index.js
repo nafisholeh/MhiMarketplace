@@ -42,6 +42,7 @@ import CustomHeader from "./Header/CustomHeader";
 import DayTimeline from "./DayTimeline";
 import ImageRadius from "./ImageRadius";
 import InputTextAccount from "./InputTextAccount";
+import ProgressBar from "./ProgressBar";
 
 export {
   OptimizedList,
@@ -87,5 +88,6 @@ export {
   DayTimeline,
   ButtonCircle,
   ImageRadius,
-  InputTextAccount
+  InputTextAccount,
+  ProgressBar,
 };

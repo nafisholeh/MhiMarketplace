@@ -13,6 +13,12 @@ class AreaDrawInfoWrapper extends Component {
   longPressAnimationInterval = null;
   isLongPress = false;
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.showFullProgress !== this.props.showFullProgress) {
+      this.setState({ progress: 1 });
+    }
+  }
+
   startLongPressAnimation = () => {
     this.longPressAnimationInterval = setInterval(() => {
       this.setState(

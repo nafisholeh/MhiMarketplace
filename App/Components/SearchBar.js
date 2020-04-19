@@ -1,27 +1,27 @@
-import React, { Component } from 'react';
-import { View, TextInput, Image, TouchableOpacity } from 'react-native';
-import { func, bool, string } from 'prop-types';
+import React, { Component } from "react";
+import { View, TextInput, Image, TouchableOpacity } from "react-native";
+import { func, bool, string } from "prop-types";
 
-import ViewShadow from './Shadow/ViewShadow';
-import { Colors, Images } from 'Themes';
-import { moderateScale, screenWidth } from 'Lib';
+import ViewShadow from "./Shadow/ViewShadow";
+import { Colors, Images } from "Themes";
+import { moderateScale, screenWidth } from "Lib";
 
 class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '',
+      value: "",
     };
   }
 
-  onChangeText = value => {
-    if (value === '' || !value) {
+  onChangeText = (value) => {
+    if (value === "" || !value) {
       const { onSearch } = this.props;
       if (onSearch) onSearch(value);
     }
     this.setState({ value });
   };
-  
+
   onSearch = () => {
     const { value } = this.state;
     const { onSearch } = this.props;
@@ -44,18 +44,18 @@ class SearchBar extends Component {
         mainColor={Colors.white}
         shadowColor={Colors.brown_light}
         styleChildren={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
           paddingHorizontal: moderateScale(10),
         }}
       >
         <TextInput
-          underlineColorAndroid='rgba(0,0,0,0)'
+          underlineColorAndroid="rgba(0,0,0,0)"
           onChangeText={this.onChangeText}
           placeholder="Cari produk"
           selectTextOnFocus
-          returnKeyType='search'
+          returnKeyType="search"
           clearTextOnFocus
           onSubmitEditing={this.onSearch}
           value={value}
@@ -64,15 +64,13 @@ class SearchBar extends Component {
             marginRight: moderateScale(5),
           }}
         />
-        <TouchableOpacity
-          onPress={this.onSearch}
-        >
+        <TouchableOpacity onPress={this.onSearch}>
           <Image
             source={Images.search}
             style={{
               width: moderateScale(20),
               height: moderateScale(20),
-              tintColor: Colors.icon,
+              tintColor: Colors.ICON,
             }}
           />
         </TouchableOpacity>

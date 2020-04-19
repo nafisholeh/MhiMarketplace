@@ -15,7 +15,7 @@ class SearchHeader extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: ""
+      value: "",
     };
   }
 
@@ -37,7 +37,7 @@ class SearchHeader extends Component {
     }
   };
 
-  onChangeText = value => {
+  onChangeText = (value) => {
     const { onSearch } = this.props;
     this.setState({ value }, () => {
       if (value === "" || !value) {
@@ -78,7 +78,7 @@ class SearchHeader extends Component {
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
-          paddingHorizontal: moderateScale(10)
+          paddingHorizontal: moderateScale(10),
         }}
       >
         <TextInput
@@ -92,7 +92,7 @@ class SearchHeader extends Component {
           value={value}
           style={{
             flex: 1,
-            marginRight: moderateScale(5)
+            marginRight: moderateScale(5),
           }}
         />
         <TouchableOpacity onPress={this.onSearch}>
@@ -101,7 +101,7 @@ class SearchHeader extends Component {
             style={{
               width: moderateScale(20),
               height: moderateScale(20),
-              tintColor: Colors.icon
+              tintColor: Colors.ICON,
             }}
           />
         </TouchableOpacity>
@@ -117,16 +117,16 @@ SearchHeader.propTypes = {
   userId: string,
   filterByTerm: func,
   termFilter: string,
-  isResetUponSearch: bool
+  isResetUponSearch: bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
-  termFilter: getTermFilter()
+  termFilter: getTermFilter(),
 });
 
-const mapDispatchToProps = dispatch => ({
-  filterByTerm: term => dispatch(ProductActions.filterByTerm(term))
+const mapDispatchToProps = (dispatch) => ({
+  filterByTerm: (term) => dispatch(ProductActions.filterByTerm(term)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchHeader);

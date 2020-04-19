@@ -16,7 +16,7 @@ class ConsumerPageHeader extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: ""
+      value: "",
     };
   }
 
@@ -38,7 +38,7 @@ class ConsumerPageHeader extends Component {
     }
   };
 
-  onChangeText = value => {
+  onChangeText = (value) => {
     const { onSearch } = this.props;
     this.setState({ value }, () => {
       if (value === "" || !value) {
@@ -60,7 +60,7 @@ class ConsumerPageHeader extends Component {
     onSearch(value);
   };
 
-  logProductSearch = term => {
+  logProductSearch = (term) => {
     const { userId } = this.props;
     let variables = { search_term: term };
     if (userId) {
@@ -69,10 +69,10 @@ class ConsumerPageHeader extends Component {
     ApolloClientProvider.client
       .mutate({
         mutation: LOG_PRODUCT_SEARCH,
-        variables
+        variables,
       })
-      .then(res => {})
-      .catch(err => {});
+      .then((res) => {})
+      .catch((err) => {});
   };
 
   render() {
@@ -86,7 +86,7 @@ class ConsumerPageHeader extends Component {
           alignItems: "center",
           paddingTop: moderateScale(20),
           paddingBottom: moderateScale(25),
-          zIndex: 2
+          zIndex: 2,
         }}
       >
         {userId && (
@@ -96,7 +96,7 @@ class ConsumerPageHeader extends Component {
               style={{
                 height: 30,
                 width: 35,
-                resizeMode: "contain"
+                resizeMode: "contain",
               }}
             />
           </TouchableOpacity>
@@ -116,7 +116,7 @@ class ConsumerPageHeader extends Component {
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            paddingHorizontal: moderateScale(10)
+            paddingHorizontal: moderateScale(10),
           }}
         >
           <TextInput
@@ -130,7 +130,7 @@ class ConsumerPageHeader extends Component {
             value={value}
             style={{
               flex: 1,
-              marginRight: moderateScale(5)
+              marginRight: moderateScale(5),
             }}
           />
           <TouchableOpacity onPress={this.onSearch}>
@@ -139,7 +139,7 @@ class ConsumerPageHeader extends Component {
               style={{
                 width: moderateScale(20),
                 height: moderateScale(20),
-                tintColor: Colors.icon
+                tintColor: Colors.ICON,
               }}
             />
           </TouchableOpacity>
@@ -156,16 +156,16 @@ ConsumerPageHeader.propTypes = {
   userId: string,
   filterByTerm: func,
   termFilter: string,
-  isResetUponSearch: bool
+  isResetUponSearch: bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
-  termFilter: getTermFilter()
+  termFilter: getTermFilter(),
 });
 
-const mapDispatchToProps = dispatch => ({
-  filterByTerm: term => dispatch(ProductActions.filterByTerm(term))
+const mapDispatchToProps = (dispatch) => ({
+  filterByTerm: (term) => dispatch(ProductActions.filterByTerm(term)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConsumerPageHeader);

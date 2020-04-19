@@ -24,10 +24,10 @@ class FileItem extends Component {
       <ProductHorizontalWrapper
         styleChildren={{
           alignItems: "center",
-          position: "relative"
+          position: "relative",
         }}
         style={{
-          alignSelf: "center"
+          alignSelf: "center",
         }}
         width={width}
         height={moderateScale(150)}
@@ -53,14 +53,14 @@ class FileItem extends Component {
               width: moderateScale(40),
               height: moderateScale(40),
               marginTop: moderateScale(40),
-              alignSelf: "center"
+              alignSelf: "center",
             }}
           />
         )}
         <LinearGradient
           colors={
             bigThumbnail
-              ? ["#ffffff00", Colors.icon]
+              ? ["#ffffff00", Colors.ICON]
               : ["#ffffff00", "#ffffff00"]
           }
           start={{ x: 0.5, y: 0.58 }}
@@ -73,7 +73,7 @@ class FileItem extends Component {
             flexDirection: "column",
             justifyContent: "flex-end",
             borderBottomLeftRadius: BORDER_RADIUS,
-            borderBottomRightRadius: BORDER_RADIUS
+            borderBottomRightRadius: BORDER_RADIUS,
           }}
         >
           <Text
@@ -86,14 +86,14 @@ class FileItem extends Component {
                     marginHorizontal: moderateScale(10),
                     marginBottom: moderateScale(8),
                     ...FONTS.HEADER_SMALL,
-                    color: Colors.white
+                    color: Colors.white,
                   }
                 : {
                     textAlign: "center",
                     flexWrap: "wrap",
                     marginHorizontal: moderateScale(10),
                     marginBottom: moderateScale(13),
-                    ...FONTS.HEADER_SMALL
+                    ...FONTS.HEADER_SMALL,
                   }
             )}
             numberOfLines={2}

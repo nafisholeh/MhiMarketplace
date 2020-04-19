@@ -199,7 +199,6 @@ class AreaDraw extends Component {
       polygonLastPoint,
       polygonFirstPoint,
     } = this.state;
-    const { locationCurrent } = this.props;
     const mapOptions = {
       scrollEnabled: true,
     };
@@ -304,6 +303,7 @@ class AreaDraw extends Component {
             putPivotMarker={() => this.handleDrawing()}
             finishDrawing={() => this.handleDrawingFinish()}
             ontoNextForm={() => this.ontoNextForm()}
+            onRedraw={() => {}}
           />
         </View>
       </View>

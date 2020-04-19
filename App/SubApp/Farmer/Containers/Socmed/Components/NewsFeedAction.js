@@ -10,7 +10,7 @@ import { LIKE, cacheLike, cacheDislike } from "GraphQL/Farmer/Mutation";
 
 class NewsFeedAction extends PureComponent {
   state = {
-    isLiked: false
+    isLiked: false,
   };
 
   componentDidMount() {
@@ -28,7 +28,7 @@ class NewsFeedAction extends PureComponent {
     const { loggedInUserId, likes = [] } = this.props;
     if (Array.isArray(likes)) {
       this.setState({
-        isLiked: likes.findIndex(({ _id }) => _id === loggedInUserId) >= 0
+        isLiked: likes.findIndex(({ _id }) => _id === loggedInUserId) >= 0,
       });
     }
   };
@@ -42,7 +42,7 @@ class NewsFeedAction extends PureComponent {
         alignItems: "center",
         justifyContent: "center",
         paddingVertical: moderateScale(5),
-        marginBottom: moderateScale(10)
+        marginBottom: moderateScale(10),
       }}
     >
       {isLoading ? (
@@ -61,9 +61,9 @@ class NewsFeedAction extends PureComponent {
               {
                 width: moderateScale(20),
                 height: moderateScale(20),
-                marginRight: moderateScale(5)
+                marginRight: moderateScale(5),
               },
-              noTintColor ? {} : { tintColor: Colors.icon }
+              noTintColor ? {} : { tintColor: Colors.ICON }
             )}
           />
         </Animatable.View>
@@ -75,15 +75,15 @@ class NewsFeedAction extends PureComponent {
             {
               width: moderateScale(20),
               height: moderateScale(20),
-              marginRight: moderateScale(5)
+              marginRight: moderateScale(5),
             },
-            noTintColor ? {} : { tintColor: Colors.icon }
+            noTintColor ? {} : { tintColor: Colors.ICON }
           )}
         />
       )}
       <Text
         style={{
-          ...FONTS.BODY_NORMAL
+          ...FONTS.BODY_NORMAL,
         }}
       >
         {title}
@@ -99,7 +99,7 @@ class NewsFeedAction extends PureComponent {
         style={{
           flexDirection: "row",
           borderBottomWidth: showActionBorder ? 1 : 0,
-          borderBottomColor: Colors.border
+          borderBottomColor: Colors.border,
         }}
       >
         <Mutation
@@ -116,7 +116,7 @@ class NewsFeedAction extends PureComponent {
                   elementId: feedId,
                   userId: loggedInUserId,
                   type: "POST",
-                  action: isLiked ? "dislike" : "like"
+                  action: isLiked ? "dislike" : "like",
                 },
                 optimisticResponse: {
                   like: {
@@ -124,9 +124,9 @@ class NewsFeedAction extends PureComponent {
                     likesPost: [],
                     likesComment: [],
                     likesCommentReply: [],
-                    __typename: "like"
-                  }
-                }
+                    __typename: "like",
+                  },
+                },
               });
             return this.renderButton(
               "suka",

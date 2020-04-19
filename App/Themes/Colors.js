@@ -13,7 +13,6 @@ const colors = {
   polygon_fill_dark: "rgba(46, 196, 182, 0.7)",
   polygon_border: "rgba(168, 222, 28, 0.8)",
   shadow: "#fffff9",
-  icon: "#707070",
   veggie_dark: "#50ac02",
   veggie_light: "#a8de1c",
   veggie_bg: "rgba(136, 192, 87, 0.25)",
@@ -36,6 +35,7 @@ const colors = {
   MAP_AREA: "rgba(181,226,217,0.3)",
   PROGRESS_BAR_FILL: "#00B074",
   PROGRESS_BAR_COLOR: "#fc9000",
+  ICON: "#707070",
 };
 
 export default colors;

@@ -16,14 +16,10 @@ import {
   calcPolygonSize,
   calcPolygonCenter,
   normalizeAreaSize,
+  calcZoomFromRegion,
 } from "Lib";
 import { Colors, Images, FONTS } from "Themes";
-import {
-  HeaderWhite,
-  AreaDrawInfo,
-  AreaDrawControl,
-  withLocationListener,
-} from "CommonFarmer";
+import { HeaderWhite, AreaDrawInfo, withLocationListener } from "CommonFarmer";
 import { MAP_DRAW_STATE } from "../../../../Config/AppConfig";
 
 const { width, height } = Dimensions.get("window");
@@ -63,14 +59,13 @@ class AreaDraw extends Component {
         longitude: LONGITUDE,
       },
       drawingState: MAP_DRAW_STATE.NOT_READY,
-      isAllowedZoom: false,
       isMapReady: false,
       isFinished: false,
-      selectedPolygonIndex: -1,
       polygonAreaSize: -1,
       polygonCenterPoint: null,
       polygonLastPoint: null,
       polygonFirstPoint: null,
+      currentRegion: null,
     };
   }
 
@@ -84,11 +79,9 @@ class AreaDraw extends Component {
   onRegionChangeComplete = (region) => {
     const { editing, drawingState } = this.state;
     const { coordinates } = editing || {};
-    const { longitudeDelta } = region || {};
-    const currentZoom = Math.round(Math.log(360 / longitudeDelta) / Math.LN2);
     if (drawingState === MAP_DRAW_STATE.DRAWING_FINISHED) return;
     let newDrawingState = drawingState;
-    if (currentZoom >= ZOOM_THRESHOLD) {
+    if (calcZoomFromRegion(region) >= ZOOM_THRESHOLD) {
       newDrawingState =
         Array.isArray(coordinates) && coordinates.length >= 3
           ? MAP_DRAW_STATE.DRAWING_QUALIFIED
@@ -96,7 +89,7 @@ class AreaDraw extends Component {
     } else {
       newDrawingState = MAP_DRAW_STATE.NOT_READY;
     }
-    this.setState({ drawingState: newDrawingState });
+    this.setState({ drawingState: newDrawingState, currentRegion: region });
   };
 
   onMapReady = () => {
@@ -179,6 +172,29 @@ class AreaDraw extends Component {
       polygonFirstPoint: null,
       polygonLastPoint: null,
       drawingState: MAP_DRAW_STATE.DRAWING_FINISHED,
+    });
+  };
+
+  restartDrawing = () => {
+    const { storeFarmerArea } = this.props;
+    const { currentRegion } = this.state;
+    storeFarmerArea({
+      polygon: null,
+      size: null,
+    });
+    const currentZoom = calcZoomFromRegion(currentRegion);
+    const resetDrawingState =
+      currentZoom >= ZOOM_THRESHOLD
+        ? MAP_DRAW_STATE.DRAWING
+        : MAP_DRAW_STATE.NOT_READY;
+    this.setState({
+      isFinished: false,
+      polygonFirstPoint: null,
+      polygonLastPoint: null,
+      polygonCenterPoint: null,
+      polygonAreaSize: 0,
+      editing: null,
+      drawingState: resetDrawingState,
     });
   };
 
@@ -303,7 +319,7 @@ class AreaDraw extends Component {
             putPivotMarker={() => this.handleDrawing()}
             finishDrawing={() => this.handleDrawingFinish()}
             ontoNextForm={() => this.ontoNextForm()}
-            onRedraw={() => {}}
+            onRedraw={() => this.restartDrawing()}
           />
         </View>
       </View>

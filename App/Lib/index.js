@@ -1,34 +1,50 @@
-import { parseToRupiah, calcDiscount } from './money';
-import { isEmailValid, isEmailError } from './Email';
+import { parseToRupiah, calcDiscount } from "./money";
+import { isEmailValid, isEmailError } from "./Email";
 import {
   getGraphQLError,
   convertToGraphQLFile,
   extractGraphQLResponse,
-} from './GraphQL';
+} from "./GraphQL";
 import {
   getReadableDate,
   getIntervalTimeToday,
   getIntervalDateToday,
   getUTCDate,
-  unixToDate
-} from './Date';
-import { setTabBarHide } from './Navigation';
-import { moderateScale, screenWidth, screenHeight } from './Responsive';
-import { isString } from './DataType';
+  unixToDate,
+} from "./Date";
+import { setTabBarHide } from "./Navigation";
+import { moderateScale, screenWidth, screenHeight } from "./Responsive";
+import { isString } from "./DataType";
 import {
   getReadableAddress,
   getReadableSubdistrict,
   getReadableCityState,
   graphqlToRNPickerSelect,
-} from './Address';
-import { InAppNotification } from './InAppNotification';
-import { getReadableTotalWeight, getAggregateProducts, getTotalWeight } from './Product';
-import { getUpcomingShippingSched, getReadableShippingSched } from './Shipping';
-import { filterObject } from './Object';
-import { reportSentryError, addToSentryLog, reportSentryLog } from './SentryUtils';
-import { calcPolygonSize, calcPolygonCenter, normalizeAreaSize } from './Map';
-import { extractAdministrativeName } from './LocationUtils';
-import { getStateFromAsyncStorage, setStateFromAsyncStorage  } from './AsyncStorage';
+} from "./Address";
+import { InAppNotification } from "./InAppNotification";
+import {
+  getReadableTotalWeight,
+  getAggregateProducts,
+  getTotalWeight,
+} from "./Product";
+import { getUpcomingShippingSched, getReadableShippingSched } from "./Shipping";
+import { filterObject } from "./Object";
+import {
+  reportSentryError,
+  addToSentryLog,
+  reportSentryLog,
+} from "./SentryUtils";
+import {
+  calcPolygonSize,
+  calcPolygonCenter,
+  normalizeAreaSize,
+  calcZoomFromRegion,
+} from "./Map";
+import { extractAdministrativeName } from "./LocationUtils";
+import {
+  getStateFromAsyncStorage,
+  setStateFromAsyncStorage,
+} from "./AsyncStorage";
 import {
   getFilenameFromPath,
   getFileType,
@@ -36,21 +52,53 @@ import {
   generateBase64Thumbnail,
   saveBase64AsImage,
   normalizeServerFileUri,
-  generateValidServerFileUri
-} from './File';
+  generateValidServerFileUri,
+} from "./File";
 
-export { 
-  parseToRupiah, calcDiscount, isEmailValid, isEmailError, 
-  getGraphQLError, getReadableDate, setTabBarHide, moderateScale,
-  isString, getReadableAddress, getReadableSubdistrict, getReadableCityState,
-  InAppNotification, getReadableTotalWeight, getReadableShippingSched,
-  getUpcomingShippingSched, filterObject, getIntervalTimeToday,
-  getAggregateProducts, screenWidth, screenHeight, graphqlToRNPickerSelect,
-  getIntervalDateToday, reportSentryError, addToSentryLog, reportSentryLog,
-  getTotalWeight, calcPolygonSize, extractAdministrativeName,
-  getStateFromAsyncStorage, setStateFromAsyncStorage, calcPolygonCenter,
-  normalizeAreaSize, convertToGraphQLFile, getUTCDate, unixToDate,
-  getFilenameFromPath, getFileType, combineFilenameMime, generateBase64Thumbnail,
-  saveBase64AsImage, generateValidServerFileUri, normalizeServerFileUri,
+export {
+  parseToRupiah,
+  calcDiscount,
+  isEmailValid,
+  isEmailError,
+  getGraphQLError,
+  getReadableDate,
+  setTabBarHide,
+  moderateScale,
+  isString,
+  getReadableAddress,
+  getReadableSubdistrict,
+  getReadableCityState,
+  InAppNotification,
+  getReadableTotalWeight,
+  getReadableShippingSched,
+  getUpcomingShippingSched,
+  filterObject,
+  getIntervalTimeToday,
+  getAggregateProducts,
+  screenWidth,
+  screenHeight,
+  graphqlToRNPickerSelect,
+  getIntervalDateToday,
+  reportSentryError,
+  addToSentryLog,
+  reportSentryLog,
+  getTotalWeight,
+  calcPolygonSize,
+  extractAdministrativeName,
+  getStateFromAsyncStorage,
+  setStateFromAsyncStorage,
+  calcPolygonCenter,
+  normalizeAreaSize,
+  convertToGraphQLFile,
+  getUTCDate,
+  unixToDate,
+  getFilenameFromPath,
+  getFileType,
+  combineFilenameMime,
+  generateBase64Thumbnail,
+  saveBase64AsImage,
+  generateValidServerFileUri,
+  normalizeServerFileUri,
   extractGraphQLResponse,
+  calcZoomFromRegion,
 };

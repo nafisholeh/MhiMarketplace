@@ -66,6 +66,7 @@ class AreaDrawInfo extends PureComponent {
         onPress={this.onPress}
         onLongPress={this.onLongPress}
         isLongPressMode={drawingState === MAP_DRAW_STATE.DRAWING_QUALIFIED}
+        showFullProgress={drawingState === MAP_DRAW_STATE.DRAWING_FINISHED}
       >
         <Image
           source={image}

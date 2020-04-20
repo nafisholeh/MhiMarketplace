@@ -14,8 +14,9 @@ class AreaDrawInfoWrapper extends Component {
   isLongPress = false;
 
   componentDidUpdate(prevProps) {
-    if (prevProps.showFullProgress !== this.props.showFullProgress) {
-      this.setState({ progress: 1 });
+    const { showFullProgress } = this.props;
+    if (prevProps.showFullProgress !== showFullProgress) {
+      this.setState({ progress: showFullProgress ? 1 : 0 });
     }
   }
 

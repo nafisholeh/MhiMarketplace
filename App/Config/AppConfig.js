@@ -34,9 +34,9 @@ export const MAP_DRAW_STATE_INFO = {
 export default {
   // uri: 'http://app-dev.metodehayati.id:4001/graphql',
   uri: {
-    basic: "http://192.168.1.3:4001/",
-    graphql: "http://192.168.1.3:4001/graphql",
-    image: "http://192.168.1.3:4001",
+    basic: "http://192.168.1.5:4001/",
+    graphql: "http://192.168.1.5:4001/graphql",
+    image: "http://192.168.1.5:4001",
   },
   sentryKey: "https://acfc9528eb164f6d8cb3c02a5294b6cd@sentry.io/1498313",
   allowTextFontScaling: true,

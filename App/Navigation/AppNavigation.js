@@ -1,17 +1,14 @@
-import React, { Component } from 'react';
-import { Image } from 'react-native';
-import { createSwitchNavigator, createAppContainer } from 'react-navigation'
+import { createSwitchNavigator, createAppContainer } from "react-navigation";
 
-import ConsumerNavigation from './Tabs/ConsumerNavigation'
-import CourierNavigation from './Tabs/CourierNavigation';
-import FinanceNavigation from './Tabs/FinanceNavigation';
-import StockOpnameNavigation from './Tabs/StockOpnameNavigation';
-import AdminNavigation from './Tabs/AdminNavigation';
-import FarmerNavigation from './Farmer/Tab/MainTab';
+import ConsumerNavigation from "./Tabs/ConsumerNavigation";
+import CourierNavigation from "./Tabs/CourierNavigation";
+import FinanceNavigation from "./Tabs/FinanceNavigation";
+import StockOpnameNavigation from "./Tabs/StockOpnameNavigation";
+import AdminNavigation from "./Tabs/AdminNavigation";
+import FarmerNavigation from "./Farmer/Tab/MainTab";
 
-import { store } from 'Containers/App';
-import Setup from 'Containers/Setup/Setup';
-import SubAppChooser from 'Containers/Setup/SubAppChooser';
+import Setup from "Containers/Setup/Setup";
+import SubAppChooser from "Containers/Setup/SubAppChooser";
 
 const PrimarySwitchNavigator = createSwitchNavigator(
   {
@@ -25,8 +22,8 @@ const PrimarySwitchNavigator = createSwitchNavigator(
     FarmerNav: { screen: FarmerNavigation },
   },
   {
-    initialRouteName: 'Setup',
+    initialRouteName: "Setup",
   }
-)
+);
 
 export default createAppContainer(PrimarySwitchNavigator);

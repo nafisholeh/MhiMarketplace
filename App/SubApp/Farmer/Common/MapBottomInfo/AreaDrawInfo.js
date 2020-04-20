@@ -62,6 +62,8 @@ class AreaDrawInfo extends PureComponent {
     const { drawingState, onRedraw } = this.props;
     const { info } = this.state;
     const image = Images[drawingState] || Images.map_zoom_in;
+    const isLongPressMode = drawingState === MAP_DRAW_STATE.DRAWING_QUALIFIED;
+    const showFullProgress = drawingState === MAP_DRAW_STATE.DRAWING_FINISHED;
     return (
       <Fragment>
         {drawingState === MAP_DRAW_STATE.DRAWING_FINISHED ? (
@@ -92,8 +94,8 @@ class AreaDrawInfo extends PureComponent {
         <AreaDrawInfoWrapper
           onPress={this.onPress}
           onLongPress={this.onLongPress}
-          isLongPressMode={drawingState === MAP_DRAW_STATE.DRAWING_QUALIFIED}
-          showFullProgress={drawingState === MAP_DRAW_STATE.DRAWING_FINISHED}
+          isLongPressMode={isLongPressMode}
+          showFullProgress={showFullProgress}
         >
           <Image
             source={image}

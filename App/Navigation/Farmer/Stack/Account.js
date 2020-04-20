@@ -5,13 +5,14 @@ import { tabNavOptions } from "Navigation/Tabs/Options";
 import styles from "Navigation/Styles/NavigationStyles";
 
 import Signin from "Containers/Signin/Signin";
-import AreaCommodity from "SubApp/Farmer/Containers/AreaCommodity";
-import AreaType from "SubApp/Farmer/Containers/AreaType";
-import AreaDraw from "SubApp/Farmer/Containers/AreaDraw";
-import AreaList from "SubApp/Farmer/Containers/AreaList";
+import AreaCommodity from "SubApp/Farmer/Containers/Area/AreaCommodity";
+import AreaType from "SubApp/Farmer/Containers/Area/AreaType";
+import AreaDraw from "SubApp/Farmer/Containers/Area/AreaDraw";
+import AreaList from "SubApp/Farmer/Containers/Area/AreaList";
 import SignupFarmerFirst from "SubApp/Farmer/Containers/Signup/AccountCredsForm";
 import SignupFarmerSecond from "SubApp/Farmer/Containers/Signup/CardIdentityForm";
 import SignupFarmerThird from "SubApp/Farmer/Containers/Signup/PhotoForm";
+import SignupFarmerFourth from "SubApp/Farmer/Containers/Area/AreaList";
 import FarmerFinalConfirm from "SubApp/Farmer/Containers/Signup/FinalConfirm";
 import NotificationHistory from "SubApp/Farmer/Containers/Socmed/NotificationHistory";
 import FarmerProfile from "SubApp/Farmer/Containers/Account/Profile";
@@ -23,6 +24,7 @@ const AccountNav = createStackNavigator(
     SignupFarmerFirst: { screen: SignupFarmerFirst },
     SignupFarmerSecond: { screen: SignupFarmerSecond },
     SignupFarmerThird: { screen: SignupFarmerThird },
+    SignupFarmerFourth: { screen: SignupFarmerFourth },
     FarmerFinalConfirm: { screen: FarmerFinalConfirm },
     AreaDraw: { screen: AreaDraw },
     AreaList: { screen: AreaList },
@@ -30,16 +32,16 @@ const AccountNav = createStackNavigator(
     AreaCommodity: { screen: AreaCommodity },
     NotificationHistory: { screen: NotificationHistory },
     FarmerProfile: { screen: FarmerProfile },
-    BioList: { screen: BioList }
+    BioList: { screen: BioList },
   },
   {
-    initialRouteName: "SignupFarmerThird",
+    initialRouteName: "AreaDraw",
     navigationOptions: {
-      headerStyle: styles.header
-    }
+      headerStyle: styles.header,
+    },
   }
 );
 
-AccountNav.navigationOptions = data => tabNavOptions(data, Images.user);
+AccountNav.navigationOptions = (data) => tabNavOptions(data, Images.user);
 
 export default AccountNav;

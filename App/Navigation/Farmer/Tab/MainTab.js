@@ -8,18 +8,18 @@ const TabNav = createBottomTabNavigator(
   {
     Komoditas: { screen: CommoditySocmedStack },
     SOP: { screen: SopStack },
-    Account: { screen: AccountStack }
+    Account: { screen: AccountStack },
   },
   {
-    initialRouteName: "Komoditas",
-    backBehavior: "initialRoute"
+    initialRouteName: "Account",
+    backBehavior: "initialRoute",
   }
 );
 
 // it actually styles it's parent navigator, i.e. PrimaryNav
 TabNav.navigationOptions = ({ navigation }) => {
   return {
-    gesturesEnabled: false
+    gesturesEnabled: false,
   };
 };
 

@@ -9,56 +9,56 @@ const ApplicationStyles = {
   screen: {
     mainContainer: {
       flex: 1,
-      backgroundColor: Colors.transparent
+      backgroundColor: Colors.transparent,
     },
     backgroundImage: {
       position: "absolute",
       top: 0,
       left: 0,
       bottom: 0,
-      right: 0
+      right: 0,
     },
     container: {
       flex: 1,
       paddingTop: METRICS.SMALL,
-      backgroundColor: Colors.transparent
+      backgroundColor: Colors.transparent,
     },
     section: {
       margin: METRICS.HUGE,
-      padding: METRICS.SMALL
+      padding: METRICS.SMALL,
     },
     sectionText: {
       paddingVertical: METRICS.LARGE,
       color: Colors.snow,
       marginVertical: METRICS.TINY,
-      textAlign: "center"
+      textAlign: "center",
     },
     subtitle: {
       color: Colors.snow,
       padding: METRICS.TINY,
       marginBottom: METRICS.TINY,
-      marginHorizontal: METRICS.TINY
+      marginHorizontal: METRICS.TINY,
     },
     titleText: {
       fontSize: 14,
-      color: Colors.text
-    }
+      color: Colors.text,
+    },
   },
   darkLabelContainer: {
     padding: METRICS.TINY,
     paddingBottom: METRICS.LARGE,
-    borderBottomColor: Colors.border,
+    borderBottomColor: Colors.BORDER,
     borderBottomWidth: 1,
-    marginBottom: METRICS.SMALL
+    marginBottom: METRICS.SMALL,
   },
   darkLabel: {
-    color: Colors.snow
+    color: Colors.snow,
   },
   groupContainer: {
     margin: METRICS.TINY,
     flexDirection: "row",
     justifyContent: "space-around",
-    alignItems: "center"
+    alignItems: "center",
   },
   sectionTitle: {
     color: Colors.coal,
@@ -69,8 +69,8 @@ const ApplicationStyles = {
     borderWidth: 1,
     borderColor: Colors.ember,
     alignItems: "center",
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 };
 
 export default ApplicationStyles;

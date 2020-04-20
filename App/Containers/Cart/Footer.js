@@ -12,7 +12,7 @@ import {
   parseToRupiah,
   moderateScale,
   calcDiscount,
-  InAppNotification
+  InAppNotification,
 } from "Lib";
 import { Colors, METRICS } from "Themes";
 import { FETCH_CART } from "GraphQL/Cart/Query";
@@ -25,7 +25,7 @@ import CartActions, {
   isCheckoutValid,
   resetCart,
   isCartFilled,
-  isAnyCartItemSelected
+  isAnyCartItemSelected,
 } from "Redux/CartRedux";
 import CheckoutActions from "Redux/CheckoutRedux";
 import { getUserId } from "Redux/SessionRedux";
@@ -35,7 +35,7 @@ class Footer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isInitiatingCheckout: false
+      isInitiatingCheckout: false,
     };
   }
 
@@ -49,7 +49,7 @@ class Footer extends Component {
     navigation.navigate("Checkout");
   };
 
-  initiateCheckout = data => {
+  initiateCheckout = (data) => {
     const { userId, storeCheckoutId, resetCart, storeOutOfStock } = this.props;
     this.setState({ isInitiatingCheckout: true });
     ApolloClientProvider.client
@@ -59,16 +59,16 @@ class Footer extends Component {
         refetchQueries: [
           {
             query: FETCH_CART,
-            variables: { user_id: userId }
-          }
-        ]
+            variables: { user_id: userId },
+          },
+        ],
       })
-      .then(res => {
+      .then((res) => {
         this.setState({ isInitiatingCheckout: false });
         const {
           data: {
-            startCheckout: { _id: checkoutId = 0, status, products }
-          }
+            startCheckout: { _id: checkoutId = 0, status, products },
+          },
         } = res;
         if (status === "out of stock") {
           const outOfStockProducts =
@@ -89,24 +89,24 @@ class Footer extends Component {
         resetCart();
         this.onOpenCheckoutPage();
       })
-      .catch(err => {
+      .catch((err) => {
         InAppNotification.error();
         this.setState({ isInitiatingCheckout: false });
       });
   };
 
-  onStartSyncCart = syncCartItem => {
+  onStartSyncCart = (syncCartItem) => {
     const { userId, cartItems = [], selectedCartItems = [] } = this.props;
-    const cartItemUpload = cartItems.map(n => ({
+    const cartItemUpload = cartItems.map((n) => ({
       product_id: n.product._id,
       qty: n.qty,
-      selected: selectedCartItems.indexOf(n.product._id) > -1
+      selected: selectedCartItems.indexOf(n.product._id) > -1,
     }));
     syncCartItem({
       variables: {
         user_id: userId,
-        cart_item: cartItemUpload
-      }
+        cart_item: cartItemUpload,
+      },
     });
   };
 
@@ -115,7 +115,7 @@ class Footer extends Component {
       grossTotal,
       isCheckoutValid,
       isCartFilled,
-      isAnyCartItemSelected
+      isAnyCartItemSelected,
     } = this.props;
     const { isInitiatingCheckout } = this.state;
     return (
@@ -123,7 +123,7 @@ class Footer extends Component {
         style={{
           backgroundColor: Colors.white,
           borderTopWidth: 0.8,
-          borderTopColor: Colors.border
+          borderTopColor: Colors.BORDER,
         }}
       >
         {isCheckoutValid && (
@@ -132,14 +132,14 @@ class Footer extends Component {
               flexDirection: "row",
               justifyContent: "space-between",
               paddingHorizontal: moderateScale(30),
-              paddingVertical: moderateScale(15)
+              paddingVertical: moderateScale(15),
             }}
           >
             <Text
               style={{
                 fontFamily: "CircularStd",
                 fontSize: 16,
-                color: "rgba(0,0,0,0.68)"
+                color: "rgba(0,0,0,0.68)",
               }}
             >
               Total
@@ -148,7 +148,7 @@ class Footer extends Component {
               style={{
                 fontFamily: "CircularStd-Bold",
                 fontSize: 16,
-                color: Colors.black
+                color: Colors.black,
               }}
             >
               {parseToRupiah(grossTotal) || "0"}
@@ -176,7 +176,7 @@ class Footer extends Component {
                 title="Checkout"
                 style={{
                   marginBottom: moderateScale(10),
-                  marginTop: !isAnyCartItemSelected ? moderateScale(15) : 0
+                  marginTop: !isAnyCartItemSelected ? moderateScale(15) : 0,
                 }}
               />
             );
@@ -193,18 +193,18 @@ Footer.propTypes = {
       qty: number,
       product: {
         price: number,
-        discount: number
-      }
+        discount: number,
+      },
     })
   ),
   cartItems: arrayOf(
     shape({
       _id: string,
       product: shape({
-        _id: string
+        _id: string,
       }),
       qty: number,
-      selected: bool
+      selected: bool,
     })
   ),
   userId: string,
@@ -214,7 +214,7 @@ Footer.propTypes = {
   storeCheckoutId: func,
   resetCart: func,
   isCartFilled: bool,
-  isAnyCartItemSelected: bool
+  isAnyCartItemSelected: bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -224,15 +224,15 @@ const mapStateToProps = createStructuredSelector({
   isCheckoutValid: isCheckoutValid(),
   selectedCartItems: getCartItemIdSelected(),
   isCartFilled: isCartFilled(),
-  isAnyCartItemSelected: isAnyCartItemSelected()
+  isAnyCartItemSelected: isAnyCartItemSelected(),
 });
 
-const mapDispatchToProps = dispatch => ({
-  storeCheckoutId: checkoutId =>
+const mapDispatchToProps = (dispatch) => ({
+  storeCheckoutId: (checkoutId) =>
     dispatch(CheckoutActions.storeCheckoutId(checkoutId)),
   resetCart: () => dispatch(CartActions.resetCart()),
-  storeOutOfStock: outOfStockProducts =>
-    dispatch(CartActions.storeOutOfStock(outOfStockProducts))
+  storeOutOfStock: (outOfStockProducts) =>
+    dispatch(CartActions.storeOutOfStock(outOfStockProducts)),
 });
 
 export default connect(

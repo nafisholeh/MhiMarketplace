@@ -5,7 +5,7 @@ import {
   Keyboard,
   TextInput,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 
 import { Colors, Images, FONTS } from "Themes";
@@ -15,10 +15,10 @@ import { Avatar } from "CommonFarmer";
 class CommentInput extends Component {
   state = {
     comment: "",
-    showSendButton: false
+    showSendButton: false,
   };
 
-  onChangeComment = text => {
+  onChangeComment = (text) => {
     this.setState({ comment: text });
   };
 
@@ -50,7 +50,7 @@ class CommentInput extends Component {
       info,
       onClosingInfo,
       disabled,
-      photo
+      photo,
     } = this.props;
     const { comment, showSendButton } = this.state;
     return (
@@ -61,7 +61,7 @@ class CommentInput extends Component {
               flexDirection: "row",
               alignItems: "center",
               marginLeft: moderateScale(50),
-              marginBottom: moderateScale(5)
+              marginBottom: moderateScale(5),
             }}
             onPress={onClosingInfo}
           >
@@ -69,7 +69,7 @@ class CommentInput extends Component {
               style={{
                 ...FONTS.BODY_SMALL,
                 fontStyle: "italic",
-                marginRight: moderateScale(15)
+                marginRight: moderateScale(15),
               }}
             >
               {info}
@@ -78,7 +78,7 @@ class CommentInput extends Component {
               source={Images.cross}
               style={{
                 width: moderateScale(10),
-                height: moderateScale(10)
+                height: moderateScale(10),
               }}
             />
           </TouchableOpacity>
@@ -90,7 +90,7 @@ class CommentInput extends Component {
             marginLeft: moderateScale(10),
             marginRight: moderateScale(5),
             marginBottom: moderateScale(10),
-            ...style
+            ...style,
           }}
         >
           <Avatar
@@ -114,9 +114,9 @@ class CommentInput extends Component {
               marginRight: moderateScale(5),
               borderWidth: 0.7,
               borderRadius: moderateScale(10),
-              borderColor: Colors.border,
+              borderColor: Colors.BORDER,
               paddingHorizontal: moderateScale(10),
-              paddingVertical: moderateScale(5)
+              paddingVertical: moderateScale(5),
             }}
           />
           {showSendButton ? (
@@ -124,14 +124,14 @@ class CommentInput extends Component {
               onPress={this.onSubmitComment}
               style={{
                 marginLeft: moderateScale(5),
-                marginRight: moderateScale(5)
+                marginRight: moderateScale(5),
               }}
             >
               <Image
                 source={Images.send}
                 style={{
                   width: moderateScale(25),
-                  height: moderateScale(20)
+                  height: moderateScale(20),
                 }}
               />
             </TouchableOpacity>

@@ -1,29 +1,17 @@
-import React, { Component, Fragment } from "react";
-import { View, ScrollView, Text } from "react-native";
+import React, { Component } from "react";
+import { View, TouchableOpacity, FlatList } from "react-native";
 import { connect } from "react-redux";
 import { func } from "prop-types";
 
+import { withNoHeader } from "Hoc";
 import FarmerSignupActions from "Redux/FarmerSignupRedux";
-import {
-  ButtonPrimary,
-  RadioButton,
-  ProductHorizontalWrapper,
-  InputText,
-  InputPicker
-} from "Components";
+import { ButtonPrimary, InputText, InputPicker } from "Components";
 import AppConfig from "Config/AppConfig";
 import { FONTS, Colors } from "Themes";
-import { moderateScale, screenWidth } from "Lib";
-import { HillHeaderWrapper, AreaItem } from "CommonFarmer";
+import { moderateScale } from "Lib";
+import YearMonthPicker from "./YearMonthPicker";
 
 class AreaType extends Component {
-  static navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation.state;
-    return {
-      header: null
-    };
-  };
-
   state = {
     type: AppConfig.areaType[0],
     status: "rent", // oneOf [own, rent, rented]
@@ -36,7 +24,11 @@ class AreaType extends Component {
     month_end: null,
     month_end_error: null,
     year_end: null,
-    year_end_error: null
+    year_end_error: null,
+    startYear: 2005,
+    endYear: 2050,
+    selectedYear: null,
+    selectedMonth: null,
   };
 
   onSubmit = () => {
@@ -48,14 +40,14 @@ class AreaType extends Component {
       month_start,
       year_start,
       month_end,
-      year_end
+      year_end,
     } = this.state;
     storeFarmerType({
       type,
       status,
       name,
       date_start: `${year_start}-${month_start}-01`,
-      date_end: `${year_end}-${month_end}-01`
+      date_end: `${year_end}-${month_end}-01`,
     });
     navigation.navigate(
       status === AppConfig.areaStatus.RENTED ? "AreaList" : "AreaCommodity"
@@ -74,141 +66,72 @@ class AreaType extends Component {
     );
   };
 
-  onSelectionChange = (value, stateName) => {
+  onChangeText = (value, stateName) => {
     this.setState({ [stateName]: value });
+  };
+
+  onSelectionChange = (key, value, stateName) => {
+    this.setState({ [stateName]: value });
+  };
+
+  showPicker = () => {
+    const { startYear, endYear, selectedYear, selectedMonth } = this.state;
+    this.picker
+      .show({ startYear, endYear, selectedYear, selectedMonth })
+      .then(({ year, month }) => {
+        this.setState({
+          selectedYear: year,
+          selectedMonth: month,
+        });
+      });
   };
 
   render() {
     const {
-      type,
       status,
       name,
-      name_error,
       year_start,
       year_start_error,
       year_end,
-      year_end_error
+      year_end_error,
     } = this.state;
     return (
-      <HillHeaderWrapper title="Jenis Lahan" ChildrenBottom={this.renderBottom}>
-        <ProductHorizontalWrapper
-          width={screenWidth - moderateScale(20)}
-          height={moderateScale(135)}
-          borderRadius={10}
-          shadowRadiusAndroid={13}
-          style={{
-            marginBottom: moderateScale(5),
-            marginBottom: moderateScale(10),
-            marginHorizontal: moderateScale(10)
-          }}
-          styleChildren={{
-            flexDirection: "column",
-            justifyContent: "space-around",
-            alignItems: "flex-start",
-            paddingHorizontal: moderateScale(15),
-            paddingVertical: moderateScale(15)
-          }}
-        >
-          <Text
-            style={{
-              ...FONTS.HEADER_SMALL,
-              color: Colors.veggie_dark
-            }}
-          >
-            Tipe lahan
-          </Text>
-          {AppConfig.areaType.map((item, index) => (
-            <RadioButton
-              key={index}
-              title={item}
-              isSelected={type === item}
-              onPress={() => this.setState({ type: item })}
-            />
-          ))}
-        </ProductHorizontalWrapper>
-        <ProductHorizontalWrapper
-          width={screenWidth - moderateScale(20)}
-          height={moderateScale(175)}
-          borderRadius={10}
-          shadowRadiusAndroid={13}
-          style={{
-            marginBottom: moderateScale(5),
-            marginBottom: moderateScale(10),
-            marginHorizontal: moderateScale(10)
-          }}
-          styleChildren={{
-            flexDirection: "column",
-            justifyContent: "space-around",
-            alignItems: "flex-start",
-            paddingHorizontal: moderateScale(15),
-            paddingVertical: moderateScale(15)
-          }}
-        >
-          <Text
-            style={{
-              ...FONTS.HEADER_SMALL,
-              color: Colors.veggie_dark
-            }}
-          >
-            Status lahan
-          </Text>
-          <RadioButton
-            title="Milik sendiri"
-            isSelected={status === AppConfig.areaStatus.OWN}
-            onPress={() => this.setState({ status: AppConfig.areaStatus.OWN })}
-          />
-          <RadioButton
-            title="Sewa"
-            isSelected={status === AppConfig.areaStatus.RENT}
-            onPress={() => this.setState({ status: AppConfig.areaStatus.RENT })}
-          />
-          <RadioButton
-            title="Disewakan"
-            isSelected={status === AppConfig.areaStatus.RENTED}
-            onPress={() =>
-              this.setState({ status: AppConfig.areaStatus.RENTED })
-            }
-          />
-        </ProductHorizontalWrapper>
-        {status !== AppConfig.areaStatus.OWN ? (
-          <ProductHorizontalWrapper
-            width={screenWidth - moderateScale(20)}
-            height={moderateScale(250)}
-            borderRadius={10}
-            shadowRadiusAndroid={13}
-            style={{
-              marginBottom: moderateScale(5),
-              marginBottom: moderateScale(10),
-              marginHorizontal: moderateScale(10)
-            }}
-            styleChildren={{
-              flexDirection: "column",
-              justifyContent: "space-around",
-              alignItems: "stretch",
-              paddingHorizontal: moderateScale(15),
-              paddingTop: moderateScale(20),
-              paddingBottom: moderateScale(5)
-            }}
-          >
+      <View>
+        <InputPicker
+          name="type"
+          title="Tipe lahan"
+          dataLocal={AppConfig.areaType}
+          onSelectionChange={this.onSelectionChange}
+        />
+        <InputPicker
+          name="status"
+          title="Status lahan"
+          dataLocal={AppConfig.areaStatus}
+          onSelectionChange={this.onSelectionChange}
+        />
+        {status !== AppConfig.ownedArea ? (
+          <View>
             <InputText
               name="name"
-              title={
-                status !== AppConfig.areaStatus.RENT
-                  ? "Nama pemilik"
-                  : "Nama penyewa"
-              }
-              placeholder="Nama sesuai KTP"
+              title="Nama sesuai KTP"
               value={name || ""}
-              error={name_error}
-              onChangeText={this.onSelectionChange}
-              returnKeyType="next"
-              styleContainer={{
-                marginHorizontal: 0
-              }}
+              onChangeText={this.onChangeText}
+              isAllBorderShown
             />
+            <TouchableOpacity onPress={() => this.showPicker()}>
+              <InputText
+                name="start"
+                title="Mulai sewa"
+                value={year_start || ""}
+                onChangeText={this.onChangeText}
+                isAllBorderShown
+                editable={false}
+              />
+            </TouchableOpacity>
+
             <View
               style={{
-                flexDirection: "row"
+                flexDirection: "row",
               }}
             >
               <View style={{ flex: 2, marginRight: moderateScale(10) }}>
@@ -220,10 +143,10 @@ class AreaType extends Component {
                   onSelectionChange={this.onSelectionChange}
                   styleContainer={{
                     flex: 2,
-                    marginHorizontal: 0
+                    marginHorizontal: 0,
                   }}
                   styleText={{
-                    marginHorizontal: 0
+                    marginHorizontal: 0,
                   }}
                 />
               </View>
@@ -236,7 +159,7 @@ class AreaType extends Component {
                 styleContainer={{
                   flex: 1,
                   marginHorizontal: 0,
-                  marginBottom: 0
+                  marginBottom: 0,
                 }}
                 keyboardType="numeric"
               />
@@ -244,7 +167,7 @@ class AreaType extends Component {
 
             <View
               style={{
-                flexDirection: "row"
+                flexDirection: "row",
               }}
             >
               <View style={{ flex: 2, marginRight: moderateScale(10) }}>
@@ -256,10 +179,10 @@ class AreaType extends Component {
                   onSelectionChange={this.onSelectionChange}
                   styleContainer={{
                     flex: 2,
-                    marginHorizontal: 0
+                    marginHorizontal: 0,
                   }}
                   styleText={{
-                    marginHorizontal: 0
+                    marginHorizontal: 0,
                   }}
                 />
               </View>
@@ -272,26 +195,28 @@ class AreaType extends Component {
                 styleContainer={{
                   flex: 1,
                   marginHorizontal: 0,
-                  marginBottom: 0
+                  marginBottom: 0,
                 }}
                 keyboardType="numeric"
               />
             </View>
-          </ProductHorizontalWrapper>
+          </View>
         ) : (
           <View />
         )}
-      </HillHeaderWrapper>
+        <YearMonthPicker ref={(picker) => (this.picker = picker)} />
+      </View>
     );
   }
 }
 
 AreaType.propTypes = {
-  storeFarmerType: func
+  storeFarmerType: func,
 };
 
-const mapDispatchToProps = dispatch => ({
-  storeFarmerType: area => dispatch(FarmerSignupActions.storeFarmerType(area))
+const mapDispatchToProps = (dispatch) => ({
+  storeFarmerType: (area) =>
+    dispatch(FarmerSignupActions.storeFarmerType(area)),
 });
 
-export default connect(null, mapDispatchToProps)(AreaType);
+export default connect(null, mapDispatchToProps)(withNoHeader(AreaType));

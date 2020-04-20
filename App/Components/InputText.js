@@ -6,7 +6,7 @@ import {
   Text,
   TextInput,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { bool, object, func, number, string, oneOfType } from "prop-types";
 import { SkypeIndicator } from "react-native-indicators";
@@ -38,7 +38,7 @@ export default class InputText extends Component {
       onChangeText,
       isAllBorderShown,
       mask,
-      multiline
+      multiline,
     } = this.props;
     return (
       <View style={{ ...styles.container, ...styleContainer }}>
@@ -46,7 +46,7 @@ export default class InputText extends Component {
           <Text
             style={{
               ...styles.title,
-              ...{ marginBottom: moderateScale(isAllBorderShown ? 5 : 0) }
+              ...{ marginBottom: moderateScale(isAllBorderShown ? 5 : 0) },
             }}
           >
             {title}
@@ -62,14 +62,14 @@ export default class InputText extends Component {
                     ? styles.inputContentErrorAllBorder
                     : styles.inputContentError,
                   multiline ? styles.multiline : null,
-                  styleBorder
+                  styleBorder,
                 ]
               : [
                   isAllBorderShown
                     ? styles.inputContentAllBorder
                     : styles.inputContent,
                   multiline ? styles.multiline : null,
-                  styleBorder
+                  styleBorder,
                 ]
           }
         >
@@ -81,9 +81,9 @@ export default class InputText extends Component {
                   width: moderateScale(20),
                   height: moderateScale(20),
                   marginRight: moderateScale(10),
-                  marginLeft: isAllBorderShown ? moderateScale(10) : 0
+                  marginLeft: isAllBorderShown ? moderateScale(10) : 0,
                 },
-                ...prefixIconStyle
+                ...prefixIconStyle,
               }}
             />
           ) : null}
@@ -91,9 +91,9 @@ export default class InputText extends Component {
 
           {!mask ? (
             <TextInput
-              ref={refs ? refs : ref => (this._input = ref)}
+              ref={refs ? refs : (ref) => (this._input = ref)}
               underlineColorAndroid="transparent"
-              inputColorPlaceholder={Colors.border}
+              inputColorPlaceholder={Colors.BORDER}
               placeholderTextColor={Colors.disabled_light}
               style={
                 isAllBorderShown
@@ -102,13 +102,13 @@ export default class InputText extends Component {
               }
               {...this.props}
               textAlignVertical={multiline ? "top" : "center"}
-              onChangeText={text => onChangeText(text, name)}
+              onChangeText={(text) => onChangeText(text, name)}
             />
           ) : (
             <TextInputMask
-              ref={refs ? refs : ref => (this._input = ref)}
+              ref={refs ? refs : (ref) => (this._input = ref)}
               underlineColorAndroid="transparent"
-              inputColorPlaceholder={Colors.border}
+              inputColorPlaceholder={Colors.BORDER}
               placeholderTextColor={Colors.disabled_light}
               style={
                 isAllBorderShown
@@ -161,24 +161,24 @@ export default class InputText extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: METRICS.HUGE
+    marginBottom: METRICS.HUGE,
   },
   multiline: {
     flex: 1,
     alignItems: "stretch",
-    paddingVertical: moderateScale(5)
+    paddingVertical: moderateScale(5),
   },
   prefix: {
     color: Colors.text,
     fontFamily: "CircularStd-Book",
     fontSize: 14,
     marginBottom: 2,
-    marginRight: moderateScale(5)
+    marginRight: moderateScale(5),
   },
   title: {
     color: Colors.veggie_dark,
     fontFamily: "CircularStd-Book",
-    fontSize: 13
+    fontSize: 13,
   },
   inputContent: {
     flexDirection: "row",
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: Colors.brown_light,
     backgroundColor: Colors.white,
-    paddingLeft: 0
+    paddingLeft: 0,
   },
   inputContentAllBorder: {
     flexDirection: "row",
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.brown_light,
     borderRadius: 5,
     backgroundColor: Colors.white,
-    paddingLeft: 0
+    paddingLeft: 0,
   },
   inputContentError: {
     flexDirection: "row",
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: Colors.red2,
     backgroundColor: Colors.white,
-    paddingLeft: 0
+    paddingLeft: 0,
   },
   inputContentErrorAllBorder: {
     flexDirection: "row",
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.red2,
     borderRadius: 5,
     backgroundColor: Colors.white,
-    paddingLeft: 0
+    paddingLeft: 0,
   },
   inputValue: {
     flex: 1,
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingBottom: moderateScale(4),
     paddingTop: moderateScale(4),
-    paddingLeft: 0
+    paddingLeft: 0,
   },
   inputValueAllBorder: {
     flex: 1,
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingBottom: moderateScale(4),
     paddingTop: moderateScale(4),
-    paddingHorizontal: METRICS.SMALL
+    paddingHorizontal: METRICS.SMALL,
   },
   inputError: {
     position: "absolute",
@@ -238,18 +238,18 @@ const styles = StyleSheet.create({
     left: 0,
     color: Colors.red2,
     fontFamily: "CircularStd-Book",
-    fontSize: 12
+    fontSize: 12,
   },
   image: {
     width: moderateScale(20),
     height: moderateScale(14),
     alignSelf: "center",
     tintColor: Colors.veggie_light,
-    marginRight: METRICS.TINY
+    marginRight: METRICS.TINY,
   },
   loading: {
-    flex: 0
-  }
+    flex: 0,
+  },
 });
 
 InputText.propTypes = {
@@ -259,12 +259,12 @@ InputText.propTypes = {
   icon: oneOfType([number, string]),
   prefixIcon: oneOfType([number, string]),
   name: string,
-  onChangeText: func
+  onChangeText: func,
 };
 
 InputText.defaultProps = {
   error: null,
   isLoading: false,
   isShowIcon: false,
-  icon: Images.dropdown
+  icon: Images.dropdown,
 };

@@ -99,7 +99,7 @@ class NewsFeedAction extends PureComponent {
         style={{
           flexDirection: "row",
           borderBottomWidth: showActionBorder ? 1 : 0,
-          borderBottomColor: Colors.border,
+          borderBottomColor: Colors.BORDER,
         }}
       >
         <Mutation

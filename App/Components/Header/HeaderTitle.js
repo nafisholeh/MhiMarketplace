@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { View, Text } from 'react-native';
-import { string, bool } from 'prop-types';
+import React, { Component } from "react";
+import { View, Text } from "react-native";
+import { string, bool } from "prop-types";
 
-import { moderateScale } from 'Lib';
-import { Colors, Images } from 'Themes';
-import BackButton from './BackButton';
-import HeaderButton from './HeaderButton';
+import { moderateScale } from "Lib";
+import { Colors, Images } from "Themes";
+import BackButton from "./BackButton";
+import HeaderButton from "./HeaderButton";
 
 class HeaderTitle extends Component {
   render() {
@@ -20,28 +20,28 @@ class HeaderTitle extends Component {
     return (
       <View
         style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
           paddingLeft: moderateScale(15),
           paddingVertical: moderateScale(15),
           backgroundColor: Colors.white,
           borderBottomWidth: 1,
-          borderBottomColor: Colors.border,
+          borderBottomColor: Colors.BORDER,
         }}
       >
-        <View 
+        <View
           style={{
-            flexDirection: 'row',
-            alignItems: 'center',
+            flexDirection: "row",
+            alignItems: "center",
           }}
         >
           {isEnableBack && <BackButton />}
           <Text
             style={{
-              fontFamily: 'CircularStd-Bold',
+              fontFamily: "CircularStd-Bold",
               fontSize: 16,
-              color: 'rgba(0,0,0,0.8)',
+              color: "rgba(0,0,0,0.8)",
             }}
           >
             {title}

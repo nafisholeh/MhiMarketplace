@@ -5,7 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Text,
-  Picker
+  Picker,
 } from "react-native";
 import { bool, string } from "prop-types";
 import { connect } from "react-redux";
@@ -24,13 +24,13 @@ import {
   FETCH_PRODUCT_DETAIL,
   FETCH_PRODUCT_LIST,
   FETCH_PRODUCT_CATEGORY,
-  FETCH_PRODUCT_PACKAGING
+  FETCH_PRODUCT_PACKAGING,
 } from "GraphQL/Product/Query";
 import {
   ADD_PRODUCT,
   EDIT_PRODUCT,
   cacheAddProduct,
-  cacheEditProduct
+  cacheEditProduct,
 } from "GraphQL/Product/Mutation";
 import { getEditedProduct } from "Redux/ProductRedux";
 import {
@@ -40,13 +40,13 @@ import {
   QueryEffectPage,
   ImagePicker,
   ImageRobust,
-  InputText
+  InputText,
 } from "Components";
 import {
   InAppNotification,
   getReadableDate,
   parseToRupiah,
-  moderateScale
+  moderateScale,
 } from "Lib";
 import { getUserId } from "Redux/SessionRedux";
 
@@ -54,7 +54,7 @@ class Form extends Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
     return {
-      title: "Ubah produk"
+      title: "Ubah produk",
     };
   };
 
@@ -81,26 +81,26 @@ class Form extends Component {
     fetching_init: false,
     fetching_error: false,
     fetching_complete: false,
-    data_invalid: false
+    data_invalid: false,
   };
 
   componentDidMount() {
     this.fetchInitData();
   }
 
-  setupKategoriOptions = editData => {
+  setupKategoriOptions = (editData) => {
     try {
       const data = ApolloClientProvider.client.readQuery({
-        query: FETCH_PRODUCT_CATEGORY
+        query: FETCH_PRODUCT_CATEGORY,
       });
       const { productCategory = [] } = data || {};
       const categoryOptions =
         Array.isArray(productCategory) &&
-        productCategory.map(item => {
+        productCategory.map((item) => {
           const { _id, title } = item || {};
           return {
             label: title,
-            value: item
+            value: item,
           };
         });
       const editDataFound =
@@ -110,7 +110,7 @@ class Form extends Component {
       this.setState({
         category_options: categoryOptions,
         category: editDataFound,
-        category_string: titleFound
+        category_string: titleFound,
       });
     } catch (error) {
       InAppNotification.errorLocal(
@@ -120,19 +120,19 @@ class Form extends Component {
     }
   };
 
-  setupPackagingOptions = editData => {
+  setupPackagingOptions = (editData) => {
     try {
       const data = ApolloClientProvider.client.readQuery({
-        query: FETCH_PRODUCT_PACKAGING
+        query: FETCH_PRODUCT_PACKAGING,
       });
       const { productPackaging = [] } = data || {};
       const packagingOptions =
         Array.isArray(productPackaging) &&
-        productPackaging.map(item => {
+        productPackaging.map((item) => {
           const { _id, qty, unit } = item || {};
           return {
             label: `${qty} ${unit}`,
-            value: item
+            value: item,
           };
         });
       const editDataFound =
@@ -143,7 +143,7 @@ class Form extends Component {
         packaging_options: packagingOptions,
         packaging: editDataFound,
         packaging_qty: qty,
-        packaging_unit: unit
+        packaging_unit: unit,
       });
     } catch (error) {
       InAppNotification.errorLocal(
@@ -163,14 +163,14 @@ class Form extends Component {
     this.setState({
       fetching_init: true,
       fetching_error: false,
-      fetching_complete: false
+      fetching_complete: false,
     });
     ApolloClientProvider.client
       .query({
         query: FETCH_PRODUCT_DETAIL,
-        variables: { _id: editedProductId }
+        variables: { _id: editedProductId },
       })
-      .then(data => {
+      .then((data) => {
         const { data: productData } = data;
         const {
           product: {
@@ -185,8 +185,8 @@ class Form extends Component {
             unit = "",
             packaging,
             category,
-            label
-          }
+            label,
+          },
         } = productData || {};
         this.setState(
           {
@@ -200,7 +200,7 @@ class Form extends Component {
             expired_date,
             fetching_init: false,
             fetching_complete: true,
-            label: label
+            label: label,
           },
           () => {
             this.setupKategoriOptions(category);
@@ -208,7 +208,7 @@ class Form extends Component {
           }
         );
       })
-      .catch(error => {
+      .catch((error) => {
         InAppNotification.errorLocal(
           "Gagal download data produk",
           "Data tidak bisa ditampilkan"
@@ -225,7 +225,7 @@ class Form extends Component {
       price,
       label,
       category,
-      packaging
+      packaging,
     } = this.state;
     this.setState({
       error_title: !title ? Config.warningMandatory : null,
@@ -234,7 +234,7 @@ class Form extends Component {
       error_price: !price ? Config.warningMandatory : null,
       error_label: !label ? Config.warningMandatory : null,
       error_category: !category ? Config.warningMandatory : null,
-      error_packaging: !packaging ? Config.warningMandatory : null
+      error_packaging: !packaging ? Config.warningMandatory : null,
     });
     return title &&
       description &&
@@ -247,7 +247,7 @@ class Form extends Component {
       : false;
   };
 
-  submit = mutate => {
+  submit = (mutate) => {
     const { isEdit, userId } = this.props;
     this.setState({ data_invalid: false });
     if (!this.isValid()) {
@@ -266,7 +266,7 @@ class Form extends Component {
       photos,
       category,
       packaging_qty,
-      packaging_unit
+      packaging_unit,
     } = this.state;
     const dataSubmit = {
       title: title || null,
@@ -278,11 +278,11 @@ class Form extends Component {
       expired_date: expired_date || null,
       category: category || null,
       packaging: packaging_qty || null,
-      unit: packaging_unit || null
+      unit: packaging_unit || null,
     };
     const id = { _id };
     let variables = {
-      data: isEdit ? { ...dataSubmit, ...id } : dataSubmit
+      data: isEdit ? { ...dataSubmit, ...id } : dataSubmit,
     };
     if (Array.isArray(photos) && photos.length) {
       const images = photos.map(
@@ -290,7 +290,7 @@ class Form extends Component {
           new ReactNativeFile({
             uri: item.path,
             name: `${moment().format("YYYYMMDDHHmmss")}_${index}_${userId}`,
-            type: item.mime
+            type: item.mime,
           })
       );
       variables = Object.assign({}, variables, images);
@@ -298,8 +298,8 @@ class Form extends Component {
     mutate({
       variables,
       context: {
-        hasUpload: true // activate Upload link
-      }
+        hasUpload: true, // activate Upload link
+      },
     });
   };
 
@@ -308,7 +308,7 @@ class Form extends Component {
     navigation.navigate("HomeStockOpname");
   };
 
-  onChangeStok = text => {
+  onChangeStok = (text) => {
     if (!text) {
       this.setState({ stock: null });
       return;
@@ -323,7 +323,7 @@ class Form extends Component {
     this.setState({ stock: result });
   };
 
-  onChangeDiscount = text => {
+  onChangeDiscount = (text) => {
     const discountInt = parseInt(text, 10);
     let result = "";
     if (discountInt >= 0 && discountInt <= 100) {
@@ -341,7 +341,7 @@ class Form extends Component {
       const { action, year, month, day } = await DatePickerAndroid.open({
         date: new Date(),
         minDate: new Date(),
-        mode: "calendar"
+        mode: "calendar",
       });
       const monthNormal = month + 1;
       if (action !== DatePickerAndroid.dismissedAction) {
@@ -361,7 +361,7 @@ class Form extends Component {
     const { _id, title } = val;
     this.setState({
       category: _id,
-      category_string: title
+      category_string: title,
     });
   };
 
@@ -373,7 +373,7 @@ class Form extends Component {
     this.setState({
       packaging: _id,
       packaging_qty: qty,
-      packaging_unit: unit
+      packaging_unit: unit,
     });
   };
 
@@ -381,7 +381,7 @@ class Form extends Component {
     const photos = paths.map((item, i) => {
       return {
         mime: raw[i][0].mime,
-        path: item[0]
+        path: item[0],
       };
     });
     this.setState({ photos });
@@ -417,7 +417,7 @@ class Form extends Component {
       fetching_init,
       fetching_complete,
       fetching_error,
-      data_invalid
+      data_invalid,
     } = this.state;
     const { isEdit } = this.props;
     if (isEdit && !fetching_complete) {
@@ -451,24 +451,26 @@ class Form extends Component {
                     placeholder="Judul produk"
                     value={title}
                     error={error_title}
-                    onChangeText={text => this.setState({ title: text })}
+                    onChangeText={(text) => this.setState({ title: text })}
                     returnKeyType="next"
                     onSubmitEditing={() => this._description.focus()}
                   />
                   <InputText
-                    refs={ref => (this._description = ref)}
+                    refs={(ref) => (this._description = ref)}
                     title="Deskripsi"
                     placeholder="Deskripsi produk"
                     multiline={true}
                     value={description}
                     error={error_description}
-                    onChangeText={text => this.setState({ description: text })}
+                    onChangeText={(text) =>
+                      this.setState({ description: text })
+                    }
                     returnKeyType="done"
                   />
                   <RNPickerSelect
                     placeholder={{
                       label: "Pilih Kemasan",
-                      value: null
+                      value: null,
                     }}
                     items={packaging_options}
                     onValueChange={this.onPackagingChange}
@@ -486,7 +488,7 @@ class Form extends Component {
                     />
                   </RNPickerSelect>
                   <InputText
-                    refs={ref => (this._price = ref)}
+                    refs={(ref) => (this._price = ref)}
                     title="Harga per kemasan"
                     placeholder="Harga per kemasan"
                     value={price_parsed}
@@ -495,7 +497,7 @@ class Form extends Component {
                     styleInput={
                       !packaging
                         ? {
-                            backgroundColor: Colors.border
+                            backgroundColor: Colors.BORDER,
                           }
                         : null
                     }
@@ -503,10 +505,10 @@ class Form extends Component {
                       packaging ? `/${packaging_qty} ${packaging_unit}` : ""
                     }
                     error={error_price}
-                    onChangeText={text =>
+                    onChangeText={(text) =>
                       this.setState({
                         price: text.replace(/\D+/g, ""),
-                        price_parsed: parseToRupiah(text, " ") || "-"
+                        price_parsed: parseToRupiah(text, " ") || "-",
                       })
                     }
                     returnKeyType="next"
@@ -514,7 +516,7 @@ class Form extends Component {
                     onSubmitEditing={() => this._stock.focus()}
                   />
                   <InputText
-                    refs={ref => (this._stock = ref)}
+                    refs={(ref) => (this._stock = ref)}
                     title="Stok"
                     placeholder="Stok yang tersedia"
                     value={stock}
@@ -528,13 +530,13 @@ class Form extends Component {
                     styleInput={
                       !packaging
                         ? {
-                            backgroundColor: Colors.border
+                            backgroundColor: Colors.BORDER,
                           }
                         : null
                     }
                   />
                   <InputText
-                    refs={ref => (this._discount = ref)}
+                    refs={(ref) => (this._discount = ref)}
                     title="Diskon"
                     placeholder="Diskon dalam bentuk %"
                     value={discount}
@@ -551,7 +553,7 @@ class Form extends Component {
                   <RNPickerSelect
                     placeholder={{
                       label: "Pilih kategori",
-                      value: null
+                      value: null,
                     }}
                     items={category_options}
                     onValueChange={this.onKategoriChange}
@@ -567,11 +569,11 @@ class Form extends Component {
                   <RNPickerSelect
                     placeholder={{
                       label: "Pilih label",
-                      value: null
+                      value: null,
                     }}
                     items={[
                       { label: "MHI Bebas Peskim", value: "mhi" },
-                      { label: "Umum", value: "umum" }
+                      { label: "Umum", value: "umum" },
                     ]}
                     onValueChange={(val, i) => this.setState({ label: val })}
                     value={label}
@@ -607,7 +609,7 @@ class Form extends Component {
                       fontFamily: "CircularStd-Book",
                       fontSize: 14,
                       letterSpacing: -0.34,
-                      marginBottom: moderateScale(6)
+                      marginBottom: moderateScale(6),
                     }}
                   >
                     Foto Produk
@@ -624,7 +626,7 @@ class Form extends Component {
                       padding: moderateScale(8),
                       alignItems: "center",
                       justifyContent: "center",
-                      borderRadius: 5
+                      borderRadius: 5,
                     }}
                     styleTitleOk={{ color: Colors.white }}
                   />
@@ -639,7 +641,7 @@ class Form extends Component {
                       ? Colors.brown_light
                       : Colors.green_light,
                     justifyContent: "center",
-                    alignItems: "center"
+                    alignItems: "center",
                   }}
                 >
                   {loading && (
@@ -664,12 +666,12 @@ class Form extends Component {
 Form.propTypes = {
   isEdit: bool,
   editedProductId: string,
-  userId: string
+  userId: string,
 };
 
 const mapStateToProps = createStructuredSelector({
   editedProductId: getEditedProduct(),
-  userId: getUserId()
+  userId: getUserId(),
 });
 
 export default connect(mapStateToProps, null)(withNavigation(Form));

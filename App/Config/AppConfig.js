@@ -322,6 +322,16 @@ export default {
       showManualInput: true,
     },
   ],
+  ownedArea: "own",
+  areaStatus: [
+    { label: "own", value: "own" },
+    { label: "rent", value: "rent" },
+    { label: "rented", value: "rented" },
+  ],
+  areaType: [
+    { label: "Sawah", value: "Sawah" },
+    { label: "Tegal", value: "Sawah" },
+  ],
   month: [
     {
       label: "Januari",
@@ -372,12 +382,6 @@ export default {
       value: "12",
     },
   ],
-  areaStatus: {
-    OWN: "own",
-    RENT: "rent",
-    RENTED: "rented",
-  },
-  areaType: ["Sawah", "Tegal"],
   mapStyle: [
     {
       elementType: "geometry",

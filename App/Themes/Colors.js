@@ -24,7 +24,6 @@ const colors = {
   horti_bg: "rgba(0, 185, 174, 0.25)",
   disabled_dark: "#454955",
   disabled_light: "#C8CCBF",
-  border: "rgba(133, 133, 133, 0.2)",
   socmed_bg: "rgba(133, 133, 133, 0.4)",
   text_bg: "rgba(133, 133, 133, 0.2)",
   text_loading: "rgba(133, 133, 133, 0.1)",
@@ -36,6 +35,7 @@ const colors = {
   PROGRESS_BAR_FILL: "#00B074",
   PROGRESS_BAR_COLOR: "#fc9000",
   ICON: "#707070",
+  BORDER: "rgba(133, 133, 133, 0.2)",
 };
 
 export default colors;

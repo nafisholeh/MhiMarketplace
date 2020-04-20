@@ -242,7 +242,7 @@ class ImagePicker extends PureComponent {
               flex: 1,
               height: 225,
               borderWidth: 1,
-              borderColor: Colors.border,
+              borderColor: Colors.BORDER,
               backgroundColor: "rgba(133, 133, 133, 0.05)",
               borderRadius: 5,
               alignItems: "center",

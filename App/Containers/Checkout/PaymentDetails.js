@@ -11,14 +11,14 @@ import {
   calcDiscount,
   moderateScale,
   getReadableTotalWeight,
-  getTotalWeight
+  getTotalWeight,
 } from "Lib";
 import ApolloClientProvider from "Services/ApolloClientProvider";
 import { FETCH_COURIER_COST } from "GraphQL/CourierCost/Query";
 import { getUserId, isReseller } from "Redux/SessionRedux";
 import { getCartItemSelected } from "Redux/CartRedux";
 import CheckoutActions, {
-  getSelectedShipmentLocation
+  getSelectedShipmentLocation,
 } from "Redux/CheckoutRedux";
 import AppConfig from "Config/AppConfig";
 
@@ -37,7 +37,7 @@ class PaymentDetails extends Component {
       courierCosts: null,
       distance: null,
       isDistanceFetching: false,
-      isDistanceError: false
+      isDistanceError: false,
     };
   }
 
@@ -65,13 +65,13 @@ class PaymentDetails extends Component {
       {
         cleanPrice: this.getCleanPrice(data),
         grossPrice: this.getGrossPrice(data),
-        totalDiscount: this.getDiscount(data)
+        totalDiscount: this.getDiscount(data),
       },
       () => {
         const { totalDiscount } = this.state;
         this.setState(
           {
-            totalCost: this.getTotalCost()
+            totalCost: this.getTotalCost(),
           },
           () => {
             this.updateRedux();
@@ -81,36 +81,36 @@ class PaymentDetails extends Component {
     );
   };
 
-  getCleanPrice = data => {
+  getCleanPrice = (data) => {
     if (!Array.isArray(data)) return 0;
     const total = data.reduce((total, value) => {
       const {
         product: { price = 0, discount = 0 },
-        qty = 0
+        qty = 0,
       } = value;
       return total + (price - calcDiscount(price, discount)) * qty;
     }, 0);
     return total;
   };
 
-  getGrossPrice = data => {
+  getGrossPrice = (data) => {
     if (!Array.isArray(data)) return 0;
     const total = data.reduce((total, value) => {
       const {
         product: { price = 0, discount = 0 },
-        qty = 0
+        qty = 0,
       } = value;
       return total + price * qty;
     }, 0);
     return total;
   };
 
-  getDiscount = data => {
+  getDiscount = (data) => {
     if (!Array.isArray(data)) return 0;
     const total = data.reduce((total, value) => {
       const {
         product: { price = 0, discount = 0 },
-        qty = 0
+        qty = 0,
       } = value;
       return total + calcDiscount(price, discount) * qty;
     }, 0);
@@ -127,7 +127,7 @@ class PaymentDetails extends Component {
   setupCourierCost = async () => {
     this.setState({ isCourierCostFetching: true, isCourierCostError: false });
     const result = await ApolloClientProvider.client.query({
-      query: FETCH_COURIER_COST
+      query: FETCH_COURIER_COST,
     });
     if (!result) {
       this.setState({ isCourierCostFetching: false, isCourierCostError: true });
@@ -138,7 +138,7 @@ class PaymentDetails extends Component {
     this.setState(
       {
         isCourierCostFetching: false,
-        courierCosts
+        courierCosts,
       },
       () => {
         this.calculateCourierCost();
@@ -205,7 +205,7 @@ class PaymentDetails extends Component {
       {
         courierCost: totalCourierCost,
         totalWeight,
-        totalCost: this.getTotalCost(totalCourierCost)
+        totalCost: this.getTotalCost(totalCourierCost),
       },
       () => {
         this.updateRedux();
@@ -222,17 +222,17 @@ class PaymentDetails extends Component {
       grossPrice,
       cleanPrice,
       isCourierCostFetching,
-      isDistanceFetching
+      isDistanceFetching,
     } = this.state;
     return (
       <View
         style={{
           backgroundColor: Colors.white,
           borderTopWidth: 0.8,
-          borderTopColor: Colors.border,
+          borderTopColor: Colors.BORDER,
           marginTop: moderateScale(20),
           paddingHorizontal: moderateScale(15),
-          paddingTop: moderateScale(15)
+          paddingTop: moderateScale(15),
         }}
       >
         <View style={styles.paymentDetail}>
@@ -287,7 +287,7 @@ class PaymentDetails extends Component {
               fontFamily: "CircularStd-Bold",
               fontSize: 22,
               textAlign: "right",
-              color: Colors.green_light
+              color: Colors.green_light,
             }}
           >
             {parseToRupiah(totalCost) || "-"}
@@ -302,19 +302,19 @@ const styles = StyleSheet.create({
   priceTitle: {
     fontFamily: "CircularStd",
     fontSize: 14,
-    color: "rgba(0,0,0,0.68)"
+    color: "rgba(0,0,0,0.68)",
   },
   priceValue: {
     fontFamily: "CircularStd-Book",
     fontSize: 16,
-    color: "rgba(0,0,0,0.68)"
+    color: "rgba(0,0,0,0.68)",
   },
   paymentDetail: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginHorizontal: METRICS.SMALL,
-    marginBottom: METRICS.TINY
-  }
+    marginBottom: METRICS.TINY,
+  },
 });
 
 PaymentDetails.propTypes = {
@@ -326,30 +326,30 @@ PaymentDetails.propTypes = {
         title: string,
         photo: string,
         price: number,
-        discount: number
+        discount: number,
       },
-      qty: number
+      qty: number,
     })
   ),
   updatePaymentDetails: func,
   selectedLocation: shape({
     lat: string,
-    lng: string
+    lng: string,
   }),
-  isReseller: bool
+  isReseller: bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   userId: getUserId(),
   selectedLocation: getSelectedShipmentLocation(),
-  isReseller: isReseller()
+  isReseller: isReseller(),
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   updatePaymentDetails: (gross, discount, courier, total) =>
     dispatch(
       CheckoutActions.updatePaymentDetails(gross, discount, courier, total)
-    )
+    ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentDetails);

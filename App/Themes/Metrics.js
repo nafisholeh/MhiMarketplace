@@ -34,7 +34,9 @@ const metrics = {
 
   BORDER_THIN: 0.5,
   BORDER_MEDIUM: 1,
-  BORDER_BOLD: 2
+  BORDER_BOLD: 2,
+
+  MODAL_BOTTOM_HEIGHT: moderateScale(height / 3),
 };
 
 export default metrics;

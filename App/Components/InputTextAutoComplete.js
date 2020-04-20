@@ -5,7 +5,7 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  FlatList
+  FlatList,
 } from "react-native";
 import _ from "lodash";
 
@@ -21,38 +21,38 @@ export default class InputTextAutoComplete extends Component {
     this.state = {
       isCharSufficient: false,
       dropdownData: null,
-      value: ""
+      value: "",
     };
     this.fetchOptionDropdown = _.throttle(this.fetchOptionDropdown, 2000);
   }
 
-  fetchOptionDropdown = text => {
+  fetchOptionDropdown = (text) => {
     const { query, queryVariables, dropdownKey, dropdownValue } = this.props;
     const variables = queryVariables || "term";
     const dropdownKeyTitle = dropdownKey || "name";
     const dropdownValueTitle = dropdownValue || "name";
     ApolloClientProvider.client
       .query({ query, variables: { [variables]: text } })
-      .then(data => {
+      .then((data) => {
         const response = extractGraphQLResponse(data);
         if (!Array.isArray(response)) return;
-        const normalisedData = response.map(item => ({
+        const normalisedData = response.map((item) => ({
           key: item[dropdownKeyTitle],
-          value: item[dropdownValueTitle]
+          value: item[dropdownValueTitle],
         }));
         this.setState({ dropdownData: normalisedData });
       })
-      .catch(error => {});
+      .catch((error) => {});
   };
 
-  onChangeTextWillFetch = text => {
+  onChangeTextWillFetch = (text) => {
     const { onValueChange, name } = this.props;
     onValueChange({ key: null, name: text }, name);
     if (text.length >= MIN_CHAR_THRESHOLD) {
       this.setState({
         value: text,
         isCharSufficient: true,
-        dropdownData: null
+        dropdownData: null,
       });
       this.fetchOptionDropdown(text);
       return;
@@ -60,32 +60,32 @@ export default class InputTextAutoComplete extends Component {
     this.setState({
       value: text,
       isCharSufficient: false,
-      dropdownData: null
+      dropdownData: null,
     });
   };
 
-  onChangeTextShowDataLocal = text => {
+  onChangeTextShowDataLocal = (text) => {
     const { dataLocal } = this.props;
     if (text.length >= MIN_CHAR_THRESHOLD) {
-      const filteredDropdown = (dataLocal || []).filter(item => {
+      const filteredDropdown = (dataLocal || []).filter((item) => {
         const { value } = item || {};
         return new RegExp(text, "i").test(value);
       });
       this.setState({
         value: text,
         isCharSufficient: true,
-        dropdownData: filteredDropdown
+        dropdownData: filteredDropdown,
       });
       return;
     }
     this.setState({
       value: text,
       isCharSufficient: false,
-      dropdownData: null
+      dropdownData: null,
     });
   };
 
-  onChangeText = text => {
+  onChangeText = (text) => {
     const { dataLocal } = this.props;
     if (dataLocal) {
       this.onChangeTextShowDataLocal(text);
@@ -98,7 +98,7 @@ export default class InputTextAutoComplete extends Component {
     this.setState({ value: "", isCharSufficient: false, dropdownData: null });
   };
 
-  onSelectDropdown = item => {
+  onSelectDropdown = (item) => {
     const { onValueChange, name } = this.props;
     const { value } = item || {};
     this.setState({ value, dropdownData: null });
@@ -112,7 +112,7 @@ export default class InputTextAutoComplete extends Component {
       isAllBorderShown,
       styleContainer,
       styleBorder,
-      styleInput
+      styleInput,
     } = this.props;
     const { dropdownData, value } = this.state;
     return (
@@ -121,7 +121,7 @@ export default class InputTextAutoComplete extends Component {
           <Text
             style={{
               ...styles.title,
-              ...{ marginBottom: moderateScale(isAllBorderShown ? 5 : 0) }
+              ...{ marginBottom: moderateScale(isAllBorderShown ? 5 : 0) },
             }}
           >
             {title}
@@ -138,15 +138,15 @@ export default class InputTextAutoComplete extends Component {
                     ? styles.inputContentAllBorder
                     : styles.inputContent,
                   styleBorder,
-                  styleInput
+                  styleInput,
                 ]
           }
         >
           <TextInput
-            ref={el => (this._textInput = el)}
+            ref={(el) => (this._textInput = el)}
             value={value}
             underlineColorAndroid="transparent"
-            inputColorPlaceholder={Colors.border}
+            inputColorPlaceholder={Colors.BORDER}
             placeholderTextColor={Colors.disabled_light}
             onChangeText={this.onChangeText}
             onFocus={this.onFocus}
@@ -164,14 +164,14 @@ export default class InputTextAutoComplete extends Component {
                 style={{
                   paddingVertical: METRICS.SMALL,
                   paddingHorizontal: METRICS.TINY,
-                  borderBottomColor: Colors.border,
-                  borderBottomWidth: METRICS.BORDER_THIN
+                  borderBottomColor: Colors.BORDER,
+                  borderBottomWidth: METRICS.BORDER_THIN,
                 }}
               >
                 <Text>{item.value}</Text>
               </TouchableOpacity>
             )}
-            keyExtractor={item => item.key}
+            keyExtractor={(item) => item.key}
           />
         </View>
       </View>
@@ -181,19 +181,19 @@ export default class InputTextAutoComplete extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: METRICS.HUGE
+    marginBottom: METRICS.HUGE,
   },
   prefix: {
     color: Colors.text,
     fontFamily: "CircularStd-Book",
     fontSize: 14,
     marginBottom: 2,
-    marginRight: moderateScale(5)
+    marginRight: moderateScale(5),
   },
   title: {
     color: Colors.veggie_dark,
     fontFamily: "CircularStd-Book",
-    fontSize: 13
+    fontSize: 13,
   },
   inputContent: {
     flexDirection: "row",
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: Colors.brown_light,
     backgroundColor: Colors.white,
-    paddingLeft: 0
+    paddingLeft: 0,
   },
   inputContentAllBorder: {
     flexDirection: "row",
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.brown_light,
     borderRadius: 5,
     backgroundColor: Colors.white,
-    paddingLeft: 0
+    paddingLeft: 0,
   },
   inputContentError: {
     flexDirection: "row",
@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: Colors.red2,
     backgroundColor: Colors.white,
-    paddingLeft: 0
+    paddingLeft: 0,
   },
   inputValue: {
     flex: 1,
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingBottom: moderateScale(4),
     paddingTop: moderateScale(4),
-    paddingLeft: 0
+    paddingLeft: 0,
   },
   inputValueAllBorder: {
     flex: 1,
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingBottom: moderateScale(4),
     paddingTop: moderateScale(4),
-    paddingHorizontal: METRICS.SMALL
+    paddingHorizontal: METRICS.SMALL,
   },
   inputError: {
     position: "absolute",
@@ -244,16 +244,16 @@ const styles = StyleSheet.create({
     left: 0,
     color: Colors.red2,
     fontFamily: "CircularStd-Book",
-    fontSize: 12
+    fontSize: 12,
   },
   image: {
     width: moderateScale(20),
     height: moderateScale(14),
     alignSelf: "center",
     tintColor: Colors.veggie_light,
-    marginRight: METRICS.TINY
+    marginRight: METRICS.TINY,
   },
   loading: {
-    flex: 0
-  }
+    flex: 0,
+  },
 });

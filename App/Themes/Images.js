@@ -66,6 +66,7 @@ const images = {
   map_drawing_qualified: require(pathPrefix + "map_drawing_qualified.png"),
   map_drawing_finished: require(pathPrefix + "map_drawing_finished.png"),
   map_drawing_redraw: require(pathPrefix + "map_drawing_redraw.png"),
+  map_drawing_calendar: require(pathPrefix + "map_drawing_calendar.png"),
 };
 
 export default images;

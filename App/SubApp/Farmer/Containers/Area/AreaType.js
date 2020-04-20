@@ -12,7 +12,7 @@ import {
   YearMonthPicker,
 } from "Components";
 import AppConfig, { YEAR_RANGE_START, YEAR_RANGE_END } from "Config/AppConfig";
-import { METRICS } from "Themes";
+import { METRICS, Images } from "Themes";
 
 class AreaType extends Component {
   state = {
@@ -140,6 +140,8 @@ class AreaType extends Component {
                   onChangeText={this.onChangeText}
                   isAllBorderShown
                   editable={false}
+                  isShowIcon
+                  icon={Images.map_drawing_calendar}
                 />
               </TouchableOpacity>
 
@@ -154,6 +156,8 @@ class AreaType extends Component {
                   onChangeText={this.onChangeText}
                   isAllBorderShown
                   editable={false}
+                  isShowIcon
+                  icon={Images.map_drawing_calendar}
                 />
               </TouchableOpacity>
             </View>

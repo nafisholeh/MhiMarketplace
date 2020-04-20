@@ -43,6 +43,7 @@ import DayTimeline from "./DayTimeline";
 import ImageRadius from "./ImageRadius";
 import InputTextAccount from "./InputTextAccount";
 import ProgressBar from "./ProgressBar";
+import YearMonthPicker from "./YearMonthPicker";
 
 export {
   OptimizedList,
@@ -90,4 +91,5 @@ export {
   ImageRadius,
   InputTextAccount,
   ProgressBar,
+  YearMonthPicker,
 };

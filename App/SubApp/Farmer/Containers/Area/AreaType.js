@@ -5,11 +5,14 @@ import { func } from "prop-types";
 
 import { withNoHeader } from "Hoc";
 import FarmerSignupActions from "Redux/FarmerSignupRedux";
-import { ButtonPrimary, InputText, InputPicker } from "Components";
-import AppConfig from "Config/AppConfig";
-import { FONTS, Colors } from "Themes";
-import { moderateScale } from "Lib";
-import YearMonthPicker from "./YearMonthPicker";
+import {
+  ButtonPrimary,
+  InputText,
+  InputPicker,
+  YearMonthPicker,
+} from "Components";
+import AppConfig, { YEAR_RANGE_START, YEAR_RANGE_END } from "Config/AppConfig";
+import { METRICS } from "Themes";
 
 class AreaType extends Component {
   state = {
@@ -25,8 +28,8 @@ class AreaType extends Component {
     month_end_error: null,
     year_end: null,
     year_end_error: null,
-    startYear: 2005,
-    endYear: 2050,
+    startYear: YEAR_RANGE_START,
+    endYear: YEAR_RANGE_END,
     selectedYear: null,
     selectedMonth: null,
   };
@@ -74,15 +77,22 @@ class AreaType extends Component {
     this.setState({ [stateName]: value });
   };
 
-  showPicker = () => {
+  showPicker = (type) => {
     const { startYear, endYear, selectedYear, selectedMonth } = this.state;
     this.picker
       .show({ startYear, endYear, selectedYear, selectedMonth })
       .then(({ year, month }) => {
-        this.setState({
-          selectedYear: year,
-          selectedMonth: month,
-        });
+        if (type === "start") {
+          this.setState({
+            year_start: year,
+            month_start: month,
+          });
+        } else {
+          this.setState({
+            year_end: year,
+            month_end: month,
+          });
+        }
       });
   };
 
@@ -90,10 +100,10 @@ class AreaType extends Component {
     const {
       status,
       name,
+      month_start,
+      month_end,
       year_start,
-      year_start_error,
       year_end,
-      year_end_error,
     } = this.state;
     return (
       <View>
@@ -118,87 +128,34 @@ class AreaType extends Component {
               onChangeText={this.onChangeText}
               isAllBorderShown
             />
-            <TouchableOpacity onPress={() => this.showPicker()}>
-              <InputText
-                name="start"
-                title="Mulai sewa"
-                value={year_start || ""}
-                onChangeText={this.onChangeText}
-                isAllBorderShown
-                editable={false}
-              />
-            </TouchableOpacity>
-
-            <View
-              style={{
-                flexDirection: "row",
-              }}
-            >
-              <View style={{ flex: 2, marginRight: moderateScale(10) }}>
-                <InputPicker
-                  name="month_start"
-                  title="Bulan (Mulai)"
-                  placeholder="Pilih jenis kelamin"
-                  dataLocal={AppConfig.month}
-                  onSelectionChange={this.onSelectionChange}
-                  styleContainer={{
-                    flex: 2,
-                    marginHorizontal: 0,
-                  }}
-                  styleText={{
-                    marginHorizontal: 0,
-                  }}
+            <View style={{ flexDirection: "row" }}>
+              <TouchableOpacity
+                onPress={() => this.showPicker("start")}
+                style={{ flex: 1, marginRight: METRICS.SMALL }}
+              >
+                <InputText
+                  name="start"
+                  title="Mulai sewa"
+                  value={`${month_start || ""} ${year_start || ""}`}
+                  onChangeText={this.onChangeText}
+                  isAllBorderShown
+                  editable={false}
                 />
-              </View>
-              <InputText
-                name="year_start"
-                title="Tahun"
-                value={year_start || ""}
-                error={year_start_error}
-                onChangeText={this.onSelectionChange}
-                styleContainer={{
-                  flex: 1,
-                  marginHorizontal: 0,
-                  marginBottom: 0,
-                }}
-                keyboardType="numeric"
-              />
-            </View>
+              </TouchableOpacity>
 
-            <View
-              style={{
-                flexDirection: "row",
-              }}
-            >
-              <View style={{ flex: 2, marginRight: moderateScale(10) }}>
-                <InputPicker
-                  name="month_end"
-                  title="Bulan (Selesai)"
-                  placeholder="Pilih jenis kelamin"
-                  dataLocal={AppConfig.month}
-                  onSelectionChange={this.onSelectionChange}
-                  styleContainer={{
-                    flex: 2,
-                    marginHorizontal: 0,
-                  }}
-                  styleText={{
-                    marginHorizontal: 0,
-                  }}
+              <TouchableOpacity
+                onPress={() => this.showPicker("end")}
+                style={{ flex: 1 }}
+              >
+                <InputText
+                  name="end"
+                  title="Akhir sewa"
+                  value={`${month_end || ""} ${year_end || ""}`}
+                  onChangeText={this.onChangeText}
+                  isAllBorderShown
+                  editable={false}
                 />
-              </View>
-              <InputText
-                name="year_end"
-                title="Tahun"
-                value={year_end || ""}
-                error={year_end_error}
-                onChangeText={this.onSelectionChange}
-                styleContainer={{
-                  flex: 1,
-                  marginHorizontal: 0,
-                  marginBottom: 0,
-                }}
-                keyboardType="numeric"
-              />
+              </TouchableOpacity>
             </View>
           </View>
         ) : (

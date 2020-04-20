@@ -31,6 +31,9 @@ export const MAP_DRAW_STATE_INFO = {
   DRAWING_FINISHED: "Sentuh untuk lanjut isi detil lahan",
 };
 
+export const YEAR_RANGE_START = 2005;
+export const YEAR_RANGE_END = 2050;
+
 export default {
   // uri: 'http://app-dev.metodehayati.id:4001/graphql',
   uri: {
@@ -629,4 +632,6 @@ export {
   ONE_SIGNAL_KEY as oneSignalKey,
   MAP_DRAW_STATE as mapDrawState,
   MAP_DRAW_STATE_INFO as mapDrawStateInfo,
+  YEAR_RANGE_START as yearRangeStart,
+  YEAR_RANGE_END as yearRangeEnd,
 };

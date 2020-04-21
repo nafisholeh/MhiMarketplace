@@ -315,8 +315,8 @@ class AreaDraw extends Component {
             bottom: 0,
           }}
         >
-          {!detailFormVisible ? (
-            <AreaType visible={true} />
+          {detailFormVisible ? (
+            <AreaType />
           ) : (
             <AreaDrawInfo
               drawingState={drawingState}

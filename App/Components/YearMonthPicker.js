@@ -123,7 +123,7 @@ export default class YearMonthPicker extends Component {
           margin: 0,
         }}
       >
-        <View style={{ height: METRICS.MODAL_BOTTOM_HEIGHT }}>
+        <View style={{ height: METRICS.PICKER_BOTTOM_HEIGHT }}>
           <View style={styles.toolBar}>
             <View style={styles.toolBarButton}>
               <Text

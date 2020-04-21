@@ -35,7 +35,7 @@ class AreaDrawInfo extends PureComponent {
       drawingState,
       autoZoomIn,
       putPivotMarker,
-      ontoNextForm,
+      showDetailForm,
     } = this.props;
     switch (drawingState) {
       case MAP_DRAW_STATE.NOT_READY:
@@ -46,7 +46,7 @@ class AreaDrawInfo extends PureComponent {
         if (putPivotMarker) putPivotMarker();
         break;
       case MAP_DRAW_STATE.DRAWING_FINISHED:
-        if (ontoNextForm) ontoNextForm();
+        if (showDetailForm) showDetailForm();
         break;
     }
   };

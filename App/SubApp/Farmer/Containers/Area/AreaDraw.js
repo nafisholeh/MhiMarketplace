@@ -21,6 +21,7 @@ import {
 import { Colors, Images, FONTS } from "Themes";
 import { HeaderWhite, AreaDrawInfo, withLocationListener } from "CommonFarmer";
 import { MAP_DRAW_STATE } from "../../../../Config/AppConfig";
+import AreaType from "./AreaType";
 
 const { width, height } = Dimensions.get("window");
 
@@ -66,6 +67,7 @@ class AreaDraw extends Component {
       polygonLastPoint: null,
       polygonFirstPoint: null,
       currentRegion: null,
+      detailFormVisible: false,
     };
   }
 
@@ -198,9 +200,8 @@ class AreaDraw extends Component {
     });
   };
 
-  ontoNextForm = () => {
-    const { navigation } = this.props;
-    navigation.navigate("AreaType");
+  showDetailForm = () => {
+    this.setState({ detailFormVisible: true });
   };
 
   render() {
@@ -214,6 +215,7 @@ class AreaDraw extends Component {
       polygonCenterPoint,
       polygonLastPoint,
       polygonFirstPoint,
+      detailFormVisible,
     } = this.state;
     const mapOptions = {
       scrollEnabled: true,
@@ -313,14 +315,18 @@ class AreaDraw extends Component {
             bottom: 0,
           }}
         >
-          <AreaDrawInfo
-            drawingState={drawingState}
-            autoZoomIn={() => this.autoZoomIn()}
-            putPivotMarker={() => this.handleDrawing()}
-            finishDrawing={() => this.handleDrawingFinish()}
-            ontoNextForm={() => this.ontoNextForm()}
-            onRedraw={() => this.restartDrawing()}
-          />
+          {!detailFormVisible ? (
+            <AreaType visible={true} />
+          ) : (
+            <AreaDrawInfo
+              drawingState={drawingState}
+              autoZoomIn={() => this.autoZoomIn()}
+              putPivotMarker={() => this.handleDrawing()}
+              finishDrawing={() => this.handleDrawingFinish()}
+              showDetailForm={() => this.showDetailForm()}
+              onRedraw={() => this.restartDrawing()}
+            />
+          )}
         </View>
       </View>
     );

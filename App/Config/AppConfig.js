@@ -327,9 +327,9 @@ export default {
   ],
   ownedArea: "own",
   areaStatus: [
-    { label: "own", value: "own" },
-    { label: "rent", value: "rent" },
-    { label: "rented", value: "rented" },
+    { label: "Milik sendiri", value: "own" },
+    { label: "Sewa", value: "rent" },
+    { label: "Disewakan", value: "rented" },
   ],
   areaType: [
     { label: "Sawah", value: "Sawah" },

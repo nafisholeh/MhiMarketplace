@@ -9,7 +9,6 @@ import {
   Picker,
   Text,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   StyleSheet,
 } from "react-native";
 import Modal from "react-native-modal";

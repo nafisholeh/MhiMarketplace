@@ -13,7 +13,7 @@ import {
   InputTextAutoComplete,
   InputDate,
   InputPicker,
-  ButtonPrimary
+  ButtonPrimary,
 } from "Components";
 import AppConfig from "Config/AppConfig";
 import SignupWrapper from "./SignupWrapper";
@@ -36,7 +36,7 @@ class CardIdentityForm extends Component {
       expired_date: LIFETIME,
       address_detail: null,
       rtrw: null,
-      kecamatan_id: null
+      kecamatan_id: null,
     },
     error: {
       nik: null,
@@ -52,12 +52,12 @@ class CardIdentityForm extends Component {
       expired_date: null,
       address_detail: null,
       rtrw: null,
-      kecamatan_id: null
+      kecamatan_id: null,
     },
 
     show_expired_modal: false,
     show_date_modal: false,
-    is_can_continue: false
+    is_can_continue: false,
   };
 
   onSubmit = async () => {
@@ -77,8 +77,8 @@ class CardIdentityForm extends Component {
         expired_date,
         address_detail,
         rtrw,
-        kecamatan_id
-      }
+        kecamatan_id,
+      },
     } = this.state;
     const ktpData = {
       nik,
@@ -94,7 +94,7 @@ class CardIdentityForm extends Component {
       expired_date,
       address_detail,
       rtrw,
-      kecamatan_id
+      kecamatan_id,
     };
     storeFarmerKtp(ktpData);
     navigation.navigate("AreaList");
@@ -108,9 +108,9 @@ class CardIdentityForm extends Component {
 
   onCanContinue = () => {
     const { form } = this.state;
-    const isCanContinue = Object.values(form).every(o => o && o !== "");
+    const isCanContinue = Object.values(form).every((o) => o && o !== "");
     this.setState({
-      is_can_continue: isCanContinue
+      is_can_continue: isCanContinue,
     });
   };
 
@@ -138,13 +138,13 @@ class CardIdentityForm extends Component {
   render() {
     const {
       form: { nik, name, birth_place, birth_date, expired_date },
-      is_can_continue
+      is_can_continue,
     } = this.state;
     return (
       <View style={{ flex: 1 }}>
         <SignupWrapper title="Data KTP" currentPosition={1}>
           <InputText
-            refs={ref => (this._nik = ref)}
+            refs={(ref) => (this._nik = ref)}
             isAllBorderShown
             name="nik"
             title="NIK"
@@ -156,7 +156,7 @@ class CardIdentityForm extends Component {
           />
 
           <InputText
-            refs={ref => (this._name = ref)}
+            refs={(ref) => (this._name = ref)}
             isAllBorderShown
             name="name"
             title="Nama"
@@ -168,11 +168,11 @@ class CardIdentityForm extends Component {
 
           <View
             style={{
-              flexDirection: "row"
+              flexDirection: "row",
             }}
           >
             <InputText
-              refs={ref => (this._birth_place = ref)}
+              refs={(ref) => (this._birth_place = ref)}
               isAllBorderShown
               name="birth_place"
               title="Tempat"
@@ -182,7 +182,7 @@ class CardIdentityForm extends Component {
               styleContainer={{
                 flex: 1,
                 marginHorizontal: 0,
-                marginRight: moderateScale(5)
+                marginRight: moderateScale(5),
               }}
             />
 
@@ -212,11 +212,11 @@ class CardIdentityForm extends Component {
           />
 
           <AutoAddressInput
-            onAddressDetailChanged={text =>
+            onAddressDetailChanged={(text) =>
               this.onChangeText(text, "address_detail")
             }
-            onRtRwChanged={text => this.onChangeText(text, "rtrw")}
-            onKecamatanIdChanged={text =>
+            onRtRwChanged={(text) => this.onChangeText(text, "rtrw")}
+            onKecamatanIdChanged={(text) =>
               this.onChangeText(text, "kecamatan_id")
             }
           />
@@ -283,11 +283,11 @@ class CardIdentityForm extends Component {
 }
 
 CardIdentityForm.propTypes = {
-  storeFarmerKtp: func
+  storeFarmerKtp: func,
 };
 
-const mapDispatchToProps = dispatch => ({
-  storeFarmerKtp: ktp => dispatch(FarmerSignupActions.storeFarmerKtp(ktp))
+const mapDispatchToProps = (dispatch) => ({
+  storeFarmerKtp: (ktp) => dispatch(FarmerSignupActions.storeFarmerKtp(ktp)),
 });
 
 export default connect(

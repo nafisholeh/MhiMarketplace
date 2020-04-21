@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, FlatList } from "react-native";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { func } from "prop-types";
 
-import { withNoHeader } from "Hoc";
 import FarmerSignupActions from "Redux/FarmerSignupRedux";
 import {
   ButtonPrimary,
@@ -12,7 +11,8 @@ import {
   YearMonthPicker,
 } from "Components";
 import AppConfig, { YEAR_RANGE_START, YEAR_RANGE_END } from "Config/AppConfig";
-import { METRICS, Images } from "Themes";
+import { METRICS, Images, Colors } from "Themes";
+import { screenWidth } from "Lib";
 
 class AreaType extends Component {
   state = {
@@ -96,6 +96,10 @@ class AreaType extends Component {
       });
   };
 
+  componentDidMount() {
+    this.setState({ visible: true });
+  }
+
   render() {
     const {
       status,
@@ -106,18 +110,32 @@ class AreaType extends Component {
       year_end,
     } = this.state;
     return (
-      <View>
+      <View
+        style={{
+          height:
+            status !== AppConfig.ownedArea
+              ? METRICS.AREA_DETAIL_EXPAND_HEIGHT
+              : METRICS.AREA_DETAIL_HEIGHT,
+          width: screenWidth,
+          padding: METRICS.MEDIUM,
+          backgroundColor: Colors.white,
+          borderTopLeftRadius: METRICS.TINY,
+          borderTopRightRadius: METRICS.TINY,
+        }}
+      >
         <InputPicker
           name="type"
           title="Tipe lahan"
           dataLocal={AppConfig.areaType}
           onSelectionChange={this.onSelectionChange}
+          styleContainer={styles.fieldContainer}
         />
         <InputPicker
           name="status"
           title="Status lahan"
           dataLocal={AppConfig.areaStatus}
           onSelectionChange={this.onSelectionChange}
+          styleContainer={styles.fieldContainer}
         />
         {status !== AppConfig.ownedArea ? (
           <View>
@@ -127,6 +145,7 @@ class AreaType extends Component {
               value={name || ""}
               onChangeText={this.onChangeText}
               isAllBorderShown
+              styleContainer={styles.fieldContainer}
             />
             <View style={{ flexDirection: "row" }}>
               <TouchableOpacity
@@ -175,9 +194,13 @@ AreaType.propTypes = {
   storeFarmerType: func,
 };
 
+const styles = StyleSheet.create({
+  fieldContainer: { marginBottom: METRICS.INPUT_VERTICAL_SPACING },
+});
+
 const mapDispatchToProps = (dispatch) => ({
   storeFarmerType: (area) =>
     dispatch(FarmerSignupActions.storeFarmerType(area)),
 });
 
-export default connect(null, mapDispatchToProps)(withNoHeader(AreaType));
+export default connect(null, mapDispatchToProps)(AreaType);

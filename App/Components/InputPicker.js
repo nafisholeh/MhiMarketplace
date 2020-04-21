@@ -22,7 +22,7 @@ class InputPicker extends PureComponent {
       error: null,
       error_fetch: null,
       dummy: [{ label: "loading", value: 0 }],
-      showManualInput: false
+      showManualInput: false,
     };
   }
 
@@ -41,7 +41,7 @@ class InputPicker extends PureComponent {
     }
   }
 
-  setupData = dataLocal => {
+  setupData = (dataLocal) => {
     if (!Array.isArray(dataLocal) || dataLocal.length <= 0) return;
     this.setState({ data: dataLocal }, () => {
       if (dataLocal.length >= 1) {
@@ -60,7 +60,7 @@ class InputPicker extends PureComponent {
       fetching: null,
       error: null,
       error_fetch: null,
-      dummy: [{ label: "loading", value: 0 }]
+      dummy: [{ label: "loading", value: 0 }],
     });
   };
 
@@ -70,16 +70,16 @@ class InputPicker extends PureComponent {
       queryVariables,
       title,
       isKeyDisplayed,
-      isManualInputDisplayed
+      isManualInputDisplayed,
     } = this.props;
     this.setState({
       fetching: true,
       error: null,
-      error_fetch: null
+      error_fetch: null,
     });
     ApolloClientProvider.client
       .query({ query, variables: queryVariables })
-      .then(data => {
+      .then((data) => {
         const { data: fetchData = {} } = data || {};
         const realData = fetchData[Object.keys(fetchData)[0]];
         const normalizedData = graphqlToRNPickerSelect(
@@ -90,7 +90,7 @@ class InputPicker extends PureComponent {
         this.setState(
           {
             data: normalizedData,
-            fetching: false
+            fetching: false,
           },
           () => {
             if (Array.isArray(normalizedData) && normalizedData.length === 1) {
@@ -99,11 +99,11 @@ class InputPicker extends PureComponent {
           }
         );
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({
           fetching: false,
           error_fetch: true,
-          error: `Gagal download data ${title}`
+          error: `Gagal download data ${title}`,
         });
         InAppNotification.error(
           "Gagal download",
@@ -124,7 +124,7 @@ class InputPicker extends PureComponent {
     this.setState({
       selected: selectedValue,
       selected_text: selectedLabel,
-      showManualInput
+      showManualInput,
     });
     if (onSelectionChange) {
       const keyOutput = showManualInput ? null : selectedValue;
@@ -140,7 +140,7 @@ class InputPicker extends PureComponent {
     this.setState({ showManualInput: showManualInputTemp });
   };
 
-  onManualTextChange = text => {
+  onManualTextChange = (text) => {
     const { onSelectionChange, name } = this.props;
     const { showManualInput } = this.state;
     this.setState({ manual_text: text });
@@ -159,7 +159,7 @@ class InputPicker extends PureComponent {
       fetching,
       error,
       error_fetch,
-      showManualInput
+      showManualInput,
     } = this.state;
     const {
       name,
@@ -168,7 +168,7 @@ class InputPicker extends PureComponent {
       styleContainer,
       styleText,
       CustomManualInput,
-      isAllBorderShown
+      isAllBorderShown,
     } = this.props;
     const isFewSelection = Array.isArray(data)
       ? data.length <= FEW_THRESHOLD && data.length !== 1
@@ -178,8 +178,11 @@ class InputPicker extends PureComponent {
         {isFewSelection ? (
           <View
             style={{
-              justifyContent: "space-around",
-              marginBottom: showManualInput ? METRICS.MEDIUM : METRICS.HUGE
+              ...{
+                justifyContent: "space-around",
+                marginBottom: showManualInput ? METRICS.MEDIUM : METRICS.HUGE,
+              },
+              ...styleContainer,
             }}
           >
             <Text style={{ ...FONTS.INPUT_TITLE, marginBottom: METRICS.TINY }}>
@@ -195,7 +198,7 @@ class InputPicker extends PureComponent {
           <RNPickerSelect
             placeholder={{
               label: placeholder,
-              value: null
+              value: null,
             }}
             items={data ? data : dummy}
             onValueChange={this.onSelectionChange}
@@ -219,7 +222,7 @@ class InputPicker extends PureComponent {
                 {},
                 showManualInput
                   ? {
-                      marginBottom: 0
+                      marginBottom: 0,
                     }
                   : {},
                 styleText
@@ -236,11 +239,11 @@ class InputPicker extends PureComponent {
             error={error}
             styleContainer={{
               marginBottom: METRICS.HUGE,
-              marginHorizontal: 0
+              marginHorizontal: 0,
             }}
             prefixIcon={Images.edit_small}
             prefixIconStyle={{
-              tintColor: Colors.disabled_light
+              tintColor: Colors.disabled_light,
             }}
           />
         ) : (
@@ -264,7 +267,7 @@ InputPicker.propTypes = {
     shape({
       value: string,
       label: string,
-      showManualInput: bool // show manual input
+      showManualInput: bool, // show manual input
     })
   ),
   /*
@@ -275,12 +278,12 @@ InputPicker.propTypes = {
   queryVariables: object,
   triggerFetch: bool, // trigger fetch. is a must if query props is set
   triggerReset: bool, // trigger clear out data
-  onSelectionChange: func
+  onSelectionChange: func,
 };
 
 InputPicker.defaultProps = {
   isInitialFetching: false,
-  isKeyDisplayed: false
+  isKeyDisplayed: false,
 };
 
 export default InputPicker;

@@ -36,6 +36,10 @@ const colors = {
   PROGRESS_BAR_COLOR: "#fc9000",
   ICON: "#707070",
   BORDER: "rgba(133, 133, 133, 0.2)",
+  MAP_AREA_BUTTON: "#2EC4B6",
+
+  BUTTON_TERTIER: "#009c4e",
+  BUTTON_TERTIER_INVERTED: "#909090",
 };
 
 export default colors;

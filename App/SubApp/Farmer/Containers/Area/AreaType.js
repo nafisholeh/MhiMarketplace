@@ -5,13 +5,13 @@ import { func } from "prop-types";
 
 import FarmerSignupActions from "Redux/FarmerSignupRedux";
 import {
-  ButtonPrimary,
+  ButtonTertier,
   InputText,
   InputPicker,
   YearMonthPicker,
 } from "Components";
 import AppConfig, { YEAR_RANGE_START, YEAR_RANGE_END } from "Config/AppConfig";
-import { METRICS, Images, Colors } from "Themes";
+import { METRICS, Images, Colors, FONTS } from "Themes";
 import { screenWidth } from "Lib";
 
 class AreaType extends Component {
@@ -54,18 +54,6 @@ class AreaType extends Component {
     });
     navigation.navigate(
       status === AppConfig.areaStatus.RENTED ? "AreaList" : "AreaCommodity"
-    );
-  };
-
-  renderBottom = () => {
-    const { status } = this.state;
-    return (
-      <ButtonPrimary
-        title={
-          status === AppConfig.areaStatus.RENTED ? "Selesai" : "Isi Komoditi"
-        }
-        onPress={this.onSubmit}
-      />
     );
   };
 
@@ -118,6 +106,7 @@ class AreaType extends Component {
               : METRICS.AREA_DETAIL_HEIGHT,
           width: screenWidth,
           padding: METRICS.MEDIUM,
+          paddingTop: METRICS.LARGE,
           backgroundColor: Colors.white,
           borderTopLeftRadius: METRICS.TINY,
           borderTopRightRadius: METRICS.TINY,
@@ -184,6 +173,38 @@ class AreaType extends Component {
         ) : (
           <View />
         )}
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-around",
+            position: "absolute",
+            bottom: METRICS.MEDIUM,
+            alignSelf: "center",
+          }}
+        >
+          <ButtonTertier
+            title="Batal"
+            width={screenWidth / 2}
+            colors={Colors.white}
+            fonts={{
+              ...FONTS.BODY_BOLD,
+              ...{ color: Colors.BUTTON_TERTIER_INVERTED },
+            }}
+            onPress={this.onSubmit}
+            style={{ borderWidth: 0, marginRight: METRICS.SMALL }}
+          />
+          <ButtonTertier
+            title={
+              status === AppConfig.areaStatus.RENTED
+                ? "Selesai"
+                : "Isi Komoditi"
+            }
+            width={screenWidth / 2}
+            colors={Colors.BUTTON_TERTIER}
+            fonts={{ ...FONTS.BODY_BOLD, ...{ color: Colors.white } }}
+            onPress={this.onSubmit}
+          />
+        </View>
         <YearMonthPicker ref={(picker) => (this.picker = picker)} />
       </View>
     );

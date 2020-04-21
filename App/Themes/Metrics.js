@@ -37,10 +37,12 @@ const metrics = {
   BORDER_BOLD: 2,
 
   MODAL_BOTTOM_HEIGHT: moderateScale(140),
-  AREA_DETAIL_HEIGHT: moderateScale(160),
-  AREA_DETAIL_EXPAND_HEIGHT: moderateScale(295),
+  AREA_DETAIL_HEIGHT: moderateScale(225),
+  AREA_DETAIL_EXPAND_HEIGHT: moderateScale(360),
 
   INPUT_VERTICAL_SPACING: moderateScale(10),
+
+  BUTTON_TERTIER_RADIUS: moderateScale(7),
 };
 
 export default metrics;

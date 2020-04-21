@@ -22,6 +22,7 @@ import CartAddButton from "./Product/CartAddButton";
 import CartSubtractButton from "./Product/CartSubtractButton";
 import ButtonPrimary from "./ButtonPrimary";
 import ButtonSecondary from "./ButtonSecondary";
+import ButtonTertier from "./ButtonTertier";
 import ButtonCircle from "./ButtonCircle";
 import ConsumerPageHeader from "./Header/ConsumerPageHeader";
 import ProductImage from "./Product/ProductImage";
@@ -69,6 +70,7 @@ export {
   ProductDetailWrapper,
   ButtonPrimary,
   ButtonSecondary,
+  ButtonTertier,
   ConsumerPageHeader,
   ProductImage,
   ListHeader,

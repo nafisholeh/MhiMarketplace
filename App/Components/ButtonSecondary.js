@@ -1,15 +1,24 @@
-import React from 'react';
-import { TouchableOpacity, Text } from 'react-native';
-import { DotIndicator } from 'react-native-indicators';
-import LinearGradient from 'react-native-linear-gradient';
+import React from "react";
+import { TouchableOpacity, Text } from "react-native";
+import { DotIndicator } from "react-native-indicators";
+import LinearGradient from "react-native-linear-gradient";
 
-import ViewShadow from './Shadow/ViewShadow';
-import { screenWidth, moderateScale } from 'Lib';
-import { Colors } from 'Themes';
+import ViewShadow from "./Shadow/ViewShadow";
+import { screenWidth } from "Lib";
+import { Colors, FONTS } from "Themes";
 
-const ButtonMain = ({ style, onPress, loading, disabled, title, colors }) => (
+const ButtonMain = ({
+  style,
+  onPress,
+  loading,
+  disabled,
+  title,
+  colors,
+  width,
+  fonts,
+}) => (
   <ViewShadow
-    width={screenWidth - 70}
+    width={width || screenWidth - 70}
     height={42}
     borderRadius={3}
     shadowBorderRadiusAndroid={3}
@@ -18,13 +27,14 @@ const ButtonMain = ({ style, onPress, loading, disabled, title, colors }) => (
     mainColor={Colors.white}
     shadowColor={Colors.brown_light}
     style={{
-      ...{ alignSelf: 'center' },
-      ...style 
+      ...{ alignSelf: "center" },
+      ...style,
     }}
   >
     <LinearGradient
-      start={{x: 0, y: 0}} end={{x: 1, y: 0}}
-      colors={colors || [ Colors.veggie_light, Colors.veggie_dark ]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 0 }}
+      colors={colors || [Colors.veggie_light, Colors.veggie_dark]}
       style={{ height: 42, borderRadius: 3 }}
     >
       <TouchableOpacity
@@ -32,32 +42,22 @@ const ButtonMain = ({ style, onPress, loading, disabled, title, colors }) => (
         disabled={disabled}
         style={{
           flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center' 
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
         {loading && (
           <DotIndicator
             count={4}
             size={7}
-            color='white'
+            color="white"
             animationDuration={800}
           />
         )}
-        {!loading && (
-          <Text
-            style={{
-              fontFamily: 'CircularStd-Bold',
-              fontSize: 16,
-              color: 'white'
-            }}
-          >
-            {title}
-          </Text>
-        )}
+        {!loading && <Text style={fonts || FONTS.BODY_BOLD}>{title}</Text>}
       </TouchableOpacity>
     </LinearGradient>
   </ViewShadow>
-)
+);
 
 export default ButtonMain;

@@ -23,6 +23,7 @@ class InputPicker extends PureComponent {
       error_fetch: null,
       dummy: [{ label: "loading", value: 0 }],
       showManualInput: false,
+      isFewSelection: true,
     };
   }
 
@@ -43,7 +44,10 @@ class InputPicker extends PureComponent {
 
   setupData = (dataLocal) => {
     if (!Array.isArray(dataLocal) || dataLocal.length <= 0) return;
-    this.setState({ data: dataLocal }, () => {
+    const isFewSelection = Array.isArray(dataLocal)
+      ? dataLocal.length <= FEW_THRESHOLD && dataLocal.length !== 1
+      : false;
+    this.setState({ isFewSelection, data: dataLocal }, () => {
       if (dataLocal.length >= 1) {
         setTimeout(() => {
           this.onSelectionChange(dataLocal[0], 0);
@@ -87,9 +91,14 @@ class InputPicker extends PureComponent {
           isKeyDisplayed,
           isManualInputDisplayed
         );
+        const isFewSelection = Array.isArray(normalizedData)
+          ? normalizedData.length <= FEW_THRESHOLD &&
+            normalizedData.length !== 1
+          : false;
         this.setState(
           {
             data: normalizedData,
+            isFewSelection,
             fetching: false,
           },
           () => {
@@ -149,87 +158,11 @@ class InputPicker extends PureComponent {
     }
   };
 
-  render() {
-    const {
-      data,
-      dummy,
-      selected,
-      selected_text,
-      manual_text,
-      fetching,
-      error,
-      error_fetch,
-      showManualInput,
-    } = this.state;
-    const {
-      name,
-      title,
-      placeholder,
-      styleContainer,
-      styleText,
-      CustomManualInput,
-      isAllBorderShown,
-    } = this.props;
-    const isFewSelection = Array.isArray(data)
-      ? data.length <= FEW_THRESHOLD && data.length !== 1
-      : false;
+  renderCustomBottom = () => {
+    const { manual_text, error, showManualInput } = this.state;
+    const { CustomManualInput, isAllBorderShown } = this.props;
     return (
       <Fragment>
-        {isFewSelection ? (
-          <View
-            style={{
-              ...{
-                justifyContent: "space-around",
-                marginBottom: showManualInput ? METRICS.MEDIUM : METRICS.HUGE,
-              },
-              ...styleContainer,
-            }}
-          >
-            <Text style={{ ...FONTS.INPUT_TITLE, marginBottom: METRICS.TINY }}>
-              {title}
-            </Text>
-            <ChipSelects
-              name={name}
-              data={data}
-              onSelectionChange={this.onChipSelectionChange}
-            />
-          </View>
-        ) : (
-          <RNPickerSelect
-            placeholder={{
-              label: placeholder,
-              value: null,
-            }}
-            items={data ? data : dummy}
-            onValueChange={this.onSelectionChange}
-            value={selected}
-            disabled={data ? false : true}
-            style={styleContainer}
-          >
-            <InputText
-              title={title}
-              value={selected_text}
-              placeholder={placeholder}
-              editable={false}
-              selectTextOnFocus={false}
-              error={error}
-              errorFetching={error_fetch}
-              onRefetch={this.onFetchData}
-              icon={Images.arrow_thin}
-              isLoading={fetching}
-              isShowIcon
-              styleContainer={Object.assign(
-                {},
-                showManualInput
-                  ? {
-                      marginBottom: 0,
-                    }
-                  : {},
-                styleText
-              )}
-            />
-          </RNPickerSelect>
-        )}
         {showManualInput && CustomManualInput ? <CustomManualInput /> : null}
         {showManualInput && !CustomManualInput ? (
           <InputText
@@ -249,6 +182,85 @@ class InputPicker extends PureComponent {
         ) : (
           <View></View>
         )}
+      </Fragment>
+    );
+  };
+
+  render() {
+    const {
+      data,
+      dummy,
+      selected,
+      selected_text,
+      fetching,
+      error,
+      error_fetch,
+      showManualInput,
+      isFewSelection,
+    } = this.state;
+    const { name, title, placeholder, styleContainer, styleText } = this.props;
+    if (isFewSelection) {
+      return (
+        <Fragment>
+          <View
+            style={{
+              ...{
+                justifyContent: "space-around",
+                marginBottom: showManualInput ? METRICS.MEDIUM : METRICS.HUGE,
+              },
+              ...styleContainer,
+            }}
+          >
+            <Text style={{ ...FONTS.INPUT_TITLE, marginBottom: METRICS.TINY }}>
+              {title}
+            </Text>
+            <ChipSelects
+              name={name}
+              data={data}
+              onSelectionChange={this.onChipSelectionChange}
+            />
+          </View>
+          {this.renderCustomBottom}
+        </Fragment>
+      );
+    }
+    return (
+      <Fragment>
+        <RNPickerSelect
+          placeholder={{
+            label: placeholder,
+            value: null,
+          }}
+          items={data ? data : dummy}
+          onValueChange={this.onSelectionChange}
+          value={selected}
+          disabled={data ? false : true}
+          style={styleContainer}
+        >
+          <InputText
+            title={title}
+            value={selected_text}
+            placeholder={placeholder}
+            editable={false}
+            selectTextOnFocus={false}
+            error={error}
+            errorFetching={error_fetch}
+            onRefetch={this.onFetchData}
+            icon={Images.arrow_thin}
+            isLoading={fetching}
+            isShowIcon
+            styleContainer={Object.assign(
+              {},
+              showManualInput
+                ? {
+                    marginBottom: 0,
+                  }
+                : {},
+              styleText
+            )}
+          />
+        </RNPickerSelect>
+        {this.renderCustomBottom}
       </Fragment>
     );
   }

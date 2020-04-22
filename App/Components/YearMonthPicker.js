@@ -6,7 +6,6 @@ import React, { Component } from "react";
 import {
   FlatList,
   View,
-  Picker,
   Text,
   TouchableOpacity,
   StyleSheet,
@@ -28,6 +27,7 @@ export default class YearMonthPicker extends Component {
       selectedYear,
       selectedMonth,
       visible: visible || false,
+      isSubmitEligible: false,
     };
   }
 
@@ -83,12 +83,24 @@ export default class YearMonthPicker extends Component {
     this.dismiss();
   };
 
+  onPressItem = (item, stateName) => {
+    const { selectedMonth, selectedYear } = this.state;
+    let isEligible = false;
+    if (
+      (stateName === "selectedMonth" && selectedYear) ||
+      (stateName === "selectedYear" && selectedMonth)
+    ) {
+      isEligible = true;
+    }
+    this.setState({ [stateName]: item, isSubmitEligible: isEligible });
+  };
+
   renderItem = (item, stateName) => {
     const { selectedYear, selectedMonth } = this.state;
     const isSelected = selectedMonth === item || selectedYear === item;
     return (
       <TouchableOpacity
-        onPress={() => this.setState({ [stateName]: item })}
+        onPress={() => this.onPressItem(item, stateName)}
         style={{
           padding: METRICS.MEDIUM,
           marginHorizontal: METRICS.TINY,
@@ -111,7 +123,14 @@ export default class YearMonthPicker extends Component {
   };
 
   render() {
-    const { years, months, selectedYear, selectedMonth, visible } = this.state;
+    const {
+      years,
+      months,
+      selectedYear,
+      selectedMonth,
+      visible,
+      isSubmitEligible,
+    } = this.state;
     return (
       <Modal
         isVisible={visible}
@@ -146,8 +165,18 @@ export default class YearMonthPicker extends Component {
             <TouchableOpacity
               style={styles.toolBarButton}
               onPress={this.onConfirmPress}
+              disabled={!isSubmitEligible}
             >
-              <Text style={FONTS.BODY_BOLD}>Simpan</Text>
+              <Text
+                style={[
+                  FONTS.BODY_BOLD,
+                  {
+                    color: !isSubmitEligible ? Colors.text_light : Colors.text,
+                  },
+                ]}
+              >
+                Simpan
+              </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.innerContainer}>

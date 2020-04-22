@@ -2,7 +2,6 @@ import React from "react";
 import { TouchableOpacity, Text } from "react-native";
 import { DotIndicator } from "react-native-indicators";
 
-import { screenWidth } from "Lib";
 import { Colors, FONTS, METRICS } from "Themes";
 
 const ButtonTertier = ({
@@ -10,6 +9,7 @@ const ButtonTertier = ({
   onPress,
   loading,
   disabled,
+  colorsDisabled,
   title,
   colors,
   width,
@@ -24,10 +24,10 @@ const ButtonTertier = ({
         alignItems: "center",
         justifyContent: "center",
         width: width,
-        backgroundColor: colors || Colors.white,
+        backgroundColor: disabled
+          ? colorsDisabled || Colors.BUTTON_TERTIER_INVERTED
+          : colors || Colors.BUTTON_TERTIER,
         borderRadius: METRICS.BUTTON_TERTIER_RADIUS,
-        borderWidth: 2.5,
-        borderColor: Colors.BUTTON_TERTIER,
         paddingVertical: METRICS.SMALL,
       },
       ...style,

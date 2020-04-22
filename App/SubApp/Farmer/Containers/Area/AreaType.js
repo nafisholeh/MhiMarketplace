@@ -16,22 +16,16 @@ import { screenWidth } from "Lib";
 
 class AreaType extends Component {
   state = {
-    type: AppConfig.areaType[0],
-    status: "rent", // oneOf [own, rent, rented]
-    name: "",
-    name_error: null,
+    type: null,
+    status: null,
+    name: null,
     month_start: null,
-    month_start_error: null,
     year_start: null,
-    year_start_error: null,
     month_end: null,
-    month_end_error: null,
     year_end: null,
-    year_end_error: null,
     startYear: YEAR_RANGE_START,
     endYear: YEAR_RANGE_END,
-    selectedYear: null,
-    selectedMonth: null,
+    isSubmitEligible: false,
   };
 
   onSubmit = () => {
@@ -58,11 +52,41 @@ class AreaType extends Component {
   };
 
   onChangeText = (value, stateName) => {
-    this.setState({ [stateName]: value });
+    this.setState({ [stateName]: value }, () => {
+      this.checkSubmitEligibility();
+    });
   };
 
   onSelectionChange = (key, value, stateName) => {
-    this.setState({ [stateName]: value });
+    this.setState({ [stateName]: value }, () => {
+      this.checkSubmitEligibility();
+    });
+  };
+
+  checkSubmitEligibility = () => {
+    const {
+      type,
+      status,
+      name,
+      month_start,
+      year_start,
+      month_end,
+      year_end,
+    } = this.state;
+    const allFieldStatus =
+      type &&
+      status &&
+      name &&
+      month_start &&
+      year_start &&
+      month_end &&
+      year_end
+        ? true
+        : false;
+    const shortFieldStatus = type && status ? true : false;
+    const isEligible =
+      status !== AppConfig.ownedArea ? allFieldStatus : shortFieldStatus;
+    this.setState({ isSubmitEligible: isEligible });
   };
 
   showPicker = (type) => {
@@ -70,17 +94,15 @@ class AreaType extends Component {
     this.picker
       .show({ startYear, endYear, selectedYear, selectedMonth })
       .then(({ year, month }) => {
-        if (type === "start") {
-          this.setState({
-            year_start: year,
-            month_start: month,
-          });
-        } else {
-          this.setState({
-            year_end: year,
-            month_end: month,
-          });
-        }
+        this.setState(
+          {
+            [`year_${type}`]: year,
+            [`month_${type}`]: month,
+          },
+          () => {
+            this.checkSubmitEligibility();
+          }
+        );
       });
   };
 
@@ -96,6 +118,7 @@ class AreaType extends Component {
       month_end,
       year_start,
       year_end,
+      isSubmitEligible,
     } = this.state;
     return (
       <View
@@ -200,6 +223,7 @@ class AreaType extends Component {
             width={screenWidth / 2}
             colors={Colors.BUTTON_TERTIER}
             fonts={{ ...FONTS.BODY_BOLD, ...{ color: Colors.white } }}
+            disabled={!isSubmitEligible}
             onPress={this.onSubmit}
           />
         </View>

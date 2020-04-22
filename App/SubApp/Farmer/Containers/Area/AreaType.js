@@ -195,9 +195,7 @@ class AreaType extends Component {
           />
           <ButtonTertier
             title={
-              status === AppConfig.areaStatus.RENTED
-                ? "Selesai"
-                : "Isi Komoditi"
+              status === AppConfig.areaStatus.RENTED ? "Selesai" : "Lanjut"
             }
             width={screenWidth / 2}
             colors={Colors.BUTTON_TERTIER}

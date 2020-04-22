@@ -72,15 +72,6 @@ export default class YearMonthPicker extends Component {
     return AppConfig.month.map((item) => item.label);
   };
 
-  renderPickerItems = (data) => {
-    let items = data.map((value, index) => {
-      return (
-        <Picker.Item key={"r-" + index} label={"" + value} value={value} />
-      );
-    });
-    return items;
-  };
-
   onCancelPress = () => {
     this.dismiss();
   };
@@ -93,12 +84,26 @@ export default class YearMonthPicker extends Component {
   };
 
   renderItem = (item, stateName) => {
+    const { selectedYear, selectedMonth } = this.state;
+    const isSelected = selectedMonth === item || selectedYear === item;
     return (
       <TouchableOpacity
         onPress={() => this.setState({ [stateName]: item })}
-        style={{ padding: METRICS.MEDIUM }}
+        style={{
+          padding: METRICS.MEDIUM,
+          marginHorizontal: METRICS.TINY,
+          borderRadius: METRICS.TINY,
+          backgroundColor: isSelected
+            ? Colors.PICKER_ITEM_HIGHLIGHTED
+            : Colors.white,
+        }}
       >
-        <Text style={{ ...FONTS.BODY_NORMAL, ...{ textAlign: "center" } }}>
+        <Text
+          style={[
+            { ...FONTS.BODY_NORMAL, ...{ textAlign: "center" } },
+            isSelected ? { color: Colors.white } : null,
+          ]}
+        >
           {item}
         </Text>
       </TouchableOpacity>
@@ -149,7 +154,7 @@ export default class YearMonthPicker extends Component {
             <FlatList
               data={months}
               renderItem={({ item }) => this.renderItem(item, "selectedMonth")}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => item.label}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{
                 paddingTop: METRICS.EXTRA_HUGE,
@@ -159,7 +164,7 @@ export default class YearMonthPicker extends Component {
             <FlatList
               data={years}
               renderItem={({ item }) => this.renderItem(item, "selectedYear")}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => item.label}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{
                 paddingTop: METRICS.EXTRA_HUGE,

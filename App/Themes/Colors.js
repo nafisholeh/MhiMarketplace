@@ -40,6 +40,8 @@ const colors = {
 
   BUTTON_TERTIER: "#009c4e",
   BUTTON_TERTIER_INVERTED: "#909090",
+
+  PICKER_ITEM_HIGHLIGHTED: "#909090",
 };
 
 export default colors;

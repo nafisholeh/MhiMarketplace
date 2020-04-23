@@ -197,6 +197,7 @@ class AreaType extends Component {
             isInitialFetching
             isManualInputDisplayed
             styleContainer={styles.fieldContainer}
+            manualInputStyle={styles.fieldContainer}
           />
         ) : (
           <View />
@@ -225,6 +226,7 @@ class AreaType extends Component {
                   editable={false}
                   isShowIcon
                   icon={Images.map_drawing_calendar}
+                  styleContainer={styles.fieldContainer}
                 />
               </TouchableOpacity>
 
@@ -241,6 +243,7 @@ class AreaType extends Component {
                   editable={false}
                   isShowIcon
                   icon={Images.map_drawing_calendar}
+                  styleContainer={styles.fieldContainer}
                 />
               </TouchableOpacity>
             </View>

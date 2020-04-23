@@ -41,7 +41,7 @@ const metrics = {
   AREA_DETAIL_EXPAND_HEIGHT: moderateScale(360),
 
   PICKER_BOTTOM_HEIGHT: moderateScale(250),
-  INPUT_VERTICAL_SPACING: moderateScale(10),
+  INPUT_VERTICAL_SPACING: moderateScale(13),
 
   BUTTON_TERTIER_RADIUS: moderateScale(7),
 };

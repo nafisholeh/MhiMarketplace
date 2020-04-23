@@ -160,7 +160,11 @@ class InputPicker extends PureComponent {
 
   renderCustomBottom = () => {
     const { manual_text, error, showManualInput } = this.state;
-    const { CustomManualInput, isAllBorderShown } = this.props;
+    const {
+      CustomManualInput,
+      isAllBorderShown,
+      manualInputStyle,
+    } = this.props;
     return (
       <Fragment>
         {showManualInput && CustomManualInput ? <CustomManualInput /> : null}
@@ -171,8 +175,11 @@ class InputPicker extends PureComponent {
             isAllBorderShown={isAllBorderShown}
             error={error}
             styleContainer={{
-              marginBottom: METRICS.HUGE,
-              marginHorizontal: 0,
+              ...{
+                marginBottom: METRICS.HUGE,
+                marginHorizontal: 0,
+              },
+              ...manualInputStyle,
             }}
             prefixIcon={Images.edit_small}
             prefixIconStyle={{

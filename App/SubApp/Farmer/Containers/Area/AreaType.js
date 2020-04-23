@@ -13,6 +13,7 @@ import {
 import AppConfig, { YEAR_RANGE_START, YEAR_RANGE_END } from "Config/AppConfig";
 import { METRICS, Images, Colors, FONTS } from "Themes";
 import { screenWidth } from "Lib";
+import { FETCH_COMMODITIES } from "SubApp/Farmer/GraphQL/Commodity/Query";
 
 class AreaType extends Component {
   state = {
@@ -26,10 +27,22 @@ class AreaType extends Component {
     startYear: YEAR_RANGE_START,
     endYear: YEAR_RANGE_END,
     isSubmitEligible: false,
+    commodity: null,
+    isNewCommodity: false,
+    isCommodityRequired: false,
   };
 
+  componentDidMount() {
+    this.setState((prevState) => {
+      return {
+        trigger_fetch_commodity: !prevState.trigger_fetch_commodity,
+        visible: true,
+      };
+    });
+  }
+
   onSubmit = () => {
-    const { navigation, storeFarmerType } = this.props;
+    const { navigation, storeFarmerType, storeFarmerCommodity } = this.props;
     const {
       type,
       status,
@@ -38,7 +51,18 @@ class AreaType extends Component {
       year_start,
       month_end,
       year_end,
+      commodity,
+      isNewCommodity,
+      isCommodityRequired,
     } = this.state;
+    if (isCommodityRequired) {
+      const [commodity_id, commodity_name] = commodity.split("||");
+      storeFarmerCommodity({
+        commodity_id,
+        commodity_name,
+        isNewCommodity,
+      });
+    }
     storeFarmerType({
       type,
       status,
@@ -46,9 +70,7 @@ class AreaType extends Component {
       date_start: `${year_start}-${month_start}-01`,
       date_end: `${year_end}-${month_end}-01`,
     });
-    navigation.navigate(
-      status === AppConfig.areaStatus.RENTED ? "AreaList" : "AreaCommodity"
-    );
+    navigation.navigate("AreaList");
   };
 
   onChangeText = (value, stateName) => {
@@ -60,6 +82,27 @@ class AreaType extends Component {
   onSelectionChange = (key, value, stateName) => {
     this.setState({ [stateName]: value }, () => {
       this.checkSubmitEligibility();
+    });
+  };
+
+  onStatusSelectionChange = (key, value, stateName) => {
+    this.setState(
+      {
+        [stateName]: value,
+        isCommodityRequired: AppConfig.areaCommodityRequired.some(
+          (item) => item === value
+        ),
+      },
+      () => {
+        this.checkSubmitEligibility();
+      }
+    );
+  };
+
+  onCommodityChange = (value, stateName, isManualInput) => {
+    this.setState({
+      [stateName]: value,
+      isNewCommodity: isManualInput,
     });
   };
 
@@ -106,10 +149,6 @@ class AreaType extends Component {
       });
   };
 
-  componentDidMount() {
-    this.setState({ visible: true });
-  }
-
   render() {
     const {
       status,
@@ -119,14 +158,13 @@ class AreaType extends Component {
       year_start,
       year_end,
       isSubmitEligible,
+      isCommodityRequired,
+      height,
     } = this.state;
     return (
       <View
         style={{
-          height:
-            status !== AppConfig.ownedArea
-              ? METRICS.AREA_DETAIL_EXPAND_HEIGHT
-              : METRICS.AREA_DETAIL_HEIGHT,
+          flex: 0,
           width: screenWidth,
           padding: METRICS.MEDIUM,
           paddingTop: METRICS.LARGE,
@@ -146,9 +184,23 @@ class AreaType extends Component {
           name="status"
           title="Status lahan"
           dataLocal={AppConfig.areaStatus}
-          onSelectionChange={this.onSelectionChange}
+          onSelectionChange={this.onStatusSelectionChange}
           styleContainer={styles.fieldContainer}
         />
+        {isCommodityRequired ? (
+          <InputPicker
+            name="commodity"
+            title="Komoditas"
+            placeholder="Pilih komoditas"
+            onSelectionChange={this.onCommodityChange}
+            query={FETCH_COMMODITIES}
+            isInitialFetching
+            isManualInputDisplayed
+            styleContainer={styles.fieldContainer}
+          />
+        ) : (
+          <View />
+        )}
         {status !== AppConfig.ownedArea ? (
           <View>
             <InputText
@@ -200,9 +252,8 @@ class AreaType extends Component {
           style={{
             flexDirection: "row",
             justifyContent: "space-around",
-            position: "absolute",
-            bottom: METRICS.MEDIUM,
             alignSelf: "center",
+            marginTop: METRICS.SMALL,
           }}
         >
           <ButtonTertier

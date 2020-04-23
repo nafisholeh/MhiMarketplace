@@ -220,7 +220,7 @@ class InputPicker extends PureComponent {
               onSelectionChange={this.onChipSelectionChange}
             />
           </View>
-          {this.renderCustomBottom}
+          {this.renderCustomBottom()}
         </Fragment>
       );
     }
@@ -260,7 +260,7 @@ class InputPicker extends PureComponent {
             )}
           />
         </RNPickerSelect>
-        {this.renderCustomBottom}
+        {this.renderCustomBottom()}
       </Fragment>
     );
   }

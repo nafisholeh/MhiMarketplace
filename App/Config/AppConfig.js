@@ -326,6 +326,7 @@ export default {
     },
   ],
   ownedArea: "own",
+  areaCommodityRequired: ["own", "rent"],
   areaStatus: [
     { label: "Milik sendiri", value: "own" },
     { label: "Sewa", value: "rent" },

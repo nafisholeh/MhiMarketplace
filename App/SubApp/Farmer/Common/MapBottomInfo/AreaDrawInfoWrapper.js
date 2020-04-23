@@ -59,7 +59,7 @@ class AreaDrawInfoWrapper extends Component {
           ...{
             flex: 1,
             width: screenWidth,
-            height: height || METRICS.MODAL_BOTTOM_HEIGHT,
+            height: height || METRICS.AREA_INFO_HEIGHT,
             borderRadius: borderRadius || 4,
             backgroundColor: Colors.white,
           },

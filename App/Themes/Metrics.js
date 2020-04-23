@@ -36,8 +36,8 @@ const metrics = {
   BORDER_MEDIUM: 1,
   BORDER_BOLD: 2,
 
-  MODAL_BOTTOM_HEIGHT: moderateScale(140),
-  AREA_DETAIL_HEIGHT: moderateScale(225),
+  AREA_INFO_HEIGHT: moderateScale(140),
+  AREA_DETAIL_HEIGHT: moderateScale(295),
   AREA_DETAIL_EXPAND_HEIGHT: moderateScale(360),
 
   PICKER_BOTTOM_HEIGHT: moderateScale(250),

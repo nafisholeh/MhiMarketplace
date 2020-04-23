@@ -115,6 +115,8 @@ class AreaType extends Component {
       year_start,
       month_end,
       year_end,
+      commodity,
+      isCommodityRequired,
     } = this.state;
     const allFieldStatus =
       type &&
@@ -127,8 +129,9 @@ class AreaType extends Component {
         ? true
         : false;
     const shortFieldStatus = type && status ? true : false;
-    const isEligible =
+    let isEligible =
       status !== AppConfig.ownedArea ? allFieldStatus : shortFieldStatus;
+    isEligible = isCommodityRequired && commodity ? true : false;
     this.setState({ isSubmitEligible: isEligible });
   };
 
@@ -187,21 +190,6 @@ class AreaType extends Component {
           onSelectionChange={this.onStatusSelectionChange}
           styleContainer={styles.fieldContainer}
         />
-        {isCommodityRequired ? (
-          <InputPicker
-            name="commodity"
-            title="Komoditas"
-            placeholder="Pilih komoditas"
-            onSelectionChange={this.onCommodityChange}
-            query={FETCH_COMMODITIES}
-            isInitialFetching
-            isManualInputDisplayed
-            styleContainer={styles.fieldContainer}
-            manualInputStyle={styles.fieldContainer}
-          />
-        ) : (
-          <View />
-        )}
         {status !== AppConfig.ownedArea ? (
           <View>
             <InputText
@@ -248,6 +236,21 @@ class AreaType extends Component {
               </TouchableOpacity>
             </View>
           </View>
+        ) : (
+          <View />
+        )}
+        {isCommodityRequired ? (
+          <InputPicker
+            name="commodity"
+            title="Komoditas"
+            placeholder="Pilih komoditas"
+            onSelectionChange={this.onCommodityChange}
+            query={FETCH_COMMODITIES}
+            isInitialFetching
+            isManualInputDisplayed
+            styleContainer={styles.fieldContainer}
+            manualInputStyle={styles.fieldContainer}
+          />
         ) : (
           <View />
         )}

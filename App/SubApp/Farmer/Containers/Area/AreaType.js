@@ -99,11 +99,16 @@ class AreaType extends Component {
     );
   };
 
-  onCommodityChange = (value, stateName, isManualInput) => {
-    this.setState({
-      [stateName]: value,
-      isNewCommodity: isManualInput,
-    });
+  onCommodityChange = (key, value, stateName, isManualInput) => {
+    this.setState(
+      {
+        [stateName]: value,
+        isNewCommodity: isManualInput,
+      },
+      () => {
+        this.checkSubmitEligibility();
+      }
+    );
   };
 
   checkSubmitEligibility = () => {

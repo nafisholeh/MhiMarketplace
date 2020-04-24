@@ -28,9 +28,9 @@ class InputPicker extends PureComponent {
   }
 
   componentDidMount() {
-    const { isInitialFetching, dataLocal } = this.props;
-    if (isInitialFetching) this.onFetchData();
-    this.setupData(dataLocal);
+    const { isInitialFetching, dataLocal, query } = this.props;
+    if (isInitialFetching && query) this.onFetchData();
+    if (dataLocal) this.setupData(dataLocal);
   }
 
   componentDidUpdate(prevProps) {
@@ -102,7 +102,7 @@ class InputPicker extends PureComponent {
             fetching: false,
           },
           () => {
-            if (Array.isArray(normalizedData) && normalizedData.length === 1) {
+            if (Array.isArray(normalizedData) && normalizedData.length >= 1) {
               this.onSelectionChange(normalizedData[0], 0);
             }
           }
@@ -144,7 +144,7 @@ class InputPicker extends PureComponent {
   onChipSelectionChange = (item, name) => {
     const { onSelectionChange } = this.props;
     const { key, value, showManualInput } = item || {};
-    onSelectionChange(key, value, name);
+    onSelectionChange(key, value, name, showManualInput);
     const showManualInputTemp = showManualInput ? true : false;
     this.setState({ showManualInput: showManualInputTemp });
   };

@@ -22,6 +22,7 @@ import { Colors, Images, FONTS } from "Themes";
 import { HeaderWhite, AreaDrawInfo, withLocationListener } from "CommonFarmer";
 import { MAP_DRAW_STATE } from "../../../../Config/AppConfig";
 import AreaType from "./AreaType";
+import { withNoHeader } from "Hoc";
 
 const { width, height } = Dimensions.get("window");
 
@@ -36,13 +37,6 @@ const LNG_DELTA_THRESHOLD = 0.0009096041321754456;
 let id = 0;
 
 class AreaDraw extends Component {
-  static navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation.state;
-    return {
-      header: null,
-    };
-  };
-
   constructor(props) {
     super(props);
 
@@ -388,4 +382,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   null,
   mapDispatchToProps
-)(withLocationListener(AreaDraw));
+)(withLocationListener(withNoHeader(AreaDraw)));

@@ -5,7 +5,11 @@ import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
 
 import { withNoHeader } from "Hoc";
-import { getAreas, isAnyAreaDrawn } from "Redux/FarmerSignupRedux";
+import {
+  getAreas,
+  isAnyAreaDrawn,
+  isAreasDrawn,
+} from "Redux/FarmerSignupRedux";
 import { Images, Colors, FONTS } from "Themes";
 import { moderateScale } from "Lib";
 import { ButtonPrimary } from "Components";
@@ -27,10 +31,11 @@ class AreaList extends Component {
   };
 
   render() {
-    const { navigation, areas, isAnyAreaDrawn } = this.props;
+    const { navigation, areas, isAnyAreaDrawn, isAreasDrawn } = this.props;
+    const currentPagePosition = isAreasDrawn ? 4 : 3;
     return (
       <View style={{ flex: 1 }}>
-        <SignupWrapper title="Area lahan" currentPosition={3}>
+        <SignupWrapper title="Area lahan" currentPosition={currentPagePosition}>
           <AreaItem
             style={{
               justifyContent: "center",
@@ -86,6 +91,7 @@ class AreaList extends Component {
 const mapStateToProps = createStructuredSelector({
   areas: getAreas(),
   isAnyAreaDrawn: isAnyAreaDrawn(),
+  isAreasDrawn: isAreasDrawn(),
 });
 
 export default connect(

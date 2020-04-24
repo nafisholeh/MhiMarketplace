@@ -170,7 +170,6 @@ class AreaType extends Component {
       year_end,
       isSubmitEligible,
       isCommodityRequired,
-      height,
     } = this.state;
     return (
       <View

@@ -136,7 +136,9 @@ class AreaType extends Component {
     const shortFieldStatus = type && status ? true : false;
     let isEligible =
       status !== AppConfig.ownedArea ? allFieldStatus : shortFieldStatus;
-    isEligible = isCommodityRequired && commodity ? true : false;
+    if (isCommodityRequired) {
+      isEligible = isEligible && commodity ? true : false;
+    }
     this.setState({ isSubmitEligible: isEligible });
   };
 

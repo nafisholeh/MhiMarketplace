@@ -134,19 +134,30 @@ class InputPicker extends PureComponent {
       selected: selectedValue,
       selected_text: selectedLabel,
       showManualInput,
+      manual_text: null,
     });
     if (onSelectionChange) {
       const keyOutput = showManualInput ? null : selectedValue;
-      onSelectionChange(keyOutput, selectedValue, name, showManualInput);
+      onSelectionChange(
+        keyOutput,
+        showManualInput ? null : selectedValue,
+        name,
+        showManualInput
+      );
     }
   };
 
   onChipSelectionChange = (item, name) => {
     const { onSelectionChange } = this.props;
     const { key, value, showManualInput } = item || {};
-    onSelectionChange(key, value, name, showManualInput);
+    onSelectionChange(
+      key,
+      showManualInput ? null : value,
+      name,
+      showManualInput
+    );
     const showManualInputTemp = showManualInput ? true : false;
-    this.setState({ showManualInput: showManualInputTemp });
+    this.setState({ showManualInput: showManualInputTemp, manual_text: null });
   };
 
   onManualTextChange = (text) => {

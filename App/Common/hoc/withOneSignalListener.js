@@ -8,11 +8,11 @@ import { cacheNewOrder } from "Containers/CourierOrder/ReadyToProcess/Helper";
 import { isRehydrated } from "Redux/StartupRedux";
 import {
   cacheNewComment,
-  cacheNewReplyComment
+  cacheNewReplyComment,
 } from "GraphQL/Farmer/CacheMutation";
 import {
   cacheUpdateUnseenTotal,
-  cacheAppendNotification
+  cacheAppendNotification,
 } from "GraphQL/Notification/Mutation";
 import { openFeedDetail } from "Navigation/NotificationRouter/SocialFeed";
 
@@ -60,7 +60,6 @@ export default function withOneSignalListener(WrappedComponent, Options = {}) {
       const { notification: { payload: { additionalData } = {} } = {} } =
         openResult || {};
       const { __purpose } = additionalData || {};
-      console.tron.log("onOpened/openResult", openResult);
       switch (__purpose) {
         case NOTIF_TYPE.REPLY_POST:
         case NOTIF_TYPE.REPLY_COMMENT:
@@ -77,7 +76,7 @@ export default function withOneSignalListener(WrappedComponent, Options = {}) {
   }
 
   const mapStateToProps = createStructuredSelector({
-    isRehydrated: isRehydrated()
+    isRehydrated: isRehydrated(),
   });
 
   return connect(mapStateToProps, null)(OneSignalListener);

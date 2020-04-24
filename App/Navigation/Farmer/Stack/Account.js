@@ -35,6 +35,7 @@ const AccountNav = createStackNavigator(
     BioList: { screen: BioList },
   },
   {
+    // initialRouteName: "Signin",
     initialRouteName: "AreaDraw",
     navigationOptions: {
       headerStyle: styles.header,

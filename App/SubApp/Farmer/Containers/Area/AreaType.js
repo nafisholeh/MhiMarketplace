@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { func } from "prop-types";
+import { withNavigation } from "react-navigation";
 
 import FarmerSignupActions from "Redux/FarmerSignupRedux";
 import {
@@ -299,6 +300,7 @@ class AreaType extends Component {
 
 AreaType.propTypes = {
   storeFarmerType: func,
+  storeFarmerCommodity: func,
 };
 
 const styles = StyleSheet.create({
@@ -308,6 +310,8 @@ const styles = StyleSheet.create({
 const mapDispatchToProps = (dispatch) => ({
   storeFarmerType: (area) =>
     dispatch(FarmerSignupActions.storeFarmerType(area)),
+  storeFarmerCommodity: (area) =>
+    dispatch(FarmerSignupActions.storeFarmerCommodity(area)),
 });
 
-export default connect(null, mapDispatchToProps)(AreaType);
+export default connect(null, mapDispatchToProps)(withNavigation(AreaType));

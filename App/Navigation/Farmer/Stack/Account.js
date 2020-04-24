@@ -36,7 +36,7 @@ const AccountNav = createStackNavigator(
   },
   {
     // initialRouteName: "Signin",
-    initialRouteName: "AreaDraw",
+    initialRouteName: "AreaList",
     navigationOptions: {
       headerStyle: styles.header,
     },

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Image } from "react-native";
+import { View } from "react-native";
 import StepIndicator from "react-native-step-indicator";
 
 import { METRICS, Colors, Images } from "Themes";
@@ -18,21 +18,18 @@ const customStyles = {
   separatorUnFinishedColor: Colors.green_light,
   stepIndicatorFinishedColor: Colors.green_light,
   stepIndicatorUnFinishedColor: "#ffffff",
-  stepIndicatorCurrentColor: Colors.green_light
+  stepIndicatorCurrentColor: Colors.green_light,
 };
 
 export default class SignupIndicator extends Component {
   render() {
     const { currentPosition = 0 } = this.props;
     return (
-      <View
-        style={{
-          marginVertical: METRICS.SMALL
-        }}
-      >
+      <View style={{ marginVertical: METRICS.SMALL }}>
         <StepIndicator
           customStyles={customStyles}
           currentPosition={currentPosition}
+          stepCount={4}
           renderStepIndicator={({ position, stepStatus }) => {
             if (stepStatus === "finished") {
               return (
@@ -41,7 +38,7 @@ export default class SignupIndicator extends Component {
                   style={{
                     width: METRICS.SMALL,
                     height: METRICS.SMALL,
-                    tintColor: Colors.white
+                    tintColor: Colors.white,
                   }}
                 />
               );
@@ -55,7 +52,7 @@ export default class SignupIndicator extends Component {
                   backgroundColor:
                     position === currentPosition
                       ? Colors.green_light
-                      : Colors.disabled_light
+                      : Colors.disabled_light,
                 }}
               ></View>
             );

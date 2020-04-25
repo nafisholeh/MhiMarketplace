@@ -7,18 +7,19 @@ import SignupIndicator from "./SignupIndicator";
 
 export default class SignupWrapper extends Component {
   render() {
-    const { children, title, currentPosition } = this.props;
+    const { children, title, currentPosition, styleWrapper } = this.props;
     return (
       <View style={{ flex: 1 }}>
         <HeaderTitleSecondary title={title} />
         <SignupIndicator currentPosition={currentPosition} />
-        <ScrollView>
-          <KeyboardFriendlyView
-            style={{
-              paddingVertical: METRICS.HUGE,
-              paddingHorizontal: METRICS.HUGE
-            }}
-          >
+        <ScrollView
+          style={{
+            paddingVertical: METRICS.HUGE,
+            paddingHorizontal: METRICS.HUGE,
+          }}
+          {...this.props}
+        >
+          <KeyboardFriendlyView style={styleWrapper}>
             {children}
           </KeyboardFriendlyView>
         </ScrollView>

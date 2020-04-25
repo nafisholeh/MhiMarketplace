@@ -10,7 +10,7 @@ import {
   isAnyAreaDrawn,
   isAreasDrawn,
 } from "Redux/FarmerSignupRedux";
-import { Images, Colors, FONTS } from "Themes";
+import { Images, Colors, FONTS, METRICS } from "Themes";
 import { moderateScale } from "Lib";
 import { ButtonPrimary } from "Components";
 import { AreaItem, SignupBottomButton } from "CommonFarmer";
@@ -35,12 +35,21 @@ class AreaList extends Component {
     const currentPagePosition = isAreasDrawn ? 4 : 3;
     return (
       <View style={{ flex: 1 }}>
-        <SignupWrapper title="Area lahan" currentPosition={currentPagePosition}>
+        <SignupWrapper
+          title="Area lahan"
+          currentPosition={currentPagePosition}
+          style={{ paddingHorizontal: 0 }}
+          contentContainerStyle={{
+            alignItems: "center",
+          }}
+        >
           <AreaItem
             style={{
               justifyContent: "center",
               alignItems: "center",
+              marginTop: METRICS.HUGE,
             }}
+            shadowRadius={0}
             onPress={() => navigation.navigate("AreaDraw")}
           >
             <Image

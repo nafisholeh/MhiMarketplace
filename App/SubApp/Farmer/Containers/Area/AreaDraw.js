@@ -18,7 +18,7 @@ import {
   normalizeAreaSize,
   calcZoomFromRegion,
 } from "Lib";
-import { Colors, Images, FONTS } from "Themes";
+import { Colors, Images, FONTS, METRICS } from "Themes";
 import { HeaderWhite, AreaDrawInfo, withLocationListener } from "CommonFarmer";
 import { MAP_DRAW_STATE } from "../../../../Config/AppConfig";
 import AreaType from "./AreaType";
@@ -235,7 +235,7 @@ class AreaDraw extends Component {
               coordinates={editing.coordinates}
               strokeColor={Colors.MAP_AREA_BORDER}
               fillColor={Colors.MAP_AREA}
-              strokeWidth={4}
+              strokeWidth={METRICS.AREA_STROKE_WIDTH}
             />
           ) : null}
           {editing && polygonCenterPoint ? (

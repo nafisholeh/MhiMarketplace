@@ -1,4 +1,4 @@
-import { Dimensions, Platform } from "react-native";
+import { Dimensions, Platform, PixelRatio } from "react-native";
 
 import { moderateScale } from "../Lib/Responsive";
 
@@ -39,6 +39,18 @@ const metrics = {
   AREA_INFO_HEIGHT: moderateScale(140),
   AREA_DETAIL_HEIGHT: moderateScale(295),
   AREA_DETAIL_EXPAND_HEIGHT: moderateScale(360),
+  AREA_STROKE_WIDTH: 4,
+  AREA_ITEM_RADIUS: 8,
+  AREA_ITEM_SHADOW_RADIUS: 8,
+
+  MINI_MAP_WIDTH: moderateScale(100),
+  MINI_MAP_HEIGHT: moderateScale(110),
+  MINI_MAP_EDGE_PADDING: {
+    top: 0, //Platform.OS === "ios" ? 200 : PixelRatio.get() * 200 - 50,
+    right: 0,
+    bottom: Platform.OS === "ios" ? 10 : PixelRatio.get() * 10 - 50,
+    left: 0,
+  },
 
   PICKER_BOTTOM_HEIGHT: moderateScale(250),
   INPUT_VERTICAL_SPACING: moderateScale(13),

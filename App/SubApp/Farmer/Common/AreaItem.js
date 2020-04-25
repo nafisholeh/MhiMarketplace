@@ -1,18 +1,12 @@
 import React, { Component, Fragment } from "react";
-import { Text, View } from "react-native";
-import MapView, { Polygon } from "react-native-maps";
+import { Text, View, StyleSheet, PixelRatio } from "react-native";
+import MapView, { Polygon, MAP_TYPES } from "react-native-maps";
+import ViewOverflow from "react-native-view-overflow";
 
-import AppConfig from "Config/AppConfig";
+import { MINI_MAP_STYLE, MINI_MAP_EDGE_PADDING } from "Config/AppConfig";
 import { moderateScale, screenWidth, normalizeAreaSize } from "Lib";
-import { FONTS, Colors } from "Themes";
+import { FONTS, METRICS, Colors } from "Themes";
 import { ProductHorizontalWrapper } from "Components";
-
-const EDGE_PADDING = {
-  top: 1000,
-  right: 0,
-  bottom: 1000,
-  left: screenWidth - moderateScale(20),
-};
 
 class AreaItem extends Component {
   state = {
@@ -40,7 +34,7 @@ class AreaItem extends Component {
   onMapReady = () => {
     const { polygon } = this.props;
     const options = {
-      edgePadding: EDGE_PADDING,
+      edgePadding: METRICS.MINI_MAP_EDGE_PADDING,
       animated: false,
     };
     if (Array.isArray(polygon)) {
@@ -56,25 +50,26 @@ class AreaItem extends Component {
       polygon,
       onPress = () => {},
       style,
+      shadowRadius,
     } = this.props;
     const { sizeInUnit } = this.state;
     return (
       <ProductHorizontalWrapper
-        width={screenWidth - moderateScale(70)}
-        height={moderateScale(110)}
-        borderRadius={8}
-        shadowRadiusAndroid={8}
+        width={screenWidth - METRICS.EXTRA_HUGE}
+        height={METRICS.MINI_MAP_HEIGHT}
+        borderRadius={METRICS.AREA_ITEM_RADIUS}
+        shadowRadiusAndroid={METRICS.AREA_ITEM_SHADOW_RADIUS || shadowRadius}
         style={{
-          marginTop: moderateScale(10),
-          marginBottom: moderateScale(10),
-          marginHorizontal: moderateScale(10),
-        }}
-        styleChildren={{
           ...{
-            flexDirection: "row",
-            alignItems: "center",
+            marginTop: METRICS.TINY,
+            marginBottom: METRICS.TINY,
+            marginHorizontal: METRICS.SMALL,
           },
           ...style,
+        }}
+        styleChildren={{
+          flexDirection: "row",
+          alignItems: "center",
         }}
         onPress={onPress}
       >
@@ -82,26 +77,34 @@ class AreaItem extends Component {
           children
         ) : (
           <Fragment>
-            <MapView
-              ref={(map) => {
-                this.map = map;
-              }}
-              onMapReady={() => setTimeout(() => this.onMapReady())}
-              style={{
-                marginLeft: screenWidth * 0.25,
-                width: screenWidth - moderateScale(screenWidth * 0.35),
-                height: moderateScale(85),
-              }}
-              customMapStyle={AppConfig.mapStyle}
-              liteMode
-            >
-              <Polygon
-                coordinates={polygon}
-                strokeColor={Colors.polygon_fill_dark}
-                strokeWidth={5}
-              />
-            </MapView>
             <View
+              style={{
+                width: METRICS.MINI_MAP_WIDTH,
+                height: METRICS.MINI_MAP_HEIGHT,
+                borderTopLeftRadius: METRICS.AREA_ITEM_RADIUS,
+                borderBottomLeftRadius: METRICS.AREA_ITEM_RADIUS,
+                overflow: "hidden",
+              }}
+            >
+              <MapView
+                ref={(map) => {
+                  this.map = map;
+                }}
+                onMapReady={() => setTimeout(() => this.onMapReady())}
+                style={StyleSheet.absoluteFillObject}
+                mapType="terrain"
+                customMapStyle={MINI_MAP_STYLE}
+                liteMode
+              >
+                <Polygon
+                  coordinates={polygon}
+                  strokeColor={Colors.MAP_AREA_BORDER}
+                  fillColor={Colors.MAP_AREA}
+                  strokeWidth={METRICS.AREA_STROKE_WIDTH}
+                />
+              </MapView>
+            </View>
+            {/* <View
               style={{
                 height: moderateScale(85),
                 width: screenWidth / 2 + moderateScale(20),
@@ -136,7 +139,7 @@ class AreaItem extends Component {
               >
                 {sizeInUnit || "-"}
               </Text>
-            </View>
+            </View> */}
           </Fragment>
         )}
       </ProductHorizontalWrapper>

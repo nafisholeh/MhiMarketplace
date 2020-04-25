@@ -34,6 +34,86 @@ export const MAP_DRAW_STATE_INFO = {
 export const YEAR_RANGE_START = 2005;
 export const YEAR_RANGE_END = 2050;
 
+export const MINI_MAP_STYLE = [
+  {
+    featureType: "administrative",
+    elementType: "geometry",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "administrative.land_parcel",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "administrative.neighborhood",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "poi",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "poi",
+    elementType: "labels.text",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "road",
+    elementType: "labels",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "road",
+    elementType: "labels.icon",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "transit",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "water",
+    elementType: "labels.text",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+];
+
 export default {
   // uri: 'http://app-dev.metodehayati.id:4001/graphql',
   uri: {
@@ -635,4 +715,5 @@ export {
   MAP_DRAW_STATE_INFO as mapDrawStateInfo,
   YEAR_RANGE_START as yearRangeStart,
   YEAR_RANGE_END as yearRangeEnd,
+  MINI_MAP_STYLE as miniMapStyle,
 };

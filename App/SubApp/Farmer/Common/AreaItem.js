@@ -119,25 +119,20 @@ class AreaItem extends Component {
               }}
             >
               <Text
-                style={{
-                  ...FONTS.BODY_SMALL,
-                }}
+                style={[
+                  FONTS.BODY_BOLD,
+                  !commodity ? { color: Colors.disabled_light } : {},
+                  { marginBottom: METRICS.TINY },
+                ]}
               >
-                {title || "-"}
-              </Text>
-              <Text
-                style={{
-                  ...FONTS.BODY_BOLD,
-                }}
-              >
-                {commodity || "-"}
+                {commodity || "n/a"}
               </Text>
               <Text
                 style={{
                   ...FONTS.BODY_NORMAL,
                 }}
               >
-                {sizeInUnit || "-"}
+                {sizeInUnit || "n/a"}
               </Text>
             </View>
           </Fragment>

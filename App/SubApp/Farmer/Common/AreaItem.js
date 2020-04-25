@@ -50,6 +50,7 @@ class AreaItem extends Component {
       polygon,
       onPress = () => {},
       style,
+      styleChildren,
       shadowRadius,
     } = this.props;
     const { sizeInUnit } = this.state;
@@ -68,8 +69,11 @@ class AreaItem extends Component {
           ...style,
         }}
         styleChildren={{
-          flexDirection: "row",
-          alignItems: "center",
+          ...{
+            flexDirection: "row",
+            alignItems: "center",
+          },
+          ...styleChildren,
         }}
         onPress={onPress}
       >

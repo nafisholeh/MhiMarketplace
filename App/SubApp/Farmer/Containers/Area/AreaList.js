@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Image, Text } from "react-native";
+import { View, Image, Text, TouchableOpacity } from "react-native";
 import { withNavigation } from "react-navigation";
 import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
@@ -43,13 +43,18 @@ class AreaList extends Component {
             alignItems: "center",
           }}
         >
-          <AreaItem
+          <TouchableOpacity
             style={{
+              marginTop: METRICS.HUGE,
+              marginBottom: METRICS.TINY,
+              marginHorizontal: METRICS.SMALL,
               justifyContent: "center",
               alignItems: "center",
-              marginTop: METRICS.HUGE,
+              borderWidth: 1,
+              borderColor: Colors.BORDER,
+              borderRadius: METRICS.AREA_ITEM_RADIUS,
+              padding: METRICS.MEDIUM,
             }}
-            shadowRadius={0}
             onPress={() => navigation.navigate("AreaDraw")}
           >
             <Image
@@ -57,10 +62,10 @@ class AreaList extends Component {
               style={{
                 width: moderateScale(35),
                 height: moderateScale(35),
-                tintColor: Colors.disabled_light,
+                tintColor: Colors.BUTTON_TERTIER,
               }}
             />
-          </AreaItem>
+          </TouchableOpacity>
 
           {isAnyAreaDrawn && Array.isArray(areas) ? (
             areas.map((item, index) => {

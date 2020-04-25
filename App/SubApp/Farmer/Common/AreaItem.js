@@ -108,12 +108,8 @@ class AreaItem extends Component {
                 />
               </MapView>
             </View>
-            {/* <View
+            <View
               style={{
-                height: moderateScale(85),
-                width: screenWidth / 2 + moderateScale(20),
-                position: "absolute",
-                left: 0,
                 flexDirection: "column",
                 justifyContent: "space-around",
                 backgroundColor: "white",
@@ -143,7 +139,7 @@ class AreaItem extends Component {
               >
                 {sizeInUnit || "-"}
               </Text>
-            </View> */}
+            </View>
           </Fragment>
         )}
       </ProductHorizontalWrapper>

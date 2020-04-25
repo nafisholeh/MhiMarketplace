@@ -46,7 +46,7 @@ class AreaList extends Component {
           <TouchableOpacity
             style={{
               marginTop: METRICS.HUGE,
-              marginBottom: METRICS.TINY,
+              marginBottom: METRICS.SMALL,
               marginHorizontal: METRICS.SMALL,
               justifyContent: "center",
               alignItems: "center",
@@ -91,6 +91,7 @@ class AreaList extends Component {
               Tekan tombol diatas untuk menambahkan area lahan
             </Text>
           )}
+          <View style={{ marginBottom: METRICS.HUGE }} />
         </SignupWrapper>
         <ButtonPrimary
           onPress={this.onSubmit}

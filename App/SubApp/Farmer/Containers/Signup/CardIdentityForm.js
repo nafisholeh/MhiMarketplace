@@ -106,7 +106,7 @@ class CardIdentityForm extends Component {
     this.setState({ form: { ...this.state.form, expired_date } });
   };
 
-  onCanContinue = () => {
+  onEligibleToSubmit = () => {
     const { form } = this.state;
     const isCanContinue = Object.values(form).every((o) => o && o !== "");
     this.setState({
@@ -117,21 +117,21 @@ class CardIdentityForm extends Component {
   onChangeText = (value, stateName) => {
     this.setState(
       { form: { ...this.state.form, [stateName]: value } },
-      this.onCanContinue
+      this.onEligibleToSubmit
     );
   };
 
   onSelectionChange = (key, value, stateName) => {
     this.setState(
       { form: { ...this.state.form, [stateName]: value } },
-      this.onCanContinue
+      this.onEligibleToSubmit
     );
   };
 
   onAutoCompleteChange = ({ value }, stateName) => {
     this.setState(
       { form: { ...this.state.form, [stateName]: value } },
-      this.onCanContinue
+      this.onEligibleToSubmit
     );
   };
 

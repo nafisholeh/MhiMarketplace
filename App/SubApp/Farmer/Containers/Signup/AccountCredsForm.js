@@ -35,37 +35,14 @@ class AccountCredsForm extends Component {
   }
 
   onStartSignup = async () => {
-    const { phone, email, password, password_repeat } = this.state;
+    const { password, password_repeat } = this.state;
+    const isPasswordSimilar = password === password_repeat;
     await this.setState({
-      error_phone: null,
-      error_password: null,
-      error_password_repeat: null,
+      error_password_repeat: isPasswordSimilar
+        ? null
+        : "Password masih belum sama",
     });
-    let isValid = true;
-    if (!phone) {
-      await this.setState({ error_phone: "Nomor HP harus diisi" });
-      isValid = false;
-    }
-    if (!email || email === 0) {
-      await this.setState({ error_email: "Email harus diisi" });
-      isValid = false;
-    }
-    if (password && password_repeat && password !== password_repeat) {
-      await this.setState({
-        error_password_repeat: "Password masih belum sama",
-      });
-    }
-    if (!password || password === 0) {
-      await this.setState({ error_password: "Password harus diisi" });
-      isValid = false;
-    }
-    if (!password_repeat || password_repeat === 0) {
-      await this.setState({
-        error_password_repeat: "Password perlu diulang lagi",
-      });
-      isValid = false;
-    }
-    if (isValid) {
+    if (isPasswordSimilar) {
       this.onSignup();
     }
   };
@@ -81,7 +58,9 @@ class AccountCredsForm extends Component {
     const { phone, email, password, password_repeat } = this.state;
     this.setState({
       is_can_continue:
-        phone && email && password && password_repeat ? true : false,
+        phone && email && password && password_repeat && !isEmailError(email)
+          ? true
+          : false,
     });
   };
 
@@ -162,7 +141,7 @@ class AccountCredsForm extends Component {
           />
         </SignupWrapper>
         <ButtonPrimary
-          onPress={this.onSignup}
+          onPress={this.onStartSignup}
           disabled={loading || !is_can_continue}
           loading={loading}
           title="Selanjutnya"

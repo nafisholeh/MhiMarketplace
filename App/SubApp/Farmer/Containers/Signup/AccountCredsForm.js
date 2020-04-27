@@ -4,19 +4,13 @@ import { func } from "prop-types";
 import { connect } from "react-redux";
 import { withNavigation } from "react-navigation";
 
+import { withNoHeader } from "Hoc";
 import FarmerSignupActions from "Redux/FarmerSignupRedux";
 import { isEmailError, moderateScale } from "Lib";
 import { InputText, ButtonPrimary } from "Components";
 import SignupWrapper from "./SignupWrapper";
 
 class AccountCredsForm extends Component {
-  static navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation.state;
-    return {
-      header: null,
-    };
-  };
-
   state = {
     phone: null,
     error_phone: null,
@@ -163,4 +157,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   null,
   mapDispatchToProps
-)(withNavigation(AccountCredsForm));
+)(withNavigation(withNoHeader(AccountCredsForm)));

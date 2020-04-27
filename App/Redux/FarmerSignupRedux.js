@@ -80,7 +80,10 @@ export const INITIAL_STATE = Immutable({
 export const farmerSignupSelectors = () => (state) => state.farmerSignup;
 
 export const getAreas = () =>
-  createSelector(farmerSignupSelectors(), (state) => state.area || []);
+  createSelector(farmerSignupSelectors(), (state) => {
+    const { area } = state;
+    return Array.isArray(area) ? [...area].reverse() : [];
+  });
 
 export const isAreasDrawn = () =>
   createSelector(farmerSignupSelectors(), (state) => {

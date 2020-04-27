@@ -46,8 +46,7 @@ export default class InputTextAutoComplete extends Component {
   };
 
   onChangeTextWillFetch = (text) => {
-    const { onValueChange, name } = this.props;
-    onValueChange({ key: null, name: text }, name);
+    this.onValueChangeCallback({ key: null, name: text });
     if (text.length >= MIN_CHAR_THRESHOLD) {
       this.setState({
         value: text,
@@ -95,14 +94,22 @@ export default class InputTextAutoComplete extends Component {
   };
 
   onFocus = () => {
-    this.setState({ value: "", isCharSufficient: false, dropdownData: null });
+    this.setState(
+      { value: "", isCharSufficient: false, dropdownData: null },
+      () => this.onValueChangeCallback(null)
+    );
   };
 
   onSelectDropdown = (item) => {
-    const { onValueChange, name } = this.props;
     const { value } = item || {};
-    this.setState({ value, dropdownData: null });
-    onValueChange(item, name);
+    this.setState({ value, dropdownData: null }, () =>
+      this.onValueChangeCallback(item)
+    );
+  };
+
+  onValueChangeCallback = (item) => {
+    const { onValueChange, name } = this.props;
+    onValueChange(item || { value: null }, name);
   };
 
   render() {

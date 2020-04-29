@@ -36,7 +36,7 @@ const AccountNav = createStackNavigator(
   },
   {
     // initialRouteName: "Signin",
-    initialRouteName: "SignupFarmerFirst",
+    initialRouteName: "SignupFarmerSecond",
     navigationOptions: {
       headerStyle: styles.header,
     },

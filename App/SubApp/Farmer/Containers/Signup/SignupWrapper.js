@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 
 import { KeyboardFriendlyView, HeaderTitleSecondary } from "Components";
 import { METRICS } from "Themes";
@@ -9,21 +9,18 @@ export default class SignupWrapper extends Component {
   render() {
     const { children, title, currentPosition, styleWrapper } = this.props;
     return (
-      <View style={{ flex: 1 }}>
+      <ScrollView {...this.props}>
         <HeaderTitleSecondary title={title} />
         <SignupIndicator currentPosition={currentPosition} />
-        <ScrollView
+        <KeyboardFriendlyView
           style={{
             paddingVertical: METRICS.HUGE,
             paddingHorizontal: METRICS.HUGE,
           }}
-          {...this.props}
         >
-          <KeyboardFriendlyView style={styleWrapper}>
-            {children}
-          </KeyboardFriendlyView>
-        </ScrollView>
-      </View>
+          {children}
+        </KeyboardFriendlyView>
+      </ScrollView>
     );
   }
 }

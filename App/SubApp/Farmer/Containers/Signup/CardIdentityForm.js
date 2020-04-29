@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { View } from "react-native";
 import { func } from "prop-types";
 import { connect } from "react-redux";
@@ -141,7 +141,7 @@ class CardIdentityForm extends Component {
       is_can_continue,
     } = this.state;
     return (
-      <View style={{ flex: 1 }}>
+      <Fragment>
         <SignupWrapper title="Data KTP" currentPosition={1}>
           <InputText
             refs={(ref) => (this._nik = ref)}
@@ -277,7 +277,7 @@ class CardIdentityForm extends Component {
           disabled={!is_can_continue}
           title="Selanjutnya"
         />
-      </View>
+      </Fragment>
     );
   }
 }

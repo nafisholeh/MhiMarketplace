@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import { View } from "react-native";
+import React, { Component, Fragment } from "react";
 import { func } from "prop-types";
 import { connect } from "react-redux";
 import { withNavigation } from "react-navigation";
@@ -76,7 +75,7 @@ class AccountCredsForm extends Component {
       is_can_continue,
     } = this.state;
     return (
-      <View style={{ flex: 1 }}>
+      <Fragment>
         <SignupWrapper title="Kuncinya akun">
           <InputText
             name="phone"
@@ -140,7 +139,7 @@ class AccountCredsForm extends Component {
           loading={loading}
           title="Selanjutnya"
         />
-      </View>
+      </Fragment>
     );
   }
 }

@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { View, Text } from "react-native";
+import React, { Component, Fragment } from "react";
+import { Text } from "react-native";
 import { withNavigation } from "react-navigation";
 
 import { withNoHeader } from "Hoc";
@@ -38,7 +38,7 @@ class PhotoForm extends Component {
   render() {
     const { photo_ktp, photo_face, is_can_continue } = this.state;
     return (
-      <View style={{ flex: 1 }}>
+      <Fragment>
         <SignupWrapper title="Unggah foto" currentPosition={2}>
           <Text
             style={{
@@ -91,7 +91,7 @@ class PhotoForm extends Component {
           disabled={!is_can_continue}
           title="Selanjutnya"
         />
-      </View>
+      </Fragment>
     );
   }
 }

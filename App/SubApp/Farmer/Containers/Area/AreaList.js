@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { View, Image, Text, TouchableOpacity } from "react-native";
 import { withNavigation } from "react-navigation";
 import { createStructuredSelector } from "reselect";
@@ -34,7 +34,7 @@ class AreaList extends Component {
     const { navigation, areas, isAnyAreaDrawn, isAreasDrawn } = this.props;
     const currentPagePosition = isAreasDrawn ? 4 : 3;
     return (
-      <View style={{ flex: 1 }}>
+      <Fragment>
         <SignupWrapper
           title="Area lahan"
           currentPosition={currentPagePosition}
@@ -98,7 +98,7 @@ class AreaList extends Component {
           disabled={!isAnyAreaDrawn}
           title="Selanjutnya"
         />
-      </View>
+      </Fragment>
     );
   }
 }

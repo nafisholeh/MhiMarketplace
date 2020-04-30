@@ -238,6 +238,7 @@ export default class InputTextAutoComplete extends Component {
             <FlatList
               data={dropdownData}
               renderItem={this.renderAutoSuggestionResult}
+              keyboardShouldPersistTaps="handled"
               keyExtractor={(item) => item.key}
             />
           </View>

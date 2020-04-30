@@ -9,7 +9,7 @@ export default class SignupWrapper extends Component {
   render() {
     const { children, title, currentPosition, styleWrapper } = this.props;
     return (
-      <ScrollView {...this.props} keyboardShouldPersistTaps={"handled"}>
+      <ScrollView {...this.props} keyboardShouldPersistTaps="handled">
         <HeaderTitleSecondary title={title} />
         <SignupIndicator currentPosition={currentPosition} />
         <KeyboardFriendlyView
@@ -17,7 +17,7 @@ export default class SignupWrapper extends Component {
             paddingVertical: METRICS.HUGE,
             paddingHorizontal: METRICS.HUGE,
           }}
-          keyboardShouldPersistTaps={"handled"}
+          keyboardShouldPersistTaps="handled"
         >
           {children}
         </KeyboardFriendlyView>

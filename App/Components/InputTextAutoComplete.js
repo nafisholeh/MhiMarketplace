@@ -197,19 +197,15 @@ export default class InputTextAutoComplete extends Component {
         <Modal
           isVisible={visible}
           swipeThreshold={40}
-          onSwipeComplete={this.dismissModal}
           swipeDirection="down"
+          onSwipeComplete={this.dismissModal}
           onBackdropPress={this.dismissModal}
           onBackButtonPress={this.dismissModal}
           backdropColor={Colors.disabled_dark}
           backdropOpacity={0.4}
+          style={{ justifyContent: "flex-start" }}
         >
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "flex-start",
-            }}
-          >
+          <View>
             <TextInput
               value={value_temp}
               underlineColorAndroid="transparent"

@@ -127,8 +127,8 @@ export default class InputTextAutoComplete extends Component {
     <TouchableOpacity
       onPress={() => this.onSelectDropdown(item)}
       style={{
-        paddingVertical: METRICS.SMALL,
-        paddingHorizontal: METRICS.TINY,
+        paddingVertical: METRICS.MEDIUM,
+        paddingHorizontal: METRICS.MEDIUM,
         borderBottomColor: Colors.BORDER,
         borderBottomWidth: METRICS.BORDER_THIN,
         backgroundColor: Colors.white,
@@ -225,15 +225,16 @@ export default class InputTextAutoComplete extends Component {
                   borderRadius: METRICS.RADIUS_MEDIUM,
                   paddingHorizontal: METRICS.MEDIUM,
                   height: METRICS.EXTRA_HUGE,
+                  marginBottom: METRICS.MEDIUM,
                 },
               }}
             />
+            <FlatList
+              data={dropdownData}
+              renderItem={this.renderAutoSuggestionResult}
+              keyExtractor={(item) => item.key}
+            />
           </View>
-          <FlatList
-            data={dropdownData}
-            renderItem={this.renderAutoSuggestionResult}
-            keyExtractor={(item) => item.key}
-          />
         </Modal>
       </Fragment>
     );

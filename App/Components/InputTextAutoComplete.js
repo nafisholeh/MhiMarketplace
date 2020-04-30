@@ -124,6 +124,7 @@ export default class InputTextAutoComplete extends Component {
   renderAutoSuggestionResult = ({ item }) => (
     <TouchableOpacity
       onPress={() => this.onSelectDropdown(item)}
+      activeOpacity={0.85}
       style={{
         paddingVertical: METRICS.MEDIUM,
         paddingHorizontal: METRICS.MEDIUM,

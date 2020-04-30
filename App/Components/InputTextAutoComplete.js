@@ -109,8 +109,12 @@ export default class InputTextAutoComplete extends Component {
     onValueChange(item || { value: null }, name);
   };
 
-  openModal = () => {
+  showModal = () => {
     this.setState({ visible: true });
+  };
+
+  onModalShow = () => {
+    this.temp_input.focus();
   };
 
   dismissModal = () => {
@@ -166,7 +170,7 @@ export default class InputTextAutoComplete extends Component {
             <View />
           )}
           <TouchableOpacity
-            onPress={this.openModal}
+            onPress={this.showModal}
             style={
               error
                 ? [styles.inputContentError, styleBorder, styleInput]
@@ -202,12 +206,16 @@ export default class InputTextAutoComplete extends Component {
           onSwipeComplete={this.dismissModal}
           onBackdropPress={this.dismissModal}
           onBackButtonPress={this.dismissModal}
+          onModalShow={this.onModalShow}
           backdropColor={Colors.disabled_dark}
           backdropOpacity={0.4}
           style={{ justifyContent: "flex-start" }}
         >
           <View>
             <TextInput
+              ref={(ref) => {
+                this.temp_input = ref;
+              }}
               value={value_temp}
               underlineColorAndroid="transparent"
               inputColorPlaceholder={Colors.BORDER}

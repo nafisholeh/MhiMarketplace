@@ -103,13 +103,6 @@ export default class InputTextAutoComplete extends Component {
     );
   };
 
-  onSelectDropdown = (item) => {
-    const { value } = item || {};
-    this.setState({ value, dropdownData: null }, () =>
-      this.onValueChangeCallback(item)
-    );
-  };
-
   onValueChangeCallback = (item) => {
     const { onValueChange, name } = this.props;
     onValueChange(item || { value: null }, name);
@@ -137,6 +130,13 @@ export default class InputTextAutoComplete extends Component {
       <Text>{item.value}</Text>
     </TouchableOpacity>
   );
+
+  onSelectDropdown = (item) => {
+    const { value } = item || {};
+    this.setState({ visible: false, value, dropdownData: null }, () =>
+      this.onValueChangeCallback(item)
+    );
+  };
 
   render() {
     const {

@@ -34,8 +34,9 @@ export default class InputTextAutoComplete extends Component {
     const variables = queryVariables || "term";
     const dropdownKeyTitle = dropdownKey || "name";
     const dropdownValueTitle = dropdownValue || "name";
+    const regexFriendlyText = (text || "").replace(/[()*()?]/g, "\\$&");
     ApolloClientProvider.client
-      .query({ query, variables: { [variables]: text } })
+      .query({ query, variables: { [variables]: regexFriendlyText } })
       .then((data) => {
         const response = extractGraphQLResponse(data);
         if (!Array.isArray(response)) return;
@@ -134,7 +135,7 @@ export default class InputTextAutoComplete extends Component {
   onSelectDropdown = (item) => {
     const { value } = item || {};
     this.setState(
-      { visible: false, value_temp: "", value, dropdownData: null },
+      { visible: false, value_temp: value, value, dropdownData: null },
       () => this.onValueChangeCallback(item)
     );
   };

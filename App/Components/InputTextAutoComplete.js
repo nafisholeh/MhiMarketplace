@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import {
   View,
   TouchableOpacity,
@@ -8,6 +8,7 @@ import {
   FlatList,
 } from "react-native";
 import _ from "lodash";
+import Modal from "react-native-modal";
 
 import { Colors, METRICS } from "Themes";
 import { moderateScale, extractGraphQLResponse } from "Lib";
@@ -22,6 +23,8 @@ export default class InputTextAutoComplete extends Component {
       isCharSufficient: false,
       dropdownData: null,
       value: "",
+      value_temp: "",
+      visible: false,
     };
     this.fetchOptionDropdown = _.throttle(this.fetchOptionDropdown, 2000);
   }
@@ -49,7 +52,7 @@ export default class InputTextAutoComplete extends Component {
     this.onValueChangeCallback({ key: null, name: text });
     if (text.length >= MIN_CHAR_THRESHOLD) {
       this.setState({
-        value: text,
+        value_temp: text,
         isCharSufficient: true,
         dropdownData: null,
       });
@@ -57,7 +60,7 @@ export default class InputTextAutoComplete extends Component {
       return;
     }
     this.setState({
-      value: text,
+      value_temp: text,
       isCharSufficient: false,
       dropdownData: null,
     });
@@ -71,20 +74,20 @@ export default class InputTextAutoComplete extends Component {
         return new RegExp(text, "i").test(value);
       });
       this.setState({
-        value: text,
+        value_temp: text,
         isCharSufficient: true,
         dropdownData: filteredDropdown,
       });
       return;
     }
     this.setState({
-      value: text,
+      value_temp: text,
       isCharSufficient: false,
       dropdownData: null,
     });
   };
 
-  onChangeText = (text) => {
+  onChangeTempText = (text) => {
     const { dataLocal } = this.props;
     if (dataLocal) {
       this.onChangeTextShowDataLocal(text);
@@ -112,6 +115,29 @@ export default class InputTextAutoComplete extends Component {
     onValueChange(item || { value: null }, name);
   };
 
+  openModal = () => {
+    this.setState({ visible: true });
+  };
+
+  dismissModal = () => {
+    this.setState({ visible: false });
+  };
+
+  renderAutoSuggestionResult = ({ item }) => (
+    <TouchableOpacity
+      onPress={() => this.onSelectDropdown(item)}
+      style={{
+        paddingVertical: METRICS.SMALL,
+        paddingHorizontal: METRICS.TINY,
+        borderBottomColor: Colors.BORDER,
+        borderBottomWidth: METRICS.BORDER_THIN,
+        backgroundColor: Colors.white,
+      }}
+    >
+      <Text>{item.value}</Text>
+    </TouchableOpacity>
+  );
+
   render() {
     const {
       title,
@@ -121,67 +147,95 @@ export default class InputTextAutoComplete extends Component {
       styleBorder,
       styleInput,
     } = this.props;
-    const { dropdownData, value } = this.state;
+    const { dropdownData, value, value_temp, visible } = this.state;
     return (
-      <View style={{ ...styles.container, ...styleContainer }}>
-        {title ? (
-          <Text
+      <Fragment>
+        <View style={{ ...styles.container, ...styleContainer }}>
+          {title ? (
+            <Text
+              style={{
+                ...styles.title,
+                ...{ marginBottom: moderateScale(isAllBorderShown ? 5 : 0) },
+              }}
+            >
+              {title}
+            </Text>
+          ) : (
+            <View />
+          )}
+          <TouchableOpacity
+            onPress={this.openModal}
+            style={
+              error
+                ? [styles.inputContentError, styleBorder, styleInput]
+                : [
+                    isAllBorderShown
+                      ? styles.inputContentAllBorder
+                      : styles.inputContent,
+                    styleBorder,
+                    styleInput,
+                  ]
+            }
+          >
+            <TextInput
+              value={value}
+              underlineColorAndroid="transparent"
+              inputColorPlaceholder={Colors.BORDER}
+              placeholderTextColor={Colors.disabled_light}
+              onChangeText={this.onChangeText}
+              editable={false}
+              selectTextOnFocus={false}
+              style={
+                isAllBorderShown
+                  ? styles.inputValueAllBorder
+                  : styles.inputValue
+              }
+            />
+          </TouchableOpacity>
+        </View>
+        <Modal
+          isVisible={visible}
+          swipeThreshold={40}
+          onSwipeComplete={this.dismissModal}
+          swipeDirection="down"
+          onBackdropPress={this.dismissModal}
+          onBackButtonPress={this.dismissModal}
+          backdropColor={Colors.disabled_dark}
+          backdropOpacity={0.4}
+        >
+          <View
             style={{
-              ...styles.title,
-              ...{ marginBottom: moderateScale(isAllBorderShown ? 5 : 0) },
+              flex: 1,
+              justifyContent: "flex-start",
             }}
           >
-            {title}
-          </Text>
-        ) : (
-          <View></View>
-        )}
-        <View
-          style={
-            error
-              ? [styles.inputContentError, styleBorder, styleInput]
-              : [
-                  isAllBorderShown
-                    ? styles.inputContentAllBorder
-                    : styles.inputContent,
-                  styleBorder,
-                  styleInput,
-                ]
-          }
-        >
-          <TextInput
-            ref={(el) => (this._textInput = el)}
-            value={value}
-            underlineColorAndroid="transparent"
-            inputColorPlaceholder={Colors.BORDER}
-            placeholderTextColor={Colors.disabled_light}
-            onChangeText={this.onChangeText}
-            onFocus={this.onFocus}
-            style={
-              isAllBorderShown ? styles.inputValueAllBorder : styles.inputValue
-            }
-          />
-        </View>
-        <View>
+            <TextInput
+              value={value_temp}
+              underlineColorAndroid="transparent"
+              inputColorPlaceholder={Colors.BORDER}
+              placeholderTextColor={Colors.disabled_light}
+              onChangeText={this.onChangeTempText}
+              onFocus={this.onFocus}
+              placeholder={title || "Ketik disini"}
+              style={{
+                ...styles.inputValueAllBorder,
+                ...{
+                  flex: 0,
+                  backgroundColor: Colors.white,
+                  borderRadius: METRICS.RADIUS_MEDIUM,
+                  paddingHorizontal: METRICS.MEDIUM,
+                  height: METRICS.EXTRA_HUGE,
+                },
+              }}
+            />
+          </View>
           <FlatList
             data={dropdownData}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() => this.onSelectDropdown(item)}
-                style={{
-                  paddingVertical: METRICS.SMALL,
-                  paddingHorizontal: METRICS.TINY,
-                  borderBottomColor: Colors.BORDER,
-                  borderBottomWidth: METRICS.BORDER_THIN,
-                }}
-              >
-                <Text>{item.value}</Text>
-              </TouchableOpacity>
-            )}
+            renderItem={this.renderAutoSuggestionResult}
             keyExtractor={(item) => item.key}
           />
-        </View>
-      </View>
+        </Modal>
+      </Fragment>
     );
   }
 }

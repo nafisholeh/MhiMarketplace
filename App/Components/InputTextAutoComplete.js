@@ -20,14 +20,16 @@ export default class InputTextAutoComplete extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isCharSufficient: false,
-      dropdownData: null,
+      is_text_sufficient: false,
+      dropdown_data: null,
       value: "",
       value_temp: "",
       is_manual_input: false,
       visible: false,
     };
-    this.fetchOptionDropdown = _.throttle(this.fetchOptionDropdown, 2000);
+    this.fetchOptionDropdown = _.debounce(this.fetchOptionDropdown, 2000, {
+      trailing: true,
+    });
   }
 
   fetchOptionDropdown = (text) => {
@@ -46,7 +48,7 @@ export default class InputTextAutoComplete extends Component {
           value: item[dropdownValueTitle],
         }));
         this.setState({
-          dropdownData: normalisedData,
+          dropdown_data: normalisedData,
           is_manual_input: response.length === 0,
         });
       })
@@ -54,12 +56,11 @@ export default class InputTextAutoComplete extends Component {
   };
 
   onChangeTextWillFetch = (text) => {
-    this.onValueChangeCallback({ key: null, name: text });
     if (text.length >= MIN_CHAR_THRESHOLD) {
       this.setState({
         value_temp: text,
-        isCharSufficient: true,
-        dropdownData: null,
+        is_text_sufficient: true,
+        dropdown_data: null,
         is_manual_input: false,
       });
       this.fetchOptionDropdown(text);
@@ -67,8 +68,9 @@ export default class InputTextAutoComplete extends Component {
     }
     this.setState({
       value_temp: text,
-      isCharSufficient: false,
-      dropdownData: null,
+      is_text_sufficient: false,
+      dropdown_data: null,
+      is_manual_input: false,
     });
   };
 
@@ -81,19 +83,22 @@ export default class InputTextAutoComplete extends Component {
       });
       this.setState({
         value_temp: text,
-        isCharSufficient: true,
-        dropdownData: filteredDropdown,
+        is_text_sufficient: true,
+        dropdown_data: filteredDropdown,
+        is_manual_input: false,
       });
       return;
     }
     this.setState({
       value_temp: text,
-      isCharSufficient: false,
-      dropdownData: null,
+      is_text_sufficient: false,
+      dropdown_data: null,
+      is_manual_input: false,
     });
   };
 
   onChangeTempText = (text) => {
+    if (text === "") this.fetchOptionDropdown.cancel();
     const { dataLocal } = this.props;
     if (dataLocal) {
       this.onChangeTextShowDataLocal(text);
@@ -104,7 +109,7 @@ export default class InputTextAutoComplete extends Component {
 
   onFocus = () => {
     this.setState(
-      { value: "", isCharSufficient: false, dropdownData: null },
+      { value: "", is_text_sufficient: false, dropdown_data: null },
       () => this.onValueChangeCallback(null)
     );
   };
@@ -147,7 +152,7 @@ export default class InputTextAutoComplete extends Component {
   onSelectDropdown = (item) => {
     const { value } = item || {};
     this.setState(
-      { visible: false, value_temp: value, value, dropdownData: null },
+      { visible: false, value_temp: value, value, dropdown_data: null },
       () => this.onValueChangeCallback(item)
     );
   };
@@ -162,7 +167,7 @@ export default class InputTextAutoComplete extends Component {
       styleInput,
     } = this.props;
     const {
-      dropdownData,
+      dropdown_data,
       value,
       value_temp,
       is_manual_input,
@@ -282,7 +287,7 @@ export default class InputTextAutoComplete extends Component {
               <View />
             )}
             <FlatList
-              data={dropdownData}
+              data={dropdown_data}
               renderItem={this.renderAutoSuggestionResult}
               keyboardShouldPersistTaps="handled"
               keyExtractor={(item) => item.key}

@@ -56,6 +56,8 @@ const metrics = {
   INPUT_VERTICAL_SPACING: moderateScale(13),
 
   BUTTON_TERTIER_RADIUS: moderateScale(7),
+
+  AUTO_SUGGEST_INFO: moderateScale(150),
 };
 
 export default metrics;

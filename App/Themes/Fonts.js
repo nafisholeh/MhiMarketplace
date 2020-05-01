@@ -51,6 +51,13 @@ export default {
     lineHeight: 30,
     letterSpacing: 1.5,
   },
+  INFO: {
+    fontFamily: "CircularStd-Book",
+    fontSize: 14,
+    color: "rgba(0,0,0,0.3)",
+    letterSpacing: 0.3,
+    lineHeight: 20,
+  },
   INPUT_TITLE: {
     color: Colors.veggie_dark,
     fontFamily: "CircularStd-Book",

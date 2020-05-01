@@ -10,7 +10,7 @@ import {
 import _ from "lodash";
 import Modal from "react-native-modal";
 
-import { Colors, METRICS } from "Themes";
+import { Colors, METRICS, FONTS, STRINGS } from "Themes";
 import { moderateScale, extractGraphQLResponse } from "Lib";
 import ApolloClientProvider from "Services/ApolloClientProvider";
 
@@ -24,6 +24,7 @@ export default class InputTextAutoComplete extends Component {
       dropdownData: null,
       value: "",
       value_temp: "",
+      is_manual_input: false,
       visible: false,
     };
     this.fetchOptionDropdown = _.throttle(this.fetchOptionDropdown, 2000);
@@ -44,7 +45,10 @@ export default class InputTextAutoComplete extends Component {
           key: item[dropdownKeyTitle],
           value: item[dropdownValueTitle],
         }));
-        this.setState({ dropdownData: normalisedData });
+        this.setState({
+          dropdownData: normalisedData,
+          is_manual_input: response.length === 0,
+        });
       })
       .catch((error) => {});
   };
@@ -56,6 +60,7 @@ export default class InputTextAutoComplete extends Component {
         value_temp: text,
         isCharSufficient: true,
         dropdownData: null,
+        is_manual_input: false,
       });
       this.fetchOptionDropdown(text);
       return;
@@ -121,6 +126,8 @@ export default class InputTextAutoComplete extends Component {
     this.setState({ visible: false });
   };
 
+  onSaveManualInput = () => {};
+
   renderAutoSuggestionResult = ({ item }) => (
     <TouchableOpacity
       onPress={() => this.onSelectDropdown(item)}
@@ -154,7 +161,13 @@ export default class InputTextAutoComplete extends Component {
       styleBorder,
       styleInput,
     } = this.props;
-    const { dropdownData, value, value_temp, visible } = this.state;
+    const {
+      dropdownData,
+      value,
+      value_temp,
+      is_manual_input,
+      visible,
+    } = this.state;
     return (
       <Fragment>
         <View style={{ ...styles.container, ...styleContainer }}>
@@ -236,6 +249,38 @@ export default class InputTextAutoComplete extends Component {
                 },
               }}
             />
+            {is_manual_input ? (
+              <View
+                style={{
+                  flexDirection: "column",
+                  justifyContent: "space-around",
+                  alignItems: "center",
+                  backgroundColor: Colors.white,
+                  height: METRICS.AUTO_SUGGEST_INFO,
+                  paddingHorizontal: METRICS.HUGE,
+                  paddingTop: METRICS.HUGE,
+                  paddingBottom: METRICS.SMALL,
+                }}
+              >
+                <Text style={{ ...FONTS.INFO, ...{ textAlign: "center" } }}>
+                  {STRINGS.NO_DATA_FOUND}
+                </Text>
+                <TouchableOpacity
+                  onPress={this.onSaveManualInput}
+                  style={{
+                    padding: METRICS.MEDIUM,
+                  }}
+                >
+                  <Text
+                    style={{ ...FONTS.INPUT_TITLE, ...{ textAlign: "center" } }}
+                  >
+                    {STRINGS.SAVE}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View />
+            )}
             <FlatList
               data={dropdownData}
               renderItem={this.renderAutoSuggestionResult}

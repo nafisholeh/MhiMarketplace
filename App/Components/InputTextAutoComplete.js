@@ -27,6 +27,7 @@ export default class InputTextAutoComplete extends Component {
       value_temp: "",
       is_manual_input: false,
       is_fetching: false,
+      is_error: false,
       visible: false,
     };
     this.fetchOptionDropdown = _.debounce(this.fetchOptionDropdown, 2000, {
@@ -40,7 +41,7 @@ export default class InputTextAutoComplete extends Component {
     const dropdownKeyTitle = dropdownKey || "name";
     const dropdownValueTitle = dropdownValue || "name";
     const regexFriendlyText = (text || "").replace(/[()*()?]/g, "\\$&");
-    this.setState({ is_fetching: true });
+    this.setState({ is_fetching: true, is_error: false });
     ApolloClientProvider.client
       .query({ query, variables: { [variables]: regexFriendlyText } })
       .then((data) => {
@@ -55,7 +56,9 @@ export default class InputTextAutoComplete extends Component {
           is_manual_input: response.length === 0,
         });
       })
-      .catch((error) => {})
+      .catch(() => {
+        this.setState({ is_fetching: false, is_error: true });
+      })
       .finally(() => {
         this.setState({ is_fetching: false });
       });
@@ -178,6 +181,7 @@ export default class InputTextAutoComplete extends Component {
       value_temp,
       is_manual_input,
       is_fetching,
+      is_error,
       visible,
     } = this.state;
     return (
@@ -261,7 +265,7 @@ export default class InputTextAutoComplete extends Component {
                 },
               }}
             />
-            {is_manual_input ? (
+            {is_manual_input || is_error ? (
               <View
                 style={{
                   flexDirection: "column",
@@ -275,18 +279,16 @@ export default class InputTextAutoComplete extends Component {
                 }}
               >
                 <Text style={{ ...FONTS.INFO, ...{ textAlign: "center" } }}>
-                  {STRINGS.NO_DATA_FOUND}
+                  {is_error ? STRINGS.DATA_FETCH_ERROR : STRINGS.NO_DATA_FOUND}
                 </Text>
                 <TouchableOpacity
                   onPress={this.onSaveManualInput}
-                  style={{
-                    padding: METRICS.MEDIUM,
-                  }}
+                  style={{ padding: METRICS.MEDIUM }}
                 >
                   <Text
                     style={{ ...FONTS.INPUT_TITLE, ...{ textAlign: "center" } }}
                   >
-                    {STRINGS.SAVE}
+                    {is_error ? STRINGS.RELOAD : STRINGS.SAVE}
                   </Text>
                 </TouchableOpacity>
               </View>

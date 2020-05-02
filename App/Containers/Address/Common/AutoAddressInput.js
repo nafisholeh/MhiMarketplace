@@ -17,7 +17,7 @@ class AutoAddressInput extends Component {
       kodepos: "",
       kelurahan: "",
       rtrw: "",
-      alamat: ""
+      alamat: "",
     };
   }
 
@@ -26,7 +26,7 @@ class AutoAddressInput extends Component {
     this.setState({
       error_alamat: id_address ? false : true,
       error_rtrw: rtrw ? false : true,
-      error_alamat_detail: alamat ? false : true
+      error_alamat_detail: alamat ? false : true,
     });
     return id_address && rtrw && alamat;
   };
@@ -43,7 +43,7 @@ class AutoAddressInput extends Component {
     this.setState({
       error_rtrw: !condition.test(rtrw)
         ? "Harap periksa formatnya kembali"
-        : null
+        : null,
     });
   };
 
@@ -65,7 +65,7 @@ class AutoAddressInput extends Component {
         <InputText
           title="RT/RW"
           value={rtrw}
-          onChangeText={rtrw => {
+          onChangeText={(rtrw) => {
             onRtRwChanged(rtrw);
             this.setState({ rtrw });
           }}
@@ -82,17 +82,17 @@ class AutoAddressInput extends Component {
         />
 
         <InputText
-          refs={ref => (this._alamat = ref)}
+          refs={(ref) => (this._alamat = ref)}
           title="Alamat lengkap"
           value={alamat}
-          onChangeText={alamat => {
+          onChangeText={(alamat) => {
             onAddressDetailChanged(alamat);
             this.setState({ alamat });
           }}
           multiline={true}
           error={error_alamat_detail}
           styleContainer={{
-            height: moderateScale(120)
+            height: moderateScale(120),
           }}
           isAllBorderShown
         />
@@ -104,7 +104,7 @@ class AutoAddressInput extends Component {
 AutoAddressInput.propTypes = {
   onRtRwChanged: func.isRequired,
   onAddressDetailChanged: func.isRequired,
-  onKecamatanIdChanged: func.isRequired
+  onKecamatanIdChanged: func.isRequired,
 };
 
 export default AutoAddressInput;

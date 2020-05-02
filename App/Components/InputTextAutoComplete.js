@@ -279,7 +279,9 @@ export default class InputTextAutoComplete extends Component {
                 }}
               >
                 <Text style={{ ...FONTS.INFO, ...{ textAlign: "center" } }}>
-                  {is_error ? STRINGS.DATA_FETCH_ERROR : STRINGS.NO_DATA_FOUND}
+                  {is_error
+                    ? `${STRINGS.NETWORK_ERROR_HEADER}. ${STRINGS.NETWORK_ERROR_BODY}`
+                    : STRINGS.NO_DATA_FOUND}
                 </Text>
                 <TouchableOpacity
                   onPress={this.onSaveManualInput}

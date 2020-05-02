@@ -4,39 +4,37 @@ import { HttpLink } from "apollo-link-http";
 import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";
 import { createUploadLink } from "apollo-upload-client";
-import { NavigationActions } from "react-navigation";
 
 import { InAppNotification } from "Lib";
+import { STRINGS } from "Themes";
 import AppConfig from "../Config/AppConfig";
 
-const cache = new InMemoryCache();
-
 const options = {
-  uri: AppConfig.uri.graphql
+  uri: AppConfig.uri.graphql,
 };
 
 const httpLink = ApolloLink.from([
   onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors) {
       InAppNotification.error(
-        "Maaf, terjadi kesalahan",
-        "Terjadi kesalahan teknis, silahkan kontak pengembang"
+        STRINGS.GRAPHQL_ERROR_HEADER,
+        STRINGS.GRAPHQL_ERROR_BODY
       );
     } else if (networkError) {
       InAppNotification.error(
-        "Maaf, terjadi kesalahan",
-        "Silahkan coba lagi atau tunggu beberapa saat"
+        STRINGS.NETWORK_ERROR_HEADER,
+        STRINGS.NETWORK_ERROR_BODY
       );
     }
   }),
   new HttpLink({
     uri: AppConfig.uri.graphql,
-    credentials: "same-origin"
-  })
+    credentials: "same-origin",
+  }),
 ]);
 
 const aggregatedLink = ApolloLink.split(
-  operation => operation.getContext().hasUpload,
+  (operation) => operation.getContext().hasUpload,
   createUploadLink(options),
   httpLink
 );
@@ -45,7 +43,7 @@ class ApolloClientProvider {
   constructor() {
     this.client = new ApolloClient({
       link: aggregatedLink,
-      cache: new InMemoryCache()
+      cache: new InMemoryCache(),
     });
   }
 }

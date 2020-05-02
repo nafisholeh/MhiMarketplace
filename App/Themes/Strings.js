@@ -1,7 +1,9 @@
 export default {
   NO_DATA_FOUND: "Kami tidak bisa menemukan data yang Anda cari",
-  DATA_FETCH_ERROR:
-    "Maaf saat ini terjadi gangguan, silahkan coba lagi dan tunggu beberapa saat",
+  GRAPHQL_ERROR_HEADER: "Maaf saat ini ada gangguan",
+  GRAPHQL_ERROR_BODY: "Terjadi kesalahan teknis, silahkan kontak pengembang",
+  NETWORK_ERROR_HEADER: "Maaf saat ini ada gangguan",
+  NETWORK_ERROR_BODY: "Silahkan coba lagi atau tunggu beberapa saat",
   SAVE: "SIMPAN",
   RELOAD: "COBA LAGI",
 };

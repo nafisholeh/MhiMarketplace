@@ -43,7 +43,13 @@ export default class InputTextAutoComplete extends Component {
     const regexFriendlyText = (text || "").replace(/[()*()?]/g, "\\$&");
     this.setState({ is_fetching: true, is_error: false });
     ApolloClientProvider.client
-      .query({ query, variables: { [variables]: regexFriendlyText } })
+      .query({
+        query,
+        variables: { [variables]: regexFriendlyText },
+        context: {
+          isCustomError: true,
+        },
+      })
       .then((data) => {
         const response = extractGraphQLResponse(data);
         if (!Array.isArray(response)) return;

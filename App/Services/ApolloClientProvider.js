@@ -14,7 +14,8 @@ const options = {
 };
 
 const httpLink = ApolloLink.from([
-  onError(({ graphQLErrors, networkError }) => {
+  onError(({ graphQLErrors, networkError, operation }) => {
+    if (operation.getContext().isCustomError) return;
     if (graphQLErrors) {
       InAppNotification.error(
         STRINGS.GRAPHQL_ERROR_HEADER,

@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import _ from "lodash";
 import Modal from "react-native-modal";
+import { DotIndicator } from "react-native-indicators";
 
 import { Colors, METRICS, FONTS, STRINGS } from "Themes";
 import { moderateScale, extractGraphQLResponse } from "Lib";
@@ -25,6 +26,7 @@ export default class InputTextAutoComplete extends Component {
       value: "",
       value_temp: "",
       is_manual_input: false,
+      is_fetching: false,
       visible: false,
     };
     this.fetchOptionDropdown = _.debounce(this.fetchOptionDropdown, 2000, {
@@ -38,6 +40,7 @@ export default class InputTextAutoComplete extends Component {
     const dropdownKeyTitle = dropdownKey || "name";
     const dropdownValueTitle = dropdownValue || "name";
     const regexFriendlyText = (text || "").replace(/[()*()?]/g, "\\$&");
+    this.setState({ is_fetching: true });
     ApolloClientProvider.client
       .query({ query, variables: { [variables]: regexFriendlyText } })
       .then((data) => {
@@ -52,7 +55,10 @@ export default class InputTextAutoComplete extends Component {
           is_manual_input: response.length === 0,
         });
       })
-      .catch((error) => {});
+      .catch((error) => {})
+      .finally(() => {
+        this.setState({ is_fetching: false });
+      });
   };
 
   onChangeTextWillFetch = (text) => {
@@ -171,6 +177,7 @@ export default class InputTextAutoComplete extends Component {
       value,
       value_temp,
       is_manual_input,
+      is_fetching,
       visible,
     } = this.state;
     return (
@@ -282,6 +289,21 @@ export default class InputTextAutoComplete extends Component {
                     {STRINGS.SAVE}
                   </Text>
                 </TouchableOpacity>
+              </View>
+            ) : (
+              <View />
+            )}
+            {is_fetching ? (
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: Colors.white,
+                  height: METRICS.AUTO_SUGGEST_INFO,
+                  padding: METRICS.HUGE,
+                }}
+              >
+                <DotIndicator count={3} size={8} color={Colors.veggie_dark} />
               </View>
             ) : (
               <View />

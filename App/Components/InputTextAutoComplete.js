@@ -21,21 +21,21 @@ export default class InputTextAutoComplete extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      is_text_sufficient: false,
-      dropdown_data: null,
+      isTextSufficient: false,
+      suggestionList: null,
       value: "",
-      value_temp: "",
-      is_manual_input: false,
-      is_fetching: false,
-      is_error: false,
+      valueTemp: "",
+      isManualInput: false,
+      isFetching: false,
+      isError: false,
       visible: false,
     };
-    this.fetchOptionDropdown = _.debounce(this.fetchOptionDropdown, 2000, {
+    this.fetchSuggestion = _.debounce(this.fetchSuggestion, 2000, {
       trailing: true,
     });
   }
 
-  fetchOptionDropdown = (text) => {
+  fetchSuggestion = (text) => {
     const { query, queryVariables, dropdownKey, dropdownValue } = this.props;
     const variables = queryVariables || "term";
     const dropdownKeyTitle = dropdownKey || "name";
@@ -57,36 +57,36 @@ export default class InputTextAutoComplete extends Component {
           value: item[dropdownValueTitle],
         }));
         this.setState({
-          dropdown_data: normalisedData,
-          is_manual_input: response.length === 0,
+          suggestionList: normalisedData,
+          isManualInput: response.length === 0,
         });
       })
       .catch(() => {
-        this.setState({ is_fetching: false, is_error: true });
+        this.setState({ isFetching: false, isError: true });
       })
       .finally(() => {
-        this.setState({ is_fetching: false });
+        this.setState({ isFetching: false });
       });
   };
 
   onChangeTextWillFetch = (text) => {
     if (text.length >= MIN_CHAR_THRESHOLD) {
       this.setState({
-        value_temp: text,
-        is_text_sufficient: true,
-        dropdown_data: null,
-        is_manual_input: false,
-        is_fetching: true,
-        is_error: false,
+        valueTemp: text,
+        isTextSufficient: true,
+        suggestionList: null,
+        isManualInput: false,
+        isFetching: true,
+        isError: false,
       });
-      this.fetchOptionDropdown(text);
+      this.fetchSuggestion(text);
       return;
     }
     this.setState({
-      value_temp: text,
-      is_text_sufficient: false,
-      dropdown_data: null,
-      is_manual_input: false,
+      valueTemp: text,
+      isTextSufficient: false,
+      suggestionList: null,
+      isManualInput: false,
     });
   };
 
@@ -98,23 +98,23 @@ export default class InputTextAutoComplete extends Component {
         return new RegExp(text, "i").test(value);
       });
       this.setState({
-        value_temp: text,
-        is_text_sufficient: true,
-        dropdown_data: filteredDropdown,
-        is_manual_input: false,
+        valueTemp: text,
+        isTextSufficient: true,
+        suggestionList: filteredDropdown,
+        isManualInput: false,
       });
       return;
     }
     this.setState({
-      value_temp: text,
-      is_text_sufficient: false,
-      dropdown_data: null,
-      is_manual_input: false,
+      valueTemp: text,
+      isTextSufficient: false,
+      suggestionList: null,
+      isManualInput: false,
     });
   };
 
   onChangeTempText = (text) => {
-    if (text === "") this.fetchOptionDropdown.cancel();
+    if (text === "") this.fetchSuggestion.cancel();
     const { dataLocal } = this.props;
     if (dataLocal) {
       this.onChangeTextShowDataLocal(text);
@@ -125,7 +125,7 @@ export default class InputTextAutoComplete extends Component {
 
   onFocus = () => {
     this.setState(
-      { value: "", is_text_sufficient: false, dropdown_data: null },
+      { value: "", isTextSufficient: false, suggestionList: null },
       () => this.onValueChangeCallback(null)
     );
   };
@@ -144,14 +144,18 @@ export default class InputTextAutoComplete extends Component {
   };
 
   dismissModal = () => {
-    this.setState({ visible: false, is_fetching: false, is_error: false });
+    this.setState({ visible: false, isFetching: false, isError: false });
   };
 
-  onSaveManualInput = () => {
-    const { is_error, value_temp } = this.state;
-    if (is_error) {
-      this.onChangeTempText(value_temp);
-    }
+  refetchSuggestion = () => {
+    const { valueTemp } = this.state;
+    this.onChangeTempText(valueTemp);
+  };
+
+  storeManualInput = () => {
+    const { valueTemp } = this.state;
+    const { onValueChange, name } = this.props;
+    onValueChange({ value: valueTemp, isManualInput: true }, name);
   };
 
   renderAutoSuggestionResult = ({ item }) => (
@@ -173,7 +177,7 @@ export default class InputTextAutoComplete extends Component {
   onSelectDropdown = (item) => {
     const { value } = item || {};
     this.setState(
-      { visible: false, value_temp: value, value, dropdown_data: null },
+      { visible: false, valueTemp: value, value, suggestionList: null },
       () => this.onValueChangeCallback(item)
     );
   };
@@ -188,12 +192,12 @@ export default class InputTextAutoComplete extends Component {
       styleInput,
     } = this.props;
     const {
-      dropdown_data,
+      suggestionList,
       value,
-      value_temp,
-      is_manual_input,
-      is_fetching,
-      is_error,
+      valueTemp,
+      isManualInput,
+      isFetching,
+      isError,
       visible,
     } = this.state;
     return (
@@ -258,7 +262,7 @@ export default class InputTextAutoComplete extends Component {
               ref={(ref) => {
                 this.temp_input = ref;
               }}
-              value={value_temp}
+              value={valueTemp}
               underlineColorAndroid="transparent"
               inputColorPlaceholder={Colors.BORDER}
               placeholderTextColor={Colors.disabled_light}
@@ -277,7 +281,7 @@ export default class InputTextAutoComplete extends Component {
                 },
               }}
             />
-            {is_manual_input || is_error ? (
+            {isManualInput || isError ? (
               <View
                 style={{
                   flexDirection: "column",
@@ -291,25 +295,27 @@ export default class InputTextAutoComplete extends Component {
                 }}
               >
                 <Text style={{ ...FONTS.INFO, ...{ textAlign: "center" } }}>
-                  {is_error
+                  {isError
                     ? `${STRINGS.NETWORK_ERROR_HEADER}. ${STRINGS.NETWORK_ERROR_BODY}`
                     : STRINGS.NO_DATA_FOUND}
                 </Text>
                 <TouchableOpacity
-                  onPress={this.onSaveManualInput}
+                  onPress={() =>
+                    isError ? this.refetchSuggestion() : this.storeManualInput()
+                  }
                   style={{ padding: METRICS.MEDIUM }}
                 >
                   <Text
                     style={{ ...FONTS.INPUT_TITLE, ...{ textAlign: "center" } }}
                   >
-                    {is_error ? STRINGS.RELOAD : STRINGS.SAVE}
+                    {isError ? STRINGS.RELOAD : STRINGS.SAVE}
                   </Text>
                 </TouchableOpacity>
               </View>
             ) : (
               <View />
             )}
-            {is_fetching ? (
+            {isFetching ? (
               <View
                 style={{
                   justifyContent: "center",
@@ -325,7 +331,7 @@ export default class InputTextAutoComplete extends Component {
               <View />
             )}
             <FlatList
-              data={dropdown_data}
+              data={suggestionList}
               renderItem={this.renderAutoSuggestionResult}
               keyboardShouldPersistTaps="handled"
               keyExtractor={(item) => item.key}

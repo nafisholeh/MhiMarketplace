@@ -137,7 +137,7 @@ export default class InputTextAutoComplete extends Component {
   };
 
   dismissModal = () => {
-    this.setState({ visible: false });
+    this.setState({ visible: false, is_fetching: false, is_error: false });
   };
 
   onSaveManualInput = () => {};

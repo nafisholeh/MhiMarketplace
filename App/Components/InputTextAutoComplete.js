@@ -41,7 +41,6 @@ export default class InputTextAutoComplete extends Component {
     const dropdownKeyTitle = dropdownKey || "name";
     const dropdownValueTitle = dropdownValue || "name";
     const regexFriendlyText = (text || "").replace(/[()*()?]/g, "\\$&");
-    this.setState({ is_fetching: true, is_error: false });
     ApolloClientProvider.client
       .query({
         query,
@@ -77,6 +76,8 @@ export default class InputTextAutoComplete extends Component {
         is_text_sufficient: true,
         dropdown_data: null,
         is_manual_input: false,
+        is_fetching: true,
+        is_error: false,
       });
       this.fetchOptionDropdown(text);
       return;
@@ -146,7 +147,12 @@ export default class InputTextAutoComplete extends Component {
     this.setState({ visible: false, is_fetching: false, is_error: false });
   };
 
-  onSaveManualInput = () => {};
+  onSaveManualInput = () => {
+    const { is_error, value_temp } = this.state;
+    if (is_error) {
+      this.onChangeTempText(value_temp);
+    }
+  };
 
   renderAutoSuggestionResult = ({ item }) => (
     <TouchableOpacity

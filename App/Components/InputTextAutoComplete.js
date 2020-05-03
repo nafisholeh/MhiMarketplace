@@ -91,6 +91,8 @@ export default class InputTextAutoComplete extends Component {
       isTextSufficient: false,
       suggestionList: null,
       isManualInput: false,
+      isFetching: false,
+      isError: false,
     });
   };
 

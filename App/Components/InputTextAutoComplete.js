@@ -12,7 +12,11 @@ import Modal from "react-native-modal";
 import { DotIndicator } from "react-native-indicators";
 
 import { Colors, METRICS, FONTS, STRINGS } from "Themes";
-import { moderateScale, extractGraphQLResponse } from "Lib";
+import {
+  moderateScale,
+  extractGraphQLResponse,
+  capitalizeFirstLetter,
+} from "Lib";
 import ApolloClientProvider from "Services/ApolloClientProvider";
 
 const MIN_CHAR_THRESHOLD = 3;
@@ -38,8 +42,8 @@ export default class InputTextAutoComplete extends Component {
   fetchSuggestion = (text) => {
     const { query, queryVariables, dropdownKey, dropdownValue } = this.props;
     const variables = queryVariables || "term";
-    const dropdownKeyTitle = dropdownKey || "name";
-    const dropdownValueTitle = dropdownValue || "name";
+    const dropdownKeyTitle = dropdownKey || "key";
+    const dropdownValueTitle = dropdownValue || "value";
     const regexFriendlyText = (text || "").replace(/[()*()?]/g, "\\$&");
     ApolloClientProvider.client
       .query({
@@ -54,7 +58,7 @@ export default class InputTextAutoComplete extends Component {
         if (!Array.isArray(response)) return;
         const normalisedData = response.map((item) => ({
           key: item[dropdownKeyTitle],
-          value: item[dropdownValueTitle],
+          value: capitalizeFirstLetter(item[dropdownValueTitle]),
         }));
         this.setState({
           suggestionList: normalisedData,

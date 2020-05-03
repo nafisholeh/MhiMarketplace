@@ -269,7 +269,7 @@ class CardIdentityForm extends Component {
             CustomManualInput={() => (
               <InputDate
                 isAllBorderShown
-                title="Tanggal Lahir"
+                title=""
                 name="expired_date"
                 onChangeDate={this.onChangeText}
                 value={expired_date}

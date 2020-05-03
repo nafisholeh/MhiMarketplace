@@ -18,6 +18,7 @@ import {
 import AppConfig from "Config/AppConfig";
 import SignupWrapper from "./SignupWrapper";
 import { SEARCH_RELIGION } from "GraphQL/Religion/Query";
+import { SEARCH_OCCUPATION } from "GraphQL/Occupation/Query";
 
 const LIFETIME = new Date("3000-01-01");
 
@@ -244,7 +245,9 @@ class CardIdentityForm extends Component {
             name="occupation"
             title="Jenis Pekerjaan"
             isAllBorderShown
-            dataLocal={AppConfig.occupation}
+            query={SEARCH_OCCUPATION}
+            dropdownKey="_id"
+            dropdownValue="name"
             onValueChange={this.onAutoCompleteChange}
           />
 

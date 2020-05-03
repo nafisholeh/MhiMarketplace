@@ -54,6 +54,7 @@ import {
   normalizeServerFileUri,
   generateValidServerFileUri,
 } from "./File";
+import { capitalizeFirstLetter } from "./String";
 
 export {
   parseToRupiah,
@@ -101,4 +102,5 @@ export {
   normalizeServerFileUri,
   extractGraphQLResponse,
   calcZoomFromRegion,
+  capitalizeFirstLetter,
 };

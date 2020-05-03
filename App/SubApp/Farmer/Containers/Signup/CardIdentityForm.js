@@ -17,6 +17,7 @@ import {
 } from "Components";
 import AppConfig from "Config/AppConfig";
 import SignupWrapper from "./SignupWrapper";
+import { SEARCH_RELIGION } from "GraphQL/Religion/Query";
 
 const LIFETIME = new Date("3000-01-01");
 
@@ -128,9 +129,9 @@ class CardIdentityForm extends Component {
     );
   };
 
-  onAutoCompleteChange = ({ value }, stateName) => {
+  onAutoCompleteChange = (item, stateName) => {
     this.setState(
-      { form: { ...this.state.form, [stateName]: value } },
+      { form: { ...this.state.form, [stateName]: item } },
       this.onEligibleToSubmit
     );
   };
@@ -225,7 +226,9 @@ class CardIdentityForm extends Component {
             name="religion"
             title="Agama"
             isAllBorderShown
-            dataLocal={AppConfig.religion}
+            query={SEARCH_RELIGION}
+            dropdownKey="_id"
+            dropdownValue="name"
             onValueChange={this.onAutoCompleteChange}
           />
 

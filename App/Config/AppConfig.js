@@ -290,9 +290,8 @@ export default {
       value: "WNI",
     },
     {
-      label: "Lainnya",
-      value: "Lainnya",
-      showManualInput: true,
+      label: "WNA",
+      value: "WNA",
     },
   ],
   ownedArea: "own",

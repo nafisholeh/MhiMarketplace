@@ -39,11 +39,26 @@ export default class InputTextAutoComplete extends Component {
     });
   }
 
+  getDropdownKey = () => {
+    const { dropdownKey } = this.props;
+    return dropdownKey || "key";
+  };
+
+  getDropdownValue = () => {
+    const { dropdownValue } = this.props;
+    return dropdownValue || "value";
+  };
+
+  getVariables = () => {
+    const { queryVariables } = this.props;
+    return queryVariables || "term";
+  };
+
   fetchSuggestion = (text) => {
-    const { query, queryVariables, dropdownKey, dropdownValue } = this.props;
-    const variables = queryVariables || "term";
-    const dropdownKeyTitle = dropdownKey || "key";
-    const dropdownValueTitle = dropdownValue || "value";
+    const { query } = this.props;
+    const variables = this.getVariables();
+    const dropdownKeyTitle = this.getDropdownKey();
+    const dropdownValueTitle = this.getDropdownValue();
     const regexFriendlyText = (text || "").replace(/[()*()?]/g, "\\$&");
     ApolloClientProvider.client
       .query({
@@ -160,8 +175,7 @@ export default class InputTextAutoComplete extends Component {
 
   storeManualInput = () => {
     const { valueTemp } = this.state;
-    const { onValueChange, name } = this.props;
-    onValueChange({ value: valueTemp, isManualInput: true }, name);
+    this.onSelectDropdown({ value: valueTemp, isManualInput: true });
   };
 
   renderAutoSuggestionResult = ({ item }) => (

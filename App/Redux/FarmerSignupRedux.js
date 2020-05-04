@@ -104,47 +104,12 @@ export const getFarmerSignupImages = () =>
     };
   });
 
-export const getFarmerSignupData = () =>
+export const getFarmerSignupAreas = () =>
   createSelector(farmerSignupSelectors(), (state) => {
-    const { area, ktp, phone, email, password } = state || {};
-    const {
-      nik,
-      name,
-      birth_place,
-      birth_date,
-      gender,
-      blood_type,
-      religion,
-      marriage_status,
-      occupation,
-      citizenship,
-      expired_date,
-      photo_face,
-      photo_ktp,
-      photo_face_thumbnail,
-      photo_ktp_thumbnail,
-      address_detail,
-      rtrw,
-      kodepos,
-      kelurahan,
-      kecamatan,
-      kecamatan_id,
-      kabupaten,
-      provinsi,
-    } = ktp || {};
-    const {
-      key: keyReligion,
-      value: valueReligion,
-      isManualInput: isManualInputRegion,
-    } = religion;
-    const {
-      key: keyOccupation,
-      value: valueOccupation,
-      isManualInput: isManualInputOccupation,
-    } = occupation;
+    const { area } = state || {};
     let areasData = null;
     if (Array.isArray(area) && area.length) {
-      areasData = area.map((item, index) => {
+      areasData = area.map((item) => {
         const {
           type,
           status,
@@ -181,47 +146,92 @@ export const getFarmerSignupData = () =>
         return output;
       });
     }
-
-    const parsedReligion = isManualInputRegion
-      ? { ktp_new_religion: valueReligion }
-      : { ktp_religion: keyReligion };
-
-    const parsedOccupation = isManualInputOccupation
-      ? { ktp_new_occupation: valueOccupation }
-      : { ktp_occupation: keyOccupation };
-
-    const payload = Object.assign(
-      {
-        phone,
-        email,
-        password,
-        ktp_nik: nik,
-        ktp_name: name,
-        ktp_birth_place: birth_place,
-        ktp_birth_date: birth_date,
-        ktp_gender: gender,
-        ktp_blood_type: blood_type,
-        ktp_marriage_status: marriage_status,
-        ktp_occupation: occupation,
-        ktp_citizenship: citizenship,
-        ktp_expired_date: expired_date,
-        // ktp_photo_face: photo_face, ktp_photo_face_thumbnail: photo_face_thumbnail,
-        // ktp_photo_ktp: photo_ktp, ktp_photo_ktp_thumbnail: photo_ktp_thumbnail,
-        ktp_kecamatan_id: kecamatan_id,
-        ktp_address_detail: address_detail,
-        ktp_rtrw: rtrw,
-        ktp_kodepos: kodepos,
-        ktp_kelurahan: kelurahan,
-        ktp_kecamatan: kecamatan,
-        ktp_kabupaten: kabupaten,
-        ktp_provinsi: provinsi,
-        areas: areasData,
-      },
-      parsedReligion,
-      parsedOccupation
-    );
-    return payload;
+    return areasData;
   });
+
+export const getFarmerSignupData = () =>
+  createSelector(
+    farmerSignupSelectors(),
+    getFarmerSignupAreas(),
+    (state, areas) => {
+      const { ktp, phone, email, password } = state || {};
+      const {
+        nik,
+        name,
+        birth_place,
+        birth_date,
+        gender,
+        blood_type,
+        religion,
+        marriage_status,
+        occupation,
+        citizenship,
+        expired_date,
+        photo_face,
+        photo_ktp,
+        photo_face_thumbnail,
+        photo_ktp_thumbnail,
+        address_detail,
+        rtrw,
+        kodepos,
+        kelurahan,
+        kecamatan,
+        kecamatan_id,
+        kabupaten,
+        provinsi,
+      } = ktp || {};
+      const {
+        key: keyReligion,
+        value: valueReligion,
+        isManualInput: isManualInputRegion,
+      } = religion;
+      const {
+        key: keyOccupation,
+        value: valueOccupation,
+        isManualInput: isManualInputOccupation,
+      } = occupation;
+
+      const parsedReligion = isManualInputRegion
+        ? { ktp_new_religion: valueReligion }
+        : { ktp_religion: keyReligion };
+
+      const parsedOccupation = isManualInputOccupation
+        ? { ktp_new_occupation: valueOccupation }
+        : { ktp_occupation: keyOccupation };
+
+      const payload = Object.assign(
+        {
+          phone,
+          email,
+          password,
+          ktp_nik: nik,
+          ktp_name: name,
+          ktp_birth_place: birth_place,
+          ktp_birth_date: birth_date,
+          ktp_gender: gender,
+          ktp_blood_type: blood_type,
+          ktp_marriage_status: marriage_status,
+          ktp_occupation: occupation,
+          ktp_citizenship: citizenship,
+          ktp_expired_date: expired_date,
+          // ktp_photo_face: photo_face, ktp_photo_face_thumbnail: photo_face_thumbnail,
+          // ktp_photo_ktp: photo_ktp, ktp_photo_ktp_thumbnail: photo_ktp_thumbnail,
+          ktp_kecamatan_id: kecamatan_id,
+          ktp_address_detail: address_detail,
+          ktp_rtrw: rtrw,
+          ktp_kodepos: kodepos,
+          ktp_kelurahan: kelurahan,
+          ktp_kecamatan: kecamatan,
+          ktp_kabupaten: kabupaten,
+          ktp_provinsi: provinsi,
+          areas,
+        },
+        parsedReligion,
+        parsedOccupation
+      );
+      return payload;
+    }
+  );
 
 export const isAnyAreaDrawn = () =>
   createSelector(farmerSignupSelectors(), (state) => {

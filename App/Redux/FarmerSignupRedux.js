@@ -132,6 +132,16 @@ export const getFarmerSignupData = () =>
       kabupaten,
       provinsi,
     } = ktp || {};
+    const {
+      key: keyReligion,
+      value: valueReligion,
+      isManualInput: isManualInputRegion,
+    } = religion;
+    const {
+      key: keyOccupation,
+      value: valueOccupation,
+      isManualInput: isManualInputOccupation,
+    } = occupation;
     let areasData = null;
     if (Array.isArray(area) && area.length) {
       areasData = area.map((item, index) => {
@@ -171,10 +181,14 @@ export const getFarmerSignupData = () =>
         return output;
       });
     }
-    const { value, isManualInput } = religion;
-    const parsedReligion = isManualInput
-      ? { ktp_new_religion: value }
-      : { ktp_religion: value };
+
+    const parsedReligion = isManualInputRegion
+      ? { ktp_new_religion: valueReligion }
+      : { ktp_religion: keyReligion };
+
+    const parsedOccupation = isManualInputOccupation
+      ? { ktp_new_occupation: valueOccupation }
+      : { ktp_occupation: keyOccupation };
 
     const payload = Object.assign(
       {
@@ -203,7 +217,8 @@ export const getFarmerSignupData = () =>
         ktp_provinsi: provinsi,
         areas: areasData,
       },
-      parsedReligion
+      parsedReligion,
+      parsedOccupation
     );
     return payload;
   });

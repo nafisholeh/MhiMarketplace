@@ -78,9 +78,7 @@ class CardIdentityForm extends Component {
   onEligibleToSubmit = () => {
     const { form } = this.state;
     const isCanContinue = Object.values(form).every((o) => o && o !== "");
-    this.setState({
-      is_can_continue: isCanContinue,
-    });
+    this.setState({ is_can_continue: isCanContinue });
   };
 
   onChangeText = (value, stateName) => {

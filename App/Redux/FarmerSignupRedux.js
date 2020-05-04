@@ -171,34 +171,41 @@ export const getFarmerSignupData = () =>
         return output;
       });
     }
+    const { value, isManualInput } = religion;
+    const parsedReligion = isManualInput
+      ? { ktp_new_religion: value }
+      : { ktp_religion: value };
 
-    return {
-      phone,
-      email,
-      password,
-      ktp_nik: nik,
-      ktp_name: name,
-      ktp_birth_place: birth_place,
-      ktp_birth_date: birth_date,
-      ktp_gender: gender,
-      ktp_blood_type: blood_type,
-      ktp_religion: religion,
-      ktp_marriage_status: marriage_status,
-      ktp_occupation: occupation,
-      ktp_citizenship: citizenship,
-      ktp_expired_date: expired_date,
-      // ktp_photo_face: photo_face, ktp_photo_face_thumbnail: photo_face_thumbnail,
-      // ktp_photo_ktp: photo_ktp, ktp_photo_ktp_thumbnail: photo_ktp_thumbnail,
-      ktp_kecamatan_id: kecamatan_id,
-      ktp_address_detail: address_detail,
-      ktp_rtrw: rtrw,
-      ktp_kodepos: kodepos,
-      ktp_kelurahan: kelurahan,
-      ktp_kecamatan: kecamatan,
-      ktp_kabupaten: kabupaten,
-      ktp_provinsi: provinsi,
-      areas: areasData,
-    };
+    const payload = Object.assign(
+      {
+        phone,
+        email,
+        password,
+        ktp_nik: nik,
+        ktp_name: name,
+        ktp_birth_place: birth_place,
+        ktp_birth_date: birth_date,
+        ktp_gender: gender,
+        ktp_blood_type: blood_type,
+        ktp_marriage_status: marriage_status,
+        ktp_occupation: occupation,
+        ktp_citizenship: citizenship,
+        ktp_expired_date: expired_date,
+        // ktp_photo_face: photo_face, ktp_photo_face_thumbnail: photo_face_thumbnail,
+        // ktp_photo_ktp: photo_ktp, ktp_photo_ktp_thumbnail: photo_ktp_thumbnail,
+        ktp_kecamatan_id: kecamatan_id,
+        ktp_address_detail: address_detail,
+        ktp_rtrw: rtrw,
+        ktp_kodepos: kodepos,
+        ktp_kelurahan: kelurahan,
+        ktp_kecamatan: kecamatan,
+        ktp_kabupaten: kabupaten,
+        ktp_provinsi: provinsi,
+        areas: areasData,
+      },
+      parsedReligion
+    );
+    return payload;
   });
 
 export const isAnyAreaDrawn = () =>

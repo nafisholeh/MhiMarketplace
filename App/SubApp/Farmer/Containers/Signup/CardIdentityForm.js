@@ -64,41 +64,8 @@ class CardIdentityForm extends Component {
 
   onSubmit = async () => {
     const { navigation, storeFarmerKtp } = this.props;
-    const {
-      form: {
-        nik,
-        name,
-        birth_place,
-        birth_date,
-        gender,
-        blood_type,
-        religion,
-        marriage_status,
-        occupation,
-        citizenship,
-        expired_date,
-        address_detail,
-        rtrw,
-        kecamatan_id,
-      },
-    } = this.state;
-    const ktpData = {
-      nik,
-      name,
-      birth_place,
-      birth_date,
-      gender,
-      blood_type,
-      religion,
-      marriage_status,
-      occupation,
-      citizenship,
-      expired_date,
-      address_detail,
-      rtrw,
-      kecamatan_id,
-    };
-    storeFarmerKtp(ktpData);
+    const { form } = this.state;
+    storeFarmerKtp(form);
     navigation.navigate("AreaList");
   };
 

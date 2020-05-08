@@ -72,3 +72,13 @@ export const FETCH_DAERAH_LENGKAP = gql`
     }
   }
 `;
+
+export const SEARCH_KABUPATEN = gql`
+  query kabupaten($term: String) {
+    kabupaten(term: $term) {
+      _id
+      key
+      nama
+    }
+  }
+`;

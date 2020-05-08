@@ -19,6 +19,7 @@ import AppConfig from "Config/AppConfig";
 import SignupWrapper from "./SignupWrapper";
 import { SEARCH_RELIGION } from "GraphQL/Religion/Query";
 import { SEARCH_OCCUPATION } from "GraphQL/Occupation/Query";
+import { SEARCH_KABUPATEN } from "GraphQL/Address/Query";
 
 const LIFETIME = new Date("3000-01-01");
 
@@ -138,14 +139,15 @@ class CardIdentityForm extends Component {
               flexDirection: "row",
             }}
           >
-            <InputText
+            <InputTextAutoComplete
               refs={(ref) => (this._birth_place = ref)}
-              isAllBorderShown
               name="birth_place"
               title="Tempat"
-              value={birth_place || ""}
-              onChangeText={this.onChangeText}
-              returnKeyType="done"
+              isAllBorderShown
+              query={SEARCH_KABUPATEN}
+              dropdownKey="_id"
+              dropdownValue="nama"
+              onValueChange={this.onAutoCompleteChange}
               styleContainer={{
                 flex: 1,
                 marginHorizontal: 0,

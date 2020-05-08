@@ -10,6 +10,7 @@ import {
 import _ from "lodash";
 import Modal from "react-native-modal";
 import { DotIndicator } from "react-native-indicators";
+import get from "lodash/get";
 
 import { Colors, METRICS, FONTS, STRINGS } from "Themes";
 import {
@@ -71,10 +72,21 @@ export default class InputTextAutoComplete extends Component {
       .then((data) => {
         const response = extractGraphQLResponse(data);
         if (!Array.isArray(response)) return;
-        const normalisedData = response.map((item) => ({
-          key: item[dropdownKeyTitle],
-          value: capitalizeFirstLetter(item[dropdownValueTitle]),
-        }));
+        const isValueArray = Array.isArray(dropdownValueTitle);
+        const normalisedData = response.map((item) => {
+          let value = "";
+          if (isValueArray) {
+            value = dropdownValueTitle
+              .map((title) => get(item, title))
+              .join(", ");
+          } else {
+            value = item[dropdownValueTitle];
+          }
+          return {
+            key: item[dropdownKeyTitle],
+            value: capitalizeFirstLetter(value),
+          };
+        });
         this.setState({
           suggestionList: normalisedData,
           isManualInput: response.length === 0,

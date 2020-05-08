@@ -82,3 +82,15 @@ export const SEARCH_KABUPATEN = gql`
     }
   }
 `;
+
+export const AUTO_SUGGEST_KABUPATEN = gql`
+  query autoSuggestKabupaten($term: String!) {
+    autoSuggestKabupaten(term: $term) {
+      _id
+      name
+      provinsi {
+        name
+      }
+    }
+  }
+`;

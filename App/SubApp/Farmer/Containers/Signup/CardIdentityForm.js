@@ -19,7 +19,7 @@ import AppConfig from "Config/AppConfig";
 import SignupWrapper from "./SignupWrapper";
 import { SEARCH_RELIGION } from "GraphQL/Religion/Query";
 import { SEARCH_OCCUPATION } from "GraphQL/Occupation/Query";
-import { SEARCH_KABUPATEN } from "GraphQL/Address/Query";
+import { AUTO_SUGGEST_KABUPATEN } from "GraphQL/Address/Query";
 
 const LIFETIME = new Date("3000-01-01");
 
@@ -144,9 +144,9 @@ class CardIdentityForm extends Component {
               name="birth_place"
               title="Tempat"
               isAllBorderShown
-              query={SEARCH_KABUPATEN}
+              query={AUTO_SUGGEST_KABUPATEN}
               dropdownKey="_id"
-              dropdownValue="nama"
+              dropdownValue={["name", "provinsi.name"]}
               onValueChange={this.onAutoCompleteChange}
               styleContainer={{
                 flex: 1,

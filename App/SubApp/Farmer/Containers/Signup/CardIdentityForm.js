@@ -105,7 +105,7 @@ class CardIdentityForm extends Component {
 
   render() {
     const {
-      form: { nik, name, birth_place, birth_date, expired_date },
+      form: { nik, name, birth_date, expired_date },
       is_can_continue,
     } = this.state;
     return (

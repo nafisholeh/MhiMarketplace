@@ -179,12 +179,13 @@ export const getFarmerSignupData = () =>
         key: keyReligion,
         value: valueReligion,
         isManualInput: isManualInputRegion,
-      } = religion;
+      } = religion || {};
       const {
         key: keyOccupation,
         value: valueOccupation,
         isManualInput: isManualInputOccupation,
-      } = occupation;
+      } = occupation || {};
+      const { value: birthPlaceValue } = birth_place || {};
 
       const parsedReligion = isManualInputRegion
         ? { ktp_new_religion: valueReligion }
@@ -201,7 +202,7 @@ export const getFarmerSignupData = () =>
           password,
           ktp_nik: nik,
           ktp_name: name,
-          ktp_birth_place: birth_place,
+          ktp_birth_place: birthPlaceValue,
           ktp_birth_date: birth_date,
           ktp_gender: gender,
           ktp_blood_type: blood_type,

@@ -157,10 +157,7 @@ export default class InputTextAutoComplete extends Component {
   };
 
   onFocus = () => {
-    this.setState(
-      { value: "", isTextSufficient: false, suggestionList: null },
-      () => this.onValueChangeCallback(null)
-    );
+    this.setState({ value: "", isTextSufficient: false, suggestionList: null });
   };
 
   onValueChangeCallback = (item) => {

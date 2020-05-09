@@ -8,7 +8,16 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { bool, object, func, number, string, oneOfType } from "prop-types";
+import {
+  bool,
+  object,
+  func,
+  number,
+  string,
+  oneOfType,
+  oneOf,
+  array,
+} from "prop-types";
 import { SkypeIndicator } from "react-native-indicators";
 import TextInputMask from "react-native-text-input-mask";
 
@@ -23,6 +32,8 @@ export default class InputText extends Component {
       title,
       error,
       prefix,
+      prefixStyle,
+      prefixTheme,
       prefixIcon,
       prefixIconStyle,
       suffix,
@@ -40,6 +51,7 @@ export default class InputText extends Component {
       mask,
       multiline,
     } = this.props;
+    const isPrefixBlockTheme = prefixTheme === "block";
     return (
       <View style={{ ...styles.container, ...styleContainer }}>
         {title ? (
@@ -87,7 +99,28 @@ export default class InputText extends Component {
               }}
             />
           ) : null}
-          {prefix ? <Text style={styles.prefix}>{prefix}</Text> : null}
+          {prefix && isPrefixBlockTheme && (
+            <View
+              style={{
+                ...{
+                  alignSelf: "stretch",
+                  justifyContent: "center",
+                  marginLeft: METRICS.TINY,
+                  marginTop: METRICS.TINY,
+                  marginBottom: METRICS.TINY,
+                  borderRadius: METRICS.RADIUS_MEDIUM,
+                  paddingHorizontal: METRICS.TINY,
+                  backgroundColor: Colors.green_light,
+                },
+                ...prefixStyle,
+              }}
+            >
+              <Text style={styles.prefixInBlock}>{prefix}</Text>
+            </View>
+          )}
+          {prefix && !isPrefixBlockTheme && (
+            <Text style={styles.prefix}>{prefix}</Text>
+          )}
 
           {!mask ? (
             <TextInput
@@ -174,6 +207,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginLeft: METRICS.SMALL,
   },
+  prefixInBlock: {
+    color: Colors.white,
+    fontFamily: "CircularStd-Book",
+    fontSize: 14,
+  },
   title: {
     color: Colors.veggie_dark,
     fontFamily: "CircularStd-Book",
@@ -256,6 +294,9 @@ InputText.propTypes = {
   isLoading: bool,
   isShowIcon: bool,
   icon: oneOfType([number, string]),
+  prefix: string,
+  prefixStyle: oneOfType([object, array]),
+  prefixTheme: oneOf(["block", "blank"]),
   prefixIcon: oneOfType([number, string]),
   name: string,
   onChangeText: func,
@@ -266,4 +307,5 @@ InputText.defaultProps = {
   isLoading: false,
   isShowIcon: false,
   icon: Images.dropdown,
+  prefixTheme: "blank",
 };

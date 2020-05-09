@@ -30,7 +30,7 @@ export default class InputTextAutoComplete extends Component {
       suggestionList: null,
       value: "",
       valueTemp: "",
-      isNotFound: false,
+      isManualInput: false,
       isFetching: false,
       isError: false,
       visible: false,
@@ -89,7 +89,7 @@ export default class InputTextAutoComplete extends Component {
         });
         this.setState({
           suggestionList: normalisedData,
-          isNotFound: response.length === 0,
+          isManualInput: response.length === 0,
         });
       })
       .catch(() => {
@@ -106,7 +106,7 @@ export default class InputTextAutoComplete extends Component {
         valueTemp: text,
         isTextSufficient: true,
         suggestionList: null,
-        isNotFound: false,
+        isManualInput: false,
         isFetching: true,
         isError: false,
       });
@@ -117,7 +117,7 @@ export default class InputTextAutoComplete extends Component {
       valueTemp: text,
       isTextSufficient: false,
       suggestionList: null,
-      isNotFound: false,
+      isManualInput: false,
       isFetching: false,
       isError: false,
     });
@@ -134,7 +134,7 @@ export default class InputTextAutoComplete extends Component {
         valueTemp: text,
         isTextSufficient: true,
         suggestionList: filteredDropdown,
-        isNotFound: false,
+        isManualInput: false,
       });
       return;
     }
@@ -142,7 +142,7 @@ export default class InputTextAutoComplete extends Component {
       valueTemp: text,
       isTextSufficient: false,
       suggestionList: null,
-      isNotFound: false,
+      isManualInput: false,
     });
   };
 
@@ -184,7 +184,7 @@ export default class InputTextAutoComplete extends Component {
 
   storeManualInput = () => {
     const { valueTemp } = this.state;
-    this.onSelectDropdown({ value: valueTemp, isNotFound: true });
+    this.onSelectDropdown({ value: valueTemp, isManualInput: true });
   };
 
   renderAutoSuggestionResult = ({ item }) => (
@@ -213,8 +213,8 @@ export default class InputTextAutoComplete extends Component {
 
   renderModalInfo = () => {
     const { isManualInputDisabled } = this.props;
-    const { isNotFound, isError } = this.state;
-    if (!isNotFound && !isError) return null;
+    const { isManualInput, isError } = this.state;
+    if (!isManualInput && !isError) return null;
     const message = isError
       ? `${STRINGS.NETWORK_ERROR_HEADER}. ${STRINGS.NETWORK_ERROR_BODY}`
       : STRINGS.NO_DATA_FOUND;
@@ -235,7 +235,7 @@ export default class InputTextAutoComplete extends Component {
         <Text style={{ ...FONTS.INFO, ...{ textAlign: "center" } }}>
           {message}
         </Text>
-        {(isError || isNotFound) && !isManualInputDisabled ? (
+        {(isError || isManualInput) && !isManualInputDisabled ? (
           <TouchableOpacity
             onPress={() =>
               isError ? this.refetchSuggestion() : this.storeManualInput()

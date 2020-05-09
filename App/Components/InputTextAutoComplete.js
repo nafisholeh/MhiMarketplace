@@ -374,6 +374,7 @@ export default class InputTextAutoComplete extends Component {
               renderItem={this.renderAutoSuggestionResult}
               keyboardShouldPersistTaps="handled"
               keyExtractor={(item) => item.key}
+              style={{ maxHeight: METRICS.AUTO_SUGGEST_INFO + METRICS.LARGE }}
             />
           </View>
         </Modal>

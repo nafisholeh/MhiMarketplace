@@ -144,6 +144,7 @@ class CardIdentityForm extends Component {
               name="birth_place"
               title="Tempat"
               isAllBorderShown
+              isManualInputDisabled
               query={AUTO_SUGGEST_KABUPATEN}
               dropdownKey="_id"
               dropdownValue={["name", "provinsi.name"]}

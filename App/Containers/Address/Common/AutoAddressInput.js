@@ -55,6 +55,7 @@ class AutoAddressInput extends Component {
         <InputTextAutoComplete
           title="Kelurahan/Kecamatan/Kodepos"
           isAllBorderShown
+          isManualInputDisabled
           query={FETCH_DAERAH_LENGKAP}
           queryVariables="term"
           dropdownKey="kab_key"

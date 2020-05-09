@@ -38,10 +38,7 @@ class AreaList extends Component {
         <SignupWrapper
           title="Area lahan"
           currentPosition={currentPagePosition}
-          style={{ paddingHorizontal: 0 }}
-          contentContainerStyle={{
-            alignItems: "center",
-          }}
+          styleWrapper={{ paddingTop: METRICS.SMALL }}
         >
           <TouchableOpacity
             style={{

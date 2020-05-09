@@ -14,8 +14,11 @@ export default class SignupWrapper extends Component {
         <SignupIndicator currentPosition={currentPosition} />
         <KeyboardFriendlyView
           style={{
-            paddingVertical: METRICS.HUGE,
-            paddingHorizontal: METRICS.HUGE,
+            ...{
+              paddingVertical: METRICS.HUGE,
+              paddingHorizontal: METRICS.HUGE,
+            },
+            ...styleWrapper,
           }}
           keyboardShouldPersistTaps="handled"
         >

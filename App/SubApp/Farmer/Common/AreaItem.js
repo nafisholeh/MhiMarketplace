@@ -37,7 +37,7 @@ class AreaItem extends Component {
       edgePadding: METRICS.MINI_MAP_EDGE_PADDING,
       animated: false,
     };
-    if (Array.isArray(polygon)) {
+    if (Array.isArray(polygon) && polygon.length > 0) {
       this.map.fitToCoordinates(polygon, options);
     }
   };
@@ -100,12 +100,14 @@ class AreaItem extends Component {
                 customMapStyle={MINI_MAP_STYLE}
                 liteMode
               >
-                <Polygon
-                  coordinates={polygon}
-                  strokeColor={Colors.MAP_AREA_BORDER}
-                  fillColor={Colors.MAP_AREA}
-                  strokeWidth={METRICS.AREA_STROKE_WIDTH}
-                />
+                {polygon ? (
+                  <Polygon
+                    coordinates={polygon}
+                    strokeColor={Colors.MAP_AREA_BORDER}
+                    fillColor={Colors.MAP_AREA}
+                    strokeWidth={METRICS.AREA_STROKE_WIDTH}
+                  />
+                ) : null}
               </MapView>
             </View>
             <View

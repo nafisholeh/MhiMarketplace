@@ -47,6 +47,7 @@ export default class InputText extends Component {
       styleInput,
       iconStyle,
       onChangeText,
+      onChangeTextMask,
       isAllBorderShown,
       mask,
       multiline,
@@ -150,7 +151,7 @@ export default class InputText extends Component {
               }
               {...this.props}
               onChangeText={(formatted, extracted) =>
-                onChangeText(formatted, name)
+                onChangeTextMask(formatted, extracted, name)
               }
               mask={mask}
             />
@@ -300,6 +301,7 @@ InputText.propTypes = {
   prefixIcon: oneOfType([number, string]),
   name: string,
   onChangeText: func,
+  onChangeTextMask: func,
 };
 
 InputText.defaultProps = {

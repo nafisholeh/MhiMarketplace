@@ -41,10 +41,18 @@ class AccountCredsForm extends Component {
     }
   };
 
+  parseValidPhone = () => {
+    const { phone } = this.state;
+    if (typeof phone === "string")
+      return phone.charAt(0) === "0" ? phone : `0${phone}`;
+    return phone;
+  };
+
   onSignup = () => {
     const { navigation, storeFarmerCreds } = this.props;
-    const { phone, email, password } = this.state;
-    storeFarmerCreds(phone, email, password);
+    const { email, password } = this.state;
+    const validPhone = this.parseValidPhone();
+    storeFarmerCreds(validPhone, email, password);
     navigation.navigate("SignupFarmerSecond");
   };
 
@@ -60,6 +68,10 @@ class AccountCredsForm extends Component {
 
   onChangeText = (value, stateName) => {
     this.setState({ [stateName]: value }, this.onEligibleToSubmit);
+  };
+
+  onChangePhone = (formatted, raw, stateName) => {
+    this.setState({ [stateName]: raw });
   };
 
   render() {
@@ -88,7 +100,7 @@ class AccountCredsForm extends Component {
             mask="[000] [0000] [0000] [0000]"
             value={phone || ""}
             error={error_phone}
-            onChangeText={this.onChangeText}
+            onChangeTextMask={this.onChangePhone}
             returnKeyType="next"
             keyboardType="numeric"
             onSubmitEditing={() => this._email.focus()}

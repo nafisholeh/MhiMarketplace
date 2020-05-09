@@ -6,6 +6,7 @@ import { withNavigation } from "react-navigation";
 import { withNoHeader } from "Hoc";
 import FarmerSignupActions from "Redux/FarmerSignupRedux";
 import { isEmailError, moderateScale } from "Lib";
+import { Colors } from "Themes";
 import { InputText, ButtonPrimary } from "Components";
 import SignupWrapper from "./SignupWrapper";
 
@@ -83,6 +84,7 @@ class AccountCredsForm extends Component {
             isAllBorderShown
             title="Nomor HP"
             prefix="+62"
+            prefixTheme="block"
             value={phone || ""}
             error={error_phone}
             onChangeText={this.onChangeText}

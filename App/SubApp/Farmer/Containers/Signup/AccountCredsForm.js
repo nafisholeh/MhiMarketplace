@@ -85,6 +85,7 @@ class AccountCredsForm extends Component {
             title="Nomor HP"
             prefix="+62"
             prefixTheme="block"
+            mask="[000] [0000] [0000] [0000]"
             value={phone || ""}
             error={error_phone}
             onChangeText={this.onChangeText}

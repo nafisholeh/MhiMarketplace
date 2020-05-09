@@ -82,6 +82,7 @@ class AccountCredsForm extends Component {
             refs={(ref) => (this._phone = ref)}
             isAllBorderShown
             title="Nomor HP"
+            prefix="+62"
             value={phone || ""}
             error={error_phone}
             onChangeText={this.onChangeText}

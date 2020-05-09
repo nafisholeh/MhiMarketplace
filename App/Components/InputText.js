@@ -166,14 +166,13 @@ const styles = StyleSheet.create({
   multiline: {
     flex: 1,
     alignItems: "stretch",
-    paddingVertical: moderateScale(5),
+    paddingVertical: METRICS.SMALL,
   },
   prefix: {
-    color: Colors.text,
+    color: Colors.TEXT_SECONDARY,
     fontFamily: "CircularStd-Book",
     fontSize: 14,
-    marginBottom: 2,
-    marginRight: moderateScale(5),
+    marginLeft: METRICS.SMALL,
   },
   title: {
     color: Colors.veggie_dark,

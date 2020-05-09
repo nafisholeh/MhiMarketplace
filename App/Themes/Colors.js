@@ -42,6 +42,9 @@ const colors = {
   BUTTON_TERTIER_INVERTED: "#909090",
 
   PICKER_ITEM_HIGHLIGHTED: "#909090",
+
+  TEXT: "rgba(0,0,0,0.68)",
+  TEXT_SECONDARY: "rgba(0,0,0,0.3)",
 };
 
 export default colors;

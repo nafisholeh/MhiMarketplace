@@ -66,7 +66,7 @@ class AutoAddressInput extends Component {
         <InputText
           title="RT/RW"
           value={rtrw}
-          onChangeText={(rtrw) => {
+          onChangeTextMask={(rtrw) => {
             onRtRwChanged(rtrw);
             this.setState({ rtrw });
           }}

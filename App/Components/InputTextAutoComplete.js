@@ -30,7 +30,7 @@ export default class InputTextAutoComplete extends Component {
       suggestionList: null,
       value: "",
       valueTemp: "",
-      isManualInput: false,
+      isNotFound: false,
       isFetching: false,
       isError: false,
       visible: false,
@@ -89,7 +89,7 @@ export default class InputTextAutoComplete extends Component {
         });
         this.setState({
           suggestionList: normalisedData,
-          isManualInput: response.length === 0,
+          isNotFound: response.length === 0,
         });
       })
       .catch(() => {
@@ -106,7 +106,7 @@ export default class InputTextAutoComplete extends Component {
         valueTemp: text,
         isTextSufficient: true,
         suggestionList: null,
-        isManualInput: false,
+        isNotFound: false,
         isFetching: true,
         isError: false,
       });
@@ -117,7 +117,7 @@ export default class InputTextAutoComplete extends Component {
       valueTemp: text,
       isTextSufficient: false,
       suggestionList: null,
-      isManualInput: false,
+      isNotFound: false,
       isFetching: false,
       isError: false,
     });
@@ -134,7 +134,7 @@ export default class InputTextAutoComplete extends Component {
         valueTemp: text,
         isTextSufficient: true,
         suggestionList: filteredDropdown,
-        isManualInput: false,
+        isNotFound: false,
       });
       return;
     }
@@ -142,7 +142,7 @@ export default class InputTextAutoComplete extends Component {
       valueTemp: text,
       isTextSufficient: false,
       suggestionList: null,
-      isManualInput: false,
+      isNotFound: false,
     });
   };
 
@@ -187,7 +187,7 @@ export default class InputTextAutoComplete extends Component {
 
   storeManualInput = () => {
     const { valueTemp } = this.state;
-    this.onSelectDropdown({ value: valueTemp, isManualInput: true });
+    this.onSelectDropdown({ value: valueTemp, isNotFound: true });
   };
 
   renderAutoSuggestionResult = ({ item }) => (
@@ -214,6 +214,48 @@ export default class InputTextAutoComplete extends Component {
     );
   };
 
+  renderModalInfo = () => {
+    const { isManualInputDisabled } = this.props;
+    const { isNotFound, isError } = this.state;
+    if (!isNotFound && !isError) return null;
+    const message = isError
+      ? `${STRINGS.NETWORK_ERROR_HEADER}. ${STRINGS.NETWORK_ERROR_BODY}`
+      : STRINGS.NO_DATA_FOUND;
+    const buttonTitle = isError ? STRINGS.RELOAD : STRINGS.SAVE;
+    return (
+      <View
+        style={{
+          flexDirection: "column",
+          justifyContent: isManualInputDisabled ? "center" : "space-around",
+          alignItems: "center",
+          backgroundColor: Colors.white,
+          height: METRICS.AUTO_SUGGEST_INFO,
+          paddingHorizontal: METRICS.HUGE,
+          paddingTop: METRICS.HUGE,
+          paddingBottom: isManualInputDisabled ? METRICS.HUGE : METRICS.SMALL,
+        }}
+      >
+        <Text style={{ ...FONTS.INFO, ...{ textAlign: "center" } }}>
+          {message}
+        </Text>
+        {(isError || isNotFound) && !isManualInputDisabled ? (
+          <TouchableOpacity
+            onPress={() =>
+              isError ? this.refetchSuggestion() : this.storeManualInput()
+            }
+            style={{ padding: METRICS.MEDIUM }}
+          >
+            <Text style={{ ...FONTS.INPUT_TITLE, ...{ textAlign: "center" } }}>
+              {buttonTitle}
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <View />
+        )}
+      </View>
+    );
+  };
+
   render() {
     const {
       title,
@@ -227,9 +269,7 @@ export default class InputTextAutoComplete extends Component {
       suggestionList,
       value,
       valueTemp,
-      isManualInput,
       isFetching,
-      isError,
       visible,
     } = this.state;
     return (
@@ -313,40 +353,7 @@ export default class InputTextAutoComplete extends Component {
                 },
               }}
             />
-            {isManualInput || isError ? (
-              <View
-                style={{
-                  flexDirection: "column",
-                  justifyContent: "space-around",
-                  alignItems: "center",
-                  backgroundColor: Colors.white,
-                  height: METRICS.AUTO_SUGGEST_INFO,
-                  paddingHorizontal: METRICS.HUGE,
-                  paddingTop: METRICS.HUGE,
-                  paddingBottom: METRICS.SMALL,
-                }}
-              >
-                <Text style={{ ...FONTS.INFO, ...{ textAlign: "center" } }}>
-                  {isError
-                    ? `${STRINGS.NETWORK_ERROR_HEADER}. ${STRINGS.NETWORK_ERROR_BODY}`
-                    : STRINGS.NO_DATA_FOUND}
-                </Text>
-                <TouchableOpacity
-                  onPress={() =>
-                    isError ? this.refetchSuggestion() : this.storeManualInput()
-                  }
-                  style={{ padding: METRICS.MEDIUM }}
-                >
-                  <Text
-                    style={{ ...FONTS.INPUT_TITLE, ...{ textAlign: "center" } }}
-                  >
-                    {isError ? STRINGS.RELOAD : STRINGS.SAVE}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <View />
-            )}
+            {this.renderModalInfo()}
             {isFetching ? (
               <View
                 style={{

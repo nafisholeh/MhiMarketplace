@@ -9,12 +9,13 @@ import {
   ButtonTertier,
   InputText,
   InputPicker,
+  InputTextAutoComplete,
   YearMonthPicker,
 } from "Components";
 import AppConfig, { YEAR_RANGE_START, YEAR_RANGE_END } from "Config/AppConfig";
 import { METRICS, Images, Colors, FONTS } from "Themes";
 import { screenWidth } from "Lib";
-import { FETCH_COMMODITIES } from "SubApp/Farmer/GraphQL/Commodity/Query";
+import { AUTO_SUGGEST_COMMODITIES } from "SubApp/Farmer/GraphQL/Commodity/Query";
 
 class AreaType extends Component {
   state = {
@@ -100,11 +101,12 @@ class AreaType extends Component {
     );
   };
 
-  onCommodityChange = (key, value, stateName, isManualInput) => {
+  onCommodityChange = (item, stateName) => {
+    const { isManualInput } = item || {};
     this.setState(
       {
-        [stateName]: value,
-        isNewCommodity: isManualInput,
+        [stateName]: item,
+        isNewCommodity: isManualInput || false,
       },
       () => {
         this.checkSubmitEligibility();
@@ -247,16 +249,14 @@ class AreaType extends Component {
           <View />
         )}
         {isCommodityRequired ? (
-          <InputPicker
+          <InputTextAutoComplete
             name="commodity"
             title="Komoditas"
-            placeholder="Pilih komoditas"
-            onSelectionChange={this.onCommodityChange}
-            query={FETCH_COMMODITIES}
-            isInitialFetching
-            isManualInputDisplayed
-            styleContainer={styles.fieldContainer}
-            manualInputStyle={styles.fieldContainer}
+            isAllBorderShown
+            query={AUTO_SUGGEST_COMMODITIES}
+            dropdownKey="_id"
+            dropdownValue="name"
+            onValueChange={this.onCommodityChange}
           />
         ) : (
           <View />

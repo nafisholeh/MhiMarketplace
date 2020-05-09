@@ -1,4 +1,4 @@
-import gql from 'graphql-tag'
+import gql from "graphql-tag";
 
 export const FETCH_COMMODITIES = gql`
   query fetchCommodities {
@@ -8,4 +8,13 @@ export const FETCH_COMMODITIES = gql`
       key
     }
   }
-`
+`;
+
+export const AUTO_SUGGEST_COMMODITIES = gql`
+  query autoSuggestCommodities($term: String!) {
+    autoSuggestCommodities(term: $term) {
+      _id
+      name
+    }
+  }
+`;

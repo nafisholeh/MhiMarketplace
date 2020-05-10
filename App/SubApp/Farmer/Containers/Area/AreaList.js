@@ -66,14 +66,14 @@ class AreaList extends Component {
 
           {isAnyAreaDrawn && Array.isArray(areas) ? (
             areas.map((item, index) => {
-              const { polygon, size, commodity_name } = item;
+              const { polygon, size, commodity } = item;
               return (
                 <AreaItem
                   key={index}
                   title={`Lahan ${index + 1}`}
                   polygon={polygon}
                   size={size}
-                  commodity={commodity_name}
+                  commodity={commodity}
                 />
               );
             })

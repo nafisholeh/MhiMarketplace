@@ -1,25 +1,35 @@
 import React, { Component, Fragment } from "react";
-import { Text, View, StyleSheet, PixelRatio } from "react-native";
-import MapView, { Polygon, MAP_TYPES } from "react-native-maps";
-import ViewOverflow from "react-native-view-overflow";
+import { Text, View, StyleSheet } from "react-native";
+import MapView, { Polygon } from "react-native-maps";
+import isEqual from "lodash/isEqual";
 
 import { MINI_MAP_STYLE, MINI_MAP_EDGE_PADDING } from "Config/AppConfig";
-import { moderateScale, screenWidth, normalizeAreaSize } from "Lib";
+import {
+  moderateScale,
+  screenWidth,
+  normalizeAreaSize,
+  capitalizeFirstLetter,
+} from "Lib";
 import { FONTS, METRICS, Colors } from "Themes";
 import { ProductHorizontalWrapper } from "Components";
 
 class AreaItem extends Component {
   state = {
     sizeInUnit: "-",
+    commodity: null,
   };
 
   componentDidMount() {
     this.convertSize();
+    this.parseCommodity();
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.size !== this.props.size) {
       this.convertSize();
+    }
+    if (!isEqual(prevProps.commodity, this.props.commodity)) {
+      this.parseCommodity();
     }
   }
 
@@ -29,6 +39,12 @@ class AreaItem extends Component {
     this.setState({
       sizeInUnit: normalizeAreaSize(size, "m2", "ha") || "",
     });
+  };
+
+  parseCommodity = () => {
+    const { commodity } = this.props;
+    const { value } = commodity || {};
+    this.setState({ commodity: value });
   };
 
   onMapReady = () => {
@@ -45,15 +61,13 @@ class AreaItem extends Component {
   render() {
     const {
       children,
-      title,
-      commodity,
       polygon,
       onPress = () => {},
       style,
       styleChildren,
       shadowRadius,
     } = this.props;
-    const { sizeInUnit } = this.state;
+    const { sizeInUnit, commodity } = this.state;
     return (
       <ProductHorizontalWrapper
         width={screenWidth - METRICS.EXTRA_HUGE}
@@ -127,7 +141,7 @@ class AreaItem extends Component {
                   { marginBottom: METRICS.TINY },
                 ]}
               >
-                {commodity || "n/a"}
+                {capitalizeFirstLetter(commodity) || "n/a"}
               </Text>
               <Text
                 style={{

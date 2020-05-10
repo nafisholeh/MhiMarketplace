@@ -247,7 +247,6 @@ export const storeFarmerArea = (state, { area: newArea }) => {
 };
 
 export const storeFarmerType = (state, { area }) => {
-  const { type, status, name, date_start, date_end } = area;
   const currentArea = state.area || [];
   if (Array.isArray(currentArea) && currentArea.length > 0) {
     const updatedIndex = currentArea.length - 1;
@@ -255,13 +254,7 @@ export const storeFarmerType = (state, { area }) => {
     return state.merge({
       area: [
         ...state.area.slice(0, updatedIndex),
-        Object.assign({}, lastArea, {
-          type,
-          status,
-          name,
-          date_start,
-          date_end,
-        }),
+        Object.assign({}, lastArea, area),
         ...state.area.slice(updatedIndex + 1),
       ],
     });

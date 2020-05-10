@@ -30,7 +30,6 @@ class AreaType extends Component {
     endYear: YEAR_RANGE_END,
     isSubmitEligible: false,
     commodity: null,
-    isNewCommodity: false,
     isCommodityRequired: false,
   };
 
@@ -44,7 +43,7 @@ class AreaType extends Component {
   }
 
   onSubmit = () => {
-    const { navigation, storeFarmerType, storeFarmerCommodity } = this.props;
+    const { navigation, storeFarmerType } = this.props;
     const {
       type,
       status,
@@ -54,23 +53,20 @@ class AreaType extends Component {
       month_end,
       year_end,
       commodity,
-      isNewCommodity,
       isCommodityRequired,
     } = this.state;
-    if (isCommodityRequired) {
-      const [commodity_id, commodity_name] = commodity.split("||");
-      storeFarmerCommodity({
-        commodity_id,
-        commodity_name,
-        isNewCommodity,
-      });
-    }
+    const dateStartParsed =
+      year_start && month_start ? `${year_start}-${month_start}-01` : null;
+    const dateEndParsed =
+      year_end && month_end ? `${year_end}-${month_end}-01` : null;
+    const commodityParsed = isCommodityRequired ? commodity : null;
     storeFarmerType({
       type,
       status,
       name,
-      date_start: `${year_start}-${month_start}-01`,
-      date_end: `${year_end}-${month_end}-01`,
+      date_start: dateStartParsed,
+      date_end: dateEndParsed,
+      commodity: commodityParsed,
     });
     navigation.navigate("AreaList");
   };
@@ -102,16 +98,9 @@ class AreaType extends Component {
   };
 
   onCommodityChange = (item, stateName) => {
-    const { isManualInput } = item || {};
-    this.setState(
-      {
-        [stateName]: item,
-        isNewCommodity: isManualInput || false,
-      },
-      () => {
-        this.checkSubmitEligibility();
-      }
-    );
+    this.setState({ [stateName]: item }, () => {
+      this.checkSubmitEligibility();
+    });
   };
 
   checkSubmitEligibility = () => {

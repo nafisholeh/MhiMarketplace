@@ -1,7 +1,8 @@
-import React, { Component, Fragment } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import React, { Component } from "react";
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import MapView, { Polygon } from "react-native-maps";
 import isEqual from "lodash/isEqual";
+import ViewOverflow from "react-native-view-overflow";
 
 import { MINI_MAP_STYLE, MINI_MAP_EDGE_PADDING } from "Config/AppConfig";
 import {
@@ -11,7 +12,6 @@ import {
   capitalizeFirstLetter,
 } from "Lib";
 import { FONTS, METRICS, Colors } from "Themes";
-import { ProductHorizontalWrapper } from "Components";
 
 class AreaItem extends Component {
   state = {
@@ -59,101 +59,83 @@ class AreaItem extends Component {
   };
 
   render() {
-    const {
-      children,
-      polygon,
-      onPress = () => {},
-      style,
-      styleChildren,
-      shadowRadius,
-    } = this.props;
+    const { polygon, onPress = () => {}, style } = this.props;
     const { sizeInUnit, commodity } = this.state;
     return (
-      <ProductHorizontalWrapper
-        width={screenWidth - METRICS.EXTRA_HUGE}
-        height={METRICS.MINI_MAP_HEIGHT}
-        borderRadius={METRICS.AREA_ITEM_RADIUS}
-        shadowRadiusAndroid={METRICS.AREA_ITEM_SHADOW_RADIUS || shadowRadius}
+      <TouchableOpacity
         style={{
-          ...{
-            marginTop: METRICS.TINY,
-            marginBottom: METRICS.TINY,
-            marginHorizontal: METRICS.SMALL,
-          },
-          ...style,
-        }}
-        styleChildren={{
           ...{
             flexDirection: "row",
             alignItems: "center",
+            marginTop: METRICS.TINY,
+            marginBottom: METRICS.TINY,
+            marginHorizontal: METRICS.SMALL,
+            height: METRICS.MINI_MAP_HEIGHT,
+            borderRadius: METRICS.AREA_ITEM_RADIUS,
+            borderColor: Colors.BORDER,
+            borderWidth: METRICS.BORDER_THIN,
           },
-          ...styleChildren,
+          ...style,
         }}
         onPress={onPress}
       >
-        {children ? (
-          children
-        ) : (
-          <Fragment>
-            <View
-              style={{
-                width: METRICS.MINI_MAP_WIDTH,
-                height: METRICS.MINI_MAP_HEIGHT,
-                borderTopLeftRadius: METRICS.AREA_ITEM_RADIUS,
-                borderBottomLeftRadius: METRICS.AREA_ITEM_RADIUS,
-                overflow: "hidden",
-              }}
-            >
-              <MapView
-                ref={(map) => {
-                  this.map = map;
-                }}
-                onMapReady={() => setTimeout(() => this.onMapReady())}
-                style={StyleSheet.absoluteFillObject}
-                mapType="terrain"
-                customMapStyle={MINI_MAP_STYLE}
-                liteMode
-              >
-                {polygon ? (
-                  <Polygon
-                    coordinates={polygon}
-                    strokeColor={Colors.MAP_AREA_BORDER}
-                    fillColor={Colors.MAP_AREA}
-                    strokeWidth={METRICS.AREA_STROKE_WIDTH}
-                  />
-                ) : null}
-              </MapView>
-            </View>
-            <View
-              style={{
-                flexDirection: "column",
-                justifyContent: "space-around",
-                backgroundColor: "white",
-                marginVertical: moderateScale(10),
-                paddingLeft: moderateScale(20),
-                paddingVertical: moderateScale(15),
-              }}
-            >
-              <Text
-                style={[
-                  FONTS.BODY_BOLD,
-                  !commodity ? { color: Colors.disabled_light } : {},
-                  { marginBottom: METRICS.TINY },
-                ]}
-              >
-                {capitalizeFirstLetter(commodity) || "n/a"}
-              </Text>
-              <Text
-                style={{
-                  ...FONTS.BODY_NORMAL,
-                }}
-              >
-                {sizeInUnit || "n/a"}
-              </Text>
-            </View>
-          </Fragment>
-        )}
-      </ProductHorizontalWrapper>
+        <View
+          style={{
+            width: METRICS.MINI_MAP_WIDTH,
+            height: METRICS.MINI_MAP_HEIGHT - 2,
+            borderTopLeftRadius: METRICS.AREA_ITEM_RADIUS,
+            borderBottomLeftRadius: METRICS.AREA_ITEM_RADIUS,
+            overflow: "hidden",
+          }}
+        >
+          <MapView
+            ref={(map) => {
+              this.map = map;
+            }}
+            onMapReady={() => setTimeout(() => this.onMapReady())}
+            style={StyleSheet.absoluteFillObject}
+            mapType="terrain"
+            customMapStyle={MINI_MAP_STYLE}
+            liteMode
+          >
+            {polygon ? (
+              <Polygon
+                coordinates={polygon}
+                strokeColor={Colors.MAP_AREA_BORDER}
+                fillColor={Colors.MAP_AREA}
+                strokeWidth={METRICS.AREA_STROKE_WIDTH}
+              />
+            ) : null}
+          </MapView>
+        </View>
+        <View
+          style={{
+            flexDirection: "column",
+            justifyContent: "space-around",
+            backgroundColor: "white",
+            marginVertical: moderateScale(10),
+            paddingLeft: moderateScale(20),
+            paddingVertical: moderateScale(15),
+          }}
+        >
+          <Text
+            style={[
+              FONTS.HEADER_SMALL,
+              !commodity ? { color: Colors.disabled_light } : {},
+              { marginBottom: METRICS.TINY },
+            ]}
+          >
+            {capitalizeFirstLetter(commodity) || "n/a"}
+          </Text>
+          <Text
+            style={{
+              ...FONTS.BODY_NORMAL,
+            }}
+          >
+            {sizeInUnit || "n/a"}
+          </Text>
+        </View>
+      </TouchableOpacity>
     );
   }
 }

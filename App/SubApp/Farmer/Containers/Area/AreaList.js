@@ -47,7 +47,7 @@ class AreaList extends Component {
               marginHorizontal: METRICS.SMALL,
               justifyContent: "center",
               alignItems: "center",
-              borderWidth: 1,
+              borderWidth: METRICS.BORDER_THIN,
               borderColor: Colors.BORDER,
               borderRadius: METRICS.AREA_ITEM_RADIUS,
               padding: METRICS.MEDIUM,

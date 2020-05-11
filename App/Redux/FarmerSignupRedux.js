@@ -1,14 +1,13 @@
 import { createReducer, createActions } from "reduxsauce";
 import Immutable from "seamless-immutable";
 import { createSelector } from "reselect";
-import update from "immutability-helper";
 
-import { convertToGraphQLFile } from "Lib";
 import AppConfig from "Config/AppConfig";
 
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
+  resetFarmerArea: null,
   storeFarmerCreds: ["phone", "email", "password"],
   storeFarmerKtp: ["ktp"],
   storeFarmerArea: ["area"],
@@ -237,6 +236,8 @@ export const storeFarmerCreds = (state, { phone, email, password }) =>
 
 export const storeFarmerKtp = (state, { ktp }) => state.merge({ ktp });
 
+export const resetFarmerArea = (state) => state.merge({ area: null });
+
 export const storeFarmerArea = (state, { area: newArea }) => {
   const currentArea = state.area || [];
   if (Array.isArray(currentArea)) {
@@ -286,6 +287,7 @@ export const storeFarmerCommodity = (state, { area }) => {
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
+  [Types.RESET_FARMER_AREA]: resetFarmerArea,
   [Types.STORE_FARMER_CREDS]: storeFarmerCreds,
   [Types.STORE_FARMER_KTP]: storeFarmerKtp,
   [Types.STORE_FARMER_AREA]: storeFarmerArea,

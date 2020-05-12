@@ -117,12 +117,14 @@ export const getFarmerSignupAreas = () =>
           name,
           date_start,
           date_end,
-          commodity_id,
-          isNewCommodity,
+          commodity,
         } = item || {};
-        const polygonInCsv = polygon
-          .map(({ latitude, longitude }) => `${latitude},${longitude}||`)
-          .join(",");
+        const polygonInCsv = Array.isArray(polygon)
+          ? polygon.map(
+              ({ latitude, longitude }) => `${latitude},${longitude}||`
+            )
+          : "";
+        const { key, value, isManualInput } = commodity || {};
         const output = Object.assign(
           {},
           {
@@ -131,16 +133,14 @@ export const getFarmerSignupAreas = () =>
             size, // in m2
             polygon: polygonInCsv,
           },
-          status !== AppConfig.areaStatus.OWN
+          status !== AppConfig.ownedArea
             ? {
                 name,
                 date_start,
                 date_end,
               }
             : {},
-          isNewCommodity
-            ? { commodity_other_name: commodity_id }
-            : { commodity_id }
+          isManualInput ? { commodity_new: value } : { commodity: key }
         );
         return output;
       });

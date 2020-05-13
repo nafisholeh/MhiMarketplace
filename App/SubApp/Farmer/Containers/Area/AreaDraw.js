@@ -171,7 +171,7 @@ class AreaDraw extends Component {
       },
       () => {
         const options = {
-          edgePadding: METRICS.MINI_MAP_EDGE_PADDING,
+          edgePadding: METRICS.MAP_EDGE_PADDING,
           animated: false,
         };
         if (Array.isArray(coordinates) && coordinates.length > 0) {

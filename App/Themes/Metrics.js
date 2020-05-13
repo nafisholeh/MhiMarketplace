@@ -58,6 +58,8 @@ const metrics = {
   BUTTON_TERTIER_RADIUS: moderateScale(7),
 
   AUTO_SUGGEST_INFO: moderateScale(150),
+
+  FIT_TO_COORDINATES_WAIT_TIME: 1000, // 1 seconds
 };
 
 export default metrics;

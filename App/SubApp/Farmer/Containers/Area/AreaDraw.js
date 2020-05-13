@@ -62,7 +62,6 @@ class AreaDraw extends Component {
       polygonFirstPoint: null,
       currentRegion: null,
       detailFormVisible: false,
-      mapSnapshot: null,
     };
   }
 
@@ -160,10 +159,7 @@ class AreaDraw extends Component {
   handleDrawingFinish = () => {
     const { editing, polygonAreaSizeM2 } = this.state;
     const { storeFarmerArea } = this.props;
-    storeFarmerArea({
-      polygon: editing.coordinates,
-      size: polygonAreaSizeM2,
-    });
+    const { coordinates } = editing || {};
     this.setState(
       {
         isFinished: true,
@@ -174,31 +170,25 @@ class AreaDraw extends Component {
         drawingState: MAP_DRAW_STATE.DRAWING_FINISHED,
       },
       () => {
-        this.preSaveScreenshot();
+        const options = {
+          edgePadding: METRICS.MINI_MAP_EDGE_PADDING,
+          animated: false,
+        };
+        if (Array.isArray(coordinates) && coordinates.length > 0) {
+          this.map.fitToCoordinates(coordinates, options);
+        }
         setTimeout(() => {
-          this.saveScreenshot();
-        }, 1000);
+          const snapshot = this.map.takeSnapshot({ result: "file" });
+          snapshot.then((uri) => {
+            storeFarmerArea({
+              polygon: editing.coordinates,
+              size: polygonAreaSizeM2,
+              snapshot: uri,
+            });
+          });
+        }, METRICS.FIT_TO_COORDINATES_WAIT_TIME);
       }
     );
-  };
-
-  preSaveScreenshot = () => {
-    const { editing } = this.state;
-    const { coordinates } = editing || {};
-    const options = {
-      edgePadding: METRICS.MINI_MAP_EDGE_PADDING,
-      animated: false,
-    };
-    if (Array.isArray(coordinates) && coordinates.length > 0) {
-      this.map.fitToCoordinates(coordinates, options);
-    }
-  };
-
-  saveScreenshot = () => {
-    const snapshot = this.map.takeSnapshot({ result: "base64" });
-    snapshot.then((uri) => {
-      this.setState({ mapSnapshot: uri });
-    });
   };
 
   restartDrawing = () => {
@@ -240,7 +230,6 @@ class AreaDraw extends Component {
       polygonLastPoint,
       polygonFirstPoint,
       detailFormVisible,
-      mapSnapshot,
     } = this.state;
     const mapOptions = {
       scrollEnabled: true,
@@ -342,7 +331,7 @@ class AreaDraw extends Component {
         >
           {detailFormVisible ? (
             <Fragment>
-              <AreaType mapSnapshot={mapSnapshot} />
+              <AreaType />
             </Fragment>
           ) : (
             <AreaDrawInfo

@@ -3,7 +3,7 @@ import { Text, View, Image, TouchableOpacity } from "react-native";
 import isEqual from "lodash/isEqual";
 
 import { moderateScale, normalizeAreaSize, capitalizeFirstLetter } from "Lib";
-import { FONTS, METRICS, Colors } from "Themes";
+import { FONTS, METRICS, Colors, Images } from "Themes";
 
 class AreaItem extends Component {
   state = {
@@ -65,14 +65,23 @@ class AreaItem extends Component {
             marginLeft: METRICS.MEDIUM,
             overflow: "hidden",
             elevation: 4,
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
           <Image
-            source={{ uri: snapshot }}
+            source={snapshot ? { uri: snapshot } : Images.map_disabled}
             style={{
-              width: METRICS.MINI_MAP_WIDTH,
-              height: METRICS.MINI_MAP_HEIGHT,
-              resizeMode: "cover",
+              ...{
+                width: snapshot
+                  ? METRICS.MINI_MAP_WIDTH
+                  : METRICS.MINI_MAP_WIDTH - METRICS.HUGE,
+                height: snapshot
+                  ? METRICS.MINI_MAP_HEIGHT
+                  : METRICS.MINI_MAP_HEIGHT - METRICS.HUGE,
+                resizeMode: "cover",
+              },
+              ...(snapshot ? {} : { tintColor: Colors.disabled_light }),
             }}
           />
         </View>

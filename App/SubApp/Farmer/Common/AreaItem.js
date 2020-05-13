@@ -1,16 +1,8 @@
 import React, { Component } from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
-import MapView, { Polygon } from "react-native-maps";
+import { Text, View, Image, TouchableOpacity } from "react-native";
 import isEqual from "lodash/isEqual";
-import ViewOverflow from "react-native-view-overflow";
 
-import { MINI_MAP_STYLE, MINI_MAP_EDGE_PADDING } from "Config/AppConfig";
-import {
-  moderateScale,
-  screenWidth,
-  normalizeAreaSize,
-  capitalizeFirstLetter,
-} from "Lib";
+import { moderateScale, normalizeAreaSize, capitalizeFirstLetter } from "Lib";
 import { FONTS, METRICS, Colors } from "Themes";
 
 class AreaItem extends Component {
@@ -47,19 +39,8 @@ class AreaItem extends Component {
     this.setState({ commodity: value });
   };
 
-  onMapReady = () => {
-    const { polygon } = this.props;
-    const options = {
-      edgePadding: METRICS.MINI_MAP_EDGE_PADDING,
-      animated: false,
-    };
-    if (Array.isArray(polygon) && polygon.length > 0) {
-      this.map.fitToCoordinates(polygon, options);
-    }
-  };
-
   render() {
-    const { polygon, onPress = () => {}, style } = this.props;
+    const { snapshot, onPress = () => {}, style } = this.props;
     const { sizeInUnit, commodity } = this.state;
     return (
       <TouchableOpacity
@@ -67,11 +48,8 @@ class AreaItem extends Component {
           ...{
             flexDirection: "row",
             alignItems: "center",
-            marginTop: METRICS.TINY,
-            marginBottom: METRICS.TINY,
             marginHorizontal: METRICS.SMALL,
-            height: METRICS.MINI_MAP_HEIGHT,
-            borderRadius: METRICS.AREA_ITEM_RADIUS,
+            height: METRICS.AREA_ITEM_HEIGHT,
             borderColor: Colors.BORDER,
             borderWidth: METRICS.BORDER_THIN,
           },
@@ -82,31 +60,21 @@ class AreaItem extends Component {
         <View
           style={{
             width: METRICS.MINI_MAP_WIDTH,
-            height: METRICS.MINI_MAP_HEIGHT - 2,
-            borderTopLeftRadius: METRICS.AREA_ITEM_RADIUS,
-            borderBottomLeftRadius: METRICS.AREA_ITEM_RADIUS,
+            height: METRICS.MINI_MAP_HEIGHT,
+            borderRadius: METRICS.AREA_ITEM_RADIUS,
+            marginLeft: METRICS.MEDIUM,
             overflow: "hidden",
+            elevation: 4,
           }}
         >
-          <MapView
-            ref={(map) => {
-              this.map = map;
+          <Image
+            source={{ uri: snapshot }}
+            style={{
+              width: METRICS.MINI_MAP_WIDTH,
+              height: METRICS.MINI_MAP_HEIGHT,
+              resizeMode: "cover",
             }}
-            onMapReady={this.onMapReady}
-            style={StyleSheet.absoluteFillObject}
-            mapType="terrain"
-            customMapStyle={MINI_MAP_STYLE}
-            liteMode
-          >
-            {polygon ? (
-              <Polygon
-                coordinates={polygon}
-                strokeColor={Colors.MAP_AREA_BORDER}
-                fillColor={Colors.MAP_AREA}
-                strokeWidth={METRICS.AREA_STROKE_WIDTH}
-              />
-            ) : null}
-          </MapView>
+          />
         </View>
         <View
           style={{

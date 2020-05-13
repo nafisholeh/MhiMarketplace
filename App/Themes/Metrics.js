@@ -40,16 +40,23 @@ const metrics = {
   AREA_DETAIL_HEIGHT: moderateScale(295),
   AREA_DETAIL_EXPAND_HEIGHT: moderateScale(360),
   AREA_STROKE_WIDTH: 4,
+  AREA_ITEM_HEIGHT: moderateScale(100),
   AREA_ITEM_RADIUS: 8,
   AREA_ITEM_SHADOW_RADIUS: 8,
 
-  MINI_MAP_WIDTH: moderateScale(100),
-  MINI_MAP_HEIGHT: moderateScale(110),
+  MINI_MAP_WIDTH: moderateScale(70),
+  MINI_MAP_HEIGHT: moderateScale(70),
   MINI_MAP_EDGE_PADDING: {
-    top: 0, //Platform.OS === "ios" ? 200 : PixelRatio.get() * 200 - 50,
+    top: 0,
     right: 0,
     bottom: Platform.OS === "ios" ? 10 : PixelRatio.get() * 10 - 50,
     left: 0,
+  },
+  MAP_EDGE_PADDING: {
+    top: Platform.OS === "ios" ? 50 : PixelRatio.get() * 50 - 50,
+    right: Platform.OS === "ios" ? 50 : PixelRatio.get() * 50 - 50,
+    bottom: Platform.OS === "ios" ? 50 : PixelRatio.get() * 50 - 50,
+    left: Platform.OS === "ios" ? 50 : PixelRatio.get() * 50 - 50,
   },
 
   PICKER_BOTTOM_HEIGHT: moderateScale(250),

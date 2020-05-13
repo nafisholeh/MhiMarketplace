@@ -49,7 +49,6 @@ class AreaList extends Component {
               alignItems: "center",
               borderWidth: METRICS.BORDER_THIN,
               borderColor: Colors.BORDER,
-              borderRadius: METRICS.AREA_ITEM_RADIUS,
               padding: METRICS.MEDIUM,
             }}
             onPress={() => navigation.navigate("AreaDraw")}
@@ -66,12 +65,12 @@ class AreaList extends Component {
 
           {isAnyAreaDrawn && Array.isArray(areas) ? (
             areas.map((item, index) => {
-              const { polygon, size, commodity } = item;
+              const { size, commodity, snapshot } = item;
               return (
                 <AreaItem
                   key={index}
                   title={`Lahan ${index + 1}`}
-                  polygon={polygon}
+                  snapshot={snapshot}
                   size={size}
                   commodity={commodity}
                 />

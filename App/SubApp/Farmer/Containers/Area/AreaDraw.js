@@ -27,8 +27,8 @@ import { withNoHeader } from "Hoc";
 const { width, height } = Dimensions.get("window");
 
 const ASPECT_RATIO = width / height;
-const LATITUDE = -8.209091;
-const LONGITUDE = 113.696251;
+const LATITUDE = -8.224812;
+const LONGITUDE = 113.687011;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const ZOOM_THRESHOLD = 19;
@@ -62,6 +62,7 @@ class AreaDraw extends Component {
       polygonFirstPoint: null,
       currentRegion: null,
       detailFormVisible: false,
+      mapSnapshot: null,
     };
   }
 
@@ -163,11 +164,40 @@ class AreaDraw extends Component {
       polygon: editing.coordinates,
       size: polygonAreaSizeM2,
     });
-    this.setState({
-      isFinished: true,
-      polygonFirstPoint: null,
-      polygonLastPoint: null,
-      drawingState: MAP_DRAW_STATE.DRAWING_FINISHED,
+    this.setState(
+      {
+        isFinished: true,
+        polygonFirstPoint: null,
+        polygonLastPoint: null,
+        polygonAreaSize: null,
+        polygonAreaSizeM2: null,
+        drawingState: MAP_DRAW_STATE.DRAWING_FINISHED,
+      },
+      () => {
+        this.preSaveScreenshot();
+        setTimeout(() => {
+          this.saveScreenshot();
+        }, 1000);
+      }
+    );
+  };
+
+  preSaveScreenshot = () => {
+    const { editing } = this.state;
+    const { coordinates } = editing || {};
+    const options = {
+      edgePadding: METRICS.MINI_MAP_EDGE_PADDING,
+      animated: false,
+    };
+    if (Array.isArray(coordinates) && coordinates.length > 0) {
+      this.map.fitToCoordinates(coordinates, options);
+    }
+  };
+
+  saveScreenshot = () => {
+    const snapshot = this.map.takeSnapshot({ result: "base64" });
+    snapshot.then((uri) => {
+      this.setState({ mapSnapshot: uri });
     });
   };
 
@@ -210,6 +240,7 @@ class AreaDraw extends Component {
       polygonLastPoint,
       polygonFirstPoint,
       detailFormVisible,
+      mapSnapshot,
     } = this.state;
     const mapOptions = {
       scrollEnabled: true,
@@ -310,7 +341,9 @@ class AreaDraw extends Component {
           }}
         >
           {detailFormVisible ? (
-            <AreaType />
+            <Fragment>
+              <AreaType mapSnapshot={mapSnapshot} />
+            </Fragment>
           ) : (
             <AreaDrawInfo
               drawingState={drawingState}

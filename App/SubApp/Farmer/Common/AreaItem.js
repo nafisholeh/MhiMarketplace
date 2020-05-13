@@ -92,7 +92,7 @@ class AreaItem extends Component {
             ref={(map) => {
               this.map = map;
             }}
-            onMapReady={() => setTimeout(() => this.onMapReady())}
+            onMapReady={this.onMapReady}
             style={StyleSheet.absoluteFillObject}
             mapType="terrain"
             customMapStyle={MINI_MAP_STYLE}

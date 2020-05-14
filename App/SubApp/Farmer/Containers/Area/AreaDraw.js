@@ -172,24 +172,28 @@ class AreaDraw extends Component {
         drawingState: MAP_DRAW_STATE.DRAWING_FINISHED,
       },
       () => {
-        const options = {
-          edgePadding: METRICS.MAP_EDGE_PADDING,
-          animated: false,
-        };
-        if (Array.isArray(coordinates) && coordinates.length > 0) {
-          this.map.fitToCoordinates(coordinates, options);
-        }
-        setTimeout(() => {
-          const snapshot = this.map.takeSnapshot({ result: "file" });
-          snapshot.then((uri) => {
-            storeFarmerArea({
-              polygon: editing.coordinates,
-              size: polygonAreaSizeM2,
-              snapshot: uri,
+        try {
+          const options = {
+            edgePadding: METRICS.MAP_EDGE_PADDING,
+            animated: false,
+          };
+          if (Array.isArray(coordinates) && coordinates.length > 0) {
+            this.map.fitToCoordinates(coordinates, options);
+          }
+          setTimeout(() => {
+            const snapshot = this.map.takeSnapshot({ result: "file" });
+            snapshot.then((uri) => {
+              storeFarmerArea({
+                polygon: editing.coordinates,
+                size: polygonAreaSizeM2,
+                snapshot: uri,
+              });
+              this.setState({ isLoading: false });
             });
-            this.setState({ isLoading: false });
-          });
-        }, METRICS.FIT_TO_COORDINATES_WAIT_TIME);
+          }, METRICS.FIT_TO_COORDINATES_WAIT_TIME);
+        } catch (error) {
+          this.setState({ isLoading: false });
+        }
       }
     );
   };

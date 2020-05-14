@@ -120,9 +120,9 @@ export const getFarmerSignupAreas = () =>
           commodity,
         } = item || {};
         const polygonInCsv = Array.isArray(polygon)
-          ? polygon.map(
-              ({ latitude, longitude }) => `${latitude},${longitude}||`
-            )
+          ? polygon
+              .map(({ latitude, longitude }) => `${latitude},${longitude}||`)
+              .join(",")
           : "";
         const { key, value, isManualInput } = commodity || {};
         const output = Object.assign(

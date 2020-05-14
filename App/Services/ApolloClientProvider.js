@@ -13,31 +13,38 @@ const options = {
   uri: AppConfig.uri.graphql,
 };
 
-const httpLink = ApolloLink.from([
-  onError(({ graphQLErrors, networkError, operation }) => {
-    if (operation.getContext().isCustomError) return;
-    if (graphQLErrors) {
-      InAppNotification.error(
-        STRINGS.GRAPHQL_ERROR_HEADER,
-        STRINGS.GRAPHQL_ERROR_BODY
-      );
-    } else if (networkError) {
-      InAppNotification.error(
-        STRINGS.NETWORK_ERROR_HEADER,
-        STRINGS.NETWORK_ERROR_BODY
-      );
-    }
-  }),
+const onErrorHandler = ({ graphQLErrors, networkError, operation }) => {
+  if (operation.getContext().isCustomError) return;
+  if (graphQLErrors) {
+    InAppNotification.error(
+      STRINGS.GRAPHQL_ERROR_HEADER,
+      STRINGS.GRAPHQL_ERROR_BODY
+    );
+  } else if (networkError) {
+    InAppNotification.error(
+      STRINGS.NETWORK_ERROR_HEADER,
+      STRINGS.NETWORK_ERROR_BODY
+    );
+  }
+};
+
+const normalHttpLink = ApolloLink.from([
+  onError(onErrorHandler),
   new HttpLink({
     uri: AppConfig.uri.graphql,
     credentials: "same-origin",
   }),
 ]);
 
+const attachmentHttpLink = ApolloLink.from([
+  onError(onErrorHandler),
+  createUploadLink(options),
+]);
+
 const aggregatedLink = ApolloLink.split(
   (operation) => operation.getContext().hasUpload,
-  createUploadLink(options),
-  httpLink
+  attachmentHttpLink,
+  normalHttpLink
 );
 
 class ApolloClientProvider {

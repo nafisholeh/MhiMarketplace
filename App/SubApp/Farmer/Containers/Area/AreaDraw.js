@@ -56,6 +56,7 @@ class AreaDraw extends Component {
       drawingState: MAP_DRAW_STATE.NOT_READY,
       isMapReady: false,
       isFinished: false,
+      isLoading: false,
       polygonAreaSize: -1,
       polygonCenterPoint: null,
       polygonLastPoint: null,
@@ -163,6 +164,7 @@ class AreaDraw extends Component {
     this.setState(
       {
         isFinished: true,
+        isLoading: true,
         polygonFirstPoint: null,
         polygonLastPoint: null,
         polygonAreaSize: null,
@@ -185,6 +187,7 @@ class AreaDraw extends Component {
               size: polygonAreaSizeM2,
               snapshot: uri,
             });
+            this.setState({ isLoading: false });
           });
         }, METRICS.FIT_TO_COORDINATES_WAIT_TIME);
       }
@@ -230,6 +233,7 @@ class AreaDraw extends Component {
       polygonLastPoint,
       polygonFirstPoint,
       detailFormVisible,
+      isLoading,
     } = this.state;
     const mapOptions = {
       scrollEnabled: true,
@@ -247,6 +251,13 @@ class AreaDraw extends Component {
           initialRegion={region}
           onRegionChange={this.onRegionChange}
           onRegionChangeComplete={this.onRegionChangeComplete}
+          loadingEnabled
+          zoomEnabled={!isLoading}
+          zoomTapEnabled={!isLoading}
+          rotateEnabled={!isLoading}
+          scrollEnabled={!isLoading}
+          pitchEnabled={!isLoading}
+          zoomControlEnabled={false}
           {...mapOptions}
         >
           {editing ? (

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { func } from "prop-types";
+import { DotIndicator } from "react-native-indicators";
 
 import { screenWidth } from "Lib";
 import { Colors, METRICS } from "Themes";
@@ -51,6 +52,7 @@ class AreaDrawInfoWrapper extends Component {
       onPress,
       onLongPress,
       isLongPressMode,
+      isLoading,
     } = this.props;
     const { progress } = this.state;
     return (
@@ -94,9 +96,14 @@ class AreaDrawInfoWrapper extends Component {
               this.isLongPress = true;
             }
           }}
+          disabled={isLoading}
           delayLongPress={2000}
         >
-          {children}
+          {isLoading ? (
+            <DotIndicator count={4} size={9} color={Colors.LOADING_INDICATOR} />
+          ) : (
+            children
+          )}
         </TouchableOpacity>
         <ProgressBar progress={progress} duration={250} isRow />
       </View>

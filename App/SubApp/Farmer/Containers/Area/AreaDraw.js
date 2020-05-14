@@ -347,6 +347,7 @@ class AreaDraw extends Component {
           ) : (
             <AreaDrawInfo
               drawingState={drawingState}
+              isLoading={isLoading}
               autoZoomIn={() => this.autoZoomIn()}
               putPivotMarker={() => this.handleDrawing()}
               finishDrawing={() => this.handleDrawingFinish()}

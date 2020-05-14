@@ -45,6 +45,8 @@ const colors = {
 
   TEXT: "rgba(0,0,0,0.68)",
   TEXT_SECONDARY: "rgba(0,0,0,0.3)",
+
+  LOADING_INDICATOR: "#009c4e",
 };
 
 export default colors;

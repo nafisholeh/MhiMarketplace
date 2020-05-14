@@ -59,7 +59,7 @@ class AreaDrawInfo extends PureComponent {
   };
 
   render() {
-    const { drawingState, onRedraw } = this.props;
+    const { drawingState, onRedraw, isLoading } = this.props;
     const { info } = this.state;
     const image = Images[drawingState] || Images.map_zoom_in;
     const isLongPressMode = drawingState === MAP_DRAW_STATE.DRAWING_QUALIFIED;
@@ -96,6 +96,7 @@ class AreaDrawInfo extends PureComponent {
           onLongPress={this.onLongPress}
           isLongPressMode={isLongPressMode}
           showFullProgress={showFullProgress}
+          isLoading={isLoading}
         >
           <Image
             source={image}

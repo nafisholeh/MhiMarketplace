@@ -3,18 +3,22 @@ import { View, Image, Text, TouchableOpacity } from "react-native";
 import { withNavigation } from "react-navigation";
 import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
+import { Mutation } from "react-apollo";
 
 import { withNoHeader } from "Hoc";
 import {
   getAreas,
   isAnyAreaDrawn,
   isAreasDrawn,
+  getFarmerSignupData,
+  getFarmerSignupImages,
 } from "Redux/FarmerSignupRedux";
 import { Images, Colors, FONTS, METRICS } from "Themes";
 import { moderateScale } from "Lib";
 import { ButtonPrimary } from "Components";
 import { AreaItem, SignupBottomButton } from "CommonFarmer";
 import SignupWrapper from "../Signup/SignupWrapper";
+import { SIGNUP_FARMER } from "GraphQL/Farmer/Mutation";
 
 class AreaList extends Component {
   renderBottom = () => {
@@ -28,6 +32,40 @@ class AreaList extends Component {
         nextTitle="Selesai"
       />
     );
+  };
+
+  onSubmit = async (mutate) => {
+    const { signupData, signupImages } = this.props;
+    let variables = {};
+    let images = [];
+    for (const key in signupImages) {
+      let value = signupImages[key];
+      if (signupImages.hasOwnProperty(key)) {
+        const { mime, data } = value || {};
+        const imagePath = await saveBase64AsImage(data, key, mime);
+        const imageName = `${moment().format("YYYYMMDDHHmmss")}_${key}`;
+        images.push(
+          new ReactNativeFile({
+            uri: "file:///" + imagePath,
+            name: combineFilenameMime(imageName, mime),
+            type: mime,
+          })
+        );
+      }
+    }
+    variables = Object.assign({}, { data: signupData }, { images });
+    variables = { data: signupData };
+    mutate({
+      variables,
+      context: {
+        hasUpload: true,
+      },
+    });
+  };
+
+  onUploadCompleted = () => {
+    const { navigation } = this.props;
+    navigation.navigate("SopFarmer");
   };
 
   render() {
@@ -89,11 +127,23 @@ class AreaList extends Component {
           )}
           <View style={{ marginBottom: METRICS.HUGE }} />
         </SignupWrapper>
-        <ButtonPrimary
-          onPress={this.onSubmit}
-          disabled={!isAnyAreaDrawn}
-          title="Selanjutnya"
-        />
+        <Mutation
+          mutation={SIGNUP_FARMER}
+          onCompleted={this.onUploadCompleted}
+          awaitRefetchQueries={true}
+          ignoreResults={false}
+          errorPolicy="all"
+        >
+          {(mutate) => {
+            return (
+              <ButtonPrimary
+                onPress={async () => this.onSubmit(mutate)}
+                disabled={!isAnyAreaDrawn}
+                title="Selesai"
+              />
+            );
+          }}
+        </Mutation>
       </Fragment>
     );
   }
@@ -103,6 +153,8 @@ const mapStateToProps = createStructuredSelector({
   areas: getAreas(),
   isAnyAreaDrawn: isAnyAreaDrawn(),
   isAreasDrawn: isAreasDrawn(),
+  signupData: getFarmerSignupData(),
+  signupImages: getFarmerSignupImages(),
 });
 
 export default connect(

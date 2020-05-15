@@ -21,19 +21,6 @@ import SignupWrapper from "../Signup/SignupWrapper";
 import { SIGNUP_FARMER } from "GraphQL/Farmer/Mutation";
 
 class AreaList extends Component {
-  renderBottom = () => {
-    const { navigation, areas, isAnyAreaDrawn } = this.props;
-    return (
-      <SignupBottomButton
-        isShowSkip={!isAnyAreaDrawn}
-        isShowNext={isAnyAreaDrawn}
-        onPressSkip={() => navigation.navigate("FarmerFinalConfirm")}
-        onPressNext={() => navigation.navigate("FarmerFinalConfirm")}
-        nextTitle="Selesai"
-      />
-    );
-  };
-
   onSubmit = async (mutate) => {
     const { signupData, signupImages } = this.props;
     let variables = {};
@@ -54,7 +41,6 @@ class AreaList extends Component {
       }
     }
     variables = Object.assign({}, { data: signupData }, { images });
-    variables = { data: signupData };
     mutate({
       variables,
       context: {
@@ -134,11 +120,12 @@ class AreaList extends Component {
           ignoreResults={false}
           errorPolicy="all"
         >
-          {(mutate) => {
+          {(mutate, { loading }) => {
             return (
               <ButtonPrimary
                 onPress={async () => this.onSubmit(mutate)}
                 disabled={!isAnyAreaDrawn}
+                loading={loading}
                 title="Selesai"
               />
             );

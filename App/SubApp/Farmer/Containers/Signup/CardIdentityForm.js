@@ -67,7 +67,7 @@ class CardIdentityForm extends Component {
     const { navigation, storeFarmerKtp } = this.props;
     const { form } = this.state;
     storeFarmerKtp(form);
-    navigation.navigate("AreaList");
+    navigation.navigate("SignupFarmerThird");
   };
 
   setLifetimeExpiredDate = (key, value) => {

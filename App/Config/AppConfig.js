@@ -258,19 +258,19 @@ export default {
   marriageStatus: [
     {
       label: "Belum kawin",
-      value: "Belum kawin",
+      value: "belum kawin",
     },
     {
       label: "Kawin",
-      value: "Kawin",
+      value: "kawin",
     },
     {
       label: "Cerai hidup",
-      value: "Cerai hidup",
+      value: "cerai hidup",
     },
     {
       label: "Cerai mati",
-      value: "Cerai mati",
+      value: "cerai mati",
     },
   ],
   expiredDate: [

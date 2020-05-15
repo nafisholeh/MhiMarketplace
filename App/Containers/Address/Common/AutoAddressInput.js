@@ -58,7 +58,7 @@ class AutoAddressInput extends Component {
           isManualInputDisabled
           query={FETCH_DAERAH_LENGKAP}
           queryVariables="term"
-          dropdownKey="kab_key"
+          dropdownKey="_id"
           dropdownValue="daerah_lengkap"
           onValueChange={this.onDaerahChange}
         />

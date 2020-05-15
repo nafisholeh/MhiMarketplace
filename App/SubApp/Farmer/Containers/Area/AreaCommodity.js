@@ -35,7 +35,7 @@ class AreaCommodity extends Component {
       commodity_name,
       isNewCommodity,
     });
-    navigation.navigate("AreaList");
+    navigation.navigate("SignupFarmerFourth");
   };
 
   renderBottom = () => {

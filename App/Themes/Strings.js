@@ -6,4 +6,8 @@ export default {
   NETWORK_ERROR_BODY: "Silahkan coba lagi atau tunggu beberapa saat",
   SAVE: "SIMPAN",
   RELOAD: "COBA LAGI",
+  UPLOAD_PHOTO: "Unggah foto",
+  TAKE_KTP_PHOTO: "Ambil foto KTP",
+  TAKE_FACE_PHOTO: "Ambil foto muka",
+  GO_TO_NEXT_FORM: "Selanjutnya",
 };

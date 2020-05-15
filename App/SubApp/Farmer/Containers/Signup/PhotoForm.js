@@ -4,7 +4,7 @@ import { withNavigation } from "react-navigation";
 
 import { withNoHeader } from "Hoc";
 import { ImagePicker, ButtonPrimary } from "Components";
-import { Colors, METRICS } from "Themes";
+import { Colors, METRICS, STRINGS } from "Themes";
 import SignupWrapper from "./SignupWrapper";
 
 class PhotoForm extends Component {
@@ -39,7 +39,7 @@ class PhotoForm extends Component {
     const { photo_ktp, photo_face, is_can_continue } = this.state;
     return (
       <Fragment>
-        <SignupWrapper title="Unggah foto" currentPosition={2}>
+        <SignupWrapper title={STRINGS.UPLOAD_PHOTO} currentPosition={2}>
           <Text
             style={{
               color: Colors.veggie_dark,
@@ -54,7 +54,7 @@ class PhotoForm extends Component {
             name="photo_ktp"
             onChange={this.onPhotoChange}
             data={photo_ktp}
-            titleBottomSheet="Ambil foto KTP"
+            titleBottomSheet={STRINGS.TAKE_KTP_PHOTO}
             isMultiplePick={false}
             isShowCancelButton={false}
             isShowGallery
@@ -77,7 +77,7 @@ class PhotoForm extends Component {
             name="photo_face"
             onChange={this.onPhotoChange}
             data={photo_face}
-            titleBottomSheet="Ambil foto muka"
+            titleBottomSheet={STRINGS.TAKE_FACE_PHOTO}
             isMultiplePick={false}
             isShowCancelButton={false}
             isShowGallery
@@ -89,7 +89,7 @@ class PhotoForm extends Component {
         <ButtonPrimary
           onPress={this.onSubmit}
           disabled={!is_can_continue}
-          title="Selanjutnya"
+          title={STRINGS.GO_TO_NEXT_FORM}
         />
       </Fragment>
     );

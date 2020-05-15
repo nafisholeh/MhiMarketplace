@@ -4,7 +4,7 @@ import { withNavigation } from "react-navigation";
 
 import { withNoHeader } from "Hoc";
 import { ImagePicker, ButtonPrimary } from "Components";
-import { Colors, METRICS, STRINGS } from "Themes";
+import { METRICS, STRINGS, FONTS } from "Themes";
 import SignupWrapper from "./SignupWrapper";
 
 class PhotoForm extends Component {
@@ -42,10 +42,8 @@ class PhotoForm extends Component {
         <SignupWrapper title={STRINGS.UPLOAD_PHOTO} currentPosition={2}>
           <Text
             style={{
-              color: Colors.veggie_dark,
-              fontFamily: "CircularStd-Book",
-              fontSize: 13,
-              marginBottom: METRICS.SMALL,
+              ...FONTS.INPUT_TITLE,
+              ...{ marginBottom: METRICS.SMALL },
             }}
           >
             Ambil Foto KTP
@@ -65,10 +63,8 @@ class PhotoForm extends Component {
 
           <Text
             style={{
-              color: Colors.veggie_dark,
-              fontFamily: "CircularStd-Book",
-              fontSize: 13,
-              marginBottom: METRICS.SMALL,
+              ...FONTS.INPUT_TITLE,
+              ...{ marginBottom: METRICS.SMALL },
             }}
           >
             Ambil Foto Muka

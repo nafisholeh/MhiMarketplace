@@ -16,7 +16,7 @@ import {
 import { Images, Colors, FONTS, METRICS } from "Themes";
 import { moderateScale } from "Lib";
 import { ButtonPrimary } from "Components";
-import { AreaItem, SignupBottomButton } from "CommonFarmer";
+import { AreaItem } from "CommonFarmer";
 import SignupWrapper from "../Signup/SignupWrapper";
 import { SIGNUP_FARMER } from "GraphQL/Farmer/Mutation";
 
@@ -29,15 +29,17 @@ class AreaList extends Component {
       let value = signupImages[key];
       if (signupImages.hasOwnProperty(key)) {
         const { mime, data } = value || {};
-        const imagePath = await saveBase64AsImage(data, key, mime);
-        const imageName = `${moment().format("YYYYMMDDHHmmss")}_${key}`;
-        images.push(
-          new ReactNativeFile({
-            uri: "file:///" + imagePath,
-            name: combineFilenameMime(imageName, mime),
-            type: mime,
-          })
-        );
+        if (mime && data) {
+          const imagePath = await saveBase64AsImage(data, key, mime);
+          const imageName = `${moment().format("YYYYMMDDHHmmss")}_${key}`;
+          images.push(
+            new ReactNativeFile({
+              uri: "file:///" + imagePath,
+              name: combineFilenameMime(imageName, mime),
+              type: mime,
+            })
+          );
+        }
       }
     }
     variables = Object.assign({}, { data: signupData }, { images });

@@ -1,5 +1,7 @@
-import moment from 'moment';
-import { ReactNativeFile } from 'apollo-upload-client';
+import moment from "moment";
+import { ReactNativeFile } from "apollo-upload-client";
+
+import { saveBase64AsImage, combineFilenameMime } from "./File";
 
 /**
  * Get message from a complex error objects
@@ -7,7 +9,7 @@ import { ReactNativeFile } from 'apollo-upload-client';
  * @param {object} error object from catch in ApolloClientProvider or GraphQL query and mutation
  * @return {string} graphql errors
  */
- export const getGraphQLError = error => {
+export const getGraphQLError = (error) => {
   const { graphQLErrors, message } = error;
   if (Array.isArray(graphQLErrors)) {
     if (graphQLErrors.length > 0) {
@@ -21,7 +23,7 @@ import { ReactNativeFile } from 'apollo-upload-client';
 };
 
 /**
- * Convert raw photo format from ImagePicker to a compatible format for uploading a file 
+ * Convert raw photo format from ImagePicker to a compatible format for uploading a file
  *
  * @param {string} userId the user ID which upload this file
  * @param {array} photos raw photo list data, e.g. [ {path, mime}, ... ]
@@ -29,38 +31,62 @@ import { ReactNativeFile } from 'apollo-upload-client';
  */
 export const convertToGraphQLFile = (userId, photos) => {
   if (Array.isArray(photos) && !photos.length) return null;
-  const images = photos.map((item, index) => 
-    new ReactNativeFile({
-      uri: item.path,
-      name: `${moment().format('YYYYMMDDHHmmss')}_${index}_${userId}`,
-      type: item.mime
-    })
+  const images = photos.map(
+    (item, index) =>
+      new ReactNativeFile({
+        uri: item.path,
+        name: `${moment().format("YYYYMMDDHHmmss")}_${index}_${userId}`,
+        type: item.mime,
+      })
   );
   return images;
 };
 
 /**
- * Get the actual object of the response through React Component 
+ * Get the actual object of the response through React Component
  *
  * @param {any} res { [name]: { actual object } } or { data: { [name]: { actual object } } }
  * @return {object} the actual object filled with the needed data
  */
-export const extractGraphQLResponse = res => {
+export const extractGraphQLResponse = (res) => {
   if (!res) return null;
   const firstParent = Object.values(res);
-  const firstChild = Array.isArray(firstParent)
-    && firstParent.length
-    ? firstParent[0]
-    : null;
+  const firstChild =
+    Array.isArray(firstParent) && firstParent.length ? firstParent[0] : null;
   if (!firstChild) return null;
   const actualObject = Object.values(firstChild);
   if (Array.isArray(actualObject) && actualObject.length === 1) {
-    return Array.isArray(actualObject)
-      && actualObject.length
+    return Array.isArray(actualObject) && actualObject.length
       ? actualObject[0]
       : null;
   } else if (Array.isArray(actualObject) && actualObject.length > 1) {
     return firstChild;
   }
   return null;
+};
+
+/**
+ * parse photo to be uploadable through GraphQL upload mechanism
+ *
+ * @param {any} input
+ * @param {string} key
+ */
+export const parseUploadablePhoto = async (input, key) => {
+  let parsedInput = input;
+  if (!input || !key) return [];
+  if (Array.isArray(input)) {
+    parsedInput = input[0];
+  }
+  const { mime, data } = parsedInput || {};
+  if (mime && data) {
+    const imagePath = await saveBase64AsImage(data, key, mime);
+    const imageName = `${moment().format("YYYYMMDDHHmmss")}_${key}`;
+    const output = new ReactNativeFile({
+      uri: "file:///" + imagePath,
+      name: combineFilenameMime(imageName, mime),
+      type: mime,
+    });
+    return output;
+  }
+  return {};
 };

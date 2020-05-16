@@ -4,6 +4,7 @@ import {
   getGraphQLError,
   convertToGraphQLFile,
   extractGraphQLResponse,
+  parseUploadablePhoto,
 } from "./GraphQL";
 import {
   getReadableDate,
@@ -103,4 +104,5 @@ export {
   extractGraphQLResponse,
   calcZoomFromRegion,
   capitalizeFirstLetter,
+  parseUploadablePhoto,
 };

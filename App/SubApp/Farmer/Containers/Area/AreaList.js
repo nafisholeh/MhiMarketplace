@@ -11,7 +11,7 @@ import {
   isAnyAreaDrawn,
   isAreasDrawn,
   getFarmerSignupData,
-  getFarmerSignupImages,
+  getFarmerSignupPhotos,
 } from "Redux/FarmerSignupRedux";
 import { Images, Colors, FONTS, METRICS } from "Themes";
 import { moderateScale } from "Lib";
@@ -22,27 +22,12 @@ import { SIGNUP_FARMER } from "GraphQL/Farmer/Mutation";
 
 class AreaList extends Component {
   onSubmit = async (mutate) => {
-    const { signupData, signupImages } = this.props;
-    let variables = {};
-    let images = [];
-    for (const key in signupImages) {
-      let value = signupImages[key];
-      if (signupImages.hasOwnProperty(key)) {
-        const { mime, data } = value || {};
-        if (mime && data) {
-          const imagePath = await saveBase64AsImage(data, key, mime);
-          const imageName = `${moment().format("YYYYMMDDHHmmss")}_${key}`;
-          images.push(
-            new ReactNativeFile({
-              uri: "file:///" + imagePath,
-              name: combineFilenameMime(imageName, mime),
-              type: mime,
-            })
-          );
-        }
-      }
-    }
-    variables = Object.assign({}, { data: signupData }, { images });
+    const { signupData, signupPhotos } = this.props;
+    variables = Object.assign(
+      {},
+      { data: signupData },
+      { images: signupPhotos }
+    );
     mutate({
       variables,
       context: {
@@ -57,7 +42,13 @@ class AreaList extends Component {
   };
 
   render() {
-    const { navigation, areas, isAnyAreaDrawn, isAreasDrawn } = this.props;
+    const {
+      navigation,
+      areas,
+      isAnyAreaDrawn,
+      isAreasDrawn,
+      signupPhotos,
+    } = this.props;
     const currentPagePosition = isAreasDrawn ? 4 : 3;
     return (
       <Fragment>
@@ -143,7 +134,7 @@ const mapStateToProps = createStructuredSelector({
   isAnyAreaDrawn: isAnyAreaDrawn(),
   isAreasDrawn: isAreasDrawn(),
   signupData: getFarmerSignupData(),
-  signupImages: getFarmerSignupImages(),
+  signupPhotos: getFarmerSignupPhotos(),
 });
 
 export default connect(

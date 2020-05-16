@@ -1,11 +1,14 @@
 import React, { Component, Fragment } from "react";
 import { Text } from "react-native";
 import { withNavigation } from "react-navigation";
+import { connect } from "react-redux";
 
 import { withNoHeader } from "Hoc";
+import { parseUploadablePhoto } from "Lib";
 import { ImagePicker, ButtonPrimary } from "Components";
 import { METRICS, STRINGS, FONTS } from "Themes";
 import SignupWrapper from "./SignupWrapper";
+import FarmerActions from "Redux/FarmerSignupRedux";
 
 class PhotoForm extends Component {
   state = {
@@ -30,8 +33,18 @@ class PhotoForm extends Component {
     this.setState({ is_can_continue: photo_face && photo_ktp ? true : false });
   };
 
-  onSubmit = () => {
-    const { navigation } = this.props;
+  onSubmit = async () => {
+    const { navigation, storeFarmerPhotos } = this.props;
+    const { photo_face, photo_ktp } = this.state;
+    const parsedPhotoFace = await parseUploadablePhoto(
+      photo_face,
+      "photo_face"
+    );
+    const parsedPhotoKtp = await parseUploadablePhoto(photo_ktp, "photo_ktp");
+    storeFarmerPhotos({
+      photo_face: parsedPhotoFace,
+      photo_ktp: parsedPhotoKtp,
+    });
     navigation.navigate("SignupFarmerFourth");
   };
 
@@ -46,7 +59,7 @@ class PhotoForm extends Component {
               ...{ marginBottom: METRICS.SMALL },
             }}
           >
-            Ambil Foto KTP
+            {STRINGS.TAKE_KTP_PHOTO}
           </Text>
           <ImagePicker
             name="photo_ktp"
@@ -67,7 +80,7 @@ class PhotoForm extends Component {
               ...{ marginBottom: METRICS.SMALL },
             }}
           >
-            Ambil Foto Muka
+            {STRINGS.TAKE_FACE_PHOTO}
           </Text>
           <ImagePicker
             name="photo_face"
@@ -92,4 +105,11 @@ class PhotoForm extends Component {
   }
 }
 
-export default withNavigation(withNoHeader(PhotoForm));
+const mapDispatchToProps = (dispatch) => ({
+  storeFarmerPhotos: (data) => dispatch(FarmerActions.storeFarmerPhotos(data)),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(withNavigation(withNoHeader(PhotoForm)));

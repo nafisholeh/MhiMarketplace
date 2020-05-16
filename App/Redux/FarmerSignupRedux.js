@@ -1,6 +1,7 @@
 import { createReducer, createActions } from "reduxsauce";
 import Immutable from "seamless-immutable";
 import { createSelector } from "reselect";
+import isEmpty from "lodash/isEmpty";
 
 import AppConfig from "Config/AppConfig";
 
@@ -55,7 +56,7 @@ export const getFarmerSignupPhotos = () =>
       photo_ktp || {},
       photo_face_thumbnail || {},
       photo_ktp_thumbnail || {},
-    ];
+    ].filter((item) => item && !isEmpty(item));
   });
 
 export const getFarmerSignupAreas = () =>
@@ -121,10 +122,6 @@ export const getFarmerSignupData = () =>
         occupation,
         citizenship,
         expired_date,
-        photo_face,
-        photo_ktp,
-        // photo_face_thumbnail,
-        // photo_ktp_thumbnail,
         address_detail,
         rtrw,
         kecamatan_id,
@@ -164,8 +161,6 @@ export const getFarmerSignupData = () =>
           ktp_occupation: occupation,
           ktp_citizenship: citizenship,
           ktp_expired_date: expired_date,
-          ktp_photo_face: photo_face, //ktp_photo_face_thumbnail: photo_face_thumbnail,
-          ktp_photo_ktp: photo_ktp, //ktp_photo_ktp_thumbnail: photo_ktp_thumbnail,
           ktp_kecamatan_id: kecamatan_id,
           ktp_address_detail: address_detail,
           ktp_rtrw: rtrw,

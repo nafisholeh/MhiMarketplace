@@ -11,7 +11,8 @@ const { Types, Creators } = createActions({
   resetFarmerArea: null,
   storeFarmerCreds: ["phone", "email", "password"],
   storeFarmerKtp: ["ktp"],
-  storeFarmerPhotos: ["data"],
+  storeFarmerRawPhotos: ["data"],
+  storeFarmerUploadablePhotos: ["data"],
   storeFarmerArea: ["area"],
   storeFarmerType: ["area"],
   storeFarmerCommodity: ["area"],
@@ -46,7 +47,21 @@ export const isAreasDrawn = () =>
     return Array.isArray(area) && area.length ? true : false;
   });
 
-export const getFarmerSignupPhotos = () =>
+export const getFarmerKtpPhotos = () =>
+  createSelector(farmerSignupSelectors(), (state) => {
+    const { ktp } = state || {};
+    const { photo_ktp } = ktp || {};
+    return photo_ktp;
+  });
+
+export const getFarmerFacePhotos = () =>
+  createSelector(farmerSignupSelectors(), (state) => {
+    const { ktp } = state || {};
+    const { photo_face } = ktp || {};
+    return photo_face;
+  });
+
+export const getFarmerUploadablePhotos = () =>
   createSelector(farmerSignupSelectors(), (state) => {
     const { ktp } = state || {};
     const { photo_face, photo_ktp, photo_face_thumbnail, photo_ktp_thumbnail } =
@@ -188,7 +203,13 @@ export const storeFarmerKtp = (state, { ktp }) => state.merge({ ktp });
 
 export const resetFarmerArea = (state) => state.merge({ area: null });
 
-export const storeFarmerPhotos = (state, { data }) => {
+export const storeFarmerRawPhotos = (state, { data }) => {
+  return state.merge({
+    ktp: Object.assign({}, state.ktp, data),
+  });
+};
+
+export const storeFarmerUploadablePhotos = (state, { data }) => {
   const { photo_face, photo_ktp } = data || {};
   return state.merge({
     ktp: Object.assign({}, state.ktp, {
@@ -253,5 +274,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.STORE_FARMER_AREA]: storeFarmerArea,
   [Types.STORE_FARMER_TYPE]: storeFarmerType,
   [Types.STORE_FARMER_COMMODITY]: storeFarmerCommodity,
-  [Types.STORE_FARMER_PHOTOS]: storeFarmerPhotos,
+  [Types.STORE_FARMER_RAW_PHOTOS]: storeFarmerRawPhotos,
+  [Types.STORE_FARMER_UPLOADABLE_PHOTOS]: storeFarmerUploadablePhotos,
 });

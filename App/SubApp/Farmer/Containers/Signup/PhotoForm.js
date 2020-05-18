@@ -4,7 +4,6 @@ import { withNavigation } from "react-navigation";
 import { connect } from "react-redux";
 
 import { withNoHeader } from "Hoc";
-import { parseUploadablePhoto } from "Lib";
 import { ImagePicker, ButtonPrimary } from "Components";
 import { METRICS, STRINGS, FONTS } from "Themes";
 import SignupWrapper from "./SignupWrapper";
@@ -34,14 +33,11 @@ class PhotoForm extends Component {
   };
 
   onSubmit = async () => {
-    const { navigation, storeFarmerPhotos } = this.props;
+    const { navigation, storeFarmerRawPhotos } = this.props;
     const { photo_face, photo_ktp } = this.state;
-    const parsedPhotoFace = await parseUploadablePhoto(
-      photo_face,
-      "photo_face"
-    );
-    const parsedPhotoKtp = await parseUploadablePhoto(photo_ktp, "photo_ktp");
-    storeFarmerPhotos({
+    const parsedPhotoFace = photo_face[0];
+    const parsedPhotoKtp = photo_ktp[0];
+    storeFarmerRawPhotos({
       photo_face: parsedPhotoFace,
       photo_ktp: parsedPhotoKtp,
     });
@@ -106,7 +102,8 @@ class PhotoForm extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  storeFarmerPhotos: (data) => dispatch(FarmerActions.storeFarmerPhotos(data)),
+  storeFarmerRawPhotos: (data) =>
+    dispatch(FarmerActions.storeFarmerRawPhotos(data)),
 });
 
 export default connect(

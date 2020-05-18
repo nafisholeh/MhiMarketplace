@@ -11,10 +11,11 @@ import {
   isAnyAreaDrawn,
   isAreasDrawn,
   getFarmerSignupData,
-  getFarmerSignupPhotos,
+  getFarmerKtpPhotos,
+  getFarmerFacePhotos,
 } from "Redux/FarmerSignupRedux";
 import { Images, Colors, FONTS, METRICS } from "Themes";
-import { moderateScale } from "Lib";
+import { moderateScale, parseUploadablePhoto } from "Lib";
 import { ButtonPrimary } from "Components";
 import { AreaItem } from "CommonFarmer";
 import SignupWrapper from "../Signup/SignupWrapper";
@@ -22,11 +23,15 @@ import { SIGNUP_FARMER } from "GraphQL/Farmer/Mutation";
 
 class AreaList extends Component {
   onSubmit = async (mutate) => {
-    const { signupData, signupPhotos } = this.props;
+    const { signupData, ktpPhotos, facePhotos } = this.props;
+    const parsedPhotoFace = await parseUploadablePhoto(
+      facePhotos,
+      "photo_face"
+    );
+    const parsedPhotoKtp = await parseUploadablePhoto(ktpPhotos, "photo_ktp");
     variables = Object.assign(
       {},
-      { data: signupData },
-      { images: signupPhotos }
+      { data: signupData, images: [parsedPhotoFace, parsedPhotoKtp] }
     );
     mutate({
       variables,
@@ -42,13 +47,7 @@ class AreaList extends Component {
   };
 
   render() {
-    const {
-      navigation,
-      areas,
-      isAnyAreaDrawn,
-      isAreasDrawn,
-      signupPhotos,
-    } = this.props;
+    const { navigation, areas, isAnyAreaDrawn, isAreasDrawn } = this.props;
     const currentPagePosition = isAreasDrawn ? 4 : 3;
     return (
       <Fragment>
@@ -134,7 +133,8 @@ const mapStateToProps = createStructuredSelector({
   isAnyAreaDrawn: isAnyAreaDrawn(),
   isAreasDrawn: isAreasDrawn(),
   signupData: getFarmerSignupData(),
-  signupPhotos: getFarmerSignupPhotos(),
+  ktpPhotos: getFarmerKtpPhotos(),
+  facePhotos: getFarmerFacePhotos(),
 });
 
 export default connect(

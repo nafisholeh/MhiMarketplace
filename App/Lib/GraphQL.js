@@ -2,6 +2,7 @@ import moment from "moment";
 import { ReactNativeFile } from "apollo-upload-client";
 
 import { saveBase64AsImage, combineFilenameMime } from "./File";
+import { generateBase64Thumbnail } from "./Image";
 
 /**
  * Get message from a complex error objects
@@ -71,20 +72,30 @@ export const extractGraphQLResponse = (res) => {
  * @param {any} input
  * @param {string} key
  */
-export const parseUploadablePhoto = async (input, key) => {
-  let parsedInput = input;
+export const parseUploadablePhoto = async (input, key, options) => {
   if (!input || !key) return [];
+  const { isThumbnail } = options || {};
+
+  let parsedInput = input;
   if (Array.isArray(input)) {
     parsedInput = input[0];
   }
   const { mime, data } = parsedInput || {};
-  if (mime && data) {
-    const imagePath = await saveBase64AsImage(data, key, mime);
+  let parsedMime = mime;
+  let parsedData = data;
+
+  if (isThumbnail) {
+    const { data: thumbnail } = await generateBase64Thumbnail(parsedData, mime);
+    parsedData = thumbnail;
+  }
+
+  if (parsedMime && parsedData) {
+    const imagePath = await saveBase64AsImage(parsedData, key, parsedMime);
     const imageName = `${moment().format("YYYYMMDDHHmmss")}_${key}`;
     const output = new ReactNativeFile({
       uri: "file:///" + imagePath,
-      name: combineFilenameMime(imageName, mime),
-      type: mime,
+      name: combineFilenameMime(imageName, parsedMime),
+      type: parsedMime,
     });
     return output;
   }

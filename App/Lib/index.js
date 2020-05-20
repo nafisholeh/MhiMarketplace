@@ -50,12 +50,12 @@ import {
   getFilenameFromPath,
   getFileType,
   combineFilenameMime,
-  generateBase64Thumbnail,
   saveBase64AsImage,
   normalizeServerFileUri,
   generateValidServerFileUri,
 } from "./File";
 import { capitalizeFirstLetter } from "./String";
+import { generateBase64Thumbnail } from "./Image";
 
 export {
   parseToRupiah,

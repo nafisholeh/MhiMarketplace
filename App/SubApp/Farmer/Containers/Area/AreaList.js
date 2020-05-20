@@ -15,7 +15,11 @@ import {
   getFarmerFacePhotos,
 } from "Redux/FarmerSignupRedux";
 import { Images, Colors, FONTS, METRICS } from "Themes";
-import { moderateScale, parseUploadablePhoto } from "Lib";
+import {
+  moderateScale,
+  parseUploadablePhoto,
+  generateBase64Thumbnail,
+} from "Lib";
 import { ButtonPrimary } from "Components";
 import { AreaItem } from "CommonFarmer";
 import SignupWrapper from "../Signup/SignupWrapper";
@@ -28,10 +32,29 @@ class AreaList extends Component {
       facePhotos,
       "photo_face"
     );
+    const parsedThumbnailFace = await parseUploadablePhoto(
+      facePhotos,
+      "photo_face_thumbnail",
+      { isThumbnail: true }
+    );
     const parsedPhotoKtp = await parseUploadablePhoto(ktpPhotos, "photo_ktp");
+    const parsedThumbnailKtp = await parseUploadablePhoto(
+      ktpPhotos,
+      "photo_ktp_thumbnail",
+      { isThumbnail: true }
+    );
+
     variables = Object.assign(
       {},
-      { data: signupData, images: [parsedPhotoFace, parsedPhotoKtp] }
+      {
+        data: signupData,
+        images: [
+          parsedPhotoFace,
+          parsedPhotoKtp,
+          parsedThumbnailFace,
+          parsedThumbnailKtp,
+        ],
+      }
     );
     mutate({
       variables,

@@ -27,6 +27,7 @@ const metrics = {
   IMAGE_MEDIUM: moderateScale(40),
   IMAGE_LARGE: moderateScale(60),
   IMAGE_XL: moderateScale(200),
+  IMAGE_COMPRESS_QUALITY: 80,
 
   RADIUS_SMALL: moderateScale(3),
   RADIUS_MEDIUM: moderateScale(5),

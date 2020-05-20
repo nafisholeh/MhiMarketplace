@@ -14,7 +14,7 @@ import {
 } from "Components";
 import AppConfig, { YEAR_RANGE_START, YEAR_RANGE_END } from "Config/AppConfig";
 import { METRICS, Images, Colors, FONTS } from "Themes";
-import { screenWidth } from "Lib";
+import { screenWidth, convertMonthToNumber, normalizeDate } from "Lib";
 import { AUTO_SUGGEST_COMMODITIES } from "SubApp/Farmer/GraphQL/Commodity/Query";
 
 class AreaType extends Component {
@@ -23,8 +23,10 @@ class AreaType extends Component {
     status: null,
     name: null,
     month_start: null,
+    month_number_start: null,
     year_start: null,
     month_end: null,
+    month_number_end: null,
     year_end: null,
     startYear: YEAR_RANGE_START,
     endYear: YEAR_RANGE_END,
@@ -49,16 +51,22 @@ class AreaType extends Component {
       status,
       name,
       month_start,
+      month_number_start,
       year_start,
       month_end,
+      month_number_end,
       year_end,
       commodity,
       isCommodityRequired,
     } = this.state;
     const dateStartParsed =
-      year_start && month_start ? `${year_start}-${month_start}-01` : null;
+      year_start && month_start
+        ? normalizeDate(`${year_start}-${month_number_start}-01`)
+        : null;
     const dateEndParsed =
-      year_end && month_end ? `${year_end}-${month_end}-01` : null;
+      year_end && month_end
+        ? normalizeDate(`${year_end}-${month_number_end}-01`)
+        : null;
     const commodityParsed = isCommodityRequired ? commodity : null;
     storeFarmerType({
       type,
@@ -143,6 +151,7 @@ class AreaType extends Component {
           {
             [`year_${type}`]: year,
             [`month_${type}`]: month,
+            [`month_number_${type}`]: convertMonthToNumber(month),
           },
           () => {
             this.checkSubmitEligibility();

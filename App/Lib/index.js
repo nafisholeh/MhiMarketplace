@@ -12,6 +12,10 @@ import {
   getIntervalDateToday,
   getUTCDate,
   unixToDate,
+  convertMonthToNumber,
+  convertMonthToNumberString,
+  convertNumberToMonth,
+  normalizeDate,
 } from "./Date";
 import { setTabBarHide } from "./Navigation";
 import { moderateScale, screenWidth, screenHeight } from "./Responsive";
@@ -105,4 +109,8 @@ export {
   calcZoomFromRegion,
   capitalizeFirstLetter,
   parseUploadablePhoto,
+  convertMonthToNumber,
+  convertNumberToMonth,
+  convertMonthToNumberString,
+  normalizeDate,
 };

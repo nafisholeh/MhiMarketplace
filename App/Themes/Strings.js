@@ -10,4 +10,17 @@ export default {
   TAKE_KTP_PHOTO: "Ambil foto KTP",
   TAKE_FACE_PHOTO: "Ambil foto muka",
   GO_TO_NEXT_FORM: "Selanjutnya",
+
+  MONTH_JAN: "Januari",
+  MONTH_FEB: "Februari",
+  MONTH_MAR: "Maret",
+  MONTH_APR: "April",
+  MONTH_MAY: "Mei",
+  MONTH_JUN: "Juni",
+  MONTH_JUL: "Juli",
+  MONTH_AUG: "Agustus",
+  MONTH_SEP: "September",
+  MONTH_OCT: "Oktober",
+  MONTH_NOV: "Nopember",
+  MONTH_DEC: "Desember",
 };

@@ -171,6 +171,7 @@ class AreaType extends Component {
       isSubmitEligible,
       isCommodityRequired,
     } = this.state;
+    const isEndPeriodDisabled = !year_start;
     return (
       <View
         style={{
@@ -228,6 +229,7 @@ class AreaType extends Component {
               <TouchableOpacity
                 onPress={() => this.showPicker("end")}
                 style={{ flex: 1 }}
+                disabled={isEndPeriodDisabled}
               >
                 <InputText
                   name="end"
@@ -236,6 +238,7 @@ class AreaType extends Component {
                   onChangeText={this.onChangeText}
                   isAllBorderShown
                   editable={false}
+                  disabled={isEndPeriodDisabled}
                   isShowIcon
                   icon={Images.map_drawing_calendar}
                   styleContainer={styles.fieldContainer}

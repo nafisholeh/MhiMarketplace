@@ -51,6 +51,7 @@ export default class InputText extends Component {
       isAllBorderShown,
       mask,
       multiline,
+      disabled,
     } = this.props;
     const isPrefixBlockTheme = prefixTheme === "block";
     return (
@@ -68,7 +69,7 @@ export default class InputText extends Component {
           <View></View>
         )}
         <View
-          style={
+          style={[
             error
               ? [
                   isAllBorderShown
@@ -83,8 +84,9 @@ export default class InputText extends Component {
                     : styles.inputContent,
                   multiline ? styles.multiline : null,
                   styleBorder,
-                ]
-          }
+                ],
+            disabled ? { backgroundColor: Colors.BORDER } : {},
+          ]}
         >
           {prefixIcon ? (
             <Image

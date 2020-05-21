@@ -28,8 +28,6 @@ class AreaType extends Component {
     month_end: null,
     month_number_end: null,
     year_end: null,
-    startYear: YEAR_RANGE_START,
-    endYear: YEAR_RANGE_END,
     isSubmitEligible: false,
     commodity: null,
     isCommodityRequired: false,
@@ -142,16 +140,40 @@ class AreaType extends Component {
     this.setState({ isSubmitEligible: isEligible });
   };
 
-  showPicker = (type) => {
-    const { startYear, endYear, selectedYear, selectedMonth } = this.state;
+  showPickerStartPeriod = () => {
     this.picker
-      .show({ startYear, endYear, selectedYear, selectedMonth })
+      .show({
+        startYear: YEAR_RANGE_START,
+        endYear: YEAR_RANGE_END,
+      })
       .then(({ year, month }) => {
         this.setState(
           {
-            [`year_${type}`]: year,
-            [`month_${type}`]: month,
-            [`month_number_${type}`]: convertMonthToNumber(month),
+            year_start: year,
+            month_start: month,
+            month_number_start: convertMonthToNumber(month),
+          },
+          () => {
+            this.checkSubmitEligibility();
+          }
+        );
+      });
+  };
+
+  showPickerEndPeriod = () => {
+    const { year_start, month_number_start } = this.state;
+    this.picker
+      .show({
+        startYear: year_start || YEAR_RANGE_START,
+        endYear: YEAR_RANGE_END,
+        startMonth: month_number_start,
+      })
+      .then(({ year, month }) => {
+        this.setState(
+          {
+            year_end: year,
+            month_end: month,
+            month_number_end: convertMonthToNumber(month),
           },
           () => {
             this.checkSubmitEligibility();
@@ -210,7 +232,7 @@ class AreaType extends Component {
             />
             <View style={{ flexDirection: "row" }}>
               <TouchableOpacity
-                onPress={() => this.showPicker("start")}
+                onPress={() => this.showPickerStartPeriod()}
                 style={{ flex: 1, marginRight: METRICS.SMALL }}
               >
                 <InputText
@@ -227,7 +249,7 @@ class AreaType extends Component {
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={() => this.showPicker("end")}
+                onPress={() => this.showPickerEndPeriod()}
                 style={{ flex: 1 }}
                 disabled={isEndPeriodDisabled}
               >

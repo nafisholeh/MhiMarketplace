@@ -18,9 +18,17 @@ import AppConfig from "Config/AppConfig";
 export default class YearMonthPicker extends Component {
   constructor(props) {
     super(props);
-    let { startYear, endYear, selectedYear, selectedMonth, visible } = props;
+    let {
+      startYear,
+      endYear,
+      startMonth,
+      endMonth,
+      selectedYear,
+      selectedMonth,
+      visible,
+    } = props;
     let years = this.getYears(startYear, endYear);
-    let months = this.getMonths();
+    let months = this.getMonths(startMonth, endMonth);
     this.state = {
       years,
       months,
@@ -31,9 +39,16 @@ export default class YearMonthPicker extends Component {
     };
   }
 
-  show = async ({ startYear, endYear, selectedYear, selectedMonth }) => {
+  show = async ({
+    startYear,
+    endYear,
+    startMonth,
+    endMonth,
+    selectedYear,
+    selectedMonth,
+  }) => {
     let years = this.getYears(startYear, endYear);
-    let months = this.getMonths();
+    let months = this.getMonths(startMonth, endMonth);
     let promise = new Promise((resolve) => {
       this.confirm = (year, month) => {
         resolve({
@@ -68,8 +83,12 @@ export default class YearMonthPicker extends Component {
     return years;
   };
 
-  getMonths = () => {
-    return AppConfig.month.map((item) => item.label);
+  getMonths = (startMonth, endMonth) => {
+    const filteredMonth = AppConfig.month.slice(
+      startMonth || 0,
+      endMonth || 12
+    );
+    return filteredMonth.map((item) => item.label);
   };
 
   onCancelPress = () => {

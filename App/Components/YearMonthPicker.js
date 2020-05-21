@@ -27,7 +27,7 @@ export default class YearMonthPicker extends Component {
       selectedMonth,
       visible,
     } = props;
-    let years = this.getYears(startYear, endYear);
+    let years = this.getYears(startYear, endYear, startMonth);
     let months = this.getMonths(startMonth, endMonth);
     this.state = {
       years,
@@ -47,7 +47,7 @@ export default class YearMonthPicker extends Component {
     selectedYear,
     selectedMonth,
   }) => {
-    let years = this.getYears(startYear, endYear);
+    let years = this.getYears(startYear, endYear, startMonth);
     let months = this.getMonths(startMonth, endMonth);
     let promise = new Promise((resolve) => {
       this.confirm = (year, month) => {
@@ -73,8 +73,9 @@ export default class YearMonthPicker extends Component {
     this.setState({ visible: false });
   };
 
-  getYears = (startYear, endYear) => {
-    startYear = startYear || new Date().getFullYear();
+  getYears = (startYear, endYear, startMonth) => {
+    startYear =
+      (startMonth < 12 ? startYear : startYear + 1) || new Date().getFullYear();
     endYear = endYear || new Date().getFullYear();
     let years = [];
     for (let i = startYear; i <= endYear; i++) {
@@ -85,7 +86,7 @@ export default class YearMonthPicker extends Component {
 
   getMonths = (startMonth, endMonth) => {
     const filteredMonth = AppConfig.month.slice(
-      startMonth || 0,
+      (startMonth === 12 ? 0 : startMonth) || 0,
       endMonth || 12
     );
     return filteredMonth.map((item) => item.label);

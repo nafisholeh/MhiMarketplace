@@ -152,6 +152,9 @@ class AreaType extends Component {
             year_start: year,
             month_start: month,
             month_number_start: convertMonthToNumber(month),
+            year_end: null,
+            month_end: null,
+            month_number_end: null,
           },
           () => {
             this.checkSubmitEligibility();

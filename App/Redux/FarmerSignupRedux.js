@@ -173,7 +173,6 @@ export const getFarmerSignupData = () =>
           ktp_gender: gender,
           ktp_blood_type: blood_type,
           ktp_marriage_status: marriage_status,
-          ktp_occupation: occupation,
           ktp_citizenship: citizenship,
           ktp_expired_date: expired_date,
           ktp_kecamatan_id: kecamatan_id,

@@ -166,7 +166,8 @@ export default class InputTextAutoComplete extends Component {
   };
 
   showModal = () => {
-    this.setState({ visible: true });
+    const { value } = this.state;
+    this.setState({ valueTemp: value, visible: true });
   };
 
   onModalShow = () => {

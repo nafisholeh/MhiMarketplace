@@ -68,6 +68,11 @@ const metrics = {
   AUTO_SUGGEST_INFO: moderateScale(150),
 
   FIT_TO_COORDINATES_WAIT_TIME: 1000, // 1 seconds
+
+  GPS_TIMEOUT: 15000,
+  GPS_MAXIMUM_AGE: 10000,
+  MAP_LATITUDE_DELTA: 0.0922,
+  MAP_LONGITUDE_DELTA: 0.0922 * (width / height),
 };
 
 export default metrics;

@@ -45,7 +45,7 @@ import {
   normalizeAreaSize,
   calcZoomFromRegion,
 } from "./Map";
-import { extractAdministrativeName } from "./LocationUtils";
+import { extractAdministrativeName } from "./Location";
 import {
   getStateFromAsyncStorage,
   setStateFromAsyncStorage,

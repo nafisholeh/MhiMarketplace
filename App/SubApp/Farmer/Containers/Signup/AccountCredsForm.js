@@ -3,10 +3,9 @@ import { func } from "prop-types";
 import { connect } from "react-redux";
 import { withNavigation } from "react-navigation";
 
-import { withNoHeader } from "Hoc";
+import { withNoHeader, withLocation } from "Hoc";
 import FarmerSignupActions from "Redux/FarmerSignupRedux";
 import { isEmailError, moderateScale } from "Lib";
-import { Colors } from "Themes";
 import { InputText, ButtonPrimary } from "Components";
 import SignupWrapper from "./SignupWrapper";
 
@@ -172,4 +171,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   null,
   mapDispatchToProps
-)(withNavigation(withNoHeader(AccountCredsForm)));
+)(withNavigation(withLocation(withNoHeader(AccountCredsForm))));

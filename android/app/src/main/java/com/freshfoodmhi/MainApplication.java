@@ -25,6 +25,7 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.reactcommunity.rndatetimepicker.RNDateTimePickerPackage;
+import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -58,7 +59,8 @@ public class MainApplication extends Application implements ReactApplication {
             new SvgPackage(),
             new ReactNativeOneSignalPackage(),
             new MapsPackage(),
-            new RNDateTimePickerPackage()
+            new RNDateTimePickerPackage(),
+            new RNFusedLocationPackage()
       );
     }
 

@@ -11,6 +11,9 @@ export default {
   TAKE_FACE_PHOTO: "Ambil foto muka",
   GO_TO_NEXT_FORM: "Selanjutnya",
 
+  LOC_DENIED_POPUP_TITLE: "Gagal mendapatkan lokasi anda",
+  LOC_DENIED_POPUP_BODY: "Perijinan lokasi telah ditolak",
+
   MONTH_JAN: "Januari",
   MONTH_FEB: "Februari",
   MONTH_MAR: "Maret",

@@ -9,6 +9,7 @@ import MapView, {
 } from "react-native-maps";
 import { connect } from "react-redux";
 import { string, bool, object, oneOfType, array, func } from "prop-types";
+import isEqual from "lodash/isEqual";
 
 import FarmerSignupActions from "Redux/FarmerSignupRedux";
 import {
@@ -19,10 +20,10 @@ import {
   calcZoomFromRegion,
 } from "Lib";
 import { Colors, Images, FONTS, METRICS } from "Themes";
-import { HeaderWhite, AreaDrawInfo, withLocationListener } from "CommonFarmer";
+import { HeaderWhite, AreaDrawInfo } from "CommonFarmer";
 import { MAP_DRAW_STATE } from "../../../../Config/AppConfig";
 import AreaType from "./AreaType";
-import { withNoHeader } from "Hoc";
+import { withNoHeader, withLocation } from "Hoc";
 
 const { width, height } = Dimensions.get("window");
 
@@ -64,6 +65,22 @@ class AreaDraw extends Component {
       currentRegion: null,
       detailFormVisible: false,
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    const { userLocation } = this.props;
+    if (!isEqual(prevProps.userLocation, userLocation)) {
+      console.tron.log("AreaDraw/updated!", userLocation);
+      const { latitude, longitude } = userLocation;
+      this.setState({
+        currentRegion: {
+          latitude,
+          longitude,
+          latitudeDelta: METRICS.MAP_LATITUDE_DELTA,
+          longitudeDelta: METRICS.MAP_LONGITUDE_DELTA,
+        },
+      });
+    }
   }
 
   onRegionChange = (region) => {
@@ -238,6 +255,7 @@ class AreaDraw extends Component {
       polygonFirstPoint,
       detailFormVisible,
       isLoading,
+      currentRegion,
     } = this.state;
     const mapOptions = {
       scrollEnabled: true,
@@ -253,6 +271,7 @@ class AreaDraw extends Component {
           style={styles.map}
           mapType={MAP_TYPES.HYBRID}
           initialRegion={region}
+          region={currentRegion}
           onRegionChange={this.onRegionChange}
           onRegionChangeComplete={this.onRegionChangeComplete}
           loadingEnabled
@@ -420,4 +439,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   null,
   mapDispatchToProps
-)(withLocationListener(withNoHeader(AreaDraw)));
+)(withNoHeader(withLocation(AreaDraw)));

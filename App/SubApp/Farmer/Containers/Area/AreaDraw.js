@@ -73,7 +73,7 @@ class AreaDraw extends Component {
       console.tron.log("AreaDraw/updated!", userLocation);
       const { latitude, longitude } = userLocation;
       this.setState({
-        currentRegion: {
+        region: {
           latitude,
           longitude,
           latitudeDelta: METRICS.MAP_LATITUDE_DELTA,
@@ -255,7 +255,6 @@ class AreaDraw extends Component {
       polygonFirstPoint,
       detailFormVisible,
       isLoading,
-      currentRegion,
     } = this.state;
     const mapOptions = {
       scrollEnabled: true,
@@ -271,7 +270,6 @@ class AreaDraw extends Component {
           style={styles.map}
           mapType={MAP_TYPES.HYBRID}
           initialRegion={region}
-          region={currentRegion}
           onRegionChange={this.onRegionChange}
           onRegionChangeComplete={this.onRegionChangeComplete}
           loadingEnabled

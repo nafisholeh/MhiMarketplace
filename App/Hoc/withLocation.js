@@ -22,6 +22,10 @@ export default function withLocation(WrappedComponent) {
       this.getLocation();
     }
 
+    componentWillUnmount() {
+      this.removeLocationUpdates();
+    }
+
     hasLocationPermissionIOS = async () => {
       const openSetting = () => {
         Linking.openSettings().catch(() => {
@@ -134,6 +138,52 @@ export default function withLocation(WrappedComponent) {
           }
         );
       });
+    };
+
+    getLocationUpdates = async () => {
+      const hasLocationPermission = await this.hasLocationPermission();
+      console.tron.log(
+        "getLocationUpdates/hasLocationPermission",
+        hasLocationPermission
+      );
+      if (!hasLocationPermission) {
+        return;
+      }
+
+      this.setState({ updatesEnabled: true }, () => {
+        const {
+          highAccuracy,
+          forceLocation,
+          showLocationDialog,
+          significantChanges,
+        } = this.state;
+        this.watchId = Geolocation.watchPosition(
+          (position) => {
+            console.tron.log("getLocationUpdates/position", position);
+            this.setState({ location: this.parseLocation(position) });
+          },
+          (error) => {
+            console.tron.log("getLocationUpdates/error", error);
+            this.setState({ location: error });
+          },
+          {
+            enableHighAccuracy: highAccuracy,
+            distanceFilter: 50,
+            interval: METRICS.INTERVAL,
+            fastestInterval: METRICS.GPS_FASTEST_INTERVAL,
+            forceRequestLocation: forceLocation,
+            showLocationDialog: showLocationDialog,
+            useSignificantChanges: significantChanges,
+          }
+        );
+      });
+    };
+
+    removeLocationUpdates = () => {
+      if (this.watchId !== null) {
+        Geolocation.clearWatch(this.watchId);
+        this.setState({ updatesEnabled: false });
+      }
     };
 
     render() {

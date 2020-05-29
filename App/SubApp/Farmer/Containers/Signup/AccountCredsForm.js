@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from "react";
-import { Alert } from "react-native";
+import { Alert, Linking } from "react-native";
 import { func } from "prop-types";
 import { connect } from "react-redux";
 import { withNavigation } from "react-navigation";
+import { openSettings } from "react-native-permissions";
 
 import { withNoHeader } from "Hoc";
 import FarmerSignupActions from "Redux/FarmerSignupRedux";
@@ -31,28 +32,34 @@ class AccountCredsForm extends Component {
   };
 
   handleLocationPermission = async () => {
+    const { navigation } = this.props;
     const status = await getLocationPermission();
     switch (status) {
       case STRINGS.LOC_DENIED:
+        this.showAlert(STRINGS.LOC_DENIED_RESPONSE, "OK", () =>
+          navigation.pop()
+        );
+        break;
       case STRINGS.LOC_NEVER_ASK_AGAIN:
-        this.prohibitSignup();
+        this.showAlert(
+          STRINGS.LOC_NEVER_ASK_AGAIN_RESPONSE,
+          "Buka Settings",
+          () => openSettings()
+        );
         break;
       default:
         break;
     }
   };
 
-  prohibitSignup = () => {
-    const { navigation } = this.props;
+  showAlert = (message, title, onPress) => {
     Alert.alert(
       "",
-      STRINGS.LOC_DENIED_RESPONSE,
+      message,
       [
         {
-          text: "OK",
-          onPress: () => {
-            navigation.pop();
-          },
+          text: title || "OK",
+          onPress: onPress,
         },
       ],
       { cancelable: false }

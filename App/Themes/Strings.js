@@ -23,12 +23,14 @@ export default {
     "Demi akurasi area lahan, aplikasi butuh mengakses lokasi Anda",
   LOC_DENIED_RESPONSE:
     "Maaf untuk saat ini pendaftaran tidak dapat dilakukan sampai Anda mengijinkan akses lokasi",
+  LOC_NEVER_ASK_AGAIN_RESPONSE:
+    "Maaf untuk saat ini pendaftaran tidak dapat dilakukan, silahkan aktifkan akses lokasi dari menu Settings di HP Anda",
   LOC_NEUTRAL_BUTTON: "Tanya lagi nanti",
   LOC_NEGATIVE_BUTTON: "Batal",
   LOC_POSITIVE_BUTTON: "OK",
   LOC_GRANTED: "granted",
   LOC_DENIED: "denied",
-  LOC_NEVER_ASK_AGAIN: "never_ask",
+  LOC_NEVER_ASK_AGAIN: "never_ask_again",
   LOC_DISABLED: "disabled",
 
   MONTH_JAN: "Januari",

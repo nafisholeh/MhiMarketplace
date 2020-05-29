@@ -11,8 +11,25 @@ export default {
   TAKE_FACE_PHOTO: "Ambil foto muka",
   GO_TO_NEXT_FORM: "Selanjutnya",
 
+  LOC_DENIED_IOS: "Location permission denied",
+  LOC_DISABLED_TITLE_IOS:
+    "Turn on Location Services to allow the app to determine your location.",
+  LOC_UNABLE_OPEN_SETTING: "Unable to open settings",
+  LOC_GO_TO_SETTINGS: "Go to Settings",
+  LOC_DONT_USE_LOCATION: "Don't Use Location",
   LOC_DENIED_POPUP_TITLE: "Gagal mendapatkan lokasi anda",
   LOC_DENIED_POPUP_BODY: "Perijinan lokasi telah ditolak",
+  LOC_ASK_PERMISSION:
+    "Demi akurasi area lahan, aplikasi butuh mengakses lokasi Anda",
+  LOC_DENIED_RESPONSE:
+    "Maaf untuk saat ini pendaftaran tidak dapat dilakukan sampai Anda mengijinkan akses lokasi",
+  LOC_NEUTRAL_BUTTON: "Tanya lagi nanti",
+  LOC_NEGATIVE_BUTTON: "Batal",
+  LOC_POSITIVE_BUTTON: "OK",
+  LOC_GRANTED: "granted",
+  LOC_DENIED: "denied",
+  LOC_NEVER_ASK_AGAIN: "never_ask",
+  LOC_DISABLED: "disabled",
 
   MONTH_JAN: "Januari",
   MONTH_FEB: "Februari",

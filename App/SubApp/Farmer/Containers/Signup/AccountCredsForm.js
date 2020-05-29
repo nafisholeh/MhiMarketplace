@@ -1,12 +1,14 @@
 import React, { Component, Fragment } from "react";
+import { Alert } from "react-native";
 import { func } from "prop-types";
 import { connect } from "react-redux";
 import { withNavigation } from "react-navigation";
 
 import { withNoHeader } from "Hoc";
 import FarmerSignupActions from "Redux/FarmerSignupRedux";
-import { isEmailError, moderateScale } from "Lib";
+import { isEmailError, moderateScale, getLocationPermission } from "Lib";
 import { InputText, ButtonPrimary } from "Components";
+import { STRINGS } from "Themes";
 import SignupWrapper from "./SignupWrapper";
 
 class AccountCredsForm extends Component {
@@ -23,9 +25,39 @@ class AccountCredsForm extends Component {
     is_can_continue: false,
   };
 
-  componentDidMount() {
+  componentDidMount = async () => {
+    await this.handleLocationPermission();
     this.onEligibleToSubmit();
-  }
+  };
+
+  handleLocationPermission = async () => {
+    const status = await getLocationPermission();
+    switch (status) {
+      case STRINGS.LOC_DENIED:
+      case STRINGS.LOC_NEVER_ASK_AGAIN:
+        this.prohibitSignup();
+        break;
+      default:
+        break;
+    }
+  };
+
+  prohibitSignup = () => {
+    const { navigation } = this.props;
+    Alert.alert(
+      "",
+      STRINGS.LOC_DENIED_RESPONSE,
+      [
+        {
+          text: "OK",
+          onPress: () => {
+            navigation.pop();
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
 
   onStartSignup = async () => {
     const { password, password_repeat } = this.state;

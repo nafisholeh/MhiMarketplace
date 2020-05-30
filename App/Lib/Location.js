@@ -5,7 +5,7 @@ import { STRINGS } from "Themes";
 
 var _ = require("lodash");
 
-export async function getLocationPermissionIOS() {
+export async function requestLocationPermissionIOS() {
   const openSetting = () => {
     Linking.openSettings().catch(() => {
       Alert.alert(STRINGS.LOC_UNABLE_OPEN_SETTING);
@@ -31,23 +31,25 @@ export async function getLocationPermissionIOS() {
   return false;
 }
 
-export async function getLocationPermission() {
+export async function hasLocationPermission() {
+  let hasPermission = false;
   if (Platform.OS === "ios") {
-    const hasPermission = await exports.getLocationPermissionIOS();
+    hasPermission = await exports.requestLocationPermissionIOS();
     return hasPermission;
   }
-
   if (Platform.OS === "android" && Platform.Version < 23) {
-    return STRINGS.LOC_GRANTED;
+    return true;
   }
 
-  const hasPermission = await PermissionsAndroid.check(
+  hasPermission = await PermissionsAndroid.check(
     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
   );
+  return hasPermission;
+}
 
-  if (hasPermission) {
-    return STRINGS.LOC_GRANTED;
-  }
+export async function requestLocationPermission() {
+  const hasPermission = await exports.hasLocationPermission();
+  if (hasPermission) return STRINGS.LOG_GRANTED;
 
   const status = await PermissionsAndroid.request(
     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,

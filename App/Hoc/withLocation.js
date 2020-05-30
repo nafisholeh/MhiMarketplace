@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Geolocation from "react-native-geolocation-service";
 
-import { getLocationPermission } from "Lib";
+import { requestLocationPermission } from "Lib";
 import { STRINGS, METRICS } from "Themes";
 
 export default function withLocation(WrappedComponent) {
@@ -31,7 +31,7 @@ export default function withLocation(WrappedComponent) {
     };
 
     getLocation = async () => {
-      const hasLocationPermission = await getLocationPermission();
+      const hasLocationPermission = await requestLocationPermission();
       if (!hasLocationPermission) {
         return;
       }
@@ -63,7 +63,7 @@ export default function withLocation(WrappedComponent) {
     };
 
     getLocationUpdates = async () => {
-      const hasLocationPermission = await getLocationPermission();
+      const hasLocationPermission = await requestLocationPermission();
       if (!hasLocationPermission) {
         return;
       }

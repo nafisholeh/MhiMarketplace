@@ -46,8 +46,9 @@ import {
   calcZoomFromRegion,
 } from "./Map";
 import {
-  getLocationPermission,
-  getLocationPermissionIOS,
+  hasLocationPermission,
+  requestLocationPermission,
+  requestLocationPermissionIOS,
   extractAdministrativeName,
 } from "./Location";
 import {
@@ -117,6 +118,7 @@ export {
   convertNumberToMonth,
   convertMonthToNumberString,
   normalizeDate,
-  getLocationPermission,
-  getLocationPermissionIOS,
+  hasLocationPermission,
+  requestLocationPermission,
+  requestLocationPermissionIOS,
 };

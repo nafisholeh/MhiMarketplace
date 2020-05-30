@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Alert, Linking } from "react-native";
+import { Alert, AppState } from "react-native";
 import { func } from "prop-types";
 import { connect } from "react-redux";
 import { withNavigation } from "react-navigation";
@@ -7,7 +7,12 @@ import { openSettings } from "react-native-permissions";
 
 import { withNoHeader } from "Hoc";
 import FarmerSignupActions from "Redux/FarmerSignupRedux";
-import { isEmailError, moderateScale, getLocationPermission } from "Lib";
+import {
+  isEmailError,
+  moderateScale,
+  hasLocationPermission,
+  requestLocationPermission,
+} from "Lib";
 import { InputText, ButtonPrimary } from "Components";
 import { STRINGS } from "Themes";
 import SignupWrapper from "./SignupWrapper";
@@ -24,16 +29,36 @@ class AccountCredsForm extends Component {
     error_password_repeat: null,
     loading: false,
     is_can_continue: false,
+    currentAppState: AppState.currentState,
   };
 
   componentDidMount = async () => {
+    AppState.addEventListener("change", this.onAppStateChanged);
     await this.handleLocationPermission();
     this.onEligibleToSubmit();
   };
 
+  componentWillUnmount() {
+    AppState.removeEventListener("change", this.onAppStateChanged);
+  }
+
+  onAppStateChanged = async (nextState) => {
+    const { currentAppState } = this.state;
+    if (
+      currentAppState.match(/inactive|background/) &&
+      nextState === "active"
+    ) {
+      const hasPermission = await hasLocationPermission();
+      if (!hasPermission) {
+        this.openSettingsMenu();
+      }
+    }
+    this.setState({ currentAppState: nextState });
+  };
+
   handleLocationPermission = async () => {
     const { navigation } = this.props;
-    const status = await getLocationPermission();
+    const status = await requestLocationPermission();
     switch (status) {
       case STRINGS.LOC_DENIED:
         this.showAlert(STRINGS.LOC_DENIED_RESPONSE, "OK", () =>
@@ -41,15 +66,17 @@ class AccountCredsForm extends Component {
         );
         break;
       case STRINGS.LOC_NEVER_ASK_AGAIN:
-        this.showAlert(
-          STRINGS.LOC_NEVER_ASK_AGAIN_RESPONSE,
-          "Buka Settings",
-          () => openSettings()
-        );
+        this.openSettingsMenu();
         break;
       default:
         break;
     }
+  };
+
+  openSettingsMenu = () => {
+    this.showAlert(STRINGS.LOC_NEVER_ASK_AGAIN_RESPONSE, "Buka Settings", () =>
+      openSettings()
+    );
   };
 
   showAlert = (message, title, onPress) => {

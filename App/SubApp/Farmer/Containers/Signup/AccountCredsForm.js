@@ -2,19 +2,15 @@ import React, { Component, Fragment } from "react";
 import { Alert, AppState } from "react-native";
 import { func } from "prop-types";
 import { connect } from "react-redux";
-import { withNavigation } from "react-navigation";
+import { withNavigation, withNavigationFocus } from "react-navigation";
 import { openSettings } from "react-native-permissions";
+import Geolocation from "react-native-geolocation-service";
 
 import { withNoHeader } from "Hoc";
 import FarmerSignupActions from "Redux/FarmerSignupRedux";
-import {
-  isEmailError,
-  moderateScale,
-  hasLocationPermission,
-  requestLocationPermission,
-} from "Lib";
+import { isEmailError, moderateScale, requestLocationPermission } from "Lib";
 import { InputText, ButtonPrimary } from "Components";
-import { STRINGS } from "Themes";
+import { STRINGS, METRICS } from "Themes";
 import SignupWrapper from "./SignupWrapper";
 
 class AccountCredsForm extends Component {
@@ -32,31 +28,35 @@ class AccountCredsForm extends Component {
     currentAppState: AppState.currentState,
   };
 
-  componentDidMount = async () => {
-    AppState.addEventListener("change", this.onAppStateChanged);
-    await this.handleLocationPermission();
+  componentDidMount = () => {
+    this.initializeLocation();
     this.onEligibleToSubmit();
   };
 
-  componentWillUnmount() {
-    AppState.removeEventListener("change", this.onAppStateChanged);
-  }
-
-  onAppStateChanged = async (nextState) => {
-    const { currentAppState } = this.state;
-    if (
-      currentAppState.match(/inactive|background/) &&
-      nextState === "active"
-    ) {
-      const hasPermission = await hasLocationPermission();
-      if (!hasPermission) {
-        this.openSettingsMenu();
+  initializeLocation = () => {
+    console.tron.log("initializeLocation");
+    Geolocation.getCurrentPosition(
+      (position) => {
+        console.tron.log("position.received", position);
+      },
+      async (error) => {
+        const { code } = error || {};
+        console.tron.log("position.error", code);
+        switch (code) {
+          case METRICS.GPS_ERROR_CODES.PERMISSION_DENIED:
+            await this.requestLocationPermission();
+            break;
+        }
+      },
+      {
+        enableHighAccuracy: METRICS.GPS_HIGH_ACCURACY,
+        timeout: METRICS.GPS_TIMEOUT,
+        maximumAge: METRICS.GPS_MAXIMUM_AGE,
       }
-    }
-    this.setState({ currentAppState: nextState });
+    );
   };
 
-  handleLocationPermission = async () => {
+  requestLocationPermission = async () => {
     const { navigation } = this.props;
     const status = await requestLocationPermission();
     switch (status) {
@@ -68,7 +68,9 @@ class AccountCredsForm extends Component {
       case STRINGS.LOC_NEVER_ASK_AGAIN:
         this.openSettingsMenu();
         break;
+      case STRINGS.LOC_GRANTED:
       default:
+        this.initializeLocation();
         break;
     }
   };
@@ -152,6 +154,7 @@ class AccountCredsForm extends Component {
       loading,
       is_can_continue,
     } = this.state;
+    console.tron.log("Form/render", this.props.isFocused);
     return (
       <Fragment>
         <SignupWrapper title="Kuncinya akun">

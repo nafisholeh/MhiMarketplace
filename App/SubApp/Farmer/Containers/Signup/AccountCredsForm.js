@@ -8,6 +8,7 @@ import Geolocation from "react-native-geolocation-service";
 
 import { withNoHeader } from "Hoc";
 import FarmerSignupActions from "Redux/FarmerSignupRedux";
+import LocationActions from "Redux/LocationRedux";
 import { isEmailError, moderateScale, requestLocationPermission } from "Lib";
 import { InputText, ButtonPrimary } from "Components";
 import { STRINGS, METRICS } from "Themes";
@@ -34,6 +35,7 @@ class AccountCredsForm extends Component {
   };
 
   initializeLocation = () => {
+    const { setLocationStatus } = this.props;
     console.tron.log("initializeLocation");
     Geolocation.getCurrentPosition(
       (position) => {
@@ -45,6 +47,7 @@ class AccountCredsForm extends Component {
         switch (code) {
           case METRICS.GPS_ERROR_CODES.PERMISSION_DENIED:
             await this.requestLocationPermission();
+            setLocationStatus(METRICS.GPS_ERROR_CODES.PERMISSION_DENIED);
             break;
         }
       },
@@ -230,11 +233,14 @@ class AccountCredsForm extends Component {
 
 AccountCredsForm.propTypes = {
   storeFarmerCreds: func,
+  setLocationStatus: func,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   storeFarmerCreds: (phone, email, password) =>
     dispatch(FarmerSignupActions.storeFarmerCreds(phone, email, password)),
+  setLocationStatus: (status) =>
+    dispatch(LocationActions.setLocationStatus(status)),
 });
 
 export default connect(

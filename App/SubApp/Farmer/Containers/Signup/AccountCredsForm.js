@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { withNavigation, withNavigationFocus } from "react-navigation";
 import { openSettings } from "react-native-permissions";
 import Geolocation from "react-native-geolocation-service";
+import GoogleAPIAvailability from "react-native-google-api-availability-bridge";
 
 import { withNoHeader } from "Hoc";
 import FarmerSignupActions from "Redux/FarmerSignupRedux";
@@ -36,18 +37,27 @@ class AccountCredsForm extends Component {
 
   initializeLocation = () => {
     const { setLocationStatus } = this.props;
-    console.tron.log("initializeLocation");
     Geolocation.getCurrentPosition(
       (position) => {
         console.tron.log("position.received", position);
       },
       async (error) => {
         const { code } = error || {};
-        console.tron.log("position.error", code);
         switch (code) {
           case METRICS.GPS_ERROR_CODES.PERMISSION_DENIED:
             await this.requestLocationPermission();
             setLocationStatus(METRICS.GPS_ERROR_CODES.PERMISSION_DENIED);
+            break;
+          case METRICS.GPS_ERROR_CODES.PLAY_SERVICE_NOT_AVAILABLE:
+            GoogleAPIAvailability.checkGooglePlayServices((result) => {
+              switch (result) {
+                case "update":
+                  GoogleAPIAvailability.promptGooglePlayUpdate(false);
+                  break;
+                default:
+                  break;
+              }
+            });
             break;
         }
       },

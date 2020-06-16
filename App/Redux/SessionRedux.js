@@ -71,13 +71,13 @@ export const getUserCommodities = () =>
     const { areas = [] } = user;
     const distinctCommodities = Array.isArray(areas)
       ? areas.reduce((distinctCommodities, item) => {
-          const { commodity_id } = item || {};
-          const { name } = commodity_id || {};
+          const { commodity } = item || {};
+          const { name } = commodity || {};
           return distinctCommodities.some(
             ({ name: nameTemp }) => name === nameTemp
           )
             ? distinctCommodities
-            : [...distinctCommodities, commodity_id];
+            : [...distinctCommodities, commodity];
         }, [])
       : [];
     return distinctCommodities;

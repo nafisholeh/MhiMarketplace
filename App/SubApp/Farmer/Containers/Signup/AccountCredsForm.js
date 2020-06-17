@@ -30,12 +30,12 @@ class AccountCredsForm extends Component {
     currentAppState: AppState.currentState,
   };
 
-  componentDidMount = () => {
-    this.initializeLocation();
+  componentDidMount = async () => {
+    await this.initializeLocation();
     this.onEligibleToSubmit();
   };
 
-  initializeLocation = () => {
+  initializeLocation = async () => {
     const { setLocationStatus } = this.props;
     Geolocation.getCurrentPosition(
       (position) => {
@@ -49,15 +49,7 @@ class AccountCredsForm extends Component {
             setLocationStatus(METRICS.GPS_ERROR_CODES.PERMISSION_DENIED);
             break;
           case METRICS.GPS_ERROR_CODES.PLAY_SERVICE_NOT_AVAILABLE:
-            GoogleAPIAvailability.checkGooglePlayServices((result) => {
-              switch (result) {
-                case "update":
-                  GoogleAPIAvailability.promptGooglePlayUpdate(false);
-                  break;
-                default:
-                  break;
-              }
-            });
+            this.handlePlayServiceUnavailable();
             break;
         }
       },
@@ -67,6 +59,20 @@ class AccountCredsForm extends Component {
         maximumAge: METRICS.GPS_MAXIMUM_AGE,
       }
     );
+  };
+
+  handlePlayServiceUnavailable = async () => {
+    const result = await GoogleAPIAvailability.checkGooglePlayServices();
+    switch (result) {
+      case "update":
+        GoogleAPIAvailability.promptGooglePlayUpdate(false);
+        break;
+      case "missing":
+        GoogleAPIAvailability.showServiceMissingDialog();
+        break;
+      default:
+        break;
+    }
   };
 
   requestLocationPermission = async () => {

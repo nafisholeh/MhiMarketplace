@@ -27,6 +27,8 @@ export default {
     "Maaf untuk saat ini pendaftaran tidak dapat dilakukan, aktifkan akses lokasi dari menu Settings",
   LOC_INVALID_RESPONSE:
     "Versi Google Play services yang terpasang tidak valid. Terjadi gangguan saat akses lokasi.",
+  LOC_RESPONSE_UPDATING:
+    "Google Play services sedang dalam proses update. Mohon tunggu sampai update selesai.",
   LOC_NEUTRAL_BUTTON: "Tanya lagi nanti",
   LOC_NEGATIVE_BUTTON: "Batal",
   LOC_POSITIVE_BUTTON: "OK",

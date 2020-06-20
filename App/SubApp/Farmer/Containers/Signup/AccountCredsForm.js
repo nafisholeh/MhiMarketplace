@@ -62,6 +62,7 @@ class AccountCredsForm extends Component {
   };
 
   handlePlayServiceUnavailable = async () => {
+    const { navigation } = this.props;
     const result = await GoogleAPIAvailability.checkGooglePlayServices();
     switch (result) {
       case "update":
@@ -75,6 +76,11 @@ class AccountCredsForm extends Component {
         GoogleAPIAvailability.showGooglePlayInvalid(
           STRINGS.LOC_INVALID_RESPONSE,
           false
+        );
+        break;
+      case "updating":
+        this.showAlert(STRINGS.LOC_RESPONSE_UPDATING, "OK", () =>
+          navigation.pop()
         );
         break;
       default:

@@ -24,7 +24,9 @@ export default {
   LOC_DENIED_RESPONSE:
     "Maaf untuk saat ini pendaftaran tidak dapat dilakukan sampai Anda mengijinkan akses lokasi",
   LOC_NEVER_ASK_AGAIN_RESPONSE:
-    "Maaf untuk saat ini pendaftaran tidak dapat dilakukan, silahkan aktifkan akses lokasi dari menu Settings di HP Anda",
+    "Maaf untuk saat ini pendaftaran tidak dapat dilakukan, aktifkan akses lokasi dari menu Settings",
+  LOC_INVALID_RESPONSE:
+    "Versi Google Play services yang terpasang tidak valid. Terjadi gangguan saat akses lokasi.",
   LOC_NEUTRAL_BUTTON: "Tanya lagi nanti",
   LOC_NEGATIVE_BUTTON: "Batal",
   LOC_POSITIVE_BUTTON: "OK",

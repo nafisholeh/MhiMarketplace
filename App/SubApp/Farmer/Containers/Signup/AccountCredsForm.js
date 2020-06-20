@@ -68,6 +68,7 @@ class AccountCredsForm extends Component {
         GoogleAPIAvailability.promptGooglePlayUpdate(false);
         break;
       case "missing":
+      case "disabled":
         GoogleAPIAvailability.showServiceMissingDialog();
         break;
       case "invalid":

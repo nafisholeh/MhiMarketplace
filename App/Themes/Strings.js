@@ -20,15 +20,17 @@ export default {
   LOC_DENIED_POPUP_TITLE: "Gagal mendapatkan lokasi anda",
   LOC_DENIED_POPUP_BODY: "Perijinan lokasi telah ditolak",
   LOC_ASK_PERMISSION:
-    "Demi akurasi area lahan, aplikasi butuh mengakses lokasi Anda",
+    "Demi akurasi area lahan, aplikasi butuh mengakses lokasi Anda.",
   LOC_DENIED_RESPONSE:
-    "Maaf untuk saat ini pendaftaran tidak dapat dilakukan sampai Anda mengijinkan akses lokasi",
+    "Maaf untuk saat ini pendaftaran tidak dapat dilakukan sampai Anda mengijinkan akses lokasi.",
   LOC_NEVER_ASK_AGAIN_RESPONSE:
-    "Maaf untuk saat ini pendaftaran tidak dapat dilakukan, aktifkan akses lokasi dari menu Settings",
+    "Maaf untuk saat ini pendaftaran tidak dapat dilakukan, aktifkan akses lokasi dari menu Settings.",
   LOC_INVALID_RESPONSE:
     "Versi Google Play services yang terpasang tidak valid. Terjadi gangguan saat akses lokasi.",
   LOC_RESPONSE_UPDATING:
     "Google Play services sedang dalam proses update. Mohon tunggu sampai update selesai.",
+  LOC_RESPONSE_UNKNOWN_ERROR:
+    "Google Play services mengalami masalah. Terjadi gangguan saat akses lokasi.",
   LOC_NEUTRAL_BUTTON: "Tanya lagi nanti",
   LOC_NEGATIVE_BUTTON: "Batal",
   LOC_POSITIVE_BUTTON: "OK",

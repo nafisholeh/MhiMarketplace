@@ -84,6 +84,9 @@ class AccountCredsForm extends Component {
         );
         break;
       default:
+        this.showAlert(STRINGS.LOC_RESPONSE_UNKNOWN_ERROR, "OK", () =>
+          navigation.pop()
+        );
         break;
     }
   };

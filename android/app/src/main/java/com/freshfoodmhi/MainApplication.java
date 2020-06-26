@@ -1,7 +1,11 @@
 package com.freshfoodmhi;
 
 import android.app.Application;
+import android.content.IntentFilter;
 
+import io.rumors.reactnativesettings.RNSettingsPackage;
+import io.rumors.reactnativesettings.receivers.GpsLocationReceiver;
+import io.rumors.reactnativesettings.receivers.AirplaneModeReceiver;
 import com.facebook.react.ReactApplication;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.ivanwu.googleapiavailabilitybridge.ReactNativeGooglePlayServicesPackage;
@@ -66,7 +70,8 @@ public class MainApplication extends Application implements ReactApplication {
             new ReactNativeOneSignalPackage(),
             new MapsPackage(),
             new RNDateTimePickerPackage(),
-            new RNFusedLocationPackage()
+            new RNFusedLocationPackage(),
+            new RNSettingsPackage()
       );
     }
 
@@ -85,5 +90,7 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+    registerReceiver(new GpsLocationReceiver(), new IntentFilter("android.location.PROVIDERS_CHANGED"));
+    registerReceiver(new AirplaneModeReceiver(), new IntentFilter("android.intent.action.AIRPLANE_MODE"));
   }
 }

@@ -11,6 +11,8 @@ export default {
   TAKE_FACE_PHOTO: "Ambil foto muka",
   GO_TO_NEXT_FORM: "Selanjutnya",
 
+  GPS_ERROR: "GPS error",
+  PLAY_SERVICE_ERROR: "Google Play services error",
   LOC_DENIED_IOS: "Location permission denied",
   LOC_DISABLED_TITLE_IOS:
     "Turn on Location Services to allow the app to determine your location.",

@@ -84,6 +84,7 @@ class AccountCredsForm extends Component {
             break;
           case METRICS.GPS_ERROR_CODES.SETTINGS_NOT_SATISFIED:
             this.showAlert(
+              STRINGS.GPS_ERROR,
               STRINGS.LOC_RESPONSE_SETTINGS_UNSATISFIED,
               "OK",
               () => navigation.pop()
@@ -91,20 +92,27 @@ class AccountCredsForm extends Component {
             break;
           case METRICS.GPS_ERROR_CODES.POSITION_UNAVAILABLE:
             this.showAlert(
+              STRINGS.GPS_ERROR,
               STRINGS.LOC_RESPONSE_POSITION_UNAVAILABLE,
               "OK",
               () => navigation.pop()
             );
             break;
           case METRICS.GPS_ERROR_CODES.TIMEOUT:
-            this.showAlert(STRINGS.LOC_RESPONSE_TIMEOUT, "OK", () =>
-              navigation.pop()
+            this.showAlert(
+              STRINGS.GPS_ERROR,
+              STRINGS.LOC_RESPONSE_TIMEOUT,
+              "OK",
+              () => navigation.pop()
             );
             break;
           case METRICS.GPS_ERROR_CODES.INTERNAL_ERROR:
           default:
-            this.showAlert(STRINGS.LOC_RESPONSE_INTERNAL_ERROR, "OK", () =>
-              navigation.pop()
+            this.showAlert(
+              STRINGS.GPS_ERROR,
+              STRINGS.LOC_RESPONSE_INTERNAL_ERROR,
+              "OK",
+              () => navigation.pop()
             );
             break;
         }
@@ -135,13 +143,19 @@ class AccountCredsForm extends Component {
         );
         break;
       case "updating":
-        this.showAlert(STRINGS.LOC_RESPONSE_UPDATING, "OK", () =>
-          navigation.pop()
+        this.showAlert(
+          STRINGS.PLAY_SERVICE_ERROR,
+          STRINGS.LOC_RESPONSE_UPDATING,
+          "OK",
+          () => navigation.pop()
         );
         break;
       default:
-        this.showAlert(STRINGS.LOC_RESPONSE_UNKNOWN_ERROR, "OK", () =>
-          navigation.pop()
+        this.showAlert(
+          STRINGS.PLAY_SERVICE_ERROR,
+          STRINGS.LOC_RESPONSE_UNKNOWN_ERROR,
+          "OK",
+          () => navigation.pop()
         );
         break;
     }
@@ -152,7 +166,7 @@ class AccountCredsForm extends Component {
     const status = await requestLocationPermission();
     switch (status) {
       case STRINGS.LOC_DENIED:
-        this.showAlert(STRINGS.LOC_DENIED_RESPONSE, "OK", () =>
+        this.showAlert("", STRINGS.LOC_DENIED_RESPONSE, "OK", () =>
           navigation.pop()
         );
         break;
@@ -167,15 +181,18 @@ class AccountCredsForm extends Component {
   };
 
   openSettingsMenu = () => {
-    this.showAlert(STRINGS.LOC_NEVER_ASK_AGAIN_RESPONSE, "Buka Settings", () =>
-      openSettings()
+    this.showAlert(
+      "",
+      STRINGS.LOC_NEVER_ASK_AGAIN_RESPONSE,
+      "Buka Settings",
+      () => openSettings()
     );
   };
 
-  showAlert = (message, buttonTitle, onPress) => {
+  showAlert = (title, message, buttonTitle, onPress) => {
     Alert.alert(
-      "",
-      message,
+      title || "",
+      message || "",
       [
         {
           text: buttonTitle || "OK",

@@ -1,11 +1,13 @@
 import React, { Component, Fragment } from "react";
-import { Alert, AppState } from "react-native";
+import { Alert, AppState, DeviceEventEmitter } from "react-native";
 import { func } from "prop-types";
 import { connect } from "react-redux";
 import { withNavigation, withNavigationFocus } from "react-navigation";
 import { openSettings } from "react-native-permissions";
 import Geolocation from "react-native-geolocation-service";
 import GoogleAPIAvailability from "react-native-google-api-availability-bridge";
+import RNSettings from "react-native-settings";
+import debounce from "lodash/debounce";
 
 import { withNoHeader } from "Hoc";
 import FarmerSignupActions from "Redux/FarmerSignupRedux";
@@ -14,25 +16,54 @@ import { isEmailError, moderateScale, requestLocationPermission } from "Lib";
 import { InputText, ButtonPrimary } from "Components";
 import { STRINGS, METRICS } from "Themes";
 import SignupWrapper from "./SignupWrapper";
+import { DEBOUNCE_DEVICE_EVENT_EMITTER } from "Config/AppConfig";
 
 class AccountCredsForm extends Component {
-  state = {
-    phone: null,
-    error_phone: null,
-    email: null,
-    error_email: null,
-    password: null,
-    error_password: null,
-    password_repeat: null,
-    error_password_repeat: null,
-    loading: false,
-    is_can_continue: false,
-    currentAppState: AppState.currentState,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      phone: null,
+      error_phone: null,
+      email: null,
+      error_email: null,
+      password: null,
+      error_password: null,
+      password_repeat: null,
+      error_password_repeat: null,
+      loading: false,
+      is_can_continue: false,
+      currentAppState: AppState.currentState,
+    };
+    this.onLocationSettingsChanged = debounce((isEnabled) => {
+      if (!isEnabled) {
+        this.initializeLocation();
+      }
+    }, DEBOUNCE_DEVICE_EVENT_EMITTER);
+  }
 
   componentDidMount = async () => {
     await this.initializeLocation();
     this.onEligibleToSubmit();
+  };
+
+  componentWillMount() {
+    DeviceEventEmitter.addListener(
+      RNSettings.GPS_PROVIDER_EVENT,
+      this.handleGPSProviderEvent
+    );
+  }
+
+  componentWillUnmount() {
+    DeviceEventEmitter.removeListener(RNSettings.GPS_PROVIDER_EVENT);
+  }
+
+  handleGPSProviderEvent = (e) => {
+    if (e[RNSettings.LOCATION_SETTING] === RNSettings.DISABLED) {
+      this.onLocationSettingsChanged(false);
+    }
+    if (e[RNSettings.LOCATION_SETTING] === RNSettings.ENABLED) {
+      this.onLocationSettingsChanged(true);
+    }
   };
 
   initializeLocation = async () => {

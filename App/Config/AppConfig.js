@@ -34,6 +34,8 @@ export const MAP_DRAW_STATE_INFO = {
 export const YEAR_RANGE_START = 2005;
 export const YEAR_RANGE_END = 2050;
 
+export const DEBOUNCE_DEVICE_EVENT_EMITTER = 300; // 0.3 sec
+
 export const MINI_MAP_STYLE = [
   {
     featureType: "administrative",
@@ -117,9 +119,9 @@ export const MINI_MAP_STYLE = [
 export default {
   // uri: 'http://app-dev.metodehayati.id:4001/graphql',
   uri: {
-    basic: "http://192.168.1.3:4001/",
-    graphql: "http://192.168.1.3:4001/graphql",
-    image: "http://192.168.1.3:4001",
+    basic: "http://192.168.1.15:4001/",
+    graphql: "http://192.168.1.15:4001/graphql",
+    image: "http://192.168.1.15:4001",
   },
   sentryKey: "https://acfc9528eb164f6d8cb3c02a5294b6cd@sentry.io/1498313",
   allowTextFontScaling: true,
@@ -604,4 +606,5 @@ export {
   YEAR_RANGE_START as yearRangeStart,
   YEAR_RANGE_END as yearRangeEnd,
   MINI_MAP_STYLE as miniMapStyle,
+  DEBOUNCE_DEVICE_EVENT_EMITTER as debounceDEM,
 };

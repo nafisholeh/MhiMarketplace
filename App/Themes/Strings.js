@@ -31,6 +31,8 @@ export default {
     "Google Play services sedang dalam proses update. Mohon tunggu sampai update selesai.",
   LOC_RESPONSE_UNKNOWN_ERROR:
     "Google Play services mengalami masalah. Terjadi gangguan saat akses lokasi.",
+  LOC_RESPONSE_SETTINGS_UNSATISFIED:
+    "Terjadi gangguan saat akses lokasi. Pastikan pengaturan lokasi di HP Anda sudah tepat.",
   LOC_NEUTRAL_BUTTON: "Tanya lagi nanti",
   LOC_NEGATIVE_BUTTON: "Batal",
   LOC_POSITIVE_BUTTON: "OK",

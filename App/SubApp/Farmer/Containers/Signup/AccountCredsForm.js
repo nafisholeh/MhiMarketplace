@@ -67,7 +67,7 @@ class AccountCredsForm extends Component {
   };
 
   initializeLocation = async () => {
-    const { setLocationStatus } = this.props;
+    const { setLocationStatus, navigation } = this.props;
     Geolocation.getCurrentPosition(
       (position) => {
         console.tron.log("position.received", position);
@@ -81,6 +81,13 @@ class AccountCredsForm extends Component {
             break;
           case METRICS.GPS_ERROR_CODES.PLAY_SERVICE_NOT_AVAILABLE:
             this.handlePlayServiceUnavailable();
+            break;
+          case METRICS.GPS_ERROR_CODES.SETTINGS_NOT_SATISFIED:
+            this.showAlert(
+              STRINGS.LOC_RESPONSE_SETTINGS_UNSATISFIED,
+              "OK",
+              () => navigation.pop()
+            );
             break;
         }
       },
@@ -147,13 +154,13 @@ class AccountCredsForm extends Component {
     );
   };
 
-  showAlert = (message, title, onPress) => {
+  showAlert = (message, buttonTitle, onPress) => {
     Alert.alert(
       "",
       message,
       [
         {
-          text: title || "OK",
+          text: buttonTitle || "OK",
           onPress: onPress,
         },
       ],
@@ -220,7 +227,6 @@ class AccountCredsForm extends Component {
       loading,
       is_can_continue,
     } = this.state;
-    console.tron.log("Form/render", this.props.isFocused);
     return (
       <Fragment>
         <SignupWrapper title="Kuncinya akun">

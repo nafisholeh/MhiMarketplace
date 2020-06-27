@@ -89,6 +89,18 @@ class AccountCredsForm extends Component {
               () => navigation.pop()
             );
             break;
+          case METRICS.GPS_ERROR_CODES.POSITION_UNAVAILABLE:
+            this.showAlert(
+              STRINGS.LOC_RESPONSE_POSITION_UNAVAILABLE,
+              "OK",
+              () => navigation.pop()
+            );
+            break;
+          case METRICS.GPS_ERROR_CODES.TIMEOUT:
+            this.showAlert(STRINGS.LOC_RESPONSE_TIMEOUT, "OK", () =>
+              navigation.pop()
+            );
+            break;
         }
       },
       {

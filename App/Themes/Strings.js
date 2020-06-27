@@ -22,9 +22,9 @@ export default {
   LOC_ASK_PERMISSION:
     "Demi akurasi area lahan, aplikasi butuh mengakses lokasi Anda.",
   LOC_DENIED_RESPONSE:
-    "Maaf untuk saat ini pendaftaran tidak dapat dilakukan sampai Anda mengijinkan akses lokasi.",
+    "Pendaftaran tidak dapat dilakukan, pastikan perijinan akses lokasi telah dibuka.",
   LOC_NEVER_ASK_AGAIN_RESPONSE:
-    "Maaf untuk saat ini pendaftaran tidak dapat dilakukan, aktifkan akses lokasi dari menu Settings.",
+    "Pendaftaran tidak dapat dilakukan, aktifkan akses lokasi dari menu Settings.",
   LOC_INVALID_RESPONSE:
     "Versi Google Play services yang terpasang tidak valid. Terjadi gangguan saat akses lokasi.",
   LOC_RESPONSE_UPDATING:
@@ -32,7 +32,11 @@ export default {
   LOC_RESPONSE_UNKNOWN_ERROR:
     "Google Play services mengalami masalah. Terjadi gangguan saat akses lokasi.",
   LOC_RESPONSE_SETTINGS_UNSATISFIED:
-    "Terjadi gangguan saat akses lokasi. Pastikan pengaturan lokasi di HP Anda sudah tepat.",
+    "Pendaftaran tidak dapat dilakukan, pastikan pengaturan lokasi di HP Anda sudah tepat.",
+  LOC_RESPONSE_POSITION_UNAVAILABLE:
+    "Pendaftaran tidak dapat dilakukan, terjadi gangguan saat mencari lokasi.",
+  LOC_RESPONSE_TIMEOUT:
+    "Pendaftaran tidak dapat dilakukan, pencarian lokasi melampaui batas waktu.",
   LOC_NEUTRAL_BUTTON: "Tanya lagi nanti",
   LOC_NEGATIVE_BUTTON: "Batal",
   LOC_POSITIVE_BUTTON: "OK",

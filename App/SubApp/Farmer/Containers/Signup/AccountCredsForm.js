@@ -101,6 +101,12 @@ class AccountCredsForm extends Component {
               navigation.pop()
             );
             break;
+          case METRICS.GPS_ERROR_CODES.INTERNAL_ERROR:
+          default:
+            this.showAlert(STRINGS.LOC_RESPONSE_INTERNAL_ERROR, "OK", () =>
+              navigation.pop()
+            );
+            break;
         }
       },
       {

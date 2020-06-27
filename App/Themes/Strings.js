@@ -34,9 +34,11 @@ export default {
   LOC_RESPONSE_SETTINGS_UNSATISFIED:
     "Pendaftaran tidak dapat dilakukan, pastikan pengaturan lokasi di HP Anda sudah tepat.",
   LOC_RESPONSE_POSITION_UNAVAILABLE:
-    "Pendaftaran tidak dapat dilakukan, terjadi gangguan saat mencari lokasi.",
+    "Pendaftaran tidak dapat dilakukan, lokasi tidak tersedia.",
   LOC_RESPONSE_TIMEOUT:
     "Pendaftaran tidak dapat dilakukan, pencarian lokasi melampaui batas waktu.",
+  LOC_RESPONSE_INTERNAL_ERROR:
+    "Pendaftaran tidak dapat dilakukan, terjadi gangguan saat pencarian lokasi.",
   LOC_NEUTRAL_BUTTON: "Tanya lagi nanti",
   LOC_NEGATIVE_BUTTON: "Batal",
   LOC_POSITIVE_BUTTON: "OK",

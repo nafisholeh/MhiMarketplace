@@ -8,7 +8,7 @@ class ChipSelects extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedIndex: 0
+      selectedIndex: 0,
     };
   }
 
@@ -27,18 +27,19 @@ class ChipSelects extends Component {
         style={{
           flexDirection: "row",
           justifyContent: "space-evenly",
-          alignItems: "center"
+          alignItems: "center",
         }}
       >
         {data.map((item, index) => {
           const isFirst = index === 0;
           const isLast = index === data.length - 1;
           const isSelected = selectedIndex === index;
-          const { label, value, showManualInput } = item || {};
+          const { label } = item || {};
           return (
             <TouchableHighlight
               style={{
                 flex: 1,
+                height: METRICS.HEIGHT_SMALL,
                 borderTopLeftRadius: isFirst ? METRICS.RADIUS_MEDIUM : 0,
                 borderBottomLeftRadius: isFirst ? METRICS.RADIUS_MEDIUM : 0,
                 borderTopRightRadius: isLast ? METRICS.RADIUS_MEDIUM : 0,
@@ -46,20 +47,24 @@ class ChipSelects extends Component {
                 borderWidth: METRICS.BORDER_THIN,
                 borderLeftWidth: isFirst ? METRICS.BORDER_THIN : 0,
                 borderColor: isSelected
-                  ? Colors.green_light
-                  : Colors.brown_light,
-                backgroundColor: isSelected ? Colors.green_light : Colors.white,
+                  ? Colors.GREEN_BG_PRIMARY
+                  : Colors.GRAY_BG_DISABLED,
+                backgroundColor: isSelected
+                  ? Colors.GREEN_BG_PRIMARY
+                  : Colors.GRAY_BG_DISABLED,
                 alignItems: "center",
                 justifyContent: "center",
-                paddingVertical: METRICS.SMALL
+                // paddingVertical: METRICS.SMALL,
               }}
               onPress={() => this.onSelectionChange(item, index)}
-              underlayColor={Colors.green_light}
+              underlayColor={Colors.GREEN_BG_PRIMARY}
             >
               <Text
                 style={{
-                  ...FONTS.BODY_SMALL,
-                  color: isSelected ? Colors.white : Colors.text
+                  ...FONTS.RADIO_BUTTON_TEXT,
+                  color: isSelected
+                    ? Colors.WHITE
+                    : Colors.BLACK_TEXT_SECONDARY,
                 }}
               >
                 {label}
@@ -73,7 +78,7 @@ class ChipSelects extends Component {
 }
 
 ChipSelects.propTypes = {
-  data: arrayOf(shape({ label: string, value: string }))
+  data: arrayOf(shape({ label: string, value: string })),
 };
 
 export default ChipSelects;

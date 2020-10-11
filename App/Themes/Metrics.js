@@ -30,7 +30,7 @@ const metrics = {
   IMAGE_COMPRESS_QUALITY: 80,
 
   RADIUS_SMALL: moderateScale(3),
-  RADIUS_MEDIUM: moderateScale(5),
+  RADIUS_MEDIUM: moderateScale(8),
   RADIUS_LARGE: moderateScale(10),
 
   BORDER_THIN: 0.5,
@@ -85,6 +85,17 @@ const metrics = {
     SETTINGS_NOT_SATISFIED: 5,
     INTERNAL_ERROR: -1,
   },
+
+  // Style v2.0
+  SMALL_V2: moderateScale(4),
+  MEDIUM_V2: moderateScale(8),
+  LARGE_V2: moderateScale(16),
+  EXTRA_LARGE_V2: moderateScale(21),
+
+  HEIGHT_SMALL: moderateScale(42),
+  HEIGHT_MEDIUM: moderateScale(50),
+
+  POPUP_BOTTOM_HEIGHT: moderateScale(362),
 };
 
 export default metrics;

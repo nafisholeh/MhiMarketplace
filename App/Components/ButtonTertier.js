@@ -9,35 +9,50 @@ const ButtonTertier = ({
   onPress,
   loading,
   disabled,
-  colorsDisabled,
   title,
-  colors,
   width,
   fonts,
-}) => (
-  <TouchableOpacity
-    onPress={() => onPress()}
-    disabled={disabled}
-    style={{
-      ...{
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        width: width,
-        backgroundColor: disabled
-          ? colorsDisabled || Colors.BUTTON_TERTIER_INVERTED
-          : colors || Colors.BUTTON_TERTIER,
-        borderRadius: METRICS.BUTTON_TERTIER_RADIUS,
-        paddingVertical: METRICS.SMALL,
-      },
-      ...style,
-    }}
-  >
-    {loading && (
-      <DotIndicator count={4} size={7} color="white" animationDuration={800} />
-    )}
-    {!loading && <Text style={fonts || FONTS.BODY_BOLD}>{title}</Text>}
-  </TouchableOpacity>
-);
+  isAccentButton,
+}) => {
+  let bgColor = isAccentButton ? Colors.WHITE : Colors.GREEN_BG_PRIMARY;
+  bgColor = disabled ? Colors.GRAY_ICON : bgColor;
+  return (
+    <TouchableOpacity
+      onPress={() => onPress()}
+      disabled={disabled}
+      style={{
+        ...{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          height: METRICS.HEIGHT_MEDIUM,
+          width: width,
+          backgroundColor: bgColor,
+          borderRadius: METRICS.MEDIUM_V2,
+        },
+        ...style,
+      }}
+    >
+      {loading && (
+        <DotIndicator
+          count={4}
+          size={7}
+          color="white"
+          animationDuration={800}
+        />
+      )}
+      {!loading && (
+        <Text
+          style={{
+            ...FONTS.BUTTON_TITLE,
+            ...{ color: isAccentButton ? Colors.BLACK_TEXT : Colors.WHITE },
+          }}
+        >
+          {title}
+        </Text>
+      )}
+    </TouchableOpacity>
+  );
+};
 
 export default ButtonTertier;

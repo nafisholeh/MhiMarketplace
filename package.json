@@ -87,6 +87,7 @@
     "react-native-scroll-into-view": "^1.0.3",
     "react-native-sentry": "^0.43.2",
     "react-native-settings": "^0.2.3",
+    "react-native-shake": "^3.5.0",
     "react-native-splash-screen": "^3.2.0",
     "react-native-step-indicator": "0.0.11",
     "react-native-super-grid": "^3.0.4",
@@ -121,12 +122,23 @@
     "babel-preset-react-native": "^3.0.2",
     "enzyme": "^3.2.0",
     "enzyme-adapter-react-16": "^1.1.0",
+    "eslint": "^7.13.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-config-react-app": "^6.0.0",
+    "eslint-import-resolver-babel-module": "^5.2.0",
+    "eslint-plugin-flowtype": "^5.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.21.5",
     "ignite-ir-boilerplate-andross": "^2.4.1",
     "ignite-redux-persist": "^1.1.2",
     "ignite-standard": "^1.0.0",
     "jest": "24.1.0",
     "metro-react-native-babel-preset": "0.51.1",
     "mockery": "^2.1.0",
+    "prettier": "^2.1.2",
+    "prettier-eslint-cli": "^5.0.0",
     "react-dom": "^16.3.0",
     "react-test-renderer": "16.6.1",
     "reactotron-react-native": "^2.1.0",
@@ -155,20 +167,5 @@
       "./App/Assets/Fonts"
     ]
   },
-  "config": {},
-  "standard": {
-    "parser": "babel-eslint",
-    "globals": [
-      "describe",
-      "test",
-      "jest",
-      "expect",
-      "fetch",
-      "navigator",
-      "__DEV__",
-      "XMLHttpRequest",
-      "FormData",
-      "React$Element"
-    ]
-  }
+  "config": {}
 }

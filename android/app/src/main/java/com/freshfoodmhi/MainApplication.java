@@ -7,6 +7,7 @@ import io.rumors.reactnativesettings.RNSettingsPackage;
 import io.rumors.reactnativesettings.receivers.GpsLocationReceiver;
 import io.rumors.reactnativesettings.receivers.AirplaneModeReceiver;
 import com.facebook.react.ReactApplication;
+import com.clipsub.RNShake.RNShakeEventPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.ivanwu.googleapiavailabilitybridge.ReactNativeGooglePlayServicesPackage;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
@@ -49,6 +50,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNShakeEventPackage(),
             new VectorIconsPackage(),
             new ReactNativeGooglePlayServicesPackage(),
             new ReactNativeConfigPackage(),

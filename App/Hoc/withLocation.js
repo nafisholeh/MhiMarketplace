@@ -40,14 +40,14 @@ export default function withLocation(WrappedComponent) {
         const { highAccuracy, forceLocation, showLocationDialog } = this.state;
         Geolocation.getCurrentPosition(
           (position) => {
-            console.tron.log("getLocation/position", position);
+            // console.tron.log("getLocation/position", position);
             this.setState({
               location: this.parseLocation(position),
               loading: false,
             });
           },
           (error) => {
-            console.tron.log("getLocation/error", error);
+            // console.tron.log("getLocation/error", error);
             this.setState({ error: error, loading: false });
           },
           {
@@ -77,11 +77,11 @@ export default function withLocation(WrappedComponent) {
         } = this.state;
         this.watchId = Geolocation.watchPosition(
           (position) => {
-            console.tron.log("getLocationUpdates/position", position);
+            // console.tron.log("getLocationUpdates/position", position);
             this.setState({ location: this.parseLocation(position) });
           },
           (error) => {
-            console.tron.log("getLocationUpdates/error", error);
+            // console.tron.log("getLocationUpdates/error", error);
             this.setState({ location: error });
           },
           {

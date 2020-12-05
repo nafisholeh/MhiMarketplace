@@ -1,22 +1,22 @@
-import React, { Component, Fragment } from "react";
-import { Alert, AppState, DeviceEventEmitter } from "react-native";
-import { func } from "prop-types";
-import { connect } from "react-redux";
-import { withNavigation, withNavigationFocus } from "react-navigation";
-import { openSettings } from "react-native-permissions";
-import Geolocation from "react-native-geolocation-service";
-import GoogleAPIAvailability from "react-native-google-api-availability-bridge";
-import RNSettings from "react-native-settings";
-import debounce from "lodash/debounce";
+import React, { Component, Fragment } from 'react';
+import { Alert, AppState, DeviceEventEmitter } from 'react-native';
+import { func } from 'prop-types';
+import { connect } from 'react-redux';
+import { withNavigation, withNavigationFocus } from 'react-navigation';
+import { openSettings } from 'react-native-permissions';
+import Geolocation from 'react-native-geolocation-service';
+import GoogleAPIAvailability from 'react-native-google-api-availability-bridge';
+import RNSettings from 'react-native-settings';
+import debounce from 'lodash/debounce';
 
-import { withNoHeader } from "Hoc";
-import FarmerSignupActions from "Redux/FarmerSignupRedux";
-import LocationActions from "Redux/LocationRedux";
-import { isEmailError, moderateScale, requestLocationPermission } from "Lib";
-import { InputText, ButtonPrimary } from "Components";
-import { STRINGS, METRICS } from "Themes";
-import SignupWrapper from "./SignupWrapper";
-import { DEBOUNCE_DEVICE_EVENT_EMITTER } from "Config/AppConfig";
+import { withNoHeader } from 'Hoc';
+import FarmerSignupActions from 'Redux/FarmerSignupRedux';
+import LocationActions from 'Redux/LocationRedux';
+import { isEmailError, moderateScale, requestLocationPermission } from 'Lib';
+import { InputText, ButtonPrimary } from 'Components';
+import { STRINGS, METRICS } from 'Themes';
+import SignupWrapper from './SignupWrapper';
+import { DEBOUNCE_DEVICE_EVENT_EMITTER } from 'Config/AppConfig';
 
 class AccountCredsForm extends Component {
   constructor(props) {
@@ -70,7 +70,7 @@ class AccountCredsForm extends Component {
     const { setLocationStatus, navigation } = this.props;
     Geolocation.getCurrentPosition(
       (position) => {
-        console.tron.log("position.received", position);
+        // console.tron.log("position.received", position);
       },
       async (error) => {
         const { code } = error || {};
@@ -86,7 +86,7 @@ class AccountCredsForm extends Component {
             this.showAlert(
               STRINGS.GPS_ERROR,
               STRINGS.LOC_RESPONSE_SETTINGS_UNSATISFIED,
-              "OK",
+              'OK',
               () => navigation.pop()
             );
             break;
@@ -94,7 +94,7 @@ class AccountCredsForm extends Component {
             this.showAlert(
               STRINGS.GPS_ERROR,
               STRINGS.LOC_RESPONSE_POSITION_UNAVAILABLE,
-              "OK",
+              'OK',
               () => navigation.pop()
             );
             break;
@@ -102,7 +102,7 @@ class AccountCredsForm extends Component {
             this.showAlert(
               STRINGS.GPS_ERROR,
               STRINGS.LOC_RESPONSE_TIMEOUT,
-              "OK",
+              'OK',
               () => navigation.pop()
             );
             break;
@@ -111,7 +111,7 @@ class AccountCredsForm extends Component {
             this.showAlert(
               STRINGS.GPS_ERROR,
               STRINGS.LOC_RESPONSE_INTERNAL_ERROR,
-              "OK",
+              'OK',
               () => navigation.pop()
             );
             break;
@@ -129,24 +129,24 @@ class AccountCredsForm extends Component {
     const { navigation } = this.props;
     const result = await GoogleAPIAvailability.checkGooglePlayServices();
     switch (result) {
-      case "update":
+      case 'update':
         GoogleAPIAvailability.promptGooglePlayUpdate(false);
         break;
-      case "missing":
-      case "disabled":
+      case 'missing':
+      case 'disabled':
         GoogleAPIAvailability.showServiceMissingDialog();
         break;
-      case "invalid":
+      case 'invalid':
         GoogleAPIAvailability.showGooglePlayInvalid(
           STRINGS.LOC_INVALID_RESPONSE,
           false
         );
         break;
-      case "updating":
+      case 'updating':
         this.showAlert(
           STRINGS.PLAY_SERVICE_ERROR,
           STRINGS.LOC_RESPONSE_UPDATING,
-          "OK",
+          'OK',
           () => navigation.pop()
         );
         break;
@@ -154,7 +154,7 @@ class AccountCredsForm extends Component {
         this.showAlert(
           STRINGS.PLAY_SERVICE_ERROR,
           STRINGS.LOC_RESPONSE_UNKNOWN_ERROR,
-          "OK",
+          'OK',
           () => navigation.pop()
         );
         break;
@@ -166,7 +166,7 @@ class AccountCredsForm extends Component {
     const status = await requestLocationPermission();
     switch (status) {
       case STRINGS.LOC_DENIED:
-        this.showAlert("", STRINGS.LOC_DENIED_RESPONSE, "OK", () =>
+        this.showAlert('', STRINGS.LOC_DENIED_RESPONSE, 'OK', () =>
           navigation.pop()
         );
         break;
@@ -182,20 +182,20 @@ class AccountCredsForm extends Component {
 
   openSettingsMenu = () => {
     this.showAlert(
-      "",
+      '',
       STRINGS.LOC_NEVER_ASK_AGAIN_RESPONSE,
-      "Buka Settings",
+      'Buka Settings',
       () => openSettings()
     );
   };
 
   showAlert = (title, message, buttonTitle, onPress) => {
     Alert.alert(
-      title || "",
-      message || "",
+      title || '',
+      message || '',
       [
         {
-          text: buttonTitle || "OK",
+          text: buttonTitle || 'OK',
           onPress: onPress,
         },
       ],
@@ -209,7 +209,7 @@ class AccountCredsForm extends Component {
     await this.setState({
       error_password_repeat: isPasswordSimilar
         ? null
-        : "Password masih belum sama",
+        : 'Password masih belum sama',
     });
     if (isPasswordSimilar) {
       this.onSignup();
@@ -218,8 +218,8 @@ class AccountCredsForm extends Component {
 
   parseValidPhone = () => {
     const { phone } = this.state;
-    if (typeof phone === "string")
-      return phone.charAt(0) === "0" ? phone : `0${phone}`;
+    if (typeof phone === 'string')
+      return phone.charAt(0) === '0' ? phone : `0${phone}`;
     return phone;
   };
 
@@ -228,7 +228,7 @@ class AccountCredsForm extends Component {
     const { email, password } = this.state;
     const validPhone = this.parseValidPhone();
     storeFarmerCreds(validPhone, email, password);
-    navigation.navigate("SignupFarmerSecond");
+    navigation.navigate('SignupFarmerSecond');
   };
 
   onEligibleToSubmit = () => {
@@ -273,7 +273,7 @@ class AccountCredsForm extends Component {
             prefix="+62"
             prefixTheme="block"
             mask="[000] [0000] [0000] [0000]"
-            value={phone || ""}
+            value={phone || ''}
             error={error_phone}
             onChangeTextMask={this.onChangePhone}
             returnKeyType="next"
@@ -286,7 +286,7 @@ class AccountCredsForm extends Component {
             refs={(ref) => (this._email = ref)}
             isAllBorderShown
             title="Email"
-            value={email || ""}
+            value={email || ''}
             error={error_email || isEmailError(email)}
             onChangeText={this.onChangeText}
             returnKeyType="next"
@@ -299,7 +299,7 @@ class AccountCredsForm extends Component {
             refs={(ref) => (this._password = ref)}
             isAllBorderShown
             title="Password"
-            value={password || ""}
+            value={password || ''}
             error={error_password}
             secureTextEntry={true}
             onChangeText={this.onChangeText}
@@ -312,7 +312,7 @@ class AccountCredsForm extends Component {
             refs={(ref) => (this._password_repeat = ref)}
             isAllBorderShown
             title="Ulangi Password"
-            value={password_repeat || ""}
+            value={password_repeat || ''}
             error={error_password_repeat}
             secureTextEntry={true}
             onChangeText={this.onChangeText}

@@ -1,8 +1,8 @@
 {
   "extends": [
-    "airbnb-base",
-    "react-app",
-    "plugin:prettier/recommended",
+    "@react-native-community",
+    "plugin:react/recommended",
+    "plugin:react-native/all",
     "prettier"
   ],
   "parser": "babel-eslint",
@@ -20,31 +20,12 @@
       "babel-module": {}
     }
   },
-  "plugins": ["prettier"],
+  "plugins": ["@react-native-community", "react", "react-native", "prettier"],
   "rules": {
-    "arrow-body-style": "off",
-    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
-    "camelcase": "off",
-    "no-plusplus": "off",
-    "no-param-reassign": "off",
-    "no-case-declarations": "off",
-    "no-unneeded-ternary": "off",
-    "class-methods-use-this": "off",
-    "import/prefer-default-export": "off",
-    "no-unused-vars": "error",
-    "no-else-return": ["error", { "allowElseIf": true }],
-    "prefer-destructuring": [
-      "error",
-      {
-        "object": true,
-        "array": false
-      }
-    ],
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
+    "react/sort-prop-types": 2,
+    "react/no-unused-state": 2,
+    "react/no-unused-prop-types": 2,
     "prettier/prettier": "error"
   },
-  "globals": {
-    "google": true
-  }
+  "globals": {}
 }

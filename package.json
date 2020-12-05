@@ -111,6 +111,7 @@
     "throttle-debounce": "^2.1.0"
   },
   "devDependencies": {
+    "@react-native-community/eslint-config": "^2.0.0",
     "@storybook/addon-storyshots": "^3.4.0",
     "@storybook/addons": "^3.4.0",
     "@storybook/channels": "^3.4.0",
@@ -132,6 +133,7 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-native": "^3.10.0",
     "ignite-ir-boilerplate-andross": "^2.4.1",
     "ignite-redux-persist": "^1.1.2",
     "ignite-standard": "^1.0.0",

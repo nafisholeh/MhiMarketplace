@@ -119,9 +119,9 @@ export const MINI_MAP_STYLE = [
 export default {
   // uri: 'http://app-dev.metodehayati.id:4001/graphql',
   uri: {
-    basic: "http://192.168.1.2:4001/",
-    graphql: "http://192.168.1.2:4001/graphql",
-    image: "http://192.168.1.2:4001",
+    basic: "https://mean-mayfly-23.loca.lt/",
+    graphql: "https://mean-mayfly-23.loca.lt/graphql",
+    image: "https://mean-mayfly-23.loca.lt",
   },
   sentryKey: "https://acfc9528eb164f6d8cb3c02a5294b6cd@sentry.io/1498313",
   allowTextFontScaling: true,

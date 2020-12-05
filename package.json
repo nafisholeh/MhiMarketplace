@@ -84,6 +84,7 @@
     "react-native-permissions": "^2.0.0-rc.1",
     "react-native-picker-select": "^6.2.0",
     "react-native-progress": "^3.6.0",
+    "react-native-screens": "^2.15.0",
     "react-native-scroll-into-view": "^1.0.3",
     "react-native-sentry": "^0.43.2",
     "react-native-settings": "^0.2.3",

@@ -39,6 +39,7 @@ class ImagePicker extends PureComponent {
   // tampilkan opsi cara ambil gambar untuk ios
   _onOpenOptionIOS = () => {
     const options = ["Kamera", "Pilih dari Galeri Foto", "Batal"];
+    const { imageQuality } = this.props;
     ActionSheetIOS.showActionSheetWithOptions(
       {
         options,
@@ -47,7 +48,7 @@ class ImagePicker extends PureComponent {
       (buttonIndex: number) => {
         if (buttonIndex === 0) {
           ImagePickers.openCamera({
-            compressImageQuality: 0.5,
+            compressImageQuality: imageQuality,
             includeBase64: true,
           })
             .then((image: Object) => this._saveImages(image))
@@ -55,7 +56,7 @@ class ImagePicker extends PureComponent {
         } else if (buttonIndex === 1) {
           ImagePickers.openPicker({
             multiple: this.props.isMultiplePick ? true : false,
-            compressImageQuality: 0.5,
+            compressImageQuality: imageQuality,
             includeBase64: true,
           })
             .then((image) => this._saveImages(image))
@@ -70,12 +71,13 @@ class ImagePicker extends PureComponent {
   // tampilkan opsi cara ambil gambar untuk android
   _onOpenOptionAndroid = (): Array<Object> => {
     const options = ["Kamera", "Pilih dari Galeri Foto"];
+    const { imageQuality } = this.props;
     return [
       {
         title: options[0],
         onPress: () =>
           ImagePickers.openCamera({
-            compressImageQuality: 0.5,
+            compressImageQuality: imageQuality,
             includeBase64: true,
           })
             .then((image: Object) => this._saveImages(image))
@@ -89,7 +91,7 @@ class ImagePicker extends PureComponent {
         onPress: () =>
           ImagePickers.openPicker({
             multiple: this.props.isMultiplePick ? true : false,
-            compressImageQuality: 0.5,
+            compressImageQuality: imageQuality,
             includeBase64: true,
           })
             .then((image) => this._saveImages(image))
@@ -359,6 +361,7 @@ ImagePicker.propTypes = {
   isMultiplePick: PropTypes.bool,
   isCustomComponent: PropTypes.bool,
   customComponent: PropTypes.func,
+  imageQuality: PropTypes.number,
 };
 
 ImagePicker.defaultProps = {
@@ -373,6 +376,7 @@ ImagePicker.defaultProps = {
   titleBottomSheet: "",
   isMultiplePick: true,
   isCustomComponent: false,
+  imageQuality: 0.5,
 };
 
 export default ImagePicker;

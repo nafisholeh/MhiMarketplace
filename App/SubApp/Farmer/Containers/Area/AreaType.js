@@ -14,7 +14,12 @@ import {
 } from "Components";
 import AppConfig, { YEAR_RANGE_START, YEAR_RANGE_END } from "Config/AppConfig";
 import { METRICS, Images, Colors, FONTS } from "Themes";
-import { screenWidth, convertMonthToNumber, normalizeDate } from "Lib";
+import {
+  moderateScale,
+  screenWidth,
+  convertMonthToNumber,
+  normalizeDate,
+} from "Lib";
 import { AUTO_SUGGEST_COMMODITIES } from "SubApp/Farmer/GraphQL/Commodity/Query";
 
 class AreaType extends Component {
@@ -134,9 +139,9 @@ class AreaType extends Component {
     const shortFieldStatus = type && status ? true : false;
     let isEligible =
       status !== AppConfig.ownedArea ? allFieldStatus : shortFieldStatus;
-    if (isCommodityRequired) {
-      isEligible = isEligible && commodity ? true : false;
-    }
+    // if (isCommodityRequired) {
+    //   isEligible = isEligible && commodity ? true : false;
+    // }
     this.setState({ isSubmitEligible: isEligible });
   };
 
@@ -202,79 +207,82 @@ class AreaType extends Component {
         style={{
           flex: 0,
           width: screenWidth,
-          padding: METRICS.MEDIUM,
-          paddingTop: METRICS.LARGE,
           backgroundColor: Colors.white,
-          borderTopLeftRadius: METRICS.TINY,
-          borderTopRightRadius: METRICS.TINY,
+          borderTopLeftRadius: METRICS.MEDIUM_V2,
+          borderTopRightRadius: METRICS.MEDIUM_V2,
         }}
       >
-        <InputPicker
-          name="type"
-          title="Tipe lahan"
-          dataLocal={AppConfig.areaType}
-          onSelectionChange={this.onSelectionChange}
-          styleContainer={styles.fieldContainer}
-        />
-        <InputPicker
-          name="status"
-          title="Status lahan"
-          dataLocal={AppConfig.areaStatus}
-          onSelectionChange={this.onStatusSelectionChange}
-          styleContainer={styles.fieldContainer}
-        />
-        {status !== AppConfig.ownedArea ? (
-          <View>
-            <InputText
-              name="name"
-              title="Nama sesuai KTP"
-              value={name || ""}
-              onChangeText={this.onChangeText}
-              isAllBorderShown
-              styleContainer={styles.fieldContainer}
-            />
-            <View style={{ flexDirection: "row" }}>
-              <TouchableOpacity
-                onPress={() => this.showPickerStartPeriod()}
-                style={{ flex: 1, marginRight: METRICS.SMALL }}
-              >
-                <InputText
-                  name="start"
-                  title="Mulai sewa"
-                  value={`${month_start || ""} ${year_start || ""}`}
-                  onChangeText={this.onChangeText}
-                  isAllBorderShown
-                  editable={false}
-                  isShowIcon
-                  icon={Images.map_drawing_calendar}
-                  styleContainer={styles.fieldContainer}
-                />
-              </TouchableOpacity>
+        <View
+          style={{
+            marginHorizontal: METRICS.EXTRA_LARGE_V2,
+            marginTop: METRICS.EXTRA_LARGE_V2,
+          }}
+        >
+          <InputPicker
+            name="type"
+            title="Tipe lahan"
+            dataLocal={AppConfig.areaType}
+            onSelectionChange={this.onSelectionChange}
+          />
+          <InputPicker
+            name="status"
+            title="Status lahan"
+            dataLocal={AppConfig.areaStatus}
+            onSelectionChange={this.onStatusSelectionChange}
+            styleContainer={
+              status !== AppConfig.ownedArea ? styles.field : styles.fieldLarge
+            }
+          />
+          {status !== AppConfig.ownedArea ? (
+            <View>
+              <InputText
+                name="name"
+                title="Nama sesuai KTP"
+                value={name || ""}
+                onChangeText={this.onChangeText}
+                isAllBorderShown
+              />
+              <View style={{ flexDirection: "row" }}>
+                <TouchableOpacity
+                  onPress={() => this.showPickerStartPeriod()}
+                  style={{ flex: 1, marginRight: METRICS.SMALL }}
+                >
+                  <InputText
+                    name="start"
+                    title="Mulai sewa"
+                    value={`${month_start || ""} ${year_start || ""}`}
+                    onChangeText={this.onChangeText}
+                    isAllBorderShown
+                    editable={false}
+                    isShowIcon
+                    icon={Images.map_drawing_calendar}
+                  />
+                </TouchableOpacity>
 
-              <TouchableOpacity
-                onPress={() => this.showPickerEndPeriod()}
-                style={{ flex: 1 }}
-                disabled={isEndPeriodDisabled}
-              >
-                <InputText
-                  name="end"
-                  title="Akhir sewa"
-                  value={`${month_end || ""} ${year_end || ""}`}
-                  onChangeText={this.onChangeText}
-                  isAllBorderShown
-                  editable={false}
+                <TouchableOpacity
+                  onPress={() => this.showPickerEndPeriod()}
+                  style={{ flex: 1 }}
                   disabled={isEndPeriodDisabled}
-                  isShowIcon
-                  icon={Images.map_drawing_calendar}
-                  styleContainer={styles.fieldContainer}
-                />
-              </TouchableOpacity>
+                >
+                  <InputText
+                    name="end"
+                    title="Akhir sewa"
+                    value={`${month_end || ""} ${year_end || ""}`}
+                    onChangeText={this.onChangeText}
+                    isAllBorderShown
+                    editable={false}
+                    disabled={isEndPeriodDisabled}
+                    isShowIcon
+                    icon={Images.map_drawing_calendar}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        ) : (
-          <View />
-        )}
-        {isCommodityRequired ? (
+          ) : (
+            <View style={{ height: moderateScale(69) }} />
+          )}
+        </View>
+        {/* {isCommodityRequired ? (
           <InputTextAutoComplete
             name="commodity"
             title="Komoditas"
@@ -286,23 +294,19 @@ class AreaType extends Component {
           />
         ) : (
           <View />
-        )}
+        )} */}
         <View
           style={{
             flexDirection: "row",
             justifyContent: "space-around",
-            alignSelf: "center",
-            marginTop: METRICS.SMALL,
+            marginHorizontal: METRICS.EXTRA_LARGE_V2,
+            marginBottom: METRICS.EXTRA_LARGE_V2,
           }}
         >
           <ButtonTertier
             title="Batal"
             width={screenWidth / 2}
-            colors={Colors.white}
-            fonts={{
-              ...FONTS.BODY_BOLD,
-              ...{ color: Colors.BUTTON_TERTIER_INVERTED },
-            }}
+            isAccentButton
             onPress={this.onSubmit}
             style={{ borderWidth: 0, marginRight: METRICS.SMALL }}
           />
@@ -311,8 +315,6 @@ class AreaType extends Component {
               status === AppConfig.areaStatus.RENTED ? "Selesai" : "Lanjut"
             }
             width={screenWidth / 2}
-            colors={Colors.BUTTON_TERTIER}
-            fonts={{ ...FONTS.BODY_BOLD, ...{ color: Colors.white } }}
             disabled={!isSubmitEligible}
             onPress={this.onSubmit}
           />
@@ -329,7 +331,7 @@ AreaType.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  fieldContainer: { marginBottom: METRICS.INPUT_VERTICAL_SPACING },
+  field: { marginBottom: METRICS.EXTRA_LARGE_V2 },
 });
 
 const mapDispatchToProps = (dispatch) => ({

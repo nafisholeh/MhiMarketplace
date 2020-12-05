@@ -224,12 +224,16 @@ class InputPicker extends PureComponent {
             style={{
               ...{
                 justifyContent: "space-around",
-                marginBottom: showManualInput ? METRICS.MEDIUM : METRICS.HUGE,
+                marginBottom: showManualInput
+                  ? METRICS.MEDIUM_V2
+                  : METRICS.EXTRA_LARGE_V2,
               },
               ...styleContainer,
             }}
           >
-            <Text style={{ ...FONTS.INPUT_TITLE, marginBottom: METRICS.TINY }}>
+            <Text
+              style={{ ...FONTS.INPUT_TITLE, marginBottom: METRICS.MEDIUM_V2 }}
+            >
               {title}
             </Text>
             <ChipSelects
@@ -253,7 +257,12 @@ class InputPicker extends PureComponent {
           onValueChange={this.onSelectionChange}
           value={selected}
           disabled={data ? false : true}
-          style={styleContainer}
+          style={{
+            ...{
+              marginBottom: METRICS.EXTRA_LARGE_V2,
+            },
+            ...styleContainer,
+          }}
         >
           <InputText
             title={title}

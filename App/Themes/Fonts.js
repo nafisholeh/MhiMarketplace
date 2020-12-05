@@ -58,9 +58,31 @@ export default {
     letterSpacing: 0.3,
     lineHeight: 20,
   },
+
+  // Styles v2.0
   INPUT_TITLE: {
-    color: Colors.veggie_dark,
-    fontFamily: "CircularStd-Book",
-    fontSize: 13,
+    color: Colors.BLACK_TEXT,
+    fontFamily: "Quicksand-SemiBold",
+    fontSize: 15,
+  },
+  INPUT_VALUE: {
+    color: Colors.BLACK_TEXT_SECONDARY,
+    fontFamily: "Quicksand-Medium",
+    fontSize: 14,
+  },
+  INPUT_ERROR: {
+    color: Colors.RED_PRIMARY,
+    fontFamily: "Quicksand-Regular",
+    fontSize: 12,
+  },
+  RADIO_BUTTON_TEXT: {
+    color: Colors.BLACK_TEXT_SECONDARY,
+    fontFamily: "Quicksand-SemiBold",
+    fontSize: 14,
+  },
+  BUTTON_TITLE: {
+    color: Colors.WHITE,
+    fontFamily: "Quicksand-Bold",
+    fontSize: 17,
   },
 };

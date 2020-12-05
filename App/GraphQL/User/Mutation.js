@@ -51,12 +51,11 @@ export const SIGNIN_FARMER = gql`
         name
         date_start
         date_end
-        commodity_id {
+        commodity {
           name
           description
           photo
         }
-        commodity_other_name
       }
     }
   }

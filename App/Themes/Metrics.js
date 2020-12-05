@@ -30,7 +30,7 @@ const metrics = {
   IMAGE_COMPRESS_QUALITY: 80,
 
   RADIUS_SMALL: moderateScale(3),
-  RADIUS_MEDIUM: moderateScale(5),
+  RADIUS_MEDIUM: moderateScale(8),
   RADIUS_LARGE: moderateScale(10),
 
   BORDER_THIN: 0.5,
@@ -68,6 +68,34 @@ const metrics = {
   AUTO_SUGGEST_INFO: moderateScale(150),
 
   FIT_TO_COORDINATES_WAIT_TIME: 1000, // 1 seconds
+
+  GPS_TIMEOUT: 15000,
+  GPS_MAXIMUM_AGE: 10000,
+  GPS_INTERVAL: 5000,
+  GPS_FASTEST_INTERVAL: 2000,
+  GPS_HIGH_ACCURACY: true,
+  MAP_LATITUDE_DELTA: 0.0922,
+  MAP_LONGITUDE_DELTA: 0.0922 * (width / height),
+
+  GPS_ERROR_CODES: {
+    PERMISSION_DENIED: 1,
+    POSITION_UNAVAILABLE: 2,
+    TIMEOUT: 3,
+    PLAY_SERVICE_NOT_AVAILABLE: 4,
+    SETTINGS_NOT_SATISFIED: 5,
+    INTERNAL_ERROR: -1,
+  },
+
+  // Style v2.0
+  SMALL_V2: moderateScale(4),
+  MEDIUM_V2: moderateScale(8),
+  LARGE_V2: moderateScale(16),
+  EXTRA_LARGE_V2: moderateScale(21),
+
+  HEIGHT_SMALL: moderateScale(42),
+  HEIGHT_MEDIUM: moderateScale(50),
+
+  POPUP_BOTTOM_HEIGHT: moderateScale(362),
 };
 
 export default metrics;

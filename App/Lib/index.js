@@ -45,7 +45,12 @@ import {
   normalizeAreaSize,
   calcZoomFromRegion,
 } from "./Map";
-import { extractAdministrativeName } from "./LocationUtils";
+import {
+  hasLocationPermission,
+  requestLocationPermission,
+  requestLocationPermissionIOS,
+  extractAdministrativeName,
+} from "./Location";
 import {
   getStateFromAsyncStorage,
   setStateFromAsyncStorage,
@@ -113,4 +118,7 @@ export {
   convertNumberToMonth,
   convertMonthToNumberString,
   normalizeDate,
+  hasLocationPermission,
+  requestLocationPermission,
+  requestLocationPermissionIOS,
 };

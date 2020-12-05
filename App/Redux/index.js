@@ -18,7 +18,8 @@ export const reducers = combineReducers({
   onesignal: require("./OneSignalRedux").reducer,
   list: require("./ListRedux").reducer,
   farmerSignup: require("./FarmerSignupRedux").reducer,
-  notification: require("./NotificationRedux").reducer
+  notification: require("./NotificationRedux").reducer,
+  location: require("./LocationRedux").reducer,
 });
 
 export default () => {

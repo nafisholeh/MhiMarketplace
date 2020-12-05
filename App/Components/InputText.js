@@ -21,7 +21,7 @@ import {
 import { SkypeIndicator } from "react-native-indicators";
 import TextInputMask from "react-native-text-input-mask";
 
-import { Colors, Images, METRICS } from "Themes";
+import { Colors, Images, METRICS, FONTS } from "Themes";
 import { moderateScale } from "Lib";
 
 export default class InputText extends Component {
@@ -59,8 +59,8 @@ export default class InputText extends Component {
         {title ? (
           <Text
             style={{
-              ...styles.title,
-              ...{ marginBottom: moderateScale(isAllBorderShown ? 5 : 0) },
+              ...FONTS.INPUT_TITLE,
+              ...{ marginBottom: isAllBorderShown ? METRICS.MEDIUM_V2 : 0 },
             }}
           >
             {title}
@@ -85,7 +85,7 @@ export default class InputText extends Component {
                   multiline ? styles.multiline : null,
                   styleBorder,
                 ],
-            disabled ? { backgroundColor: Colors.BORDER } : {},
+            disabled ? { backgroundColor: Colors.GRAY_ICON } : {},
           ]}
         >
           {prefixIcon ? (
@@ -130,7 +130,7 @@ export default class InputText extends Component {
               ref={refs ? refs : (ref) => (this._input = ref)}
               underlineColorAndroid="transparent"
               inputColorPlaceholder={Colors.BORDER}
-              placeholderTextColor={Colors.disabled_light}
+              placeholderTextColor={Colors.GRAY_ICON}
               style={
                 isAllBorderShown
                   ? [styles.inputValueAllBorder, styleInput]
@@ -145,7 +145,7 @@ export default class InputText extends Component {
               ref={refs ? refs : (ref) => (this._input = ref)}
               underlineColorAndroid="transparent"
               inputColorPlaceholder={Colors.BORDER}
-              placeholderTextColor={Colors.disabled_light}
+              placeholderTextColor={Colors.GRAY_ICON}
               style={
                 isAllBorderShown
                   ? styles.inputValueAllBorder
@@ -205,87 +205,68 @@ const styles = StyleSheet.create({
     paddingVertical: METRICS.SMALL,
   },
   prefix: {
-    color: Colors.TEXT_SECONDARY,
-    fontFamily: "CircularStd-Book",
-    fontSize: 14,
+    ...FONTS.INPUT_VALUE,
     marginLeft: METRICS.SMALL,
   },
   prefixInBlock: {
-    color: Colors.white,
-    fontFamily: "CircularStd-Book",
-    fontSize: 14,
-  },
-  title: {
-    color: Colors.veggie_dark,
-    fontFamily: "CircularStd-Book",
-    fontSize: 13,
+    ...FONTS.INPUT_VALUE,
   },
   inputContent: {
+    height: METRICS.HEIGHT_SMALL,
     flexDirection: "row",
     alignItems: "center",
     borderBottomWidth: 0.5,
-    borderBottomColor: Colors.brown_light,
-    backgroundColor: Colors.white,
+    borderBottomColor: Colors.GRAY_ICON,
+    backgroundColor: Colors.WHITE,
     paddingLeft: 0,
   },
   inputContentAllBorder: {
+    height: METRICS.HEIGHT_SMALL,
     flexDirection: "row",
     alignItems: "center",
-    borderWidth: 0.5,
-    borderColor: Colors.brown_light,
-    borderRadius: 5,
-    backgroundColor: Colors.white,
+    borderRadius: METRICS.MEDIUM_V2,
+    backgroundColor: Colors.GREEN_BG_DISABLED,
     paddingLeft: 0,
   },
   inputContentError: {
     flexDirection: "row",
     alignItems: "center",
     borderBottomWidth: 0.5,
-    borderBottomColor: Colors.red2,
-    backgroundColor: Colors.white,
+    borderBottomColor: Colors.RED_PRIMARY,
+    backgroundColor: Colors.WHITE,
     paddingLeft: 0,
   },
   inputContentErrorAllBorder: {
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 0.5,
-    borderColor: Colors.red2,
+    borderColor: Colors.RED_PRIMARY,
     borderRadius: 5,
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.WHITE,
     paddingLeft: 0,
   },
   inputValue: {
+    ...FONTS.INPUT_VALUE,
     flex: 1,
-    color: Colors.text,
-    fontFamily: "CircularStd-Book",
-    fontSize: 14,
-    paddingBottom: moderateScale(4),
-    paddingTop: moderateScale(4),
     paddingLeft: 0,
   },
   inputValueAllBorder: {
+    ...FONTS.INPUT_VALUE,
     flex: 1,
-    color: Colors.text,
-    fontFamily: "CircularStd-Book",
-    fontSize: 14,
-    paddingBottom: moderateScale(4),
-    paddingTop: moderateScale(4),
-    paddingHorizontal: METRICS.SMALL,
+    paddingLeft: METRICS.LARGE_V2,
   },
   inputError: {
+    ...FONTS.INPUT_ERROR,
     position: "absolute",
     bottom: -15,
     left: 0,
-    color: Colors.red2,
-    fontFamily: "CircularStd-Book",
-    fontSize: 12,
   },
   image: {
     width: moderateScale(20),
     height: moderateScale(14),
     alignSelf: "center",
-    tintColor: Colors.veggie_light,
-    marginRight: METRICS.TINY,
+    tintColor: Colors.GREEN_BG_PRIMARY,
+    marginRight: METRICS.MEDIUM_V2,
   },
   loading: {
     flex: 0,

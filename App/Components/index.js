@@ -45,6 +45,7 @@ import ImageRadius from "./ImageRadius";
 import InputTextAccount from "./InputTextAccount";
 import ProgressBar from "./ProgressBar";
 import YearMonthPicker from "./YearMonthPicker";
+import AppConfigSettings from "./AppConfigSettings";
 
 export {
   OptimizedList,
@@ -94,4 +95,5 @@ export {
   InputTextAccount,
   ProgressBar,
   YearMonthPicker,
+  AppConfigSettings
 };

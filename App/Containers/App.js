@@ -1,15 +1,15 @@
-import "../Config";
-import React, { Component } from "react";
-import { Provider } from "react-redux";
-import { YellowBox } from "react-native";
-import DropdownAlert from "react-native-dropdownalert";
-import { ApolloProvider } from "react-apollo";
+import '../Config';
+import React, { Component } from 'react';
+import { Provider } from 'react-redux';
+import { YellowBox } from 'react-native';
+import DropdownAlert from 'react-native-dropdownalert';
+import { ApolloProvider } from 'react-apollo';
 
-import DebugConfig from "../Config/DebugConfig";
-import RootContainer from "./RootContainer";
-import createStore from "../Redux";
-import ApolloClientProvider from "Services/ApolloClientProvider";
-import { InAppNotification } from "Lib";
+import DebugConfig from '../Config/DebugConfig';
+import RootContainer from './RootContainer';
+import createStore from '../Redux';
+import ApolloClientProvider from 'Services/ApolloClientProvider';
+import { InAppNotification } from 'Lib';
 
 // create our store
 export const store = createStore();
@@ -30,9 +30,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     YellowBox.ignoreWarnings([
-      "Warning: isMounted(...) is deprecated",
-      "Module RCTImageLoader",
-      "Require cycle"
+      'Warning: isMounted(...) is deprecated',
+      'Module RCTImageLoader',
+      'Require cycle',
     ]);
   }
 
@@ -43,7 +43,7 @@ class App extends Component {
           <RootContainer />
         </Provider>
         <DropdownAlert
-          ref={ref => InAppNotification.setDropDown(ref)}
+          ref={(ref) => InAppNotification.setDropDown(ref)}
           closeInterval={10000}
         />
       </ApolloProvider>

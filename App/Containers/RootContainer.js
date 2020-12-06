@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
-import { bool } from 'prop-types';
+import { bool, func } from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import OneSignal from 'react-native-onesignal';
 
@@ -13,7 +13,7 @@ import { isRehydrated } from 'Redux/StartupRedux';
 import { store } from 'Containers/App';
 import OneSignalActions from '../Redux/OneSignalRedux';
 import { withOneSignalListener } from 'RootHoc';
-import { AppConfigSettings } from 'Components';
+// import { AppConfigSettings } from 'Components';
 
 class RootContainer extends Component {
   componentDidMount() {
@@ -24,9 +24,9 @@ class RootContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { isRehydrated } = this.props;
-    if (prevProps.isRehydrated !== isRehydrated) {
-      if (isRehydrated) {
+    const { isReduxRehydrated } = this.props;
+    if (prevProps.isReduxRehydrated !== isReduxRehydrated) {
+      if (isReduxRehydrated) {
         OneSignal.addEventListener('ids', this.onOneSignalIdsReceived);
         OneSignal.configure();
       }
@@ -37,29 +37,31 @@ class RootContainer extends Component {
     OneSignal.removeEventListener('ids', this.onOneSignalIdsReceived);
   }
 
+  // eslint-disable-next-line no-undef
   onOneSignalIdsReceived = (device) => {
     const { userId } = device;
     store.dispatch(OneSignalActions.storeNotifId(userId));
   };
 
   render() {
-    const { isRehydrated } = this.props;
+    const { isReduxRehydrated } = this.props;
     return (
       <View style={styles.applicationView}>
         <StatusBar barStyle="light-content" />
-        {isRehydrated && <ReduxNavigation />}
-        <AppConfigSettings />
+        {isReduxRehydrated && <ReduxNavigation />}
+        {/* <AppConfigSettings /> */}
       </View>
     );
   }
 }
 
 RootContainer.propTypes = {
-  isRehydrated: bool,
+  isReduxRehydrated: bool,
+  startup: func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  isRehydrated: isRehydrated(),
+  isReduxRehydrated: isRehydrated(),
 });
 
 // wraps dispatch to create nicer functions to call within our component

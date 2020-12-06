@@ -8,8 +8,8 @@ import AppConfig from 'Config/AppConfig';
 Sentry.config(AppConfig.sentryKey).install();
 
 Sentry.setTagsContext({
-  'environment': 'development',
-  'react': true
-})
+  environment: 'development',
+  react: true,
+});
 
-AppRegistry.registerComponent('FreshFoodMHI', () => App)
+AppRegistry.registerComponent('FreshFoodMHI', () => App);

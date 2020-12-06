@@ -75,9 +75,6 @@ const styles = StyleSheet.create({
     ...FONTS.INPUT_VALUE_DISABLED,
     ...{ flex: 1, paddingLeft: METRICS.BIG },
   },
-  shadowContainer: {
-    marginBottom: METRICS.MEDIUM,
-  },
   title: {
     ...FONTS.INPUT_TITLE,
     ...{

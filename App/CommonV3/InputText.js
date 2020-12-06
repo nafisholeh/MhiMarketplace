@@ -45,7 +45,9 @@ export default class InputText extends Component {
           : styles.normalContainer;
         return <View style={normalStyles}>{this.renderContent()}</View>;
       case MODE.MINIMAL:
-        const minimalStyles = styles.minimalContainer;
+        const minimalStyles = error
+          ? styles.minimalErrorContainer
+          : styles.minimalContainer;
         return <View style={minimalStyles}>{this.renderContent()}</View>;
     }
   };
@@ -60,7 +62,7 @@ export default class InputText extends Component {
           <View />
         )}
         {this.renderBorderAndContent()}
-        {error ? <Text style={styles.errorContainer}>{error}</Text> : <View />}
+        {error ? <Text style={styles.errorView}>{error}</Text> : <View />}
       </View>
     );
   }
@@ -70,11 +72,9 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: METRICS.MEDIUM,
   },
-  errorContainer: {
+  errorView: {
     ...FONTS.INPUT_ERROR,
-    bottom: -15,
-    left: 0,
-    position: 'absolute',
+    ...{ bottom: -15, left: 0, position: 'absolute' },
   },
   minimalContainer: {
     alignItems: 'center',
@@ -83,7 +83,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: METRICS.ONE,
     flexDirection: 'row',
     height: METRICS.HUGE,
-    paddingLeft: 0,
+  },
+  minimalErrorContainer: {
+    alignItems: 'center',
+    backgroundColor: COLORS.WHITE,
+    borderBottomColor: COLORS.ERROR,
+    borderBottomWidth: METRICS.ONE,
+    flexDirection: 'row',
+    height: METRICS.HUGE,
   },
   normalContainer: {
     alignItems: 'center',

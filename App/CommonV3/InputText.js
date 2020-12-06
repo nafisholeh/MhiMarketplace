@@ -1,14 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TextInput } from 'react-native';
-import {
-  object,
-  func,
-  number,
-  string,
-  oneOfType,
-  oneOf,
-  array,
-} from 'prop-types';
+import { object, func, string, oneOf } from 'prop-types';
 
 import { FONTS, METRICS, COLORS } from 'themes-v3';
 
@@ -36,13 +28,14 @@ export default class InputText extends Component {
   };
 
   renderBorderAndContent = () => {
-    const { mode } = this.props;
+    const { mode, error } = this.props;
     switch (mode) {
       case MODE.NORMAL:
       default:
-        return (
-          <View style={styles.normalContainer}>{this.renderContent()}</View>
-        );
+        const containerStyles = error
+          ? styles.normalErrorContainer
+          : styles.normalContainer;
+        return <View style={containerStyles}>{this.renderContent()}</View>;
     }
   };
 
@@ -79,6 +72,16 @@ const styles = StyleSheet.create({
     ...FONTS.INPUT_VALUE,
     ...{ flex: 1, paddingLeft: METRICS.LARGE },
   },
+  normalErrorContainer: {
+    alignItems: 'center',
+    backgroundColor: COLORS.WHITE,
+    borderColor: COLORS.ERROR,
+    borderRadius: METRICS.RADIUS_NORMAL,
+    borderWidth: METRICS.ONE,
+    flexDirection: 'row',
+    height: METRICS.HUGE,
+    paddingLeft: 0,
+  },
   title: {
     ...FONTS.INPUT_TITLE,
     ...{
@@ -92,11 +95,6 @@ InputText.propTypes = {
   mode: oneOf([NORMAL, INVERSE, MINIMAL]),
   name: string,
   onChangeText: func,
-  onChangeTextMask: func,
-  prefix: string,
-  prefixIcon: oneOfType([number, string]),
-  prefixStyle: oneOfType([object, array]),
-  prefixTheme: oneOf(['block', 'blank']),
   refs: string,
   title: string,
 };

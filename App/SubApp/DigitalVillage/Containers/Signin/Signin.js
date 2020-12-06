@@ -13,7 +13,7 @@ class Signin extends Component {
     return (
       <View>
         <Text> index </Text>
-        <InputText title="Nomor KK" error="ini error" />
+        <InputText title="Nomor KK" />
       </View>
     );
   }

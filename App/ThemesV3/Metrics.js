@@ -1,7 +1,7 @@
 import { moderateScale } from '../Lib/Responsive';
 
 const metrics = {
-  ONE: 1,
+  ONE: moderateScale(1.5),
   TINY: moderateScale(4),
   LARGE: moderateScale(21),
   HUGE: moderateScale(40),

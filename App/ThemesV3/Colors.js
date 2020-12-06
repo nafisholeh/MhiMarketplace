@@ -17,6 +17,7 @@ const colors = {
   GRAY_BG_DISABLED: '#F7F7F9',
   WHITE: '#FFFFFF',
   ERROR: '#FA7A53',
+  DROP_SHADOW: '#000000',
 };
 
 export default colors;

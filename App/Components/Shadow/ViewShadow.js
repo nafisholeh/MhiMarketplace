@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { Platform, StyleSheet, View } from "react-native";
-import PropTypes from "prop-types";
-import ViewOverflow from "react-native-view-overflow";
+import React, { Component } from 'react';
+import { Platform, StyleSheet, View } from 'react-native';
+import PropTypes from 'prop-types';
+import ViewOverflow from 'react-native-view-overflow';
 
-import { Colors, Images, METRICS } from "Themes";
-import { moderateScale } from "Lib";
-import BoxShadow from "./BoxShadow";
+import { Colors, Images, METRICS } from 'Themes';
+import { moderateScale } from 'Lib';
+import BoxShadow from './BoxShadow';
 
 /*
  * this.props.style:
@@ -20,7 +20,8 @@ import BoxShadow from "./BoxShadow";
  */
 export default class ViewShadow extends Component {
   render() {
-    if (Platform.OS === "ios") {
+    const { posYAndroid } = this.props;
+    if (Platform.OS === 'ios') {
       return (
         <View style={[styles(this.props).containerIOS, this.props.style]}>
           <View style={styles(this.props).shadowIOS} />
@@ -40,11 +41,11 @@ export default class ViewShadow extends Component {
               width: moderateScale(this.props.width, this.props.scaleFactor),
               height: moderateScale(this.props.height),
               x: 0,
-              y: 0,
+              y: posYAndroid || 0,
               opacity: this.props.shadowOpacityAndroid,
               border: this.props.shadowRadiusAndroid,
               color: this.props.shadowColor,
-              radius: this.props.shadowBorderRadiusAndroid
+              radius: this.props.shadowBorderRadiusAndroid,
             }}
           >
             <View
@@ -59,75 +60,75 @@ export default class ViewShadow extends Component {
   }
 }
 
-const styles = props =>
+const styles = (props) =>
   StyleSheet.create({
-    containerIOS: {
-      width: moderateScale(props.width, props.scaleFactor),
+    backLayerIOS: {
+      backgroundColor: props.mainColor,
+      borderRadius: props.shadowBorderRadiusIOS,
+      bottom: 0,
+      left: 0,
+      opacity: 0.9,
+      position: 'absolute',
+      right: 0,
+      top: 0,
+    },
+    children: {
+      backgroundColor: props.mainColor,
+      borderRadius: props.borderRadius,
       height: moderateScale(props.height),
-      alignItems: "center"
+      width: moderateScale(props.width, props.scaleFactor),
+    },
+    containerAndroid: {
+      alignSelf: 'center',
+      height: moderateScale(props.height),
+      width: moderateScale(props.width, props.scaleFactor),
+    },
+    containerIOS: {
+      alignItems: 'center',
+      height: moderateScale(props.height),
+      width: moderateScale(props.width, props.scaleFactor),
     },
     shadowIOS: {
-      position: "absolute",
-      top: moderateScale(props.height) * props.posYIOS,
-      left: 0,
-      right: 0,
+      backgroundColor: props.shadowColor,
+      borderRadius: props.shadowBorderRadiusIOS,
       height: moderateScale(props.height) * props.shadowHeightIOS,
+      left: 0,
       marginHorizontal:
         moderateScale(props.width, props.scaleFactor) *
         props.shadowHorizontalMarginIOS,
-      backgroundColor: props.shadowColor,
-      borderRadius: props.shadowBorderRadiusIOS,
+      position: 'absolute',
+      right: 0,
       shadowColor: props.shadowColor,
       shadowOffset: {
         width: 0,
-        height: props.shadowOffsetHeight
+        height: props.shadowOffsetHeight,
       },
+      shadowOpacity: props.shadowOpacityIOS,
       shadowRadius: props.shadowRadiusIOS,
-      shadowOpacity: props.shadowOpacityIOS
+      top: moderateScale(props.height) * props.posYIOS,
     },
-    backLayerIOS: {
-      position: "absolute",
-      top: 0,
-      bottom: 0,
-      left: 0,
-      right: 0,
-      borderRadius: props.shadowBorderRadiusIOS,
-      backgroundColor: props.mainColor,
-      opacity: 0.9
-    },
-    containerAndroid: {
-      width: moderateScale(props.width, props.scaleFactor),
-      height: moderateScale(props.height),
-      alignSelf: "center"
-    },
-    children: {
-      width: moderateScale(props.width, props.scaleFactor),
-      height: moderateScale(props.height),
-      backgroundColor: props.mainColor,
-      borderRadius: props.borderRadius
-    }
   });
 
 ViewShadow.propTypes = {
   style: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.object,
-    PropTypes.number
+    PropTypes.number,
   ]),
   styleChildren: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.object,
-    PropTypes.number
+    PropTypes.number,
   ]),
   mainColor: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.object,
-    PropTypes.number
+    PropTypes.number,
   ]),
   shadowColor: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.object,
-    PropTypes.number
+    PropTypes.number,
   ]),
   shadowOpacityIOS: PropTypes.number, // transparency level of shadow
   shadowOpacityAndroid: PropTypes.number, // transparency level of shadow
@@ -145,7 +146,7 @@ ViewShadow.propTypes = {
   shadowHeightAndroid: PropTypes.number,
   shadowOffsetHeight: PropTypes.number, // shadow offset height on iOS
   borderRadius: PropTypes.number, // if you want container view border rounded, set this
-  scaleFactor: PropTypes.number // atur scale dari width containernya
+  scaleFactor: PropTypes.number, // atur scale dari width containernya
 };
 
 ViewShadow.defaultProps = {
@@ -164,5 +165,5 @@ ViewShadow.defaultProps = {
   shadowHeightAndroid: 0.1,
   shadowOffsetHeight: 2,
   borderRadius: 0,
-  scaleFactor: 0
+  scaleFactor: 0,
 };

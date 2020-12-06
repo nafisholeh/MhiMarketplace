@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TextInput } from 'react-native';
-import { bool, object, func, string, oneOf } from 'prop-types';
+import { bool, object, func, string, number } from 'prop-types';
 
 import { FONTS, METRICS, COLORS } from 'themes-v3';
-
-const NORMAL = 'normal';
-const MINIMAL = 'minimal';
-const MODE = {
-  NORMAL,
-  MINIMAL,
-};
+import { ViewShadow } from 'Components';
+import { screenWidth } from 'Lib';
 
 export default class InputText extends Component {
   renderContent = () => {
@@ -31,18 +26,23 @@ export default class InputText extends Component {
   };
 
   renderBorderAndContent = () => {
-    const { mode, error, isDisabled } = this.props;
-    switch (mode) {
-      case MODE.NORMAL:
-      default:
-        let containerStyles = error
-          ? styles.normalErrorContainer
-          : styles.normalContainer;
-        containerStyles = isDisabled
-          ? styles.normalDisabledContainer
-          : styles.normalContainer;
-        return <View style={containerStyles}>{this.renderContent()}</View>;
-    }
+    const { width } = this.props;
+    return (
+      <ViewShadow
+        width={width}
+        height={METRICS.HUGE}
+        borderRadius={METRICS.RADIUS_NORMAL}
+        shadowBorderRadiusAndroid={METRICS.RADIUS_NORMAL}
+        shadowRadiusAndroid={4.5}
+        shadowOpacityAndroid={0.05}
+        posYAndroid={2.2}
+        mainColor={COLORS.WHITE}
+        shadowColor={COLORS.DROP_SHADOW}
+        style={styles.shadowContainer}
+      >
+        {this.renderContent()}
+      </ViewShadow>
+    );
   };
 
   render() {
@@ -67,47 +67,21 @@ const styles = StyleSheet.create({
     left: 0,
     position: 'absolute',
   },
-  normalContainer: {
-    alignItems: 'center',
-    backgroundColor: COLORS.WHITE,
-    borderColor: COLORS.BROWN_BG_PRIMARY,
-    borderRadius: METRICS.RADIUS_NORMAL,
-    borderWidth: METRICS.ONE,
-    flexDirection: 'row',
-    height: METRICS.HUGE,
-    paddingLeft: 0,
-  },
   normalContent: {
     ...FONTS.INPUT_VALUE,
-    ...{ flex: 1, paddingLeft: METRICS.LARGE },
-  },
-  normalDisabledContainer: {
-    alignItems: 'center',
-    backgroundColor: COLORS.GRAY_BG_PRIMARY,
-    borderColor: COLORS.GRAY_BG_PRIMARY,
-    borderRadius: METRICS.RADIUS_NORMAL,
-    borderWidth: METRICS.ONE,
-    flexDirection: 'row',
-    height: METRICS.HUGE,
-    paddingLeft: 0,
+    ...{ flex: 1, paddingLeft: METRICS.BIG },
   },
   normalDisabledContent: {
     ...FONTS.INPUT_VALUE_DISABLED,
-    ...{ flex: 1, paddingLeft: METRICS.LARGE },
+    ...{ flex: 1, paddingLeft: METRICS.BIG },
   },
-  normalErrorContainer: {
-    alignItems: 'center',
-    backgroundColor: COLORS.WHITE,
-    borderColor: COLORS.ERROR,
-    borderRadius: METRICS.RADIUS_NORMAL,
-    borderWidth: METRICS.ONE,
-    flexDirection: 'row',
-    height: METRICS.HUGE,
-    paddingLeft: 0,
+  shadowContainer: {
+    marginBottom: METRICS.MEDIUM,
   },
   title: {
     ...FONTS.INPUT_TITLE,
     ...{
+      color: COLORS.WHITE,
       marginBottom: METRICS.TINY,
     },
   },
@@ -116,14 +90,15 @@ const styles = StyleSheet.create({
 InputText.propTypes = {
   error: object,
   isDisabled: bool,
-  mode: oneOf([NORMAL, MINIMAL]),
   name: string,
   onChangeText: func,
   refs: string,
   title: string,
+  width: number.isRequired,
 };
 
 InputText.defaultProps = {
   error: null,
   isDisabled: false,
+  width: screenWidth,
 };

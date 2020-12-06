@@ -1,0 +1,19 @@
+import COLORS from './Colors';
+
+export default {
+  INPUT_TITLE: {
+    fontFamily: 'Quicksand-SemiBold',
+    fontSize: 12,
+    color: COLORS.BROWN_BG_PRIMARY,
+  },
+  INPUT_VALUE: {
+    fontFamily: 'Quicksand-Regular',
+    fontSize: 12,
+    color: COLORS.BLACK_TEXT_PRIMARY,
+  },
+  INPUT_ERROR: {
+    fontFamily: 'Quicksand-Regular',
+    fontSize: 9,
+    color: COLORS.ERROR,
+  },
+};

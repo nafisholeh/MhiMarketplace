@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TextInput } from 'react-native';
-import { object, func, string, oneOf } from 'prop-types';
+import { bool, object, func, string, oneOf } from 'prop-types';
 
 import { FONTS, METRICS, COLORS } from 'themes-v3';
 
@@ -15,12 +15,17 @@ const MODE = {
 
 export default class InputText extends Component {
   renderContent = () => {
-    const { refs, name, onChangeText } = this.props;
+    const { refs, name, onChangeText, isDisabled } = this.props;
+    const stylesContent = isDisabled
+      ? styles.normalDisabledContent
+      : styles.normalContent;
     return (
       <TextInput
         ref={refs ? refs : (ref) => (this._input = ref)}
-        style={styles.normalContent}
+        style={stylesContent}
         underlineColorAndroid="transparent"
+        editable={!isDisabled}
+        selectTextOnFocus={!isDisabled}
         {...this.props}
         onChangeText={(text) => onChangeText(text, name)}
       />
@@ -28,12 +33,15 @@ export default class InputText extends Component {
   };
 
   renderBorderAndContent = () => {
-    const { mode, error } = this.props;
+    const { mode, error, isDisabled } = this.props;
     switch (mode) {
       case MODE.NORMAL:
       default:
-        const containerStyles = error
+        let containerStyles = error
           ? styles.normalErrorContainer
+          : styles.normalContainer;
+        containerStyles = isDisabled
+          ? styles.normalDisabledContainer
           : styles.normalContainer;
         return <View style={containerStyles}>{this.renderContent()}</View>;
     }
@@ -52,6 +60,9 @@ export default class InputText extends Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: METRICS.MEDIUM,
+  },
   errorContainer: {
     ...FONTS.INPUT_ERROR,
     bottom: -15,
@@ -70,6 +81,20 @@ const styles = StyleSheet.create({
   },
   normalContent: {
     ...FONTS.INPUT_VALUE,
+    ...{ flex: 1, paddingLeft: METRICS.LARGE },
+  },
+  normalDisabledContainer: {
+    alignItems: 'center',
+    backgroundColor: COLORS.GRAY_BG_PRIMARY,
+    borderColor: COLORS.GRAY_BG_PRIMARY,
+    borderRadius: METRICS.RADIUS_NORMAL,
+    borderWidth: METRICS.ONE,
+    flexDirection: 'row',
+    height: METRICS.HUGE,
+    paddingLeft: 0,
+  },
+  normalDisabledContent: {
+    ...FONTS.INPUT_VALUE_DISABLED,
     ...{ flex: 1, paddingLeft: METRICS.LARGE },
   },
   normalErrorContainer: {
@@ -92,6 +117,7 @@ const styles = StyleSheet.create({
 
 InputText.propTypes = {
   error: object,
+  isDisabled: bool,
   mode: oneOf([NORMAL, INVERSE, MINIMAL]),
   name: string,
   onChangeText: func,
@@ -101,4 +127,5 @@ InputText.propTypes = {
 
 InputText.defaultProps = {
   error: null,
+  isDisabled: false,
 };

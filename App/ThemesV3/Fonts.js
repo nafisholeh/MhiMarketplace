@@ -11,6 +11,11 @@ export default {
     fontSize: 12,
     color: COLORS.BLACK_TEXT_PRIMARY,
   },
+  INPUT_VALUE_DISABLED: {
+    fontFamily: 'Quicksand-Regular',
+    fontSize: 12,
+    color: COLORS.GRAY_TEXT,
+  },
   INPUT_ERROR: {
     fontFamily: 'Quicksand-Regular',
     fontSize: 10,

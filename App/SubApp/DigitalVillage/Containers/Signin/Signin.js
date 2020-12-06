@@ -14,6 +14,7 @@ class Signin extends Component {
       <View>
         <Text> index </Text>
         <InputText title="Nomor KK" />
+        <InputText title="Nomor KK" isDisabled value="test" />
       </View>
     );
   }

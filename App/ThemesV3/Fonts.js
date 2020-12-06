@@ -13,7 +13,7 @@ export default {
   },
   INPUT_ERROR: {
     fontFamily: 'Quicksand-Regular',
-    fontSize: 9,
+    fontSize: 10,
     color: COLORS.ERROR,
   },
 };

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TextInput } from 'react-native';
 import {
-  bool,
   object,
   func,
   number,
@@ -10,166 +9,87 @@ import {
   oneOf,
   array,
 } from 'prop-types';
-import TextInputMask from 'react-native-text-input-mask';
 
-import { Colors, Images, METRICS, FONTS } from 'Themes';
+import { FONTS, METRICS, COLORS } from 'themes-v3';
+
+const NORMAL = 'normal';
+const INVERSE = 'inverse';
+const MINIMAL = 'minimal';
+const MODE = {
+  NORMAL,
+  INVERSE,
+  MINIMAL,
+};
 
 export default class InputText extends Component {
-  render() {
-    const {
-      refs,
-      name,
-      title,
-      error,
-      styleBorder,
-      styleInput,
-      onChangeText,
-      onChangeTextMask,
-      isAllBorderShown,
-      mask,
-      multiline,
-      disabled,
-    } = this.props;
+  renderContent = () => {
+    const { refs, name, onChangeText } = this.props;
     return (
-      <View style={{ ...styles.container }}>
-        {title ? (
-          <Text
-            style={{
-              ...FONTS.INPUT_TITLE,
-              ...{ marginBottom: isAllBorderShown ? METRICS.MEDIUM_V2 : 0 },
-            }}
-          >
-            {title}
-          </Text>
-        ) : (
-          <View />
-        )}
-        <View
-          style={[
-            error
-              ? [
-                  isAllBorderShown
-                    ? styles.inputContentErrorAllBorder
-                    : styles.inputContentError,
-                  multiline ? styles.multiline : null,
-                  styleBorder,
-                ]
-              : [
-                  isAllBorderShown
-                    ? styles.inputContentAllBorder
-                    : styles.inputContent,
-                  multiline ? styles.multiline : null,
-                  styleBorder,
-                ],
-            disabled ? { backgroundColor: Colors.GRAY_ICON } : {},
-          ]}
-        >
-          {!mask ? (
-            <TextInput
-              inputColorPlaceholder={Colors.BORDER}
-              placeholderTextColor={Colors.GRAY_ICON}
-              ref={refs ? refs : (ref) => (this._input = ref)}
-              style={
-                isAllBorderShown
-                  ? [styles.inputValueAllBorder, styleInput]
-                  : [styles.inputValue, styleInput]
-              }
-              underlineColorAndroid="transparent"
-              {...this.props}
-              onChangeText={(text) => onChangeText(text, name)}
-              textAlignVertical={multiline ? 'top' : 'center'}
-            />
-          ) : (
-            <TextInputMask
-              inputColorPlaceholder={Colors.BORDER}
-              placeholderTextColor={Colors.GRAY_ICON}
-              ref={refs ? refs : (ref) => (this._input = ref)}
-              style={
-                isAllBorderShown
-                  ? styles.inputValueAllBorder
-                  : styles.inputValue
-              }
-              underlineColorAndroid="transparent"
-              {...this.props}
-              mask={mask}
-              onChangeText={(formatted, extracted) =>
-                onChangeTextMask(formatted, extracted, name)
-              }
-            />
-          )}
-        </View>
-        {error && <Text style={styles.inputError}>{error}</Text>}
+      <TextInput
+        ref={refs ? refs : (ref) => (this._input = ref)}
+        style={styles.normalContent}
+        underlineColorAndroid="transparent"
+        {...this.props}
+        onChangeText={(text) => onChangeText(text, name)}
+      />
+    );
+  };
+
+  renderBorderAndContent = () => {
+    const { mode } = this.props;
+    switch (mode) {
+      case MODE.NORMAL:
+      default:
+        return (
+          <View style={styles.normalContainer}>{this.renderContent()}</View>
+        );
+    }
+  };
+
+  render() {
+    const { title, error } = this.props;
+    return (
+      <View style={styles.container}>
+        {title ? <Text style={styles.title}>{title}</Text> : <View />}
+        {this.renderBorderAndContent()}
+        {error ? <Text style={styles.errorContainer}>{error}</Text> : <View />}
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: METRICS.HUGE,
-  },
-  inputContent: {
-    alignItems: 'center',
-    backgroundColor: Colors.WHITE,
-    borderBottomColor: Colors.GRAY_ICON,
-    borderBottomWidth: 0.5,
-    flexDirection: 'row',
-    height: METRICS.HEIGHT_SMALL,
-    paddingLeft: 0,
-  },
-  inputContentAllBorder: {
-    alignItems: 'center',
-    backgroundColor: Colors.GREEN_BG_DISABLED,
-    borderRadius: METRICS.MEDIUM_V2,
-    flexDirection: 'row',
-    height: METRICS.HEIGHT_SMALL,
-    paddingLeft: 0,
-  },
-  inputContentError: {
-    alignItems: 'center',
-    backgroundColor: Colors.WHITE,
-    borderBottomColor: Colors.RED_PRIMARY,
-    borderBottomWidth: 0.5,
-    flexDirection: 'row',
-    paddingLeft: 0,
-  },
-  inputContentErrorAllBorder: {
-    alignItems: 'center',
-    backgroundColor: Colors.WHITE,
-    borderColor: Colors.RED_PRIMARY,
-    borderRadius: 5,
-    borderWidth: 0.5,
-    flexDirection: 'row',
-    paddingLeft: 0,
-  },
-  inputError: {
+  errorContainer: {
     ...FONTS.INPUT_ERROR,
     bottom: -15,
     left: 0,
     position: 'absolute',
   },
-  inputValue: {
-    ...FONTS.INPUT_VALUE,
-    flex: 1,
+  normalContainer: {
+    alignItems: 'center',
+    backgroundColor: COLORS.WHITE,
+    borderColor: COLORS.BROWN_BG_PRIMARY,
+    borderRadius: METRICS.RADIUS_NORMAL,
+    borderWidth: METRICS.ONE,
+    flexDirection: 'row',
+    height: METRICS.HUGE,
     paddingLeft: 0,
   },
-  inputValueAllBorder: {
+  normalContent: {
     ...FONTS.INPUT_VALUE,
-    flex: 1,
-    paddingLeft: METRICS.LARGE_V2,
+    ...{ flex: 1, paddingLeft: METRICS.LARGE },
   },
-  multiline: {
-    alignItems: 'stretch',
-    flex: 1,
-    paddingVertical: METRICS.SMALL,
+  title: {
+    ...FONTS.INPUT_TITLE,
+    ...{
+      marginBottom: METRICS.TINY,
+    },
   },
 });
 
 InputText.propTypes = {
   error: object,
-  icon: oneOfType([number, string]),
-  isLoading: bool,
-  isShowIcon: bool,
+  mode: oneOf([NORMAL, INVERSE, MINIMAL]),
   name: string,
   onChangeText: func,
   onChangeTextMask: func,
@@ -183,8 +103,4 @@ InputText.propTypes = {
 
 InputText.defaultProps = {
   error: null,
-  isLoading: false,
-  isShowIcon: false,
-  icon: Images.dropdown,
-  prefixTheme: 'blank',
 };

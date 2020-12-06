@@ -13,10 +13,11 @@ const MODE = {
 
 export default class InputText extends Component {
   renderContent = () => {
-    const { refs, name, onChangeText, isDisabled } = this.props;
+    const { refs, mode, name, onChangeText, isDisabled } = this.props;
     const stylesContent = isDisabled
       ? styles.normalDisabledContent
       : styles.normalContent;
+    const textAlign = mode === MODE.MINIMAL ? 'center' : 'left';
     return (
       <TextInput
         ref={refs ? refs : (ref) => (this._input = ref)}
@@ -24,6 +25,7 @@ export default class InputText extends Component {
         underlineColorAndroid="transparent"
         editable={!isDisabled}
         selectTextOnFocus={!isDisabled}
+        textAlign={textAlign}
         {...this.props}
         onChangeText={(text) => onChangeText(text, name)}
       />
@@ -35,21 +37,28 @@ export default class InputText extends Component {
     switch (mode) {
       case MODE.NORMAL:
       default:
-        let containerStyles = error
+        let normalStyles = error
           ? styles.normalErrorContainer
           : styles.normalContainer;
-        containerStyles = isDisabled
+        normalStyles = isDisabled
           ? styles.normalDisabledContainer
           : styles.normalContainer;
-        return <View style={containerStyles}>{this.renderContent()}</View>;
+        return <View style={normalStyles}>{this.renderContent()}</View>;
+      case MODE.MINIMAL:
+        const minimalStyles = styles.minimalContainer;
+        return <View style={minimalStyles}>{this.renderContent()}</View>;
     }
   };
 
   render() {
-    const { title, error } = this.props;
+    const { title, error, mode } = this.props;
     return (
       <View style={styles.container}>
-        {title ? <Text style={styles.title}>{title}</Text> : <View />}
+        {title && mode === MODE.NORMAL ? (
+          <Text style={styles.title}>{title}</Text>
+        ) : (
+          <View />
+        )}
         {this.renderBorderAndContent()}
         {error ? <Text style={styles.errorContainer}>{error}</Text> : <View />}
       </View>
@@ -66,6 +75,15 @@ const styles = StyleSheet.create({
     bottom: -15,
     left: 0,
     position: 'absolute',
+  },
+  minimalContainer: {
+    alignItems: 'center',
+    backgroundColor: COLORS.WHITE,
+    borderBottomColor: COLORS.BROWN_BG_PRIMARY,
+    borderBottomWidth: METRICS.ONE,
+    flexDirection: 'row',
+    height: METRICS.HUGE,
+    paddingLeft: 0,
   },
   normalContainer: {
     alignItems: 'center',

@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TextInput, Image } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+  TextInput,
+  Image,
+} from 'react-native';
 import { bool, object, func, string, number } from 'prop-types';
 
 import { FONTS, METRICS, COLORS, IMAGES } from 'themes-v3';
@@ -7,11 +14,38 @@ import { ViewShadow } from 'Components';
 import { screenWidth, moderateScale } from 'Lib';
 
 export default class InputPasswordWithShadow extends Component {
+  password = '';
+  state = {
+    isHidden: true,
+  };
+
+  onTogglePassword = () => {
+    this.setState((prevState) => {
+      return {
+        isHidden: !prevState.isHidden,
+      };
+    });
+  };
+
+  onPasswordChanged = (text, name) => {
+    const { onChangeText } = this.props;
+    this.password = text;
+    onChangeText(text, name);
+  };
+
   renderContent = () => {
-    const { refs, name, onChangeText, isDisabled } = this.props;
-    const stylesContent = isDisabled ? styles.disabledContent : styles.content;
+    const { refs, name, isDisabled } = this.props;
+    const { isHidden } = this.state;
+    const passwordStyles = isHidden
+      ? styles.passwordHidden
+      : styles.passwordShown;
+    const stylesContent = isDisabled ? styles.disabledContent : passwordStyles;
+    const icon = isHidden
+      ? IMAGES.TOGGLE_SHOW_PASSWORD
+      : IMAGES.TOGGLE_HIDE_PASSWORD;
+    const secureTextEntry = isHidden;
     return (
-      <View style={styles.contentContainer}>
+      <View style={styles.passwordContainer}>
         <TextInput
           ref={refs ? refs : (ref) => (this._input = ref)}
           style={stylesContent}
@@ -19,10 +53,16 @@ export default class InputPasswordWithShadow extends Component {
           editable={!isDisabled}
           selectTextOnFocus={!isDisabled}
           {...this.props}
-          onChangeText={(text) => onChangeText(text, name)}
-          secureTextEntry={true}
+          onChangeText={(text) => this.onPasswordChanged(text, name)}
+          secureTextEntry={secureTextEntry}
+          value={this.password}
         />
-        <Image source={IMAGES.TOGGLE_PASSWORD} style={styles.toggleIcon} />
+        <TouchableOpacity
+          onPress={this.onTogglePassword}
+          style={styles.toggleContainer}
+        >
+          <Image source={icon} style={styles.toggleIcon} />
+        </TouchableOpacity>
       </View>
     );
   };
@@ -73,15 +113,6 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: METRICS.MEDIUM,
   },
-  content: {
-    ...FONTS.BOLD_MEDIUM_BLACK,
-    ...{
-      paddingLeft: METRICS.BIG,
-      paddingRight: METRICS.HUGE,
-      letterSpacing: 4,
-    },
-  },
-  contentContainer: { justifyContent: 'center' },
   disabledContent: {
     ...FONTS.SEMIBOLD_MEDIUM_BLACK,
     ...{ flex: 1, paddingLeft: METRICS.BIG, paddingRight: METRICS.HUGE },
@@ -93,6 +124,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  passwordContainer: { justifyContent: 'center' },
+  passwordHidden: {
+    ...FONTS.BOLD_MEDIUM_BLACK,
+    ...{
+      paddingLeft: METRICS.BIG,
+      paddingRight: METRICS.HUGE,
+      letterSpacing: 4,
+    },
+  },
+  passwordShown: {
+    ...FONTS.SEMIBOLD_MEDIUM_BLACK,
+    ...{
+      paddingLeft: METRICS.BIG,
+      paddingRight: METRICS.HUGE,
+    },
+  },
   shadowContainer: {
     padding: 0,
   },
@@ -102,10 +149,15 @@ const styles = StyleSheet.create({
       marginBottom: METRICS.TINY,
     },
   },
+  toggleContainer: {
+    bottom: 0,
+    padding: METRICS.BIG,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+  },
   toggleIcon: {
     height: moderateScale(15),
-    position: 'absolute',
-    right: METRICS.BIG,
     width: moderateScale(25),
   },
 });

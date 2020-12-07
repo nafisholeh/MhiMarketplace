@@ -3,7 +3,7 @@ import { StyleSheet, View, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 
-import { InputTextWithShadow } from 'common-v3';
+import { InputTextWithShadow, InputPasswordWithShadow } from 'common-v3';
 import { withNoHeader } from 'Hoc';
 import { IMAGES, METRICS } from 'themes-v3';
 import { screenWidth } from 'Lib';
@@ -20,6 +20,10 @@ class Signin extends Component {
             title="Email"
             containerPadding={METRICS.LARGE}
             error="wajib diisi"
+          />
+          <InputPasswordWithShadow
+            title="Password"
+            containerPadding={METRICS.LARGE}
           />
         </ImageBackground>
       </View>

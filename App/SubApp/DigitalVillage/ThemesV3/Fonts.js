@@ -6,6 +6,11 @@ export default {
     fontSize: 12,
     color: COLORS.WHITE,
   },
+  BOLD_MEDIUM_BLACK: {
+    fontFamily: 'OpenSans-Bold',
+    fontSize: 15,
+    color: COLORS.BLACK_TEXT_PRIMARY,
+  },
   SEMIBOLD_MEDIUM_BLACK: {
     fontFamily: 'OpenSans-SemiBold',
     fontSize: 15,

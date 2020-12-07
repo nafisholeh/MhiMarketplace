@@ -1,4 +1,5 @@
 import InputText from './InputText';
 import InputTextWithShadow from './InputTextWithShadow';
+import InputPasswordWithShadow from './InputPasswordWithShadow';
 
-export { InputText, InputTextWithShadow };
+export { InputText, InputTextWithShadow, InputPasswordWithShadow };

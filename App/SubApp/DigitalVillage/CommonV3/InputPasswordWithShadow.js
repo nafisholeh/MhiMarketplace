@@ -6,12 +6,10 @@ import { FONTS, METRICS, COLORS } from 'themes-v3';
 import { ViewShadow } from 'Components';
 import { screenWidth } from 'Lib';
 
-export default class InputTextWithShadow extends Component {
+export default class InputPasswordWithShadow extends Component {
   renderContent = () => {
     const { refs, name, onChangeText, isDisabled } = this.props;
-    const stylesContent = isDisabled
-      ? styles.normalDisabledContent
-      : styles.normalContent;
+    const stylesContent = isDisabled ? styles.disabledContent : styles.content;
     return (
       <TextInput
         ref={refs ? refs : (ref) => (this._input = ref)}
@@ -21,6 +19,7 @@ export default class InputTextWithShadow extends Component {
         selectTextOnFocus={!isDisabled}
         {...this.props}
         onChangeText={(text) => onChangeText(text, name)}
+        secureTextEntry={true}
       />
     );
   };
@@ -71,20 +70,20 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: METRICS.MEDIUM,
   },
+  content: {
+    ...FONTS.BOLD_MEDIUM_BLACK,
+    ...{ paddingLeft: METRICS.BIG, letterSpacing: 4 },
+  },
+  disabledContent: {
+    ...FONTS.SEMIBOLD_MEDIUM_BLACK,
+    ...{ flex: 1, paddingLeft: METRICS.BIG },
+  },
   error: {
     ...FONTS.ITALIC_SMALL_ERROR,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  normalContent: {
-    ...FONTS.SEMIBOLD_MEDIUM_BLACK,
-    ...{ paddingLeft: METRICS.BIG },
-  },
-  normalDisabledContent: {
-    ...FONTS.SEMIBOLD_MEDIUM_BLACK,
-    ...{ flex: 1, paddingLeft: METRICS.BIG },
   },
   shadowContainer: {
     padding: 0,
@@ -97,17 +96,17 @@ const styles = StyleSheet.create({
   },
 });
 
-InputTextWithShadow.propTypes = {
+InputPasswordWithShadow.propTypes = {
   containerPadding: number.isRequired,
   error: object,
   isDisabled: bool,
   name: string,
-  onChangeText: func.isRequired,
+  onChangeText: func,
   refs: string,
   title: string.isRequired,
 };
 
-InputTextWithShadow.defaultProps = {
+InputPasswordWithShadow.defaultProps = {
   error: null,
   isDisabled: false,
 };

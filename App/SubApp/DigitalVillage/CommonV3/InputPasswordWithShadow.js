@@ -1,26 +1,29 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TextInput } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Image } from 'react-native';
 import { bool, object, func, string, number } from 'prop-types';
 
-import { FONTS, METRICS, COLORS } from 'themes-v3';
+import { FONTS, METRICS, COLORS, IMAGES } from 'themes-v3';
 import { ViewShadow } from 'Components';
-import { screenWidth } from 'Lib';
+import { screenWidth, moderateScale } from 'Lib';
 
 export default class InputPasswordWithShadow extends Component {
   renderContent = () => {
     const { refs, name, onChangeText, isDisabled } = this.props;
     const stylesContent = isDisabled ? styles.disabledContent : styles.content;
     return (
-      <TextInput
-        ref={refs ? refs : (ref) => (this._input = ref)}
-        style={stylesContent}
-        underlineColorAndroid="transparent"
-        editable={!isDisabled}
-        selectTextOnFocus={!isDisabled}
-        {...this.props}
-        onChangeText={(text) => onChangeText(text, name)}
-        secureTextEntry={true}
-      />
+      <View style={styles.contentContainer}>
+        <TextInput
+          ref={refs ? refs : (ref) => (this._input = ref)}
+          style={stylesContent}
+          underlineColorAndroid="transparent"
+          editable={!isDisabled}
+          selectTextOnFocus={!isDisabled}
+          {...this.props}
+          onChangeText={(text) => onChangeText(text, name)}
+          secureTextEntry={true}
+        />
+        <Image source={IMAGES.TOGGLE_PASSWORD} style={styles.toggleIcon} />
+      </View>
     );
   };
 
@@ -72,11 +75,16 @@ const styles = StyleSheet.create({
   },
   content: {
     ...FONTS.BOLD_MEDIUM_BLACK,
-    ...{ paddingLeft: METRICS.BIG, letterSpacing: 4 },
+    ...{
+      paddingLeft: METRICS.BIG,
+      paddingRight: METRICS.HUGE,
+      letterSpacing: 4,
+    },
   },
+  contentContainer: { justifyContent: 'center' },
   disabledContent: {
     ...FONTS.SEMIBOLD_MEDIUM_BLACK,
-    ...{ flex: 1, paddingLeft: METRICS.BIG },
+    ...{ flex: 1, paddingLeft: METRICS.BIG, paddingRight: METRICS.HUGE },
   },
   error: {
     ...FONTS.ITALIC_SMALL_ERROR,
@@ -93,6 +101,12 @@ const styles = StyleSheet.create({
     ...{
       marginBottom: METRICS.TINY,
     },
+  },
+  toggleIcon: {
+    height: moderateScale(15),
+    position: 'absolute',
+    right: METRICS.BIG,
+    width: moderateScale(25),
   },
 });
 

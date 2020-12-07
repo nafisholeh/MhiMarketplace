@@ -21,6 +21,17 @@ export default {
     fontSize: 12,
     color: COLORS.ERROR,
   },
+  BOLD_HUGE_WHITE: {
+    fontFamily: 'OpenSans-Bold',
+    fontSize: 30,
+    color: COLORS.WHITE,
+  },
+  SEMIBOLD_LARGE_WHTIE: {
+    fontFamily: 'OpenSans-SemiBold',
+    fontSize: 17,
+    color: COLORS.WHITE,
+  },
+
   INPUT_TITLE: {
     fontFamily: 'OpenSans-Regular',
     fontSize: 12,

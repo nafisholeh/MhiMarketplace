@@ -1,4 +1,4 @@
-import { moderateScale } from '../Lib/Responsive';
+import { moderateScale } from 'Lib';
 
 const metrics = {
   ONE: moderateScale(1.5),

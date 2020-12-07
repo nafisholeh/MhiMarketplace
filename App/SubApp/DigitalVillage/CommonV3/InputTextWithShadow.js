@@ -26,10 +26,10 @@ export default class InputText extends Component {
   };
 
   renderBorderAndContent = () => {
-    const { width } = this.props;
+    const { containerPadding } = this.props;
     return (
       <ViewShadow
-        width={width}
+        width={screenWidth - containerPadding * 2}
         height={METRICS.HUGE}
         borderRadius={METRICS.RADIUS_NORMAL}
         shadowBorderRadiusAndroid={METRICS.RADIUS_NORMAL}
@@ -46,12 +46,22 @@ export default class InputText extends Component {
   };
 
   render() {
-    const { title, error } = this.props;
+    const { title, error, containerPadding } = this.props;
+    const titleStyle = {
+      ...styles.title,
+      ...{ marginLeft: containerPadding },
+    };
+    const errorStyle = {
+      ...styles.error,
+      ...{ marginRight: containerPadding },
+    };
     return (
       <View style={styles.container}>
-        {title ? <Text style={styles.title}>{title}</Text> : <View />}
+        <View style={styles.header}>
+          {title ? <Text style={titleStyle}>{title}</Text> : <View />}
+          {error ? <Text style={errorStyle}>{error}</Text> : <View />}
+        </View>
         {this.renderBorderAndContent()}
-        {error ? <Text style={styles.errorContainer}>{error}</Text> : <View />}
       </View>
     );
   }
@@ -61,41 +71,43 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: METRICS.MEDIUM,
   },
-  errorContainer: {
-    ...FONTS.INPUT_ERROR,
-    bottom: -15,
-    left: 0,
-    position: 'absolute',
+  error: {
+    ...FONTS.ITALIC_SMALL_ERROR,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   normalContent: {
-    ...FONTS.INPUT_VALUE,
-    ...{ flex: 1, paddingLeft: METRICS.BIG },
+    ...FONTS.SEMIBOLD_MEDIUM_BLACK,
+    ...{ paddingLeft: METRICS.BIG },
   },
   normalDisabledContent: {
-    ...FONTS.INPUT_VALUE_DISABLED,
+    ...FONTS.SEMIBOLD_MEDIUM_BLACK,
     ...{ flex: 1, paddingLeft: METRICS.BIG },
   },
+  shadowContainer: {
+    padding: 0,
+  },
   title: {
-    ...FONTS.INPUT_TITLE,
+    ...FONTS.BOLD_SMALL_WHITE,
     ...{
-      color: COLORS.WHITE,
       marginBottom: METRICS.TINY,
     },
   },
 });
 
 InputText.propTypes = {
+  containerPadding: number.isRequired,
   error: object,
   isDisabled: bool,
   name: string,
   onChangeText: func,
   refs: string,
-  title: string,
-  width: number.isRequired,
+  title: string.isRequired,
 };
 
 InputText.defaultProps = {
   error: null,
   isDisabled: false,
-  width: screenWidth,
 };

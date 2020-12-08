@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 
 import { withNoHeader } from 'Hoc';
-import { NavHeader } from 'common-v3';
+import { NavHeader, InputText } from 'common-v3';
 import { FONTS, METRICS, IMAGES } from 'themes-v3';
 import { moderateScale } from 'Lib';
 
@@ -10,6 +11,9 @@ class KtpSearch extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
+  }
+  componentDidMount() {
+    SplashScreen.hide();
   }
 
   render() {
@@ -25,7 +29,7 @@ class KtpSearch extends PureComponent {
             resizeMode="contain"
             style={styles.avatar}
           />
-          <Text style={styles.header} />
+          <InputText mode="minimal" />
         </View>
         <View style={styles.bottomSection} />
       </View>
@@ -35,6 +39,7 @@ class KtpSearch extends PureComponent {
 
 const styles = StyleSheet.create({
   avatar: {
+    alignSelf: 'center',
     height: moderateScale(121),
     width: moderateScale(186),
   },
@@ -45,15 +50,16 @@ const styles = StyleSheet.create({
   header: {
     ...FONTS.REGULAR_LARGE_PRIMARY,
     ...{
-      marginHorizontal: moderateScale(62),
+      marginHorizontal: METRICS.HUGE,
       textAlign: 'center',
+      alignSelf: 'center',
     },
   },
   topSection: {
     flex: 1.5,
     flexDirection: 'column',
     justifyContent: 'space-around',
-    alignItems: 'center',
+    paddingHorizontal: METRICS.LARGE,
   },
 });
 

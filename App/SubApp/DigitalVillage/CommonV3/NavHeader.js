@@ -6,11 +6,6 @@ import { func, string } from 'prop-types';
 import { moderateScale } from 'Lib';
 
 class NavHeader extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   onGoBack = () => {
     const { onGoBack } = this.props;
     if (onGoBack) onGoBack();

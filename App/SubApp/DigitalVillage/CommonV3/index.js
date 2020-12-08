@@ -2,5 +2,12 @@ import InputText from './InputText';
 import InputTextWithShadow from './InputTextWithShadow';
 import InputPasswordWithShadow from './InputPasswordWithShadow';
 import NavHeader from './NavHeader';
+import Button from './Button';
 
-export { InputText, InputTextWithShadow, InputPasswordWithShadow, NavHeader };
+export {
+  Button,
+  InputText,
+  InputTextWithShadow,
+  InputPasswordWithShadow,
+  NavHeader,
+};

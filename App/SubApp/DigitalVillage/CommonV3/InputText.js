@@ -104,7 +104,10 @@ const styles = StyleSheet.create({
   },
   normalContent: {
     ...FONTS.INPUT_VALUE,
-    ...{ flex: 1, paddingLeft: METRICS.LARGE },
+    ...{
+      flex: 1,
+      paddingHorizontal: METRICS.LARGE,
+    },
   },
   normalDisabledContainer: {
     alignItems: 'center',
@@ -118,7 +121,7 @@ const styles = StyleSheet.create({
   },
   normalDisabledContent: {
     ...FONTS.INPUT_VALUE_DISABLED,
-    ...{ flex: 1, paddingLeft: METRICS.LARGE },
+    ...{ flex: 1, paddingHorizontal: METRICS.LARGE },
   },
   normalErrorContainer: {
     alignItems: 'center',

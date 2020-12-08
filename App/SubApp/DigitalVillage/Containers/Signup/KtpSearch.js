@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Image } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 
 import { withNoHeader } from 'Hoc';
-import { NavHeader, InputText } from 'common-v3';
+import { NavHeader, InputText, Button } from 'common-v3';
 import { FONTS, METRICS, IMAGES } from 'themes-v3';
 import { moderateScale } from 'Lib';
 
@@ -12,9 +12,12 @@ class KtpSearch extends PureComponent {
     super(props);
     this.state = {};
   }
+
   componentDidMount() {
     SplashScreen.hide();
   }
+
+  onProceed = () => {};
 
   render() {
     return (
@@ -31,7 +34,9 @@ class KtpSearch extends PureComponent {
           />
           <InputText mode="minimal" />
         </View>
-        <View style={styles.bottomSection} />
+        <View style={styles.bottomSection}>
+          <Button text="Lanjut" onPress={this.onProceed} />
+        </View>
       </View>
     );
   }
@@ -45,6 +50,7 @@ const styles = StyleSheet.create({
   },
   bottomSection: {
     flex: 1,
+    justifyContent: 'flex-end',
   },
   container: { flex: 1 },
   header: {

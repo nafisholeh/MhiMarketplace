@@ -18,6 +18,7 @@ const colors = {
   WHITE: '#FFFFFF',
   ERROR: '#FA7A53',
   DROP_SHADOW: '#000000',
+  PRIMARY: '#C4C4C4',
 };
 
 export default colors;

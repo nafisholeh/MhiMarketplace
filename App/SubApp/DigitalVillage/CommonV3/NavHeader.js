@@ -65,9 +65,9 @@ const styles = StyleSheet.create({
 });
 
 NavHeader.propTypes = {
+  info: string,
   onGoBack: func.isRequired,
   title: string,
-  info: string,
 };
 
 export default NavHeader;

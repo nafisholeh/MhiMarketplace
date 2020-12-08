@@ -5,6 +5,7 @@ const images = {
   TOGGLE_HIDE_PASSWORD: require(pathPrefix + 'toggle_password.png'),
   TOGGLE_SHOW_PASSWORD: require(pathPrefix + 'toggle_password.png'),
   BACK: require(pathPrefix + 'back.png'),
+  AVATAR_SEARCH_KTP: require(pathPrefix + 'avatar_search_ktp.png'),
 };
 
 export default images;

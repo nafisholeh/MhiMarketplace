@@ -6,7 +6,6 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 
 import { InputTextWithShadow, InputPasswordWithShadow } from 'common-v3';
@@ -62,7 +61,7 @@ const styles = StyleSheet.create({
     height: moderateScale(120),
   },
   buttonText: {
-    ...FONTS.BOLD_LARGE_BLACK_ACCENT,
+    ...FONTS.BOLD_LARGE_BLACK_TERTIERY,
   },
   container: { flex: 1, justifyContent: 'space-between' },
   headingContainer: {
@@ -103,4 +102,4 @@ const styles = StyleSheet.create({
     ...FONTS.SEMIBOLD_LARGE_WHTIE,
   },
 });
-export default connect(null, null)(withNoHeader(Signin));
+export default withNoHeader(Signin);

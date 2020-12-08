@@ -47,8 +47,8 @@ class Signin extends Component {
               <Text style={styles.buttonText}>Masuk</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={this.onSignup} style={styles.signup}>
-              <Text style={styles.signinText}>Tidak punya akun?</Text>
-              <Text style={styles.signinButton}>Daftar</Text>
+              <Text style={styles.signupText}>Tidak punya akun?</Text>
+              <Text style={styles.signupButton}>Daftar</Text>
             </TouchableOpacity>
           </View>
         </ImageBackground>
@@ -87,16 +87,17 @@ const styles = StyleSheet.create({
     marginBottom: METRICS.LARGE,
     marginHorizontal: METRICS.LARGE,
   },
-  signinButton: {
-    ...FONTS.BOLD_SMALL_GRAY,
-  },
-  signinText: {
-    ...FONTS.REGULAR_SMALL_BLACK,
-  },
   signup: {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  signupButton: {
+    ...FONTS.BOLD_SMALL_GRAY,
+  },
+  signupText: {
+    ...FONTS.REGULAR_SMALL_BLACK,
+    marginRight: METRICS.TINY,
   },
   subheadingTitle: {
     ...FONTS.SEMIBOLD_LARGE_WHTIE,

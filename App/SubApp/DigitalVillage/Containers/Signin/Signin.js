@@ -20,6 +20,7 @@ class Signin extends Component {
   }
 
   onSignin = () => {};
+  onSignup = () => {};
 
   render() {
     return (
@@ -42,8 +43,12 @@ class Signin extends Component {
             />
           </View>
           <View style={styles.bottomContainer}>
-            <TouchableOpacity onPress={this.onSignin} style={styles.button}>
+            <TouchableOpacity onPress={this.onSignin} style={styles.signin}>
               <Text style={styles.buttonText}>Masuk</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this.onSignup} style={styles.signup}>
+              <Text style={styles.signinText}>Tidak punya akun?</Text>
+              <Text style={styles.signinButton}>Daftar</Text>
             </TouchableOpacity>
           </View>
         </ImageBackground>
@@ -55,14 +60,6 @@ class Signin extends Component {
 const styles = StyleSheet.create({
   bottomContainer: {
     height: moderateScale(120),
-  },
-  button: {
-    alignItems: 'center',
-    backgroundColor: COLORS.WHITE,
-    borderRadius: METRICS.LARGE,
-    height: METRICS.EXTRA_HUGE,
-    justifyContent: 'center',
-    marginHorizontal: METRICS.LARGE,
   },
   buttonText: {
     ...FONTS.BOLD_LARGE_BLACK_ACCENT,
@@ -80,6 +77,26 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     paddingTop: METRICS.LARGE,
+  },
+  signin: {
+    alignItems: 'center',
+    backgroundColor: COLORS.WHITE,
+    borderRadius: METRICS.LARGE,
+    height: METRICS.EXTRA_HUGE,
+    justifyContent: 'center',
+    marginBottom: METRICS.LARGE,
+    marginHorizontal: METRICS.LARGE,
+  },
+  signinButton: {
+    ...FONTS.BOLD_SMALL_GRAY,
+  },
+  signinText: {
+    ...FONTS.REGULAR_SMALL_BLACK,
+  },
+  signup: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   subheadingTitle: {
     ...FONTS.SEMIBOLD_LARGE_WHTIE,

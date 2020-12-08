@@ -1,6 +1,11 @@
 import COLORS from './Colors';
 
 export default {
+  BOLD_SMALL_GRAY: {
+    fontFamily: 'OpenSans-Regular',
+    fontSize: 12,
+    color: COLORS.GRAY_BG_DISABLED,
+  },
   BOLD_SMALL_WHITE: {
     fontFamily: 'OpenSans-Bold',
     fontSize: 12,
@@ -35,6 +40,11 @@ export default {
     fontFamily: 'OpenSans-Bold',
     fontSize: 17,
     color: COLORS.BLACK_TEXT_TERTIERY,
+  },
+  REGULAR_SMALL_BLACK: {
+    fontFamily: 'OpenSans-Regular',
+    fontSize: 12,
+    color: COLORS.BLACK_TEXT_PRIMARY,
   },
 
   INPUT_TITLE: {

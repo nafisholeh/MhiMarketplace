@@ -36,7 +36,12 @@ export default {
     fontSize: 17,
     color: COLORS.WHITE,
   },
-  BOLD_LARGE_BLACK_ACCENT: {
+  SEMIBOLD_EXTRALARGE_BLACK: {
+    fontFamily: 'OpenSans-SemiBold',
+    fontSize: 21,
+    color: COLORS.BLACK_TEXT_PRIMARY,
+  },
+  BOLD_LARGE_BLACK_TERTIERY: {
     fontFamily: 'OpenSans-Bold',
     fontSize: 17,
     color: COLORS.BLACK_TEXT_TERTIERY,
@@ -45,6 +50,11 @@ export default {
     fontFamily: 'OpenSans-Regular',
     fontSize: 12,
     color: COLORS.BLACK_TEXT_PRIMARY,
+  },
+  REGULAR_EXTRALARGE_BLACK_TERTIERY: {
+    fontFamily: 'OpenSans-Regular',
+    fontSize: 21,
+    color: COLORS.BLACK_TEXT_TERTIERY,
   },
 
   INPUT_TITLE: {

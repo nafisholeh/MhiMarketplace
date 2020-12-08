@@ -1,17 +1,26 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ImageBackground, Text } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  ImageBackground,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 
 import { InputTextWithShadow, InputPasswordWithShadow } from 'common-v3';
 import { withNoHeader } from 'Hoc';
-import { IMAGES, METRICS, FONTS } from 'themes-v3';
+import { IMAGES, METRICS, FONTS, COLORS } from 'themes-v3';
 import { moderateScale } from 'Lib';
 
 class Signin extends Component {
   componentDidMount() {
     SplashScreen.hide();
   }
+
+  onSignin = () => {};
+
   render() {
     return (
       <View style={styles.container}>
@@ -32,7 +41,11 @@ class Signin extends Component {
               containerPadding={METRICS.LARGE}
             />
           </View>
-          <View style={styles.bottomContainer} />
+          <View style={styles.bottomContainer}>
+            <TouchableOpacity onPress={this.onSignin} style={styles.button}>
+              <Text style={styles.buttonText}>Masuk</Text>
+            </TouchableOpacity>
+          </View>
         </ImageBackground>
       </View>
     );
@@ -42,6 +55,17 @@ class Signin extends Component {
 const styles = StyleSheet.create({
   bottomContainer: {
     height: moderateScale(120),
+  },
+  button: {
+    alignItems: 'center',
+    backgroundColor: COLORS.WHITE,
+    borderRadius: METRICS.LARGE,
+    height: METRICS.EXTRA_HUGE,
+    justifyContent: 'center',
+    marginHorizontal: METRICS.LARGE,
+  },
+  buttonText: {
+    ...FONTS.BOLD_LARGE_BLACK_ACCENT,
   },
   container: { flex: 1, justifyContent: 'space-between' },
   headingContainer: {

@@ -7,6 +7,7 @@ const metrics = {
   BIG: moderateScale(12),
   LARGE: moderateScale(21),
   HUGE: moderateScale(40),
+  EXTRA_HUGE: moderateScale(50),
   RADIUS_NORMAL: moderateScale(8),
 };
 

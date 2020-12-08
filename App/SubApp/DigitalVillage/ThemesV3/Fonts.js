@@ -31,6 +31,11 @@ export default {
     fontSize: 17,
     color: COLORS.WHITE,
   },
+  BOLD_LARGE_BLACK_ACCENT: {
+    fontFamily: 'OpenSans-Bold',
+    fontSize: 17,
+    color: COLORS.BLACK_TEXT_TERTIERY,
+  },
 
   INPUT_TITLE: {
     fontFamily: 'OpenSans-Regular',

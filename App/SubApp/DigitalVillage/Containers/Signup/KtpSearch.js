@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 
 import { withNoHeader } from 'Hoc';
-import { NavHeader, InputText, Button } from 'common-v3';
+import { NavHeader, InputText, InputWithClearButton, Button } from 'common-v3';
 import { FONTS, METRICS, IMAGES } from 'themes-v3';
 import { moderateScale } from 'Lib';
 import KtpItems from './Components/KtpItems';
@@ -63,7 +63,7 @@ class KtpSearch extends PureComponent {
               <Text style={styles.headerPageTwo}>
                 Masukkan nama lengkap/NIK sesuai dengan KTP anda:
               </Text>
-              <InputText
+              <InputWithClearButton
                 mode="minimal"
                 textAlign="left"
                 style={styles.inputTwo}

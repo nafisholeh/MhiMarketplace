@@ -1,13 +1,13 @@
-import moment from "moment";
-import momenthijri from "moment-hijri";
-import "moment/locale/id";
-var _ = require("lodash");
+import moment from 'moment';
+import momenthijri from 'moment-hijri';
+import 'moment/locale/id';
+var _ = require('lodash');
 
-import { STRINGS } from "Themes";
+import { STRINGS } from 'Themes';
 
-export const DATE_FORMAT = "YYYY-MM-DD";
-export const DATE_READABLE_FORMAT = "DD MMM YYYY";
-export const DATE_TIME_FORMAT = "YYYY-MM-DD HH:mm:ss";
+export const DATE_FORMAT = 'YYYY-MM-DD';
+export const DATE_READABLE_FORMAT = 'DD MMM YYYY';
+export const DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
 export function getCurrentDate() {
   return moment();
@@ -16,15 +16,21 @@ export function getCurrentDate() {
 export function isSameDay(_date1, _date2) {
   let date1 = moment(_date1).format(DATE_TIME_FORMAT);
   let date2 = moment(_date2).format(DATE_TIME_FORMAT);
-  return moment(date1).diff(date2, "days") == 0 ? true : false;
+  return moment(date1).diff(date2, 'days') == 0 ? true : false;
 }
 
 export function stringToDate(date) {
   return moment(date);
 }
-
-export function stringToDateWithFormat(date, format) {
-  return moment(date).format(format == null ? DATE_FORMAT : null);
+/**
+ * parse string-based date (e.g. 17-08-2020) to a date object
+ *
+ * @param {string} date required
+ * @param {string} formatInput format of date params. required
+ * @param {string} formatOutput
+ */
+export function stringToDateWithFormat(date, formatInput, formatOutput) {
+  return moment(date, formatInput).format(formatOutput || DATE_FORMAT);
 }
 
 export function getIntervalTime(old, current) {
@@ -35,42 +41,42 @@ export function getIntervalTime(old, current) {
 export function getIntervalTimeToday(old, isShort) {
   if (!old) return null;
   const interval = moment(old).from(moment());
-  if (isShort && typeof interval === "string") {
-    if (interval.includes("yang lalu")) {
-      return interval.replace("yang lalu", "");
+  if (isShort && typeof interval === 'string') {
+    if (interval.includes('yang lalu')) {
+      return interval.replace('yang lalu', '');
     }
   }
   return interval;
 }
 
 export function getUTCDate(date) {
-  return moment.utc(new Date()).local().format("YYYY-MM-DD HH:mm:ss");
+  return moment.utc(new Date()).local().format('YYYY-MM-DD HH:mm:ss');
 }
 
 export function unixToDate(date) {
-  return moment.unix(date / 1000).format("YYYY-MM-DD HH:mm");
+  return moment.unix(date / 1000).format('YYYY-MM-DD HH:mm');
 }
 
 // output: Hari ini, Kemarin, 22 Juli, 21 Juli, dst
 export function getIntervalDateToday(old, _format) {
   let a = moment(old);
   let b = moment();
-  let diff = a.diff(b, "days");
-  let format = !_format ? "DD MMM" : _format;
-  if (moment(old).isSame(moment(), "year")) {
+  let diff = a.diff(b, 'days');
+  let format = !_format ? 'DD MMM' : _format;
+  if (moment(old).isSame(moment(), 'year')) {
     // jika tahunnya sama
     switch (diff) {
       case 0:
-        return "Hari ini";
+        return 'Hari ini';
         break;
       case -1:
-        return "Kemarin";
+        return 'Kemarin';
         break;
       case 1:
-        return "Besok";
+        return 'Besok';
         break;
       case 2:
-        return "Lusa";
+        return 'Lusa';
         break;
       default:
         return exports.getReadableDate(old, null, null, format);
@@ -78,73 +84,73 @@ export function getIntervalDateToday(old, _format) {
   } else {
     // jika tahunnya tidak sama
     let isContainYear =
-      format.includes("Y") || format.includes("y") ? true : false;
-    if (!isContainYear) format += " YY";
+      format.includes('Y') || format.includes('y') ? true : false;
+    if (!isContainYear) format += ' YY';
     return exports.getReadableDate(old, null, format);
   }
 }
 
 export function getReadableDate(date, originFormat, locale, format) {
   if (
-    date === "undefined" ||
-    date === "" ||
+    date === 'undefined' ||
+    date === '' ||
     date === null ||
-    date === "0000-00-00 00:00:00"
+    date === '0000-00-00 00:00:00'
   )
-    return "-";
-  return moment(date, originFormat || "DD-MM-YYYY")
-    .locale(locale ? locale : "id")
+    return '-';
+  return moment(date, originFormat || 'DD-MM-YYYY')
+    .locale(locale ? locale : 'id')
     .format(format ? format : DATE_READABLE_FORMAT);
 }
 
 export function getReadableWeekdays(date) {
   if (
-    date === "undefined" ||
-    date === "" ||
+    date === 'undefined' ||
+    date === '' ||
     date === null ||
-    date === "0000-00-00 00:00:00"
+    date === '0000-00-00 00:00:00'
   )
-    return "";
+    return '';
   else return translateWeekdays(moment(date).isoWeekday());
 }
 
 export function convertNumberToMonth(index) {
   switch (index) {
     case 1:
-    case "1":
+    case '1':
       return STRINGS.MONTH_JAN;
     case 2:
-    case "2":
+    case '2':
       return STRINGS.MONTH_FEB;
     case 3:
-    case "3":
+    case '3':
       return STRINGS.MONTH_MAR;
     case 4:
-    case "4":
+    case '4':
       return STRINGS.MONTH_APR;
     case 5:
-    case "5":
+    case '5':
       return STRINGS.MONTH_MAY;
     case 6:
-    case "6":
+    case '6':
       return STRINGS.MONTH_JUN;
     case 7:
-    case "7":
+    case '7':
       return STRINGS.MONTH_JUL;
     case 8:
-    case "8":
+    case '8':
       return STRINGS.MONTH_AUG;
     case 9:
-    case "9":
+    case '9':
       return STRINGS.MONTH_SEP;
     case 10:
-    case "10":
+    case '10':
       return STRINGS.MONTH_OCT;
     case 11:
-    case "11":
+    case '11':
       return STRINGS.MONTH_NOV;
     case 12:
-    case "12":
+    case '12':
       return STRINGS.MONTH_DEC;
     default:
       return STRINGS.MONTH_JAN;
@@ -185,55 +191,55 @@ export function convertMonthToNumber(name) {
 export function convertMonthToNumberString(name) {
   switch (name) {
     case STRINGS.MONTH_JAN:
-      return "01";
+      return '01';
     case STRINGS.MONTH_FEB:
-      return "02";
+      return '02';
     case STRINGS.MONTH_MAR:
-      return "03";
+      return '03';
     case STRINGS.MONTH_APR:
-      return "04";
+      return '04';
     case STRINGS.MONTH_MAY:
-      return "05";
+      return '05';
     case STRINGS.MONTH_JUN:
-      return "06";
+      return '06';
     case STRINGS.MONTH_JUL:
-      return "07";
+      return '07';
     case STRINGS.MONTH_AUG:
-      return "08";
+      return '08';
     case STRINGS.MONTH_SEP:
-      return "09";
+      return '09';
     case STRINGS.MONTH_OCT:
-      return "10";
+      return '10';
     case STRINGS.MONTH_NOV:
-      return "11";
+      return '11';
     case STRINGS.MONTH_DEC:
-      return "12";
+      return '12';
     default:
-      return "1";
+      return '1';
   }
 }
 
 export function translateWeekdays(day) {
   switch (day) {
     case 1:
-      return "Senin";
+      return 'Senin';
     case 2:
-      return "Selasa";
+      return 'Selasa';
     case 3:
-      return "Rabu";
+      return 'Rabu';
     case 4:
-      return "Kamis";
+      return 'Kamis';
     case 5:
-      return "Jumat";
+      return 'Jumat';
     case 6:
-      return "Sabtu";
+      return 'Sabtu';
     case 7:
-      return "Minggu";
+      return 'Minggu';
   }
 }
 
 export function isValidDate(str) {
-  if (str === "0000-00-00 00:00:00") return true;
+  if (str === '0000-00-00 00:00:00') return true;
   return moment(str, DATE_TIME_FORMAT, true).isValid();
 }
 
@@ -241,20 +247,20 @@ export function isValidDate(str) {
  * konversi 2017-9-8 jadi 2017-09-08
  */
 export function normalizeDate(date) {
-  let output = date.split("-");
-  let month = output[1].length == 1 ? "0" + output[1] : output[1];
-  let day = output[2].length == 1 ? "0" + output[2] : output[2];
-  return output[0] + "-" + month + "-" + day;
+  let output = date.split('-');
+  let month = output[1].length == 1 ? '0' + output[1] : output[1];
+  let day = output[2].length == 1 ? '0' + output[2] : output[2];
+  return output[0] + '-' + month + '-' + day;
 }
 
 /*
  * konversi 9:8 jadi 09:08
  */
 export function normalizeTime(time) {
-  let output = time.split(":");
-  let hours = output[0].length == 1 ? "0" + output[0] : output[0];
-  let minutes = output[1].length == 1 ? "0" + output[1] : output[1];
-  return hours + ":" + minutes;
+  let output = time.split(':');
+  let hours = output[0].length == 1 ? '0' + output[0] : output[0];
+  let minutes = output[1].length == 1 ? '0' + output[1] : output[1];
+  return hours + ':' + minutes;
 }
 
 /*
@@ -274,7 +280,7 @@ export function removeTimeZone(time) {
  */
 export function getCurrentTime() {
   let date = new Date();
-  return exports.normalizeTime(date.getHours() + ":" + date.getMinutes());
+  return exports.normalizeTime(date.getHours() + ':' + date.getMinutes());
 }
 
 /*
@@ -370,80 +376,80 @@ export function kuwaiticalendar(pivotDate, adjust) {
 export function getIslamicDate(pivotDate) {
   let m = momenthijri(pivotDate);
   var wdNames = new Array(
-    "Ahad",
-    "Ithnin",
-    "Thulatha",
-    "Arbaa",
-    "Khams",
-    "Jumuah",
-    "Sabt"
+    'Ahad',
+    'Ithnin',
+    'Thulatha',
+    'Arbaa',
+    'Khams',
+    'Jumuah',
+    'Sabt'
   );
   var iMonthNames = new Array(
-    "Muharram",
-    "Safar",
+    'Muharram',
+    'Safar',
     "Rabi'ul Awwal",
     "Rabi'ul Akhir",
-    "Jumadal Ula",
-    "Jumadal Akhira",
-    "Rajab",
+    'Jumadal Ula',
+    'Jumadal Akhira',
+    'Rajab',
     "Sha'ban",
-    "Ramadan",
-    "Shawwal",
+    'Ramadan',
+    'Shawwal',
     "Dhul Qa'ada",
-    "Dhul Hijja"
+    'Dhul Hijja'
   );
   var outputIslamicDate = //wdNames[iDate[4]] + ", " +
-    m.format("iD") +
-    " " +
-    iMonthNames[m.format("iM") - 1] +
-    " " +
-    m.format("iYYYY");
+    m.format('iD') +
+    ' ' +
+    iMonthNames[m.format('iM') - 1] +
+    ' ' +
+    m.format('iYYYY');
   return outputIslamicDate;
 }
 /*
  * konversi 01:00 pm ke 13:00
  */
 export function get24HourFormat(time) {
-  let output = time.split(" ");
-  if (output[1] === "am") {
+  let output = time.split(' ');
+  if (output[1] === 'am') {
     return exports.normalizeTime(output[0]);
   } else {
-    let times = output[0].split(":");
+    let times = output[0].split(':');
     let newHour = Number(times[0]) < 12 ? Number(times[0]) + 12 : times[0];
-    return exports.normalizeTime(newHour + ":" + times[1]);
+    return exports.normalizeTime(newHour + ':' + times[1]);
   }
 }
 
 // konversi nama hari ke nomor urut hari nya Date
 export function getDayNumberOfWeek(dayOfWeek) {
   switch (dayOfWeek) {
-    case "Sunday":
-    case "Minggu":
+    case 'Sunday':
+    case 'Minggu':
       return 0;
       break;
-    case "Monday":
-    case "Senin":
+    case 'Monday':
+    case 'Senin':
       return 1;
       break;
-    case "Tuesday":
-    case "Selasa":
+    case 'Tuesday':
+    case 'Selasa':
       return 2;
       break;
-    case "Wednesday":
-    case "Rabu":
+    case 'Wednesday':
+    case 'Rabu':
       return 3;
       break;
-    case "Thursday":
-    case "Kamis":
+    case 'Thursday':
+    case 'Kamis':
       return 4;
       break;
-    case "Friday":
-    case "Jumat":
+    case 'Friday':
+    case 'Jumat':
     case "Jum'at":
       return 5;
       break;
-    case "Saturday":
-    case "Sabtu":
+    case 'Saturday':
+    case 'Sabtu':
       return 6;
       break;
     default:
@@ -465,9 +471,9 @@ export function getDatesOfDay(dayOfWeek, dateStart, dateEnd) {
     if (x.getDay() === exports.getDayNumberOfWeek(dayOfWeek)) {
       let year = x.getFullYear();
       let month =
-        x.getMonth() + 1 < 10 ? "0" + (x.getMonth() + 1) : x.getMonth() + 1;
-      let day = x.getDate() < 10 ? "0" + x.getDate() : x.getDate();
-      let fullDate = year + "-" + month + "-" + day;
+        x.getMonth() + 1 < 10 ? '0' + (x.getMonth() + 1) : x.getMonth() + 1;
+      let day = x.getDate() < 10 ? '0' + x.getDate() : x.getDate();
+      let fullDate = year + '-' + month + '-' + day;
       output.push(fullDate);
 
       x.setDate(x.getDate() + 1);
@@ -491,7 +497,7 @@ export function isDate(date) {
  */
 export function getFirstDayOfMonth(date) {
   if (!exports.isDate(date)) return null;
-  return moment(date).startOf("month").toDate();
+  return moment(date).startOf('month').toDate();
 }
 
 /*
@@ -500,7 +506,7 @@ export function getFirstDayOfMonth(date) {
  */
 export function getLastDayOfMonth(date) {
   if (!exports.isDate(date)) return null;
-  return moment(date).endOf("month").toDate();
+  return moment(date).endOf('month').toDate();
 }
 
 // generate data utk menampilkan tanggal utk komponen react-native-picker
@@ -544,8 +550,8 @@ export function millisecondToTime(time) {
   let minutes = moment.duration(time).minutes();
   let seconds = moment.duration(time).seconds();
   return (
-    (minutes < 10 ? "0" + minutes : minutes) +
-    ":" +
-    (seconds < 10 ? "0" + seconds : seconds)
+    (minutes < 10 ? '0' + minutes : minutes) +
+    ':' +
+    (seconds < 10 ? '0' + seconds : seconds)
   );
 }

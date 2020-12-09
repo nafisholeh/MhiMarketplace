@@ -31,15 +31,20 @@ export default {
     fontSize: 17,
     color: COLORS.WHITE,
   },
-  SEMIBOLD_MEDIUM_BLACK: {
-    fontFamily: 'OpenSans-SemiBold',
-    fontSize: 15,
-    color: COLORS.BLACK_TEXT_PRIMARY,
-  },
   ITALIC_SMALL_ERROR: {
     fontFamily: 'OpenSans-Italic',
     fontSize: 12,
     color: COLORS.ERROR,
+  },
+  SEMIBOLD_SMALL_BLACK: {
+    fontFamily: 'OpenSans-SemiBold',
+    fontSize: 12,
+    color: COLORS.BLACK_TEXT_PRIMARY,
+  },
+  SEMIBOLD_MEDIUM_BLACK: {
+    fontFamily: 'OpenSans-SemiBold',
+    fontSize: 15,
+    color: COLORS.BLACK_TEXT_PRIMARY,
   },
   SEMIBOLD_LARGE_WHTIE: {
     fontFamily: 'OpenSans-SemiBold',
@@ -55,6 +60,16 @@ export default {
     fontFamily: 'OpenSans-Regular',
     fontSize: 12,
     color: COLORS.BLACK_TEXT_PRIMARY,
+  },
+  REGULAR_SMALL_BLACK_TERTIERY: {
+    fontFamily: 'OpenSans-Regular',
+    fontSize: 12,
+    color: COLORS.BLACK_TEXT_TERTIERY,
+  },
+  REGULAR_SMALL_PRIMARY: {
+    fontFamily: 'OpenSans-Regular',
+    fontSize: 12,
+    color: COLORS.PRIMARY,
   },
   REGULAR_EXTRALARGE_BLACK_TERTIERY: {
     fontFamily: 'OpenSans-Regular',

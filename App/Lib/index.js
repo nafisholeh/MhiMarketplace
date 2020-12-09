@@ -1,11 +1,11 @@
-import { parseToRupiah, calcDiscount } from "./money";
-import { isEmailValid, isEmailError } from "./Email";
+import { parseToRupiah, calcDiscount } from './money';
+import { isEmailValid, isEmailError } from './Email';
 import {
   getGraphQLError,
   convertToGraphQLFile,
   extractGraphQLResponse,
   parseUploadablePhoto,
-} from "./GraphQL";
+} from './GraphQL';
 import {
   getReadableDate,
   getIntervalTimeToday,
@@ -16,45 +16,46 @@ import {
   convertMonthToNumberString,
   convertNumberToMonth,
   normalizeDate,
-} from "./Date";
-import { setTabBarHide } from "./Navigation";
-import { moderateScale, screenWidth, screenHeight } from "./Responsive";
-import { isString } from "./DataType";
+  stringToDateWithFormat,
+} from './Date';
+import { setTabBarHide } from './Navigation';
+import { moderateScale, screenWidth, screenHeight } from './Responsive';
+import { isString } from './DataType';
 import {
   getReadableAddress,
   getReadableSubdistrict,
   getReadableCityState,
   graphqlToRNPickerSelect,
-} from "./Address";
-import { InAppNotification } from "./InAppNotification";
+} from './Address';
+import { InAppNotification } from './InAppNotification';
 import {
   getReadableTotalWeight,
   getAggregateProducts,
   getTotalWeight,
-} from "./Product";
-import { getUpcomingShippingSched, getReadableShippingSched } from "./Shipping";
-import { filterObject } from "./Object";
+} from './Product';
+import { getUpcomingShippingSched, getReadableShippingSched } from './Shipping';
+import { filterObject } from './Object';
 import {
   reportSentryError,
   addToSentryLog,
   reportSentryLog,
-} from "./SentryUtils";
+} from './SentryUtils';
 import {
   calcPolygonSize,
   calcPolygonCenter,
   normalizeAreaSize,
   calcZoomFromRegion,
-} from "./Map";
+} from './Map';
 import {
   hasLocationPermission,
   requestLocationPermission,
   requestLocationPermissionIOS,
   extractAdministrativeName,
-} from "./Location";
+} from './Location';
 import {
   getStateFromAsyncStorage,
   setStateFromAsyncStorage,
-} from "./AsyncStorage";
+} from './AsyncStorage';
 import {
   getFilenameFromPath,
   getFileType,
@@ -62,9 +63,9 @@ import {
   saveBase64AsImage,
   normalizeServerFileUri,
   generateValidServerFileUri,
-} from "./File";
-import { capitalizeFirstLetter } from "./String";
-import { generateBase64Thumbnail } from "./Image";
+} from './File';
+import { capitalizeFirstLetter } from './String';
+import { generateBase64Thumbnail } from './Image';
 
 export {
   parseToRupiah,
@@ -121,4 +122,5 @@ export {
   hasLocationPermission,
   requestLocationPermission,
   requestLocationPermissionIOS,
+  stringToDateWithFormat,
 };

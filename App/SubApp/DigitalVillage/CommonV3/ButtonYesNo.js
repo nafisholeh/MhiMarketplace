@@ -32,13 +32,13 @@ class ButtonYesNo extends PureComponent {
         <ButtonWithShadow
           text={noText}
           width={TWO_BUTTON_WIDTH}
-          onPress={this.onPressYes}
+          onPress={this.onPressNo}
         />
         <View style={{ marginLeft: -METRICS.LARGE }}>
           <Button
             text={yesText}
             width={TWO_BUTTON_WIDTH}
-            onPress={this.onPressNo}
+            onPress={this.onPressYes}
           />
         </View>
       </View>

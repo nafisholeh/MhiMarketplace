@@ -24,7 +24,13 @@
   },
   "plugins": ["@react-native-community", "react", "react-native", "prettier"],
   "rules": {
-    "react/sort-prop-types": 2,
+    "react/sort-prop-types": [
+      2,
+      {
+        "noSortAlphabetically": true,
+        "requiredFirst": true
+      }
+    ],
     "react/no-unused-state": 2,
     "react/no-unused-prop-types": 2,
     "prettier/prettier": "error"

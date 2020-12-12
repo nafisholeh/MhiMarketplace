@@ -24,15 +24,23 @@ class KtpPhotoExample extends PureComponent {
           resizeMode="contain"
           style={styles.photoPreview}
         />
+        <Text style={styles.carouselTitle}>
+          Geser untuk melihat contoh lainnya
+        </Text>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  carouselTitle: {
+    ...FONTS.REGULAR_SMALL_PRIMARY,
+    ...{ alignSelf: 'center', marginBottom: METRICS.MEDIUM },
+  },
   photoPreview: {
     alignSelf: 'center',
     height: moderateScale(212),
+    marginBottom: METRICS.EXTRA_HUGE,
     width: moderateScale(300),
   },
   title: {

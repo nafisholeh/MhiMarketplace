@@ -98,13 +98,13 @@ const styles = StyleSheet.create({
 });
 
 InputTextWithShadow.propTypes = {
+  title: string.isRequired,
+  onChangeText: func.isRequired,
   containerPadding: number.isRequired,
   error: object,
   isDisabled: bool,
   name: string,
-  onChangeText: func.isRequired,
   refs: string,
-  title: string.isRequired,
 };
 
 InputTextWithShadow.defaultProps = {

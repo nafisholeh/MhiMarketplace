@@ -4,7 +4,8 @@ import SplashScreen from 'react-native-splash-screen';
 
 import { withNoHeader } from 'Hoc';
 import { NavHeader, Ktp, ButtonYesNo } from 'common-v3';
-import { FONTS, METRICS } from 'themes-v3';
+import { FONTS } from 'themes-v3';
+import { moderateScale } from 'Lib';
 
 class KtpConfirmation extends PureComponent {
   constructor(props) {
@@ -45,7 +46,7 @@ class KtpConfirmation extends PureComponent {
           createdDistrict="Blitar"
         />
         <ButtonYesNo
-          yesText="Lanjut"
+          yesText="Verifikasi"
           onPressYes={this.onConfirmed}
           noText="Bukan saya"
           onPressNo={this.onCancelled}
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   title: {
     ...FONTS.REGULAR_LARGE_PRIMARY,
-    ...{ position: 'absolute', top: 90, alignSelf: 'center' },
+    ...{ position: 'absolute', top: moderateScale(110), alignSelf: 'center' },
   },
 });
 

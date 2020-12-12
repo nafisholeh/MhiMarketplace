@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 
 import { FONTS, METRICS, COLORS } from 'themes-v3';
-import { string, func } from 'prop-types';
+import { string, func, number } from 'prop-types';
 
 class Button extends PureComponent {
   onPress = () => {
@@ -11,9 +11,12 @@ class Button extends PureComponent {
   };
 
   render() {
-    const { text } = this.props;
+    const { text, width } = this.props;
+    const renderedButtonStyles = width
+      ? { ...styles.button, ...{ width } }
+      : styles.button;
     return (
-      <TouchableOpacity onPress={this.onPress} style={styles.button}>
+      <TouchableOpacity onPress={this.onPress} style={renderedButtonStyles}>
         <Text style={styles.text}>{text}</Text>
       </TouchableOpacity>
     );
@@ -27,8 +30,7 @@ const styles = StyleSheet.create({
     borderRadius: METRICS.LARGE,
     height: METRICS.EXTRA_HUGE,
     justifyContent: 'center',
-    marginBottom: METRICS.LARGE,
-    marginHorizontal: METRICS.LARGE,
+    margin: METRICS.LARGE,
   },
   text: {
     ...FONTS.BOLD_LARGE_WHITE,
@@ -38,6 +40,7 @@ const styles = StyleSheet.create({
 Button.propTypes = {
   onPress: func.isRequired,
   text: string.isRequired,
+  width: number,
 };
 
 export default Button;

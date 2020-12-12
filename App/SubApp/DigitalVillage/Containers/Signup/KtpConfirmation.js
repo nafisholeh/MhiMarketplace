@@ -4,6 +4,7 @@ import SplashScreen from 'react-native-splash-screen';
 
 import { withNoHeader } from 'Hoc';
 import { NavHeader, Ktp } from 'common-v3';
+import { FONTS } from 'themes-v3';
 
 class KtpConfirmation extends PureComponent {
   constructor(props) {
@@ -19,6 +20,7 @@ class KtpConfirmation extends PureComponent {
     return (
       <View style={styles.container}>
         <NavHeader title="Input nama KTP" info="1/7" />
+        <Text style={styles.title}>Apa ini data diri anda?</Text>
         <Ktp
           nik="3505141059710432"
           address="Jalan aji mumpung"
@@ -45,6 +47,10 @@ class KtpConfirmation extends PureComponent {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
+  title: {
+    ...FONTS.REGULAR_LARGE_PRIMARY,
+    ...{ position: 'absolute', top: 90, alignSelf: 'center' },
+  },
 });
 
 export default withNoHeader(KtpConfirmation);

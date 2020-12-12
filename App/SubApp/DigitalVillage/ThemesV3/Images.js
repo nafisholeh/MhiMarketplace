@@ -9,6 +9,7 @@ const images = {
   CLEAR: require(pathPrefix + 'clear.png'),
   KTP_PHOTO_TUTORIAL: require(pathPrefix + 'ktp_photo_tutorial.png'),
   GALLERY_THUMBNAIL: require(pathPrefix + 'gallery_thumbnail.png'),
+  CAMERA_THUMBNAIL: require(pathPrefix + 'camera_thumbnail.png'),
 };
 
 export default images;

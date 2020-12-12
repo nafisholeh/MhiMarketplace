@@ -5,6 +5,7 @@ const metrics = {
   TINY: moderateScale(4),
   MEDIUM: moderateScale(8),
   BIG: moderateScale(12),
+  BIGGER: moderateScale(16),
   LARGE: moderateScale(21),
   HUGE: moderateScale(40),
   EXTRA_HUGE: moderateScale(50),

@@ -11,6 +11,7 @@ const images = {
   KTP_PHOTO_TUTORIAL: require(pathPrefix + 'ktp_photo_tutorial.png'),
   GALLERY_THUMBNAIL: require(pathPrefix + 'gallery_thumbnail.png'),
   CAMERA_THUMBNAIL: require(pathPrefix + 'camera_thumbnail.png'),
+  KTP_EXAMPLE_1: require(pathPrefix + 'ktp_example_1.png'),
 };
 
 export default images;

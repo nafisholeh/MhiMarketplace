@@ -17,11 +17,13 @@ class NavHeader extends PureComponent {
       mode === 'invert' ? styles.titleInverted : styles.title;
     const renderedRightTextStyle =
       mode === 'invert' ? styles.rightTextInverted : styles.rightText;
+    const renderedIcon =
+      mode === 'invert' ? IMAGES.BACK_TRANSPARENT : IMAGES.BACK;
     return (
       <View style={styles.container}>
         <View style={styles.leftSection}>
           <TouchableOpacity onPress={this.onGoBack} style={styles.button}>
-            <Image source={IMAGES.BACK} style={styles.back} />
+            <Image source={renderedIcon} style={styles.back} />
           </TouchableOpacity>
           {title ? <Text style={renderedTitleStyle}>{title}</Text> : null}
         </View>

@@ -5,6 +5,7 @@ const images = {
   TOGGLE_HIDE_PASSWORD: require(pathPrefix + 'toggle_password.png'),
   TOGGLE_SHOW_PASSWORD: require(pathPrefix + 'toggle_password.png'),
   BACK: require(pathPrefix + 'back.png'),
+  BACK_TRANSPARENT: require(pathPrefix + 'back_transparent.png'),
   AVATAR_SEARCH_KTP: require(pathPrefix + 'avatar_search_ktp.png'),
   CLEAR: require(pathPrefix + 'clear.png'),
   KTP_PHOTO_TUTORIAL: require(pathPrefix + 'ktp_photo_tutorial.png'),

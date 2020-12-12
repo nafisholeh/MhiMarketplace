@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 
 import { FONTS, METRICS, COLORS } from 'themes-v3';
 import { string, func, number, any } from 'prop-types';

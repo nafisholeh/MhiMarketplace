@@ -61,6 +61,11 @@ export default {
     fontSize: 21,
     color: COLORS.BLACK_TEXT_PRIMARY,
   },
+  SEMIBOLD_EXTRALARGE_WHITE: {
+    fontFamily: 'OpenSans-SemiBold',
+    fontSize: 21,
+    color: COLORS.WHITE,
+  },
   REGULAR_SMALL_BLACK: {
     fontFamily: 'OpenSans-Regular',
     fontSize: 12,
@@ -85,6 +90,11 @@ export default {
     fontFamily: 'OpenSans-Regular',
     fontSize: 21,
     color: COLORS.BLACK_TEXT_TERTIERY,
+  },
+  REGULAR_EXTRALARGE_WHITE: {
+    fontFamily: 'OpenSans-Regular',
+    fontSize: 21,
+    color: COLORS.WHITE,
   },
   REGULAR_LARGE_PRIMARY: {
     fontFamily: 'OpenSans-Regular',

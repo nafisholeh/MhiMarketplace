@@ -3,8 +3,8 @@ import { StyleSheet, View, Text } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 
 import { withNoHeader } from 'Hoc';
-import { NavHeader, Ktp } from 'common-v3';
-import { FONTS } from 'themes-v3';
+import { NavHeader, Ktp, ButtonYesNo } from 'common-v3';
+import { FONTS, METRICS } from 'themes-v3';
 
 class KtpConfirmation extends PureComponent {
   constructor(props) {
@@ -15,6 +15,10 @@ class KtpConfirmation extends PureComponent {
   componentDidMount() {
     SplashScreen.hide();
   }
+
+  onConfirmed = () => {};
+
+  onCancelled = () => {};
 
   render() {
     return (
@@ -39,6 +43,12 @@ class KtpConfirmation extends PureComponent {
           expiredDate="SEUMUR HIDUP"
           createdDate="05-06-2012"
           createdDistrict="Blitar"
+        />
+        <ButtonYesNo
+          yesText="Lanjut"
+          onPressYes={this.onConfirmed}
+          noText="Bukan saya"
+          onPressNo={this.onCancelled}
         />
       </View>
     );

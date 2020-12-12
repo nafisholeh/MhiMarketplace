@@ -5,11 +5,13 @@ import InputWithClearButton from './InputWithClearButton';
 import NavHeader from './NavHeader';
 import Button from './Button';
 import ButtonWithShadow from './ButtonWithShadow';
+import ButtonYesNo from './ButtonYesNo';
 import Ktp from './Ktp';
 
 export {
   Button,
   ButtonWithShadow,
+  ButtonYesNo,
   InputText,
   InputTextWithShadow,
   InputPasswordWithShadow,

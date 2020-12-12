@@ -7,6 +7,7 @@ import Button from './Button';
 import ButtonWithShadow from './ButtonWithShadow';
 import ButtonYesNo from './ButtonYesNo';
 import ButtonWithIcon from './ButtonWithIcon';
+import ButtonTwosWithIcon from './ButtonTwosWithIcon';
 import Ktp from './Ktp';
 
 export {
@@ -14,6 +15,7 @@ export {
   ButtonWithShadow,
   ButtonYesNo,
   ButtonWithIcon,
+  ButtonTwosWithIcon,
   InputText,
   InputTextWithShadow,
   InputPasswordWithShadow,

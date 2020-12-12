@@ -4,6 +4,7 @@ import InputPasswordWithShadow from './InputPasswordWithShadow';
 import InputWithClearButton from './InputWithClearButton';
 import NavHeader from './NavHeader';
 import Button from './Button';
+import Ktp from './Ktp';
 
 export {
   Button,
@@ -12,4 +13,5 @@ export {
   InputPasswordWithShadow,
   InputWithClearButton,
   NavHeader,
+  Ktp,
 };

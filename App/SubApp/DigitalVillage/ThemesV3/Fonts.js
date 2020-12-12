@@ -71,6 +71,11 @@ export default {
     fontSize: 12,
     color: COLORS.PRIMARY,
   },
+  REGULAR_MEDIUM_PRIMARY: {
+    fontFamily: 'OpenSans-Regular',
+    fontSize: 15,
+    color: COLORS.PRIMARY,
+  },
   REGULAR_EXTRALARGE_BLACK_TERTIERY: {
     fontFamily: 'OpenSans-Regular',
     fontSize: 21,

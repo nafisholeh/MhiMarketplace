@@ -7,6 +7,7 @@ const images = {
   BACK: require(pathPrefix + 'back.png'),
   AVATAR_SEARCH_KTP: require(pathPrefix + 'avatar_search_ktp.png'),
   CLEAR: require(pathPrefix + 'clear.png'),
+  KTP_PHOTO_TUTORIAL: require(pathPrefix + 'ktp_photo_tutorial.png'),
 };
 
 export default images;

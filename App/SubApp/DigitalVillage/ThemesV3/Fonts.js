@@ -81,6 +81,11 @@ export default {
     fontSize: 17,
     color: COLORS.PRIMARY,
   },
+  REGULAR_LARGE_BLACK_TERTIERY: {
+    fontFamily: 'OpenSans-Regular',
+    fontSize: 17,
+    color: COLORS.BLACK_TEXT_TERTIERY,
+  },
 
   INPUT_TITLE: {
     fontFamily: 'OpenSans-Regular',

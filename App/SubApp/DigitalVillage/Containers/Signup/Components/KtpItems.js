@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, Text } from 'react-native';
-import { string } from 'prop-types';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { string, func, number } from 'prop-types';
 
 import { ViewShadow } from 'Components';
 import { screenWidth, moderateScale, stringToDateWithFormat } from 'Lib';
@@ -33,6 +33,11 @@ class KtpItems extends PureComponent {
     this.setState({ birthDate: date });
   };
 
+  onPress = () => {
+    const { onPress, _id } = this.props;
+    if (onPress) onPress(_id);
+  };
+
   render() {
     const { name, nik } = this.props;
     const { birthDate } = this.state;
@@ -48,11 +53,12 @@ class KtpItems extends PureComponent {
         mainColor={COLORS.WHITE}
         shadowColor={COLORS.DROP_SHADOW}
         style={styles.container}
-        styleChildren={styles.contentWrapper}
       >
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.nik}>{nik}</Text>
-        <Text style={styles.birthDate}>{birthDate || '-'}</Text>
+        <TouchableOpacity onPress={this.onPress} style={styles.contentWrapper}>
+          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.nik}>{nik}</Text>
+          <Text style={styles.birthDate}>{birthDate || '-'}</Text>
+        </TouchableOpacity>
       </ViewShadow>
     );
   }
@@ -67,6 +73,7 @@ const styles = StyleSheet.create({
     paddingVertical: METRICS.BIG,
   },
   contentWrapper: {
+    flex: 1,
     justifyContent: 'center',
     paddingHorizontal: METRICS.LARGE,
   },
@@ -82,6 +89,8 @@ KtpItems.propTypes = {
   birth_date: string.isRequired,
   name: string.isRequired,
   nik: string.isRequired,
+  onPress: func.isRequired,
+  _id: number.isRequired,
 };
 
 export default KtpItems;

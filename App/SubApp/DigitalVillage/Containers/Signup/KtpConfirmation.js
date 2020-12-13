@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
+import { withNavigation } from 'react-navigation';
+import { any } from 'prop-types';
 
 import { withNoHeader } from 'Hoc';
 import { NavHeader, Ktp, ButtonYesNo } from 'common-v3';
@@ -17,9 +19,15 @@ class KtpConfirmation extends PureComponent {
     SplashScreen.hide();
   }
 
-  onConfirmed = () => {};
+  onConfirmed = () => {
+    const { navigation } = this.props;
+    navigation.navigate('KtpTutorial');
+  };
 
-  onCancelled = () => {};
+  onCancelled = () => {
+    const { navigation } = this.props;
+    navigation.pop();
+  };
 
   render() {
     return (
@@ -64,4 +72,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withNoHeader(KtpConfirmation);
+KtpConfirmation.propTypes = {
+  navigation: any,
+};
+
+export default withNavigation(withNoHeader(KtpConfirmation));

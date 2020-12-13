@@ -18,8 +18,9 @@ class KtpSearch extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      isInitPage: false,
+      isInitPage: true,
       pageTitle: this.PAGE_TITLE.PAGE_ONE,
+      searchTerm: '',
     };
   }
 
@@ -35,8 +36,12 @@ class KtpSearch extends PureComponent {
     return <KtpItems {...item} />;
   };
 
+  onChangeSearchTerm = (text, name) => {
+    this.setState({ searchTerm: text });
+  };
+
   render() {
-    const { isInitPage, pageTitle } = this.state;
+    const { isInitPage, pageTitle, searchTerm } = this.state;
     return (
       <View style={styles.container}>
         <NavHeader title={pageTitle} info="1/7" />
@@ -51,7 +56,11 @@ class KtpSearch extends PureComponent {
                 resizeMode="contain"
                 style={styles.avatar}
               />
-              <InputText mode="minimal" />
+              <InputText
+                mode="minimal"
+                onChangeText={this.onChangeSearchTerm}
+                value={searchTerm}
+              />
             </View>
             <View style={styles.bottomSection}>
               <Button text="Lanjut" onPress={this.onProceed} />
@@ -67,6 +76,8 @@ class KtpSearch extends PureComponent {
                 mode="minimal"
                 textAlign="left"
                 style={styles.inputTwo}
+                onChangeText={this.onChangeSearchTerm}
+                value={searchTerm}
               />
             </View>
             <View style={styles.listArea}>

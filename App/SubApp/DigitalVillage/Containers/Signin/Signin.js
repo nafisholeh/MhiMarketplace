@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
+import { withNavigation } from 'react-navigation';
+import { any } from 'prop-types';
 
 import { InputTextWithShadow, InputPasswordWithShadow } from 'common-v3';
 import { withNoHeader } from 'Hoc';
@@ -19,7 +21,10 @@ class Signin extends Component {
   }
 
   onSignin = () => {};
-  onSignup = () => {};
+  onSignup = () => {
+    const { navigation } = this.props;
+    navigation.navigate('KtpSearch');
+  };
 
   render() {
     return (
@@ -102,4 +107,9 @@ const styles = StyleSheet.create({
     ...FONTS.SEMIBOLD_LARGE_WHTIE,
   },
 });
-export default withNoHeader(Signin);
+
+Signin.propTypes = {
+  navigation: any,
+};
+
+export default withNavigation(withNoHeader(Signin));

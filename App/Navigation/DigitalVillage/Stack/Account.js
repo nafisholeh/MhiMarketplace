@@ -15,7 +15,7 @@ const AccountNav = createStackNavigator(
     KtpPhotoExample: { screen: KtpPhotoExample },
   },
   {
-    initialRouteName: 'KtpPhotoExample',
+    initialRouteName: 'Signin',
   }
 );
 

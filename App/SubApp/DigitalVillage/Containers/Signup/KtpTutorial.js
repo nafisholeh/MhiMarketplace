@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
+import { withNavigation } from 'react-navigation';
+import { any } from 'prop-types';
 
 import { withNoHeader } from 'Hoc';
 import { NavHeader, ButtonTwosWithIcon } from 'common-v3';
@@ -16,6 +18,11 @@ class KtpTutorial extends PureComponent {
   componentDidMount() {
     SplashScreen.hide();
   }
+
+  onOpenCamera = () => {
+    const { navigation } = this.props;
+    navigation.navigate('KtpPhotoExample');
+  };
 
   render() {
     return (
@@ -34,6 +41,7 @@ class KtpTutorial extends PureComponent {
             rightText="Galeri"
             leftIcon={IMAGES.CAMERA_THUMBNAIL}
             rightIcon={IMAGES.GALLERY_THUMBNAIL}
+            onPressLeft={this.onOpenCamera}
           />
         </View>
       </View>
@@ -64,4 +72,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withNoHeader(KtpTutorial);
+KtpTutorial.propTypes = {
+  navigation: any,
+};
+
+export default withNavigation(withNoHeader(KtpTutorial));

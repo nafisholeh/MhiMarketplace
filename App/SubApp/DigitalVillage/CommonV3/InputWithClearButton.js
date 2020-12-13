@@ -12,6 +12,22 @@ class InputWithClearButton extends PureComponent {
     this.state = { textTemp: '' };
   }
 
+  componentDidMount = () => {
+    this.initializeInputValue();
+  };
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevProps.value !== this.props.value) {
+      this.initializeInputValue();
+    }
+  };
+
+  initializeInputValue = () => {
+    const { value } = this.props;
+    if (!value) return;
+    this.setState({ textTemp: value });
+  };
+
   onClear = () => {
     this.setState({ textTemp: '' });
   };
@@ -56,6 +72,7 @@ const styles = StyleSheet.create({
 InputWithClearButton.propTypes = {
   name: string.isRequired,
   onChangeText: func.isRequired,
+  value: string,
 };
 
 export default InputWithClearButton;

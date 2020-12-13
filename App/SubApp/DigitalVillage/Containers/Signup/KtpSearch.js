@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
+import { withNavigation } from 'react-navigation';
+import { any } from 'prop-types';
 
 import { withNoHeader } from 'Hoc';
 import { NavHeader, InputText, InputWithClearButton, Button } from 'common-v3';
@@ -32,8 +34,13 @@ class KtpSearch extends PureComponent {
     this.setState({ isInitPage: false, pageTitle: this.PAGE_TITLE.PAGE_TWO });
   };
 
+  onKtpSelected = ({ _id }) => {
+    const { navigation } = this.props;
+    navigation.navigate('KtpConfirmation');
+  };
+
   renderKtpItems = ({ item, index }) => {
-    return <KtpItems {...item} />;
+    return <KtpItems {...item} onPress={this.onKtpSelected} />;
   };
 
   onChangeSearchTerm = (text, name) => {
@@ -156,4 +163,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withNoHeader(KtpSearch);
+KtpSearch.propTypes = {
+  navigation: any,
+};
+
+export default withNavigation(withNoHeader(KtpSearch));

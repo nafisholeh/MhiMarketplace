@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { withNavigation } from 'react-navigation';
 import { any } from 'prop-types';
@@ -10,9 +10,16 @@ import { FONTS, METRICS, IMAGES } from 'themes-v3';
 import { moderateScale } from 'Lib';
 
 class KtpTutorial extends PureComponent {
+  KTP_PHOTO_EXAMPLES = [
+    IMAGES.KTP_EXAMPLE_1,
+    IMAGES.KTP_EXAMPLE_2,
+    IMAGES.KTP_EXAMPLE_3,
+  ];
+
   constructor(props) {
     super(props);
-    this.state = { isFirstPage: true };
+    const randomInit = Math.floor(Math.random() * Math.floor(3));
+    this.state = { isFirstPage: true, photoExampleIndex: randomInit };
   }
 
   componentDidMount() {
@@ -28,8 +35,14 @@ class KtpTutorial extends PureComponent {
     this.setState({ isFirstPage: false });
   };
 
+  onViewOtherExample = () => {
+    this.setState((prevState) => {
+      return { photoExampleIndex: (prevState.photoExampleIndex + 1) % 3 };
+    });
+  };
+
   render() {
-    const { isFirstPage } = this.state;
+    const { isFirstPage, photoExampleIndex } = this.state;
     return (
       <View style={styles.container}>
         <NavHeader title="Contoh foto KTP" info="2/7" />
@@ -42,7 +55,7 @@ class KtpTutorial extends PureComponent {
                 style={styles.smartphoneExamplePhoto}
               />
               <Text style={styles.desc}>
-                Posisikan kamera anda dalam keadaan lanskap/miring
+                Posisikan HP anda dalam keadaan lanskap/miring ketika ambil foto
               </Text>
             </View>
             <View>
@@ -53,12 +66,15 @@ class KtpTutorial extends PureComponent {
           <>
             <View style={styles.content}>
               <Text style={styles.title}>Contoh hasil foto KTP</Text>
-              <Image
-                source={IMAGES.KTP_EXAMPLE_1}
-                style={styles.resultExamplePhoto}
-              />
+              <TouchableOpacity onPress={this.onViewOtherExample}>
+                <Image
+                  source={this.KTP_PHOTO_EXAMPLES[photoExampleIndex || 0]}
+                  style={styles.resultExamplePhoto}
+                />
+              </TouchableOpacity>
+
               <Text style={styles.desc}>
-                Tekan foto KTP di atas untuk melihat contoh foto KTP lainnya
+                Sentuh foto KTP di atas untuk melihat contoh lainnya
               </Text>
             </View>
             <View>

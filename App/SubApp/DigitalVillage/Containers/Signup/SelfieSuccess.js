@@ -26,7 +26,7 @@ class SelfieSuccess extends PureComponent {
         <View style={styles.content}>
           <Text style={styles.title}>Sempurna!</Text>
           <Image
-            source={IMAGES.PHOTO_FAILS}
+            source={IMAGES.SELFIE_FAILS}
             resizeMode="contain"
             style={styles.photo}
           />

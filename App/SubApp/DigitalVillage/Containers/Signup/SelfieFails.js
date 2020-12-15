@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { withNavigation } from 'react-navigation';
+import SplashScreen from 'react-native-splash-screen';
 import { any } from 'prop-types';
 
 import { withNoHeader } from 'Hoc';
@@ -8,10 +9,13 @@ import { IMAGES, METRICS, FONTS } from 'themes-v3';
 import { NavHeader, Button } from 'common-v3';
 import { moderateScale } from 'Lib';
 
-class PhotoSuccess extends PureComponent {
+class SelfieFails extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
+  }
+  componentDidMount() {
+    SplashScreen.hide();
   }
 
   onProceed = () => {
@@ -22,20 +26,21 @@ class PhotoSuccess extends PureComponent {
   render() {
     return (
       <View style={styles.container}>
-        <NavHeader title="Hasil foto KTP" info="2/7" />
+        <NavHeader title="Hasil foto selfie KTP" info="3/7" />
         <View style={styles.content}>
-          <Text style={styles.title}>Sempurna!</Text>
+          <Text style={styles.title}>Silahkan coba lagi</Text>
           <Image
-            source={IMAGES.PHOTO_FAILS}
+            source={IMAGES.SELFIE_FAILS}
             resizeMode="contain"
             style={styles.photo}
           />
           <Text style={styles.desc}>
-            Foto terlihat jelas, pencahayaan cukup and KTP memenuhi area foto
+            Pastikan foto tidak buram, pencahayaan cukup dan wajah serta KTP
+            memenuhi area foto
           </Text>
         </View>
         <View>
-          <Button text="Lanjut" onPress={this.onProceed} />
+          <Button text="Coba lagi" onPress={this.onProceed} />
         </View>
       </View>
     );
@@ -66,8 +71,8 @@ const styles = StyleSheet.create({
   },
 });
 
-PhotoSuccess.propTypes = {
+SelfieFails.propTypes = {
   navigation: any,
 };
 
-export default withNavigation(withNoHeader(PhotoSuccess));
+export default withNavigation(withNoHeader(SelfieFails));

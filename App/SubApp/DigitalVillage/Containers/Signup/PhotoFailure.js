@@ -22,7 +22,7 @@ class PhotoFailure extends PureComponent {
   render() {
     return (
       <View style={styles.container}>
-        <NavHeader title="Hasil foto KTP" info="3/7" />
+        <NavHeader title="Hasil foto KTP" info="2/7" />
         <View style={styles.content}>
           <Text style={styles.title}>Silahkan coba lagi</Text>
           <Image

@@ -9,6 +9,7 @@ import PhotoSuccess from 'digital-village/Containers/Signup/PhotoSuccess';
 import PhotoFailure from 'digital-village/Containers/Signup/PhotoFailure';
 
 import SelfieTutorial from 'digital-village/Containers/Signup/SelfieTutorial';
+import SelfieSuccess from 'digital-village/Containers/Signup/SelfieSuccess';
 
 const AccountNav = createStackNavigator(
   {
@@ -19,9 +20,10 @@ const AccountNav = createStackNavigator(
     PhotoSuccess: { screen: PhotoSuccess },
     PhotoFailure: { screen: PhotoFailure },
     SelfieTutorial: { screen: SelfieTutorial },
+    SelfieSuccess: { screen: SelfieSuccess },
   },
   {
-    initialRouteName: 'SelfieTutorial',
+    initialRouteName: 'SelfieSuccess',
   }
 );
 

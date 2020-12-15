@@ -8,7 +8,7 @@ import { IMAGES, METRICS, FONTS } from 'themes-v3';
 import { NavHeader, Button } from 'common-v3';
 import { moderateScale } from 'Lib';
 
-class PhotoFailure extends PureComponent {
+class KtpPhotoSuccess extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
@@ -24,19 +24,18 @@ class PhotoFailure extends PureComponent {
       <View style={styles.container}>
         <NavHeader title="Hasil foto KTP" info="2/7" />
         <View style={styles.content}>
-          <Text style={styles.title}>Silahkan coba lagi</Text>
+          <Text style={styles.title}>Sempurna!</Text>
           <Image
             source={IMAGES.PHOTO_FAILS}
             resizeMode="contain"
             style={styles.photo}
           />
           <Text style={styles.desc}>
-            Pastikan foto tidak buram, pencahayaan cukup dan KTP memenuhi area
-            foto
+            Foto terlihat jelas, pencahayaan cukup and KTP memenuhi area foto
           </Text>
         </View>
         <View>
-          <Button text="Coba lagi" onPress={this.onProceed} />
+          <Button text="Lanjut" onPress={this.onProceed} />
         </View>
       </View>
     );
@@ -67,8 +66,8 @@ const styles = StyleSheet.create({
   },
 });
 
-PhotoFailure.propTypes = {
+KtpPhotoSuccess.propTypes = {
   navigation: any,
 };
 
-export default withNavigation(withNoHeader(PhotoFailure));
+export default withNavigation(withNoHeader(KtpPhotoSuccess));

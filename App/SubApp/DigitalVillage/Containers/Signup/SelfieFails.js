@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import SplashScreen from 'react-native-splash-screen';
 import { any } from 'prop-types';
 
 import { withNoHeader } from 'Hoc';
@@ -13,9 +12,6 @@ class SelfieFails extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
-  }
-  componentDidMount() {
-    SplashScreen.hide();
   }
 
   onProceed = () => {

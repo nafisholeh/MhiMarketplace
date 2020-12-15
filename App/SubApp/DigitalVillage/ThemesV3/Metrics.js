@@ -11,6 +11,10 @@ const metrics = {
   EXTRA_HUGE: moderateScale(50),
   RADIUS_NORMAL: moderateScale(8),
   RADIUS_LARGE: moderateScale(20),
+  ZOOM_MAX: 1.5,
+  ZOOM_MIN: 0.5,
+  ZOOM_STEP: 0.25,
+  ZOOM_INITIAL: 1,
 };
 
 export default metrics;

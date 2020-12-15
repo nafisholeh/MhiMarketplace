@@ -56,10 +56,10 @@ class Ktp extends PureComponent {
     return (
       <View style={styles.container}>
         <ReactNativeZoomableView
-          maxZoom={2.0}
-          minZoom={0.5}
-          zoomStep={0.5}
-          initialZoom={1}
+          maxZoom={METRICS.ZOOM_MAX}
+          minZoom={METRICS.ZOOM_MIN}
+          zoomStep={METRICS.ZOOM_STEP}
+          initialZoom={METRICS.ZOOM_INITIAL}
           bindToBorders={true}
         >
           <View style={styles.contentWrapper}>

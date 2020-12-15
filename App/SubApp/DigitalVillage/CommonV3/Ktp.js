@@ -1,11 +1,11 @@
 /* eslint-disable react-native/no-color-literals */
 import React, { PureComponent } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
 import { string } from 'prop-types';
 
 import { moderateScale } from 'Lib';
-import { COLORS, METRICS } from 'themes-v3';
+import { COLORS, METRICS, IMAGES } from 'themes-v3';
 
 class Ktp extends PureComponent {
   constructor(props) {
@@ -134,7 +134,13 @@ class Ktp extends PureComponent {
                 </View>
               </View>
               <View style={styles.rightSideWrapper}>
-                <View style={styles.photoWrapper} />
+                <View style={styles.photoWrapper}>
+                  <Image
+                    source={IMAGES.MOZAIC_PHOTO}
+                    resizeMode="contain"
+                    style={styles.photo}
+                  />
+                </View>
                 <View style={styles.dateWrapper}>
                   <Text style={styles.fontData}>{createdDistrict}</Text>
                   <Text style={styles.fontData}>{createdDate}</Text>
@@ -200,6 +206,10 @@ const styles = StyleSheet.create({
   },
   nikRowWrapper: { width: moderateScale(45) },
   nikWrapper: { flexDirection: 'row', marginBottom: METRICS.TINY },
+  photo: {
+    height: moderateScale(96),
+    width: moderateScale(77),
+  },
   photoWrapper: {
     backgroundColor: '#8ED0E7',
     height: moderateScale(96),

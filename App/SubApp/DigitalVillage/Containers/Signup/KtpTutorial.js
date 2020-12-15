@@ -28,7 +28,7 @@ class KtpTutorial extends PureComponent {
 
   onOpenCamera = () => {
     const { navigation } = this.props;
-    navigation.navigate('KtpPhotoExample');
+    navigation.navigate('KtpPhotoSuccess');
   };
 
   onNextSection = () => {
@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
   },
   title: {
     ...FONTS.REGULAR_LARGE_PRIMARY,
+    ...{ textAlign: 'center' },
   },
 });
 

@@ -16,7 +16,7 @@ class KtpPhotoSuccess extends PureComponent {
 
   onProceed = () => {
     const { navigation } = this.props;
-    navigation.navigate('KtpTutorial');
+    navigation.navigate('SelfieTutorial');
   };
 
   render() {

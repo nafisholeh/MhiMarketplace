@@ -31,7 +31,7 @@ class PhotoSuccess extends PureComponent {
             style={styles.photo}
           />
           <Text style={styles.desc}>
-            Lanjut ambil foto selfie dengan KTP Anda
+            Foto terlihat jelas, pencahayaan cukup and KTP memenuhi area foto
           </Text>
         </View>
         <View>

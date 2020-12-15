@@ -9,11 +9,11 @@ import { NavHeader, ButtonTwosWithIcon, Button } from 'common-v3';
 import { FONTS, METRICS, IMAGES } from 'themes-v3';
 import { moderateScale } from 'Lib';
 
-class KtpTutorial extends PureComponent {
-  KTP_PHOTO_EXAMPLES = [
-    IMAGES.KTP_EXAMPLE_1,
-    IMAGES.KTP_EXAMPLE_2,
-    IMAGES.KTP_EXAMPLE_3,
+class SelfieTutorial extends PureComponent {
+  SELFIE_PHOTO_EXAMPLES = [
+    IMAGES.SELFIE_EXAMPLE_1,
+    IMAGES.SELFIE_EXAMPLE_2,
+    IMAGES.SELFIE_EXAMPLE_3,
   ];
 
   constructor(props) {
@@ -45,13 +45,13 @@ class KtpTutorial extends PureComponent {
     const { isFirstPage, photoExampleIndex } = this.state;
     return (
       <View style={styles.container}>
-        <NavHeader title="Contoh foto KTP" info="2/7" />
+        <NavHeader title="Contoh selfie KTP" info="3/7" />
         {isFirstPage ? (
           <>
             <View style={styles.content}>
-              <Text style={styles.title}>Letakkan KTP di depan kamera</Text>
+              <Text style={styles.title}>Pose di depan kamera</Text>
               <Image
-                source={IMAGES.KTP_PHOTO_TUTORIAL}
+                source={IMAGES.SELFIE_PHOTO_TUTORIAL}
                 style={styles.smartphoneExamplePhoto}
               />
               <Text style={styles.desc}>
@@ -68,13 +68,13 @@ class KtpTutorial extends PureComponent {
               <Text style={styles.title}>Contoh yang tepat</Text>
               <TouchableOpacity onPress={this.onViewOtherExample}>
                 <Image
-                  source={this.KTP_PHOTO_EXAMPLES[photoExampleIndex || 0]}
+                  source={this.SELFIE_PHOTO_EXAMPLES[photoExampleIndex || 0]}
                   style={styles.resultExamplePhoto}
                 />
               </TouchableOpacity>
 
               <Text style={styles.desc}>
-                Sentuh foto KTP di atas untuk melihat contoh lainnya
+                Pastikan wajah dan KTP terlihat memenuhi area tangkapan kamera
               </Text>
             </View>
             <View>
@@ -121,8 +121,8 @@ const styles = StyleSheet.create({
   },
 });
 
-KtpTutorial.propTypes = {
+SelfieTutorial.propTypes = {
   navigation: any,
 };
 
-export default withNavigation(withNoHeader(KtpTutorial));
+export default withNavigation(withNoHeader(SelfieTutorial));

@@ -24,14 +24,15 @@ class PhotoFailure extends PureComponent {
       <View style={styles.container}>
         <NavHeader title="Hasil foto KTP" info="3/7" />
         <View style={styles.content}>
-          <Text style={styles.title}>Foto KTP salah</Text>
+          <Text style={styles.title}>Silahkan coba lagi</Text>
           <Image
             source={IMAGES.PHOTO_FAILS}
             resizeMode="contain"
             style={styles.photo}
           />
           <Text style={styles.desc}>
-            Klik Coba Lagi untuk mengambil ulang foto KTP
+            Pastikan foto tidak buram, pencahayaan cukup dan KTP memenuhi area
+            foto
           </Text>
         </View>
         <View>

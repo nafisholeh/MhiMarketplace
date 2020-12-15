@@ -56,6 +56,11 @@ export default {
     fontSize: 17,
     color: COLORS.WHITE,
   },
+  SEMIBOLD_LARGE_PRIMARY: {
+    fontFamily: 'OpenSans-SemiBold',
+    fontSize: 17,
+    color: COLORS.PRIMARY,
+  },
   SEMIBOLD_EXTRALARGE_BLACK: {
     fontFamily: 'OpenSans-SemiBold',
     fontSize: 21,

@@ -1,5 +1,6 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent } from 'react';
 import {
+  // eslint-disable-next-line react-native/split-platform-components
   ActionSheetIOS,
   Platform,
   View,
@@ -7,16 +8,15 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-} from "react-native";
-import PropTypes from "prop-types";
-import ImagePickers from "react-native-image-crop-picker";
-import BottomSheet from "react-native-js-bottom-sheet";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-var _ = require("lodash");
+} from 'react-native';
+import PropTypes from 'prop-types';
+import ImagePickers from 'react-native-image-crop-picker';
+import BottomSheet from 'react-native-js-bottom-sheet';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+var _ = require('lodash');
 
-import { ImageRadius } from "Components";
-import { METRICS, Colors, Images } from "Themes";
-import ImageGrid from "../ImageGrid";
+import { METRICS, Colors, Images } from 'Themes';
+import ImageGrid from '../ImageGrid';
 
 class ImagePicker extends PureComponent {
   constructor(props) {
@@ -38,20 +38,20 @@ class ImagePicker extends PureComponent {
 
   // tampilkan opsi cara ambil gambar untuk ios
   _onOpenOptionIOS = () => {
-    const options = ["Kamera", "Pilih dari Galeri Foto", "Batal"];
+    const options = ['Kamera', 'Pilih dari Galeri Foto', 'Batal'];
     const { imageQuality } = this.props;
     ActionSheetIOS.showActionSheetWithOptions(
       {
         options,
         cancelButtonIndex: 2,
       },
-      (buttonIndex: number) => {
+      (buttonIndex) => {
         if (buttonIndex === 0) {
           ImagePickers.openCamera({
             compressImageQuality: imageQuality,
             includeBase64: true,
           })
-            .then((image: Object) => this._saveImages(image))
+            .then((image) => this._saveImages(image))
             .catch((error) => {});
         } else if (buttonIndex === 1) {
           ImagePickers.openPicker({
@@ -69,8 +69,8 @@ class ImagePicker extends PureComponent {
   };
 
   // tampilkan opsi cara ambil gambar untuk android
-  _onOpenOptionAndroid = (): Array<Object> => {
-    const options = ["Kamera", "Pilih dari Galeri Foto"];
+  _onOpenOptionAndroid = () => {
+    const options = ['Kamera', 'Pilih dari Galeri Foto'];
     const { imageQuality } = this.props;
     return [
       {
@@ -80,10 +80,10 @@ class ImagePicker extends PureComponent {
             compressImageQuality: imageQuality,
             includeBase64: true,
           })
-            .then((image: Object) => this._saveImages(image))
+            .then((image) => this._saveImages(image))
             .catch((error) => {}) && this.bottomSheet.close(),
         icon: (
-          <MaterialIcons name={"photo-camera"} size={24} style={styles.icon} />
+          <MaterialIcons name={'photo-camera'} size={24} style={styles.icon} />
         ),
       },
       {
@@ -97,14 +97,14 @@ class ImagePicker extends PureComponent {
             .then((image) => this._saveImages(image))
             .catch((error) => {}) && this.bottomSheet.close(),
         icon: (
-          <MaterialIcons name={"photo-library"} size={24} style={styles.icon} />
+          <MaterialIcons name={'photo-library'} size={24} style={styles.icon} />
         ),
       },
     ];
   };
 
   _onCancelPick() {
-    if (this.props.hasOwnProperty("onPressCancel")) {
+    if (this.props.hasOwnProperty('onPressCancel')) {
       this.props.onPressCancel();
     }
   }
@@ -116,8 +116,8 @@ class ImagePicker extends PureComponent {
       width: 200,
       height: 200,
       cropperCircleOverlay: true,
-      cropperChooseText: "Ok",
-      cropperCancelText: "Batal",
+      cropperChooseText: 'Ok',
+      cropperCancelText: 'Batal',
     })
       .then((image) => {
         this._replaceImages(image);
@@ -166,9 +166,9 @@ class ImagePicker extends PureComponent {
 
   // tambahkan ekstensi file didepan path image nya
   _getImagePath(image) {
-    if (_.isNull(image)) return "";
-    const { path = "" } = image || {};
-    return path.includes("file://") ? image.path : "file://" + image.path;
+    if (_.isNull(image)) return '';
+    const { path = '' } = image || {};
+    return path.includes('file://') ? image.path : 'file://' + image.path;
   }
 
   // tereksekusi ketika image ada yg terhapus, sebab fitur hapus pada ImageGrid
@@ -189,7 +189,7 @@ class ImagePicker extends PureComponent {
 
   // mulai mengambil image
   _startPick() {
-    if (Platform.OS === "ios") this._onOpenOptionIOS();
+    if (Platform.OS === 'ios') this._onOpenOptionIOS();
     else this.bottomSheet.open();
   }
 
@@ -221,7 +221,7 @@ class ImagePicker extends PureComponent {
               )}
               <TouchableOpacity
                 onPress={
-                  Platform.OS === "ios"
+                  Platform.OS === 'ios'
                     ? this._onOpenOptionIOS
                     : () => this.bottomSheet.open()
                 }
@@ -245,13 +245,13 @@ class ImagePicker extends PureComponent {
               height: 225,
               borderWidth: 1,
               borderColor: Colors.BORDER,
-              backgroundColor: "rgba(133, 133, 133, 0.05)",
+              backgroundColor: 'rgba(133, 133, 133, 0.05)',
               borderRadius: 5,
-              alignItems: "center",
-              justifyContent: "center",
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
             onPress={
-              Platform.OS === "ios"
+              Platform.OS === 'ios'
                 ? this._onOpenOptionIOS
                 : () => this.bottomSheet.open()
             }
@@ -261,7 +261,7 @@ class ImagePicker extends PureComponent {
               style={
                 imageGallery
                   ? {
-                      position: "absolute",
+                      position: 'absolute',
                       top: 0,
                       left: 0,
                       bottom: 0,
@@ -274,7 +274,7 @@ class ImagePicker extends PureComponent {
                   : {
                       width: METRICS.EXTRA_HUGE,
                       height: METRICS.EXTRA_HUGE,
-                      tintColor: "rgba(133, 133, 133, 0.3)",
+                      tintColor: 'rgba(133, 133, 133, 0.3)',
                     }
               }
             />
@@ -285,7 +285,7 @@ class ImagePicker extends PureComponent {
       return (
         <this.props.customComponent
           onStartPick={() => {
-            if (this.props.hasOwnProperty("onPressPicker"))
+            if (this.props.hasOwnProperty('onPressPicker'))
               this.props.onPressPicker();
             this._startPick();
           }}
@@ -298,12 +298,12 @@ class ImagePicker extends PureComponent {
     return (
       <View style={this.props.styleContainer}>
         {this.props.title && (
-          <Text style={[{ color: "gray" }]}>{this.props.title}</Text>
+          <Text style={{ color: 'gray' }}>{this.props.title}</Text>
         )}
         {this._renderGallery()}
-        {Platform.OS === "android" ? (
+        {Platform.OS === 'android' ? (
           <BottomSheet
-            ref={(ref: any) => {
+            ref={(ref) => {
               this.bottomSheet = ref;
             }}
             title={this.props.titleBottomSheet}
@@ -369,11 +369,11 @@ ImagePicker.defaultProps = {
   isCropping: false,
   isShowGallery: true,
   isShowCancelButton: false,
-  colorButtonCancel: "gray",
-  colorButtonOk: "blue",
-  titleButtonOk: "Ambil Foto",
-  titleButtonCancel: "Batal",
-  titleBottomSheet: "",
+  colorButtonCancel: 'gray',
+  colorButtonOk: 'blue',
+  titleButtonOk: 'Ambil Foto',
+  titleButtonCancel: 'Batal',
+  titleBottomSheet: '',
   isMultiplePick: true,
   isCustomComponent: false,
   imageQuality: 0.5,

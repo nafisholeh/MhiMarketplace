@@ -15,6 +15,8 @@ const images = {
   KTP_EXAMPLE_2: require(pathPrefix + 'ktp_example_2.png'),
   KTP_EXAMPLE_3: require(pathPrefix + 'ktp_example_3.png'),
   MOZAIC_PHOTO: require(pathPrefix + 'mozaic_photo.png'),
+  GREEN_CHECK: require(pathPrefix + 'green_check.png'),
+  PHOTO_FAILS: require(pathPrefix + 'photo_fails.png'),
 };
 
 export default images;

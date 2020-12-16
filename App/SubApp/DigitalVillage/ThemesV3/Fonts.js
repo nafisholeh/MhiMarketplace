@@ -91,6 +91,16 @@ export default {
     fontSize: 15,
     color: COLORS.PRIMARY,
   },
+  REGULAR_MEDIUM_BLACK: {
+    fontFamily: 'OpenSans-Regular',
+    fontSize: 15,
+    color: COLORS.BLACK_TEXT_PRIMARY,
+  },
+  REGULAR_MEDIUM_BLACK_TERTIERY: {
+    fontFamily: 'OpenSans-Regular',
+    fontSize: 15,
+    color: COLORS.BLACK_TEXT_TERTIERY,
+  },
   REGULAR_EXTRALARGE_BLACK_TERTIERY: {
     fontFamily: 'OpenSans-Regular',
     fontSize: 21,

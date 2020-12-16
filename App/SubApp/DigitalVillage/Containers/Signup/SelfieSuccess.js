@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { any } from 'prop-types';
 
@@ -16,7 +16,12 @@ class SelfieSuccess extends PureComponent {
 
   onProceed = () => {
     const { navigation } = this.props;
-    navigation.navigate('KtpTutorial');
+    navigation.navigate('Signin');
+  };
+
+  onRetakePhoto = () => {
+    const { navigation } = this.props;
+    navigation.navigate('SelfieTutorial');
   };
 
   render() {
@@ -26,14 +31,22 @@ class SelfieSuccess extends PureComponent {
         <View style={styles.content}>
           <Text style={styles.title}>Sempurna!</Text>
           <Image
-            source={IMAGES.SELFIE_FAILS}
+            source={IMAGES.PHOTO_FAILS}
             resizeMode="contain"
             style={styles.photo}
           />
-          <Text style={styles.desc}>
-            Foto terlihat jelas, pencahayaan cukup dan wajah serta KTP memenuhi
-            area foto
-          </Text>
+          <View>
+            <Text style={styles.desc}>Tidak puas dengan hasil foto?</Text>
+            <TouchableOpacity
+              onPress={this.onRetakePhoto}
+              style={styles.buttonInTextWrapper}
+            >
+              <Text style={styles.descWrapper}>
+                <Text style={styles.desc}>Sentuh untuk</Text>
+                <Text style={styles.buttonInText}> foto ulang</Text>
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
         <View>
           <Button text="Lanjut" onPress={this.onProceed} />
@@ -44,6 +57,15 @@ class SelfieSuccess extends PureComponent {
 }
 
 const styles = StyleSheet.create({
+  buttonInText: {
+    ...FONTS.REGULAR_MEDIUM_BLACK_TERTIERY,
+    ...{
+      textAlign: 'center',
+    },
+  },
+  buttonInTextWrapper: {
+    paddingVertical: METRICS.TINY,
+  },
   container: { flex: 1 },
   content: {
     alignItems: 'center',
@@ -58,6 +80,7 @@ const styles = StyleSheet.create({
       textAlign: 'center',
     },
   },
+  descWrapper: { textAlign: 'center' },
   photo: {
     height: moderateScale(121),
     width: moderateScale(184),

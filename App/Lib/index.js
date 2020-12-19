@@ -66,6 +66,7 @@ import {
 } from './File';
 import { capitalizeFirstLetter } from './String';
 import { generateBase64Thumbnail } from './Image';
+import { drawRoundedRectangle, drawFullScreen } from './SvgPath';
 
 export {
   parseToRupiah,
@@ -123,4 +124,6 @@ export {
   requestLocationPermission,
   requestLocationPermissionIOS,
   stringToDateWithFormat,
+  drawRoundedRectangle,
+  drawFullScreen,
 };

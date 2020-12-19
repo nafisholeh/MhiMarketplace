@@ -9,11 +9,14 @@ import {
 import SplashScreen from 'react-native-splash-screen';
 import { withNavigation } from 'react-navigation';
 import { any } from 'prop-types';
+import { compose } from 'redux';
 
 import { InputTextWithShadow, InputPasswordWithShadow } from 'common-v3';
 import { withNoHeader } from 'Hoc';
 import { IMAGES, METRICS, FONTS, COLORS } from 'themes-v3';
 import { moderateScale } from 'Lib';
+import TourModal from './TourModal';
+import TourHighlight from './TourHighlight';
 
 class Signin extends Component {
   componentDidMount() {
@@ -28,7 +31,7 @@ class Signin extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <TourModal style={styles.container}>
         <ImageBackground source={IMAGES.BG_ORANGE} style={styles.container}>
           <View style={styles.headingContainer}>
             <Text style={styles.headingTitle}>Selamat datang,</Text>
@@ -50,20 +53,22 @@ class Signin extends Component {
             <TouchableOpacity onPress={this.onSignin} style={styles.signin}>
               <Text style={styles.buttonText}>Masuk</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={this.onSignup} style={styles.signup}>
-              <Text style={styles.signupText}>Tidak punya akun?</Text>
-              <Text style={styles.signupButton}>Daftar</Text>
-            </TouchableOpacity>
+            <TourHighlight style={styles.highlight}>
+              <TouchableOpacity onPress={this.onSignup} style={styles.signup}>
+                <Text style={styles.signupText}>Tidak punya akun?</Text>
+                <Text style={styles.signupButton}>Daftar</Text>
+              </TouchableOpacity>
+            </TourHighlight>
           </View>
         </ImageBackground>
-      </View>
+      </TourModal>
     );
   }
 }
 
 const styles = StyleSheet.create({
   bottomContainer: {
-    height: moderateScale(120),
+    height: moderateScale(110),
   },
   buttonText: {
     ...FONTS.BOLD_LARGE_BLACK_TERTIERY,
@@ -79,6 +84,11 @@ const styles = StyleSheet.create({
       marginBottom: METRICS.TINY,
     },
   },
+  highlight: {
+    alignSelf: 'center',
+    paddingHorizontal: METRICS.BIGGER,
+    paddingVertical: METRICS.BIG,
+  },
   inputContainer: {
     paddingTop: METRICS.LARGE,
   },
@@ -88,7 +98,7 @@ const styles = StyleSheet.create({
     borderRadius: METRICS.LARGE,
     height: METRICS.EXTRA_HUGE,
     justifyContent: 'center',
-    marginBottom: METRICS.LARGE,
+    marginBottom: METRICS.MEDIUM,
     marginHorizontal: METRICS.LARGE,
   },
   signup: {
@@ -112,4 +122,4 @@ Signin.propTypes = {
   navigation: any,
 };
 
-export default withNavigation(withNoHeader(Signin));
+export default compose(withNavigation, withNoHeader)(Signin);

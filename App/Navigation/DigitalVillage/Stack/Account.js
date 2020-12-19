@@ -25,7 +25,7 @@ const AccountNav = createStackNavigator(
     SelfieFails: { screen: SelfieFails },
   },
   {
-    initialRouteName: 'SelfieSuccess',
+    initialRouteName: 'Signin',
   }
 );
 

@@ -98,7 +98,7 @@ class TourModal extends Component {
                   ref={(ref) => {
                     this.mask = ref;
                   }}
-                  fill="rgba(0,0,0,0.8)"
+                  fill="rgba(0,0,0,0.9)"
                   fillRule="evenodd"
                   strokeWidth={1}
                   d={renderedTourGuidePath}

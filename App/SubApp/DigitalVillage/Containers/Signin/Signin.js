@@ -12,7 +12,12 @@ import { withNavigation } from 'react-navigation';
 import { any } from 'prop-types';
 import { compose } from 'redux';
 
-import { InputTextWithShadow, InputPasswordWithShadow } from 'common-v3';
+import {
+  InputTextWithShadow,
+  InputPasswordWithShadow,
+  KeyboardAwareView,
+  DismissKeyboardOnTapView,
+} from 'common-v3';
 import { withNoHeader } from 'Hoc';
 import { IMAGES, METRICS, FONTS, COLORS } from 'themes-v3';
 import { moderateScale } from 'Lib';
@@ -59,12 +64,12 @@ class Signin extends Component {
         GuideView={this.renderGuideView}
       >
         <ImageBackground source={IMAGES.BG_ORANGE} style={styles.container}>
-          <View style={styles.headingContainer}>
+          <KeyboardAwareView style={styles.headingContainer} hideOnKeyboard>
             <Text style={styles.headingTitle}>Selamat datang,</Text>
             <Text style={styles.subheadingTitle}>
               masuk ke akun untuk melanjutkan
             </Text>
-          </View>
+          </KeyboardAwareView>
           <View style={styles.inputContainer}>
             <InputTextWithShadow
               title="Email"
@@ -75,7 +80,7 @@ class Signin extends Component {
               containerPadding={METRICS.LARGE}
             />
           </View>
-          <View style={styles.bottomContainer}>
+          <DismissKeyboardOnTapView style={styles.bottomContainer}>
             <TouchableOpacity onPress={this.onSignin} style={styles.signin}>
               <Text style={styles.buttonText}>Masuk</Text>
             </TouchableOpacity>
@@ -85,7 +90,7 @@ class Signin extends Component {
                 <Text style={styles.signupButton}>Daftar</Text>
               </TouchableOpacity>
             </TourHighlight>
-          </View>
+          </DismissKeyboardOnTapView>
         </ImageBackground>
       </TourModal>
     );

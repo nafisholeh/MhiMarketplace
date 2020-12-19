@@ -1,3 +1,5 @@
+import { View } from 'react-native';
+
 import InputText from './InputText';
 import InputTextWithShadow from './InputTextWithShadow';
 import InputPasswordWithShadow from './InputPasswordWithShadow';
@@ -9,6 +11,10 @@ import ButtonYesNo from './ButtonYesNo';
 import ButtonWithIcon from './ButtonWithIcon';
 import ButtonTwosWithIcon from './ButtonTwosWithIcon';
 import Ktp from './Ktp';
+
+import { withKeyboardAware, withDismissKeyboardOnTap } from 'Hoc';
+const KeyboardAwareView = withKeyboardAware(View);
+const DismissKeyboardOnTapView = withDismissKeyboardOnTap(View);
 
 export {
   Button,
@@ -22,4 +28,6 @@ export {
   InputWithClearButton,
   NavHeader,
   Ktp,
+  KeyboardAwareView,
+  DismissKeyboardOnTapView,
 };

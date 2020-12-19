@@ -5,6 +5,7 @@ import {
   ImageBackground,
   Text,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { withNavigation } from 'react-navigation';
@@ -24,14 +25,39 @@ class Signin extends Component {
   }
 
   onSignin = () => {};
+
   onSignup = () => {
     const { navigation } = this.props;
     navigation.navigate('KtpSearch');
   };
 
+  renderGuideView = (props) => (
+    <View style={styles.guideWrapper}>
+      <Text style={FONTS.BOLD_HUGE_WHITE}>Halo</Text>
+      <Image
+        source={IMAGES.SIGNIN_GUIDE}
+        resizeMode="contain"
+        style={{ width: moderateScale(253), height: moderateScale(236) }}
+      />
+      <Text style={FONTS.BOLD_HUGE_WHITE}>Pengguna baru?</Text>
+      <Text style={FONTS.SEMIBOLD_MEDIUM_WHITE}>
+        Klik daftar untuk membuat akun
+      </Text>
+      <Image
+        source={IMAGES.GUIDE_ARROW}
+        resizeMode="contain"
+        style={{ width: moderateScale(108), height: moderateScale(69) }}
+      />
+    </View>
+  );
+
   render() {
     return (
-      <TourModal style={styles.container}>
+      <TourModal
+        style={styles.container}
+        isContentBelowHighlight={false}
+        GuideView={this.renderGuideView}
+      >
         <ImageBackground source={IMAGES.BG_ORANGE} style={styles.container}>
           <View style={styles.headingContainer}>
             <Text style={styles.headingTitle}>Selamat datang,</Text>
@@ -74,6 +100,11 @@ const styles = StyleSheet.create({
     ...FONTS.BOLD_LARGE_BLACK_TERTIERY,
   },
   container: { flex: 1, justifyContent: 'space-between' },
+  guideWrapper: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'space-around',
+  },
   headingContainer: {
     marginHorizontal: METRICS.LARGE,
     paddingTop: METRICS.HUGE,

@@ -26,7 +26,29 @@ class ButtonYesNo extends PureComponent {
   };
 
   render() {
-    const { noText, yesText } = this.props;
+    const { noText, yesText, TourHighlightYes, TourHighlightNo } = this.props;
+    if (TourHighlightYes && TourHighlightNo) {
+      return (
+        <View style={styles.container}>
+          <TourHighlightNo>
+            <ButtonWithShadow
+              text={noText}
+              width={TWO_BUTTON_WIDTH}
+              onPress={this.onPressNo}
+            />
+          </TourHighlightNo>
+          <View style={{ marginLeft: -METRICS.LARGE }}>
+            <TourHighlightYes>
+              <Button
+                text={yesText}
+                width={TWO_BUTTON_WIDTH}
+                onPress={this.onPressYes}
+              />
+            </TourHighlightYes>
+          </View>
+        </View>
+      );
+    }
     return (
       <View style={styles.container}>
         <ButtonWithShadow

@@ -18,27 +18,13 @@ const MOCK_KTP_LIST = [
     name: 'Antono Sukito',
     nik: '3505141084895009',
     birth_date: '15-07-1970',
-    is_validated: false,
+    is_validated: true,
   },
   {
     _id: 4,
     name: 'Adi Hermawan',
     nik: '3505141239715123',
     birth_date: '01-01-1950',
-    is_validated: true,
-  },
-  {
-    _id: 5,
-    name: 'Hermawan',
-    nik: '3505141059700067',
-    birth_date: '22-10-1981',
-    is_validated: true,
-  },
-  {
-    _id: 6,
-    name: 'Heru Hermawan',
-    nik: '350514105900089',
-    birth_date: '02-07-1996',
     is_validated: true,
   },
 ];

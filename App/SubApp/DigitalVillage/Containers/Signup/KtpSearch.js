@@ -30,6 +30,9 @@ class KtpSearch extends PureComponent {
       isInitPage: false,
       pageTitle: this.PAGE_TITLE.PAGE_ONE,
       searchTerm: '',
+      isInGuideMode: true,
+      isKtpFirstOkFound: false,
+      isKtpFirstNoFound: false,
     };
   }
 
@@ -44,6 +47,14 @@ class KtpSearch extends PureComponent {
   onKtpSelected = ({ _id }) => {
     const { navigation } = this.props;
     navigation.navigate('KtpConfirmation');
+  };
+
+  renderKtpItemsForGuide = (items) => {
+    if (Array.isArray(items) && items.length) {
+      return items.map((item, index) => (
+        <KtpItems key={index} {...item} onPress={this.onKtpSelected} />
+      ));
+    }
   };
 
   renderKtpItems = ({ item, index }) => {
@@ -66,7 +77,7 @@ class KtpSearch extends PureComponent {
   };
 
   render() {
-    const { isInitPage, pageTitle, searchTerm } = this.state;
+    const { isInitPage, pageTitle, searchTerm, isInGuideMode } = this.state;
     return (
       <TourModal style={styles.container}>
         <NavHeader title={pageTitle} info="1/7" />
@@ -114,13 +125,17 @@ class KtpSearch extends PureComponent {
             <View style={styles.listArea}>
               <Text style={styles.listTitle}>Pilih identitas KTP anda:</Text>
               <View style={styles.listParent}>
-                <FlatList
-                  keyExtractor={(item) => item._id.toString()}
-                  data={MOCK_KTP}
-                  renderItem={this.renderKtpItems}
-                  contentContainerStyle={styles.list}
-                  showsVerticalScrollIndicator={false}
-                />
+                {isInGuideMode ? (
+                  this.renderKtpItemsForGuide(MOCK_KTP)
+                ) : (
+                  <FlatList
+                    keyExtractor={(item) => item._id.toString()}
+                    data={MOCK_KTP}
+                    renderItem={this.renderKtpItems}
+                    contentContainerStyle={styles.list}
+                    showsVerticalScrollIndicator={false}
+                  />
+                )}
               </View>
             </View>
           </>

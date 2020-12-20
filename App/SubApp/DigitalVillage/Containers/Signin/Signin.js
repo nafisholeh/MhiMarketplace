@@ -17,12 +17,12 @@ import {
   InputPasswordWithShadow,
   KeyboardAwareView,
   DismissKeyboardOnTapView,
+  TourModal,
+  TourHighlight,
 } from 'common-v3';
 import { withNoHeader } from 'Hoc';
 import { IMAGES, METRICS, FONTS, COLORS } from 'themes-v3';
 import { moderateScale } from 'Lib';
-import TourModal from './TourModal';
-import TourHighlight from './TourHighlight';
 
 class Signin extends Component {
   componentDidMount() {
@@ -36,7 +36,7 @@ class Signin extends Component {
     navigation.navigate('KtpSearch');
   };
 
-  renderGuideView = (props) => (
+  renderGuideView = () => (
     <View style={styles.guideWrapper}>
       <Text style={FONTS.BOLD_HUGE_WHITE}>Halo</Text>
       <Image
@@ -49,7 +49,7 @@ class Signin extends Component {
         Klik daftar untuk membuat akun
       </Text>
       <Image
-        source={IMAGES.GUIDE_ARROW}
+        source={IMAGES.GUIDE_ARROW_DOWN}
         resizeMode="contain"
         style={{ width: moderateScale(108), height: moderateScale(69) }}
       />
@@ -58,11 +58,7 @@ class Signin extends Component {
 
   render() {
     return (
-      <TourModal
-        style={styles.container}
-        isContentBelowHighlight={false}
-        GuideView={this.renderGuideView}
-      >
+      <TourModal style={styles.container}>
         <ImageBackground source={IMAGES.BG_ORANGE} style={styles.container}>
           <KeyboardAwareView style={styles.headingContainer} hideOnKeyboard>
             <Text style={styles.headingTitle}>Selamat datang,</Text>
@@ -84,7 +80,11 @@ class Signin extends Component {
             <TouchableOpacity onPress={this.onSignin} style={styles.signin}>
               <Text style={styles.buttonText}>Masuk</Text>
             </TouchableOpacity>
-            <TourHighlight style={styles.highlight}>
+            <TourHighlight
+              isGuideBelowHighlight={false}
+              GuideView={this.renderGuideView}
+              style={styles.highlight}
+            >
               <TouchableOpacity onPress={this.onSignup} style={styles.signup}>
                 <Text style={styles.signupText}>Tidak punya akun?</Text>
                 <Text style={styles.signupButton}>Daftar</Text>
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     marginRight: METRICS.TINY,
   },
   subheadingTitle: {
-    ...FONTS.SEMIBOLD_LARGE_WHTIE,
+    ...FONTS.SEMIBOLD_LARGE_WHITE,
   },
 });
 

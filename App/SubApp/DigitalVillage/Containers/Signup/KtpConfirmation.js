@@ -36,7 +36,7 @@ class KtpConfirmation extends PureComponent {
   };
 
   renderFirstKtpGuide = () => (
-    <View style={styles.firstKtpGuideWrapper}>
+    <View style={styles.ktpGuideWrapper}>
       <Image source={IMAGES.GUIDE_ARROW_UP} style={styles.firstKtpArrow} />
       <Text style={styles.firstKtpText}>
         Periksa kesesuaian data diri pada KTP anda
@@ -44,12 +44,24 @@ class KtpConfirmation extends PureComponent {
     </View>
   );
 
+  renderSecondKtpGuide = () => (
+    <View style={styles.ktpGuideWrapper}>
+      <Image
+        source={IMAGES.HAND_GESTURE}
+        resizeMode="contain"
+        style={styles.secondKtpArrow}
+      />
+      <Text style={styles.firstKtpText}>
+        Perbesar KTP jika belum bisa terbaca
+      </Text>
+    </View>
+  );
+
   render() {
     return (
-      <TourModal totalStep={1} style={styles.container}>
+      <TourModal totalStep={2} style={styles.container}>
         <NavHeader title="Input nama KTP" info="1/7" />
         <Text style={styles.title}>Apa ini data diri anda?</Text>
-
         <Ktp
           nik="3505141059710432"
           address="Jalan aji mumpung"
@@ -80,7 +92,16 @@ class KtpConfirmation extends PureComponent {
                 marginHorizontal: METRICS.LARGE,
               }}
             >
-              {props.children}
+              <TourHighlight
+                step={2}
+                isGuideBelowHighlight={true}
+                GuideView={this.renderSecondKtpGuide}
+                style={{
+                  height: moderateScale(207),
+                }}
+              >
+                {props.children}
+              </TourHighlight>
             </TourHighlight>
           )}
         />
@@ -102,12 +123,20 @@ const styles = StyleSheet.create({
     marginBottom: METRICS.MEDIUM,
     width: moderateScale(35),
   },
-  firstKtpGuideWrapper: {
+  firstKtpText: {
+    ...FONTS.SEMIBOLD_LARGE_WHITE,
+    ...{ textAlign: 'center', marginHorizontal: moderateScale(68) },
+  },
+  ktpGuideWrapper: {
     alignItems: 'center',
     flex: 1,
-    marginHorizontal: moderateScale(68),
+    justifyContent: 'flex-start',
   },
-  firstKtpText: { ...FONTS.SEMIBOLD_LARGE_WHITE, ...{ textAlign: 'center' } },
+  secondKtpArrow: {
+    height: moderateScale(80),
+    marginBottom: METRICS.MEDIUM,
+    width: moderateScale(200),
+  },
   title: {
     ...FONTS.REGULAR_LARGE_PRIMARY,
     ...{ position: 'absolute', top: moderateScale(110), alignSelf: 'center' },

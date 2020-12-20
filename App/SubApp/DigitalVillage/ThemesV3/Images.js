@@ -25,6 +25,7 @@ const images = {
   SIGNIN_GUIDE: require(pathPrefix + 'signin_guide.png'),
   GUIDE_ARROW_DOWN: require(pathPrefix + 'guide_arrow_down.png'),
   GUIDE_ARROW_UP: require(pathPrefix + 'guide_arrow_up.png'),
+  HAND_GESTURE: require(pathPrefix + 'hand_gesture.png'),
 };
 
 export default images;

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { string, func } from 'prop-types';
+import { string, func, any } from 'prop-types';
 
 import ButtonWithShadow from './ButtonWithShadow';
 import Button from './Button';
@@ -77,6 +77,8 @@ ButtonYesNo.propTypes = {
   onPressNo: string.isRequired,
   yesText: string.isRequired,
   noText: string.isRequired,
+  TourHighlightYes: any,
+  TourHighlightNo: any,
 };
 
 export default ButtonYesNo;

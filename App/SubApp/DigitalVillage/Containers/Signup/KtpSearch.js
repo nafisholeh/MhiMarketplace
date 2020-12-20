@@ -65,6 +65,7 @@ class KtpSearch extends PureComponent {
     return (
       <View>
         <TourHighlight
+          step={1}
           isGuideBelowHighlight={true}
           GuideView={this.renderAvailableKtp}
           style={styles.ktpItemsGuide}
@@ -72,6 +73,7 @@ class KtpSearch extends PureComponent {
           <KtpItems key={0} {...guideAvailableKtp} />
         </TourHighlight>
         <TourHighlight
+          step={2}
           isGuideBelowHighlight={true}
           GuideView={this.renderValidatedKtp}
           style={styles.ktpItemsGuide}
@@ -88,6 +90,10 @@ class KtpSearch extends PureComponent {
 
   onChangeSearchTerm = (text, name) => {
     this.setState({ searchTerm: text });
+  };
+
+  onTourEnded = () => {
+    this.setState({ isInGuideMode: false });
   };
 
   renderAvailableKtp = () => (
@@ -122,7 +128,11 @@ class KtpSearch extends PureComponent {
   render() {
     const { isInitPage, pageTitle, searchTerm, isInGuideMode } = this.state;
     return (
-      <TourModal style={styles.container}>
+      <TourModal
+        style={styles.container}
+        totalStep={3}
+        onTourEnd={this.onTourEnded}
+      >
         <NavHeader title={pageTitle} info="1/7" />
         {isInitPage ? (
           <>
@@ -152,6 +162,7 @@ class KtpSearch extends PureComponent {
                 Masukkan nama lengkap/NIK sesuai dengan KTP anda:
               </Text>
               <TourHighlight
+                step={3}
                 isGuideBelowHighlight={true}
                 GuideView={this.renderInputGuide}
                 style={styles.guideInput}

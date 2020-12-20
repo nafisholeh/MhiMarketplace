@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Path, Svg } from 'react-native-svg';
-import { any, bool, func } from 'prop-types';
+import { any, number, func } from 'prop-types';
 
 import {
   screenWidth,
@@ -19,21 +19,26 @@ class TourModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentStep: 1, // current guide step displayed on screen
       isHighlightReady: false,
-      highlightPosition: null,
-      renderedTourGuidePath: null,
-      GuideView: null,
-      isGuideBelowHighlight: null,
+      isTourEnded: false,
+      configs: [],
+      currentConfigsIndex: 0,
     };
   }
 
-  setInitialProps = (value) => {
-    const { GuideView, isGuideBelowHighlight } = value || {};
-    this.setState({ GuideView, isGuideBelowHighlight });
-  };
-
   setHighlightMetricsCallback = (value) => {
-    const { width, height, pageX, pageY } = value || {};
+    const { totalStep } = this.props;
+    const {
+      step,
+      GuideView: newGuideView,
+      isGuideBelowHighlight: newIsGuideBelowHighlight,
+      width,
+      height,
+      pageX,
+      pageY,
+    } = value || {};
+    const newHighlightPosition = { width, height, pageX, pageY };
     const roundedRectPath = drawRoundedRectangle(
       pageX,
       pageY,
@@ -45,80 +50,110 @@ class TourModal extends Component {
       BORDER_RADIUS
     );
     const canvasPath = drawFullScreen(screenWidth, screenHeight);
-    const renderedTourGuidePath = canvasPath + roundedRectPath;
-    this.setState({
-      isHighlightReady: value ? true : false,
-      highlightPosition: value,
-      renderedTourGuidePath,
-    });
+    const newSvgPath = canvasPath + roundedRectPath;
+    const newConfigs = {
+      step,
+      GuideView: newGuideView,
+      isGuideBelowHighlight: newIsGuideBelowHighlight,
+      highlightPosition: newHighlightPosition,
+      svgPath: newSvgPath,
+    };
+    this.setState(
+      {
+        configs: [...this.state.configs, newConfigs],
+      },
+      () => {
+        if (this.state.configs.length === totalStep) {
+          const currentConfigsIndex = this.state.configs.findIndex(
+            ({ step: currStep }) => currStep === this.state.currentStep
+          );
+          this.setState({ currentConfigsIndex, isHighlightReady: true });
+        }
+      }
+    );
   };
 
   onProceedClicked = () => {
-    this.setState({ isHighlightReady: false });
+    const { totalStep, onTourEnd } = this.props;
+    const { currentStep } = this.state;
+    const isHighlightReady = currentStep !== totalStep;
+    const newStep = currentStep === totalStep ? -1 : currentStep + 1;
+    if (newStep === -1) {
+      this.setState({ isTourEnded: true }, () => onTourEnd());
+
+      return;
+    }
+    const currentConfigsIndex = this.state.configs.findIndex(
+      ({ step: currStep }) => currStep === newStep
+    );
+    this.setState({
+      isHighlightReady,
+      currentConfigsIndex,
+      currentStep: newStep,
+    });
   };
 
   renderContent = () => {
-    const { isGuideBelowHighlight, GuideView, highlightPosition } = this.state;
+    const { configs, currentConfigsIndex } = this.state;
+    const {
+      isGuideBelowHighlight,
+      GuideView,
+      highlightPosition,
+      svgPath,
+    } = configs[currentConfigsIndex];
     const { height, pageY } = highlightPosition || {};
     const top = isGuideBelowHighlight
       ? pageY + height + METRICS.LARGE
       : METRICS.EXTRA_HUGE;
     const bottom = isGuideBelowHighlight ? 0 : screenHeight - pageY;
     return (
-      <View
-        style={{
-          position: 'absolute',
-          top,
-          bottom,
-          left: 0,
-          right: 0,
-          justifyContent: 'center',
-        }}
-      >
-        {GuideView ? <GuideView /> : null}
-      </View>
+      <>
+        <Svg pointerEvents="none" width={screenWidth} height={screenHeight}>
+          <Path
+            ref={(ref) => {
+              this.mask = ref;
+            }}
+            fill="rgba(0,0,0,0.9)"
+            fillRule="evenodd"
+            strokeWidth={1}
+            d={svgPath}
+          />
+        </Svg>
+        <View style={styles.proceedWrapper}>
+          <TouchableOpacity onPress={this.onProceedClicked}>
+            <Text style={FONTS.SEMIBOLD_MEDIUM_WHITE}>Lanjut</Text>
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            position: 'absolute',
+            top,
+            bottom,
+            left: 0,
+            right: 0,
+            justifyContent: 'center',
+          }}
+        >
+          {GuideView ? <GuideView /> : null}
+        </View>
+      </>
     );
   };
 
   render() {
     const { children } = this.props;
-    const { renderedTourGuidePath, isHighlightReady } = this.state;
+    const { isHighlightReady, isTourEnded } = this.state;
     return (
       <MContext.Provider
         value={{
           state: this.state,
           setHighlightMetrics: this.setHighlightMetricsCallback,
-          setInitialProps: this.setInitialProps,
         }}
         {...this.props}
       >
         {children}
         <View style={styles.wrapper}>
-          {isHighlightReady ? (
-            <>
-              <Svg
-                pointerEvents="none"
-                width={screenWidth}
-                height={screenHeight}
-              >
-                <Path
-                  ref={(ref) => {
-                    this.mask = ref;
-                  }}
-                  fill="rgba(0,0,0,0.9)"
-                  fillRule="evenodd"
-                  strokeWidth={1}
-                  d={renderedTourGuidePath}
-                />
-              </Svg>
-              <View style={styles.proceedWrapper}>
-                <TouchableOpacity onPress={this.onProceedClicked}>
-                  <Text style={FONTS.SEMIBOLD_MEDIUM_WHITE}>Lanjut</Text>
-                </TouchableOpacity>
-              </View>
-              {this.renderContent()}
-            </>
-          ) : null}
+          {isHighlightReady && !isTourEnded ? this.renderContent() : null}
         </View>
       </MContext.Provider>
     );
@@ -136,6 +171,12 @@ const styles = StyleSheet.create({
 
 TourModal.propTypes = {
   children: any,
+  totalStep: number,
+  onTourEnd: func,
+};
+
+TourModal.defaultProps = {
+  totalStep: 1,
 };
 
 export default TourModal;

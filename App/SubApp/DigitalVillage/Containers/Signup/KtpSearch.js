@@ -67,15 +67,17 @@ class KtpSearch extends PureComponent {
         <TourHighlight
           isGuideBelowHighlight={true}
           GuideView={this.renderAvailableKtp}
-          style={{
-            paddingBottom: METRICS.BIGGER,
-            marginHorizontal: METRICS.BIG,
-            borderRadius: moderateScale(10),
-          }}
+          style={styles.ktpItemsGuide}
         >
           <KtpItems key={0} {...guideAvailableKtp} />
         </TourHighlight>
-        <KtpItems key={1} {...guideValidatedKtp} />
+        <TourHighlight
+          isGuideBelowHighlight={true}
+          GuideView={this.renderValidatedKtp}
+          style={styles.ktpItemsGuide}
+        >
+          <KtpItems key={1} {...guideValidatedKtp} />
+        </TourHighlight>
       </View>
     );
   };
@@ -91,9 +93,17 @@ class KtpSearch extends PureComponent {
   renderAvailableKtp = () => (
     <View style={styles.inputGuideWrapper}>
       <Image source={IMAGES.GUIDE_ARROW_UP} style={styles.inputGuideArrow} />
-      <Text style={styles.availableKtpGuideText}>Akun Tersedia</Text>
       <Text style={styles.availableKtpGuideSubText}>
-        Pilih nama, NIK dan tanggal lahir yang sesuai dengan data di KTP anda
+        Sentuh jika nama, NIK dan tanggal lahir sesuai dengan KTP milik anda
+      </Text>
+    </View>
+  );
+
+  renderValidatedKtp = () => (
+    <View style={styles.inputGuideWrapper}>
+      <Image source={IMAGES.GUIDE_ARROW_UP} style={styles.inputGuideArrow} />
+      <Text style={styles.availableKtpGuideSubText}>
+        Anda tidak bisa memilih akun ini, akun telah terdaftar pada sistem
       </Text>
     </View>
   );
@@ -186,13 +196,6 @@ const styles = StyleSheet.create({
       marginTop: METRICS.TINY,
     },
   },
-  availableKtpGuideText: {
-    ...FONTS.BOLD_EXTRALARGE_WHITE,
-    ...{
-      textDecorationLine: 'underline',
-      textAlign: 'center',
-    },
-  },
   avatar: {
     alignSelf: 'center',
     height: moderateScale(121),
@@ -239,6 +242,11 @@ const styles = StyleSheet.create({
     ...{
       flex: 1,
     },
+  },
+  ktpItemsGuide: {
+    borderRadius: moderateScale(10),
+    marginHorizontal: METRICS.BIG,
+    paddingBottom: METRICS.BIGGER,
   },
   list: {
     paddingBottom: METRICS.HUGE,

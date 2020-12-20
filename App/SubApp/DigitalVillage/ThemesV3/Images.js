@@ -23,7 +23,8 @@ const images = {
   SELFIE_EXAMPLE_3: require(pathPrefix + 'selfie_example_3.png'),
   SELFIE_FAILS: require(pathPrefix + 'selfie_fails.png'),
   SIGNIN_GUIDE: require(pathPrefix + 'signin_guide.png'),
-  GUIDE_ARROW: require(pathPrefix + 'guide_arrow.png'),
+  GUIDE_ARROW_DOWN: require(pathPrefix + 'guide_arrow_down.png'),
+  GUIDE_ARROW_UP: require(pathPrefix + 'guide_arrow_up.png'),
 };
 
 export default images;

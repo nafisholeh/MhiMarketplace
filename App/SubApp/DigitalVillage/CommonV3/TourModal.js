@@ -79,7 +79,9 @@ class TourModal extends Component {
     const isHighlightReady = currentStep !== totalStep;
     const newStep = currentStep === totalStep ? -1 : currentStep + 1;
     if (newStep === -1) {
-      this.setState({ isTourEnded: true }, () => onTourEnd());
+      this.setState({ isTourEnded: true }, () => {
+        if (onTourEnd) onTourEnd();
+      });
 
       return;
     }

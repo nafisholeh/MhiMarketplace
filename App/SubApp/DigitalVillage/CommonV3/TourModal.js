@@ -22,8 +22,15 @@ class TourModal extends Component {
       isHighlightReady: false,
       highlightPosition: null,
       renderedTourGuidePath: null,
+      GuideView: null,
+      isGuideBelowHighlight: null,
     };
   }
+
+  setInitialProps = (value) => {
+    const { GuideView, isGuideBelowHighlight } = value || {};
+    this.setState({ GuideView, isGuideBelowHighlight });
+  };
 
   setHighlightMetricsCallback = (value) => {
     const { width, height, pageX, pageY } = value || {};
@@ -51,13 +58,12 @@ class TourModal extends Component {
   };
 
   renderContent = () => {
-    const { isContentBelowHighlight, GuideView } = this.props;
-    const { highlightPosition } = this.state;
+    const { isGuideBelowHighlight, GuideView, highlightPosition } = this.state;
     const { height, pageY } = highlightPosition || {};
-    const top = isContentBelowHighlight
+    const top = isGuideBelowHighlight
       ? pageY + height + METRICS.LARGE
       : METRICS.EXTRA_HUGE;
-    const bottom = isContentBelowHighlight ? 0 : screenHeight - pageY;
+    const bottom = isGuideBelowHighlight ? 0 : screenHeight - pageY;
     return (
       <View
         style={{
@@ -82,6 +88,7 @@ class TourModal extends Component {
         value={{
           state: this.state,
           setHighlightMetrics: this.setHighlightMetricsCallback,
+          setInitialProps: this.setInitialProps,
         }}
         {...this.props}
       >
@@ -129,8 +136,6 @@ const styles = StyleSheet.create({
 
 TourModal.propTypes = {
   children: any,
-  GuideView: func,
-  isContentBelowHighlight: bool,
 };
 
 export default TourModal;

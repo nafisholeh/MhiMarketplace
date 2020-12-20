@@ -1,12 +1,14 @@
 import React, { PureComponent } from 'react';
-import { View, Text } from 'react-native';
-import { any } from 'prop-types';
+import { View } from 'react-native';
+import { any, bool } from 'prop-types';
 
 import { MContext } from './TourModal';
 
 class TourHighlight extends PureComponent {
   handleLayout = (context) => {
     if (this.highlight) {
+      const { GuideView, isGuideBelowHighlight } = this.props;
+      context.setInitialProps({ GuideView, isGuideBelowHighlight });
       this.highlight.measure((x, y, width, height, pageX, pageY) => {
         context.setHighlightMetrics({ width, height, pageX, pageY });
       });
@@ -35,6 +37,8 @@ class TourHighlight extends PureComponent {
 
 TourHighlight.propTypes = {
   children: any,
+  isGuideBelowHighlight: bool,
+  GuideView: any,
 };
 
 export default TourHighlight;

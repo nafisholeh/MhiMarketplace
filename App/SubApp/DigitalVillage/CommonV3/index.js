@@ -11,6 +11,8 @@ import ButtonYesNo from './ButtonYesNo';
 import ButtonWithIcon from './ButtonWithIcon';
 import ButtonTwosWithIcon from './ButtonTwosWithIcon';
 import Ktp from './Ktp';
+import TourModal from './TourModal';
+import TourHighlight from './TourHighlight';
 
 import { withKeyboardAware, withDismissKeyboardOnTap } from 'Hoc';
 const KeyboardAwareView = withKeyboardAware(View);
@@ -28,6 +30,8 @@ export {
   InputWithClearButton,
   NavHeader,
   Ktp,
+  TourModal,
+  TourHighlight,
   KeyboardAwareView,
   DismissKeyboardOnTapView,
 };

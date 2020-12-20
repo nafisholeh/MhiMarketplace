@@ -31,6 +31,11 @@ export default {
     fontSize: 17,
     color: COLORS.WHITE,
   },
+  BOLD_EXTRALARGE_WHITE: {
+    fontFamily: 'OpenSans-Bold',
+    fontSize: 21,
+    color: COLORS.WHITE,
+  },
   ITALIC_SMALL_ERROR: {
     fontFamily: 'OpenSans-Italic',
     fontSize: 12,

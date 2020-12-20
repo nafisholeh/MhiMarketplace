@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { string, func, number } from 'prop-types';
+import { bool, string, func, number, any } from 'prop-types';
 
 import { ViewShadow } from 'Components';
 import { screenWidth, moderateScale, stringToDateWithFormat } from 'Lib';
@@ -98,6 +98,7 @@ KtpItems.propTypes = {
   nik: string.isRequired,
   onPress: func.isRequired,
   _id: number.isRequired,
+  is_validated: bool.isRequired,
 };
 
 export default KtpItems;

@@ -16,7 +16,7 @@ import {
 import { FONTS, METRICS, IMAGES } from 'themes-v3';
 import { moderateScale } from 'Lib';
 import KtpItems from './Components/KtpItems';
-import MOCK_KTP from './Mock/ktp';
+import MOCK_TEMP_KTP from './Mock/ktp';
 
 class KtpSearch extends PureComponent {
   PAGE_TITLE = {
@@ -31,8 +31,6 @@ class KtpSearch extends PureComponent {
       pageTitle: this.PAGE_TITLE.PAGE_ONE,
       searchTerm: '',
       isInGuideMode: true,
-      isKtpFirstOkFound: false,
-      isKtpFirstNoFound: false,
     };
   }
 
@@ -49,12 +47,37 @@ class KtpSearch extends PureComponent {
     navigation.navigate('KtpConfirmation');
   };
 
-  renderKtpItemsForGuide = (items) => {
-    if (Array.isArray(items) && items.length) {
-      return items.map((item, index) => (
-        <KtpItems key={index} {...item} onPress={this.onKtpSelected} />
-      ));
-    }
+  renderKtpItemsForGuide = () => {
+    const guideAvailableKtp = {
+      _id: 1,
+      name: 'Antono Hermawan',
+      nik: '3505141059710432',
+      birth_date: '20-11-1980',
+      is_validated: false,
+    };
+    const guideValidatedKtp = {
+      _id: 2,
+      name: 'Antono Sukito',
+      nik: '3505141084895009',
+      birth_date: '15-07-1970',
+      is_validated: true,
+    };
+    return (
+      <View>
+        <TourHighlight
+          isGuideBelowHighlight={true}
+          GuideView={this.renderAvailableKtp}
+          style={{
+            paddingBottom: METRICS.BIGGER,
+            marginHorizontal: METRICS.BIG,
+            borderRadius: moderateScale(10),
+          }}
+        >
+          <KtpItems key={0} {...guideAvailableKtp} />
+        </TourHighlight>
+        <KtpItems key={1} {...guideValidatedKtp} />
+      </View>
+    );
   };
 
   renderKtpItems = ({ item, index }) => {
@@ -64,6 +87,16 @@ class KtpSearch extends PureComponent {
   onChangeSearchTerm = (text, name) => {
     this.setState({ searchTerm: text });
   };
+
+  renderAvailableKtp = () => (
+    <View style={styles.inputGuideWrapper}>
+      <Image source={IMAGES.GUIDE_ARROW_UP} style={styles.inputGuideArrow} />
+      <Text style={styles.availableKtpGuideText}>Akun Tersedia</Text>
+      <Text style={styles.availableKtpGuideSubText}>
+        Pilih nama, NIK dan tanggal lahir yang sesuai dengan data di KTP anda
+      </Text>
+    </View>
+  );
 
   renderInputGuide = () => {
     return (
@@ -126,11 +159,11 @@ class KtpSearch extends PureComponent {
               <Text style={styles.listTitle}>Pilih identitas KTP anda:</Text>
               <View style={styles.listParent}>
                 {isInGuideMode ? (
-                  this.renderKtpItemsForGuide(MOCK_KTP)
+                  this.renderKtpItemsForGuide()
                 ) : (
                   <FlatList
                     keyExtractor={(item) => item._id.toString()}
-                    data={MOCK_KTP}
+                    data={MOCK_TEMP_KTP}
                     renderItem={this.renderKtpItems}
                     contentContainerStyle={styles.list}
                     showsVerticalScrollIndicator={false}
@@ -146,6 +179,20 @@ class KtpSearch extends PureComponent {
 }
 
 const styles = StyleSheet.create({
+  availableKtpGuideSubText: {
+    ...FONTS.SEMIBOLD_LARGE_WHITE,
+    ...{
+      textAlign: 'center',
+      marginTop: METRICS.TINY,
+    },
+  },
+  availableKtpGuideText: {
+    ...FONTS.BOLD_EXTRALARGE_WHITE,
+    ...{
+      textDecorationLine: 'underline',
+      textAlign: 'center',
+    },
+  },
   avatar: {
     alignSelf: 'center',
     height: moderateScale(121),

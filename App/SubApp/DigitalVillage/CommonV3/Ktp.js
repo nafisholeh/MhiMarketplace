@@ -1,8 +1,8 @@
 /* eslint-disable react-native/no-color-literals */
 import React, { PureComponent } from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, Fragment } from 'react-native';
 import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
-import { string } from 'prop-types';
+import { any, string } from 'prop-types';
 
 import { moderateScale } from 'Lib';
 import { COLORS, METRICS, IMAGES } from 'themes-v3';
@@ -34,7 +34,7 @@ class Ktp extends PureComponent {
     this.setState({ parsedNeighborhoodHamlet: parsedValue });
   };
 
-  render() {
+  renderContent = () => {
     const {
       nik,
       name,
@@ -54,6 +54,96 @@ class Ktp extends PureComponent {
     } = this.props;
     const { parsedNeighborhoodHamlet } = this.state;
     return (
+      <>
+        <View style={styles.headerWrapper}>
+          <Text style={styles.fontHeader}>PROVINSI JAWA TIMUR</Text>
+          <Text style={styles.fontHeader}>KABUPATEN BLITAR</Text>
+        </View>
+        <View style={styles.dataWrapper}>
+          <View>
+            <View style={styles.nikWrapper}>
+              <View style={styles.nikRowWrapper}>
+                <Text style={styles.fontHeader}>NIK</Text>
+              </View>
+              <View>
+                <Text style={styles.fontHeader}>: {nik || '-'}</Text>
+              </View>
+            </View>
+            <View style={styles.dataRowWrapper}>
+              <View style={styles.dataRowTitleWrapper}>
+                <Text style={styles.fontData}>Nama</Text>
+                <Text style={styles.fontData}>Tempat/Tgl Lahir</Text>
+              </View>
+              <View>
+                <Text style={styles.fontData}>: {name || '-'}</Text>
+                <Text style={styles.fontData}>: {birthDate || '-'}</Text>
+              </View>
+            </View>
+            <View style={styles.dataRowWrapper}>
+              <View style={styles.dataRowTitleWrapper}>
+                <Text style={styles.fontData}>Jenis Kelamin</Text>
+              </View>
+              <View style={styles.genderAndBloodWrapper}>
+                <Text style={styles.fontDataGender}>: {gender || '-'}</Text>
+                <Text style={styles.fontData}>
+                  Gol. Darah: {bloodType || '-'}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.dataRowWrapper}>
+              <View style={styles.dataRowTitleWrapper}>
+                <Text style={styles.fontData}>Alamat</Text>
+                <Text style={styles.fontDataAddress}>RT/RW</Text>
+                <Text style={styles.fontDataAddress}>Kel/Desa</Text>
+                <Text style={styles.fontDataAddress}>Kecamatan</Text>
+              </View>
+              <View>
+                <Text style={styles.fontData}>: {address || '-'}</Text>
+                <Text style={styles.fontData}>
+                  : {parsedNeighborhoodHamlet}
+                </Text>
+                <Text style={styles.fontData}>: {urbanVillage || '-'}</Text>
+                <Text style={styles.fontData}>: {subDistrict || '-'}</Text>
+              </View>
+            </View>
+            <View style={styles.dataRowWrapper}>
+              <View style={styles.dataRowTitleWrapper}>
+                <Text style={styles.fontData}>Agama</Text>
+                <Text style={styles.fontData}>Status Perkawinan</Text>
+                <Text style={styles.fontData}>Pekerjaan</Text>
+                <Text style={styles.fontData}>Kewarganegaraan</Text>
+                <Text style={styles.fontData}>Berlaku Hingga</Text>
+              </View>
+              <View>
+                <Text style={styles.fontData}>: {religion || '-'}</Text>
+                <Text style={styles.fontData}>: {marriageStatus || '-'}</Text>
+                <Text style={styles.fontData}>: {occupation || '-'}</Text>
+                <Text style={styles.fontData}>: {citizenship || '-'}</Text>
+                <Text style={styles.fontData}>: {expiredDate || '-'}</Text>
+              </View>
+            </View>
+          </View>
+          <View style={styles.rightSideWrapper}>
+            <View style={styles.photoWrapper}>
+              <Image
+                source={IMAGES.MOZAIC_PHOTO}
+                resizeMode="contain"
+                style={styles.photo}
+              />
+            </View>
+            <View style={styles.dateWrapper}>
+              <Text style={styles.fontData}>{createdDistrict}</Text>
+              <Text style={styles.fontData}>{createdDate}</Text>
+            </View>
+          </View>
+        </View>
+      </>
+    );
+  };
+
+  render() {
+    const { CustomContentWrapper } = this.props;
+    return (
       <View style={styles.container}>
         <ReactNativeZoomableView
           maxZoom={METRICS.ZOOM_MAX}
@@ -62,92 +152,11 @@ class Ktp extends PureComponent {
           initialZoom={METRICS.ZOOM_INITIAL}
           bindToBorders={true}
         >
-          <View style={styles.contentWrapper}>
-            <View style={styles.headerWrapper}>
-              <Text style={styles.fontHeader}>PROVINSI JAWA TIMUR</Text>
-              <Text style={styles.fontHeader}>KABUPATEN BLITAR</Text>
-            </View>
-            <View style={styles.dataWrapper}>
-              <View>
-                <View style={styles.nikWrapper}>
-                  <View style={styles.nikRowWrapper}>
-                    <Text style={styles.fontHeader}>NIK</Text>
-                  </View>
-                  <View>
-                    <Text style={styles.fontHeader}>: {nik || '-'}</Text>
-                  </View>
-                </View>
-                <View style={styles.dataRowWrapper}>
-                  <View style={styles.dataRowTitleWrapper}>
-                    <Text style={styles.fontData}>Nama</Text>
-                    <Text style={styles.fontData}>Tempat/Tgl Lahir</Text>
-                  </View>
-                  <View>
-                    <Text style={styles.fontData}>: {name || '-'}</Text>
-                    <Text style={styles.fontData}>: {birthDate || '-'}</Text>
-                  </View>
-                </View>
-                <View style={styles.dataRowWrapper}>
-                  <View style={styles.dataRowTitleWrapper}>
-                    <Text style={styles.fontData}>Jenis Kelamin</Text>
-                  </View>
-                  <View style={styles.genderAndBloodWrapper}>
-                    <Text style={styles.fontDataGender}>: {gender || '-'}</Text>
-                    <Text style={styles.fontData}>
-                      Gol. Darah: {bloodType || '-'}
-                    </Text>
-                  </View>
-                </View>
-                <View style={styles.dataRowWrapper}>
-                  <View style={styles.dataRowTitleWrapper}>
-                    <Text style={styles.fontData}>Alamat</Text>
-                    <Text style={styles.fontDataAddress}>RT/RW</Text>
-                    <Text style={styles.fontDataAddress}>Kel/Desa</Text>
-                    <Text style={styles.fontDataAddress}>Kecamatan</Text>
-                  </View>
-                  <View>
-                    <Text style={styles.fontData}>: {address || '-'}</Text>
-                    <Text style={styles.fontData}>
-                      : {parsedNeighborhoodHamlet}
-                    </Text>
-                    <Text style={styles.fontData}>: {urbanVillage || '-'}</Text>
-                    <Text style={styles.fontData}>: {subDistrict || '-'}</Text>
-                  </View>
-                </View>
-                <View style={styles.dataRowWrapper}>
-                  <View style={styles.dataRowTitleWrapper}>
-                    <Text style={styles.fontData}>Agama</Text>
-                    <Text style={styles.fontData}>Status Perkawinan</Text>
-                    <Text style={styles.fontData}>Pekerjaan</Text>
-                    <Text style={styles.fontData}>Kewarganegaraan</Text>
-                    <Text style={styles.fontData}>Berlaku Hingga</Text>
-                  </View>
-                  <View>
-                    <Text style={styles.fontData}>: {religion || '-'}</Text>
-                    <Text style={styles.fontData}>
-                      : {marriageStatus || '-'}
-                    </Text>
-                    <Text style={styles.fontData}>: {occupation || '-'}</Text>
-                    <Text style={styles.fontData}>: {citizenship || '-'}</Text>
-                    <Text style={styles.fontData}>: {expiredDate || '-'}</Text>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.rightSideWrapper}>
-                <View style={styles.photoWrapper}>
-                  <Image
-                    source={IMAGES.MOZAIC_PHOTO}
-                    resizeMode="contain"
-                    style={styles.photo}
-                  />
-                </View>
-                <View style={styles.dateWrapper}>
-                  <Text style={styles.fontData}>{createdDistrict}</Text>
-                  <Text style={styles.fontData}>{createdDate}</Text>
-                </View>
-              </View>
-            </View>
-          </View>
+          {CustomContentWrapper ? (
+            <CustomContentWrapper>{this.renderContent()}</CustomContentWrapper>
+          ) : (
+            <View style={styles.contentWrapper}>{this.renderContent()}</View>
+          )}
         </ReactNativeZoomableView>
       </View>
     );
@@ -239,6 +248,7 @@ Ktp.propTypes = {
   expiredDate: string,
   createdDate: string,
   createdDistrict: string,
+  CustomContentWrapper: any,
 };
 
 export default Ktp;

@@ -1,12 +1,18 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { withNavigation } from 'react-navigation';
 import { any } from 'prop-types';
 
 import { withNoHeader } from 'Hoc';
-import { NavHeader, Ktp, ButtonYesNo } from 'common-v3';
-import { FONTS } from 'themes-v3';
+import {
+  NavHeader,
+  Ktp,
+  ButtonYesNo,
+  TourHighlight,
+  TourModal,
+} from 'common-v3';
+import { FONTS, COLORS, METRICS, IMAGES } from 'themes-v3';
 import { moderateScale } from 'Lib';
 
 class KtpConfirmation extends PureComponent {
@@ -29,11 +35,21 @@ class KtpConfirmation extends PureComponent {
     navigation.pop();
   };
 
+  renderFirstKtpGuide = () => (
+    <View style={styles.firstKtpGuideWrapper}>
+      <Image source={IMAGES.GUIDE_ARROW_UP} style={styles.firstKtpArrow} />
+      <Text style={styles.firstKtpText}>
+        Periksa kesesuaian data diri pada KTP anda
+      </Text>
+    </View>
+  );
+
   render() {
     return (
-      <View style={styles.container}>
+      <TourModal totalStep={1} style={styles.container}>
         <NavHeader title="Input nama KTP" info="1/7" />
         <Text style={styles.title}>Apa ini data diri anda?</Text>
+
         <Ktp
           nik="3505141059710432"
           address="Jalan aji mumpung"
@@ -52,6 +68,21 @@ class KtpConfirmation extends PureComponent {
           expiredDate="SEUMUR HIDUP"
           createdDate="05-06-2012"
           createdDistrict="Blitar"
+          CustomContentWrapper={(props) => (
+            <TourHighlight
+              step={1}
+              isGuideBelowHighlight={true}
+              GuideView={this.renderFirstKtpGuide}
+              style={{
+                backgroundColor: COLORS.KTP,
+                borderRadius: METRICS.LARGE,
+                height: moderateScale(207),
+                marginHorizontal: METRICS.LARGE,
+              }}
+            >
+              {props.children}
+            </TourHighlight>
+          )}
         />
         <ButtonYesNo
           yesText="Verifikasi"
@@ -59,13 +90,24 @@ class KtpConfirmation extends PureComponent {
           noText="Bukan saya"
           onPressNo={this.onCancelled}
         />
-      </View>
+      </TourModal>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
+  firstKtpArrow: {
+    height: moderateScale(55),
+    marginBottom: METRICS.MEDIUM,
+    width: moderateScale(35),
+  },
+  firstKtpGuideWrapper: {
+    alignItems: 'center',
+    flex: 1,
+    marginHorizontal: moderateScale(68),
+  },
+  firstKtpText: { ...FONTS.SEMIBOLD_LARGE_WHITE, ...{ textAlign: 'center' } },
   title: {
     ...FONTS.REGULAR_LARGE_PRIMARY,
     ...{ position: 'absolute', top: moderateScale(110), alignSelf: 'center' },

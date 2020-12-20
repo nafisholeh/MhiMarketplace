@@ -81,6 +81,7 @@ class Signin extends Component {
               <Text style={styles.buttonText}>Masuk</Text>
             </TouchableOpacity>
             <TourHighlight
+              step={1}
               isGuideBelowHighlight={false}
               GuideView={this.renderGuideView}
               style={styles.highlight}

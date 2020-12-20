@@ -39,7 +39,7 @@ class KtpItems extends PureComponent {
   };
 
   render() {
-    const { name, nik } = this.props;
+    const { name, nik, is_validated } = this.props;
     const { birthDate } = this.state;
     return (
       <ViewShadow
@@ -55,9 +55,25 @@ class KtpItems extends PureComponent {
         style={styles.container}
       >
         <TouchableOpacity onPress={this.onPress} style={styles.contentWrapper}>
-          <Text style={styles.name}>{name}</Text>
-          <Text style={styles.nik}>{nik}</Text>
-          <Text style={styles.birthDate}>{birthDate || '-'}</Text>
+          <Text
+            style={
+              is_validated
+                ? FONTS.SEMIBOLD_SMALL_PRIMARY
+                : FONTS.SEMIBOLD_SMALL_BLACK
+            }
+          >
+            {name}
+          </Text>
+          <Text
+            style={
+              is_validated
+                ? FONTS.REGULAR_SMALL_PRIMARY
+                : FONTS.REGULAR_SMALL_BLACK_TERTIERY
+            }
+          >
+            {nik}
+          </Text>
+          <Text style={FONTS.REGULAR_SMALL_PRIMARY}>{birthDate || '-'}</Text>
         </TouchableOpacity>
       </ViewShadow>
     );
@@ -65,9 +81,6 @@ class KtpItems extends PureComponent {
 }
 
 const styles = StyleSheet.create({
-  birthDate: {
-    ...FONTS.REGULAR_SMALL_PRIMARY,
-  },
   container: {
     marginBottom: METRICS.MEDIUM,
     paddingVertical: METRICS.BIG,
@@ -76,12 +89,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: METRICS.LARGE,
-  },
-  name: {
-    ...FONTS.SEMIBOLD_SMALL_BLACK,
-  },
-  nik: {
-    ...FONTS.REGULAR_SMALL_BLACK_TERTIERY,
   },
 });
 

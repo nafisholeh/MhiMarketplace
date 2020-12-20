@@ -11,8 +11,6 @@ import {
   ButtonYesNo,
   TourHighlight,
   TourModal,
-  ButtonWithShadow,
-  Button,
 } from 'common-v3';
 import { FONTS, COLORS, METRICS, IMAGES } from 'themes-v3';
 import { moderateScale, screenWidth } from 'Lib';
@@ -114,20 +112,13 @@ class KtpConfirmation extends PureComponent {
               step={1}
               isGuideBelowHighlight={true}
               GuideView={this.renderFirstKtpGuide}
-              style={{
-                backgroundColor: COLORS.KTP,
-                borderRadius: METRICS.LARGE,
-                height: moderateScale(207),
-                marginHorizontal: METRICS.LARGE,
-              }}
+              style={styles.firstKtpGuideWrapper}
             >
               <TourHighlight
                 step={2}
                 isGuideBelowHighlight={true}
                 GuideView={this.renderSecondKtpGuide}
-                style={{
-                  height: moderateScale(207),
-                }}
+                style={styles.secondKtpGuideWrapper}
               >
                 {props.children}
               </TourHighlight>
@@ -186,6 +177,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   container: { flex: 1 },
+  firstKtpGuideWrapper: {
+    backgroundColor: COLORS.KTP,
+    borderRadius: METRICS.LARGE,
+    height: moderateScale(207),
+    marginHorizontal: METRICS.LARGE,
+  },
   guideText: {
     ...FONTS.SEMIBOLD_LARGE_WHITE,
     ...{ textAlign: 'center', marginHorizontal: METRICS.EXTRA_HUGE },
@@ -204,6 +201,9 @@ const styles = StyleSheet.create({
     height: moderateScale(80),
     marginBottom: METRICS.MEDIUM,
     width: moderateScale(200),
+  },
+  secondKtpGuideWrapper: {
+    height: moderateScale(207),
   },
   title: {
     ...FONTS.REGULAR_LARGE_PRIMARY,

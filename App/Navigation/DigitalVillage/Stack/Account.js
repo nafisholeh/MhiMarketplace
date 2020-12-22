@@ -27,7 +27,7 @@ const AccountNav = createStackNavigator(
     SelfieFails: { screen: SelfieFails },
   },
   {
-    initialRouteName: 'KtpPhotoTutorial',
+    initialRouteName: 'KtpPhotoPrepare',
     headerMode: 'none',
     navigationOptions: {
       headerVisible: false,

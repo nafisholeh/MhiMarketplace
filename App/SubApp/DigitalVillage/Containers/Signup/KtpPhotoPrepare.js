@@ -11,8 +11,9 @@ import {
   TourHighlight,
 } from 'common-v3';
 import { FONTS, METRICS, IMAGES } from 'themes-v3';
-import { moderateScale } from 'Lib';
+import { moderateScale, screenWidth } from 'Lib';
 
+const TWO_BUTTON_WIDTH = screenWidth / 2;
 class KtpPhotoPrepare extends PureComponent {
   KTP_PHOTO_EXAMPLES = [
     IMAGES.KTP_EXAMPLE_1,
@@ -41,33 +42,46 @@ class KtpPhotoPrepare extends PureComponent {
     });
   };
 
-  renderKtpCardGuide = () => {
+  renderKtpExampleGuide = () => {
     return (
-      <View style={styles.ktpPoseGuideWrapper}>
+      <View style={styles.ktpExampleGuideWrapper}>
         <Image
           source={IMAGES.GUIDE_ARROW_UP}
-          style={styles.ktpPoseGuideArrow}
+          style={styles.ktpExampleGuideArrow}
           resizeMode="contain"
         />
-        <Text style={styles.ktpPoseGuideText}>
+        <Text style={styles.ktpExampleGuideText}>
           Sentuh KTP untuk melihat contoh KTP lain
         </Text>
       </View>
     );
   };
 
+  renderCameraButtonGuide = () => (
+    <View style={styles.buttonGuideWrapper}>
+      <Text style={styles.guideText}>
+        Sentuh “kamera” untuk mengambil foto dari kamera HP anda
+      </Text>
+      <Image
+        source={IMAGES.GUIDE_ARROW_DOWN}
+        resizeMode="contain"
+        style={styles.buttonLeftGuideArrow}
+      />
+    </View>
+  );
+
   render() {
     const { photoExampleIndex } = this.state;
     return (
-      <TourModal style={styles.container}>
+      <TourModal totalStep={2} style={styles.container}>
         <NavHeader title="Contoh foto KTP" info="2/7" />
         <View style={styles.content}>
           <Text style={styles.title}>Contoh yang tepat</Text>
           <TourHighlight
             step={1}
             isGuideBelowHighlight={true}
-            GuideView={this.renderKtpCardGuide}
-            style={{ padding: METRICS.MEDIUM }}
+            GuideView={this.renderKtpExampleGuide}
+            style={styles.ktpExampleHighlight}
             borderRadius={METRICS.LARGE}
           >
             <TouchableOpacity onPress={this.onViewOtherExample}>
@@ -89,6 +103,15 @@ class KtpPhotoPrepare extends PureComponent {
             leftIcon={IMAGES.CAMERA_THUMBNAIL}
             rightIcon={IMAGES.GALLERY_THUMBNAIL}
             onPressLeft={this.onOpenCamera}
+            TourHighlightLeft={(props) => (
+              <TourHighlight
+                step={2}
+                isGuideBelowHighlight={false}
+                GuideView={this.renderCameraButtonGuide}
+              >
+                {props.children}
+              </TourHighlight>
+            )}
           />
         </View>
       </TourModal>
@@ -97,6 +120,27 @@ class KtpPhotoPrepare extends PureComponent {
 }
 
 const styles = StyleSheet.create({
+  buttonGuideWrapper: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  buttonLeftGuideArrow: {
+    alignSelf: 'flex-start',
+    height: moderateScale(54),
+    marginBottom: METRICS.MEDIUM,
+    marginLeft: TWO_BUTTON_WIDTH - moderateScale(35),
+    marginTop: METRICS.MEDIUM,
+    transform: [{ scaleX: -1 }],
+    width: moderateScale(35),
+  },
+  buttonRightGuideArrow: {
+    alignSelf: 'flex-end',
+    height: moderateScale(54),
+    marginBottom: METRICS.MEDIUM,
+    marginRight: TWO_BUTTON_WIDTH - moderateScale(35),
+    marginTop: METRICS.MEDIUM,
+    width: moderateScale(35),
+  },
   container: { flex: 1 },
   content: {
     alignItems: 'center',
@@ -111,17 +155,22 @@ const styles = StyleSheet.create({
       textAlign: 'center',
     },
   },
-  ktpPoseGuideArrow: { height: moderateScale(55), width: moderateScale(35) },
-  ktpPoseGuideText: {
+  guideText: {
+    ...FONTS.SEMIBOLD_LARGE_WHITE,
+    ...{ textAlign: 'center', marginHorizontal: METRICS.EXTRA_HUGE },
+  },
+  ktpExampleGuideArrow: { height: moderateScale(55), width: moderateScale(35) },
+  ktpExampleGuideText: {
     ...FONTS.SEMIBOLD_LARGE_WHITE,
     ...{ textAlign: 'center' },
   },
-  ktpPoseGuideWrapper: {
+  ktpExampleGuideWrapper: {
     alignItems: 'center',
     flex: 1,
     justifyContent: 'flex-start',
     paddingHorizontal: METRICS.EXTRA_HUGE,
   },
+  ktpExampleHighlight: { padding: METRICS.MEDIUM },
   resultExamplePhoto: {
     height: moderateScale(176),
     width: moderateScale(250),

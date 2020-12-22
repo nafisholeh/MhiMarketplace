@@ -57,7 +57,7 @@ class KtpConfirmation extends PureComponent {
   );
 
   renderButtonYesGuide = () => (
-    <View style={styles.buttonYesGuideWrapper}>
+    <View style={styles.buttonGuideWrapper}>
       <Text style={styles.guideText}>
         Sentuh “Verifikasi” apabila data diri anda sudah benar
       </Text>
@@ -70,7 +70,7 @@ class KtpConfirmation extends PureComponent {
   );
 
   renderButtonNoGuide = () => (
-    <View style={styles.buttonYesGuideWrapper}>
+    <View style={styles.buttonGuideWrapper}>
       <Text style={styles.guideText}>
         Sentuh “Bukan saya” apabila data diri yang ditampilkan bukan data diri
         anda
@@ -154,6 +154,10 @@ class KtpConfirmation extends PureComponent {
 }
 
 const styles = StyleSheet.create({
+  buttonGuideWrapper: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
   buttonNoGuideArrow: {
     alignSelf: 'flex-start',
     height: moderateScale(54),
@@ -170,10 +174,6 @@ const styles = StyleSheet.create({
     marginRight: TWO_BUTTON_WIDTH - moderateScale(35),
     marginTop: METRICS.MEDIUM,
     width: moderateScale(35),
-  },
-  buttonYesGuideWrapper: {
-    flex: 1,
-    justifyContent: 'flex-end',
   },
   container: { flex: 1 },
   firstKtpGuideWrapper: {

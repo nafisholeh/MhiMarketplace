@@ -18,6 +18,7 @@ const images = {
   GREEN_CHECK: require(pathPrefix + 'green_check.png'),
   PHOTO_FAILS: require(pathPrefix + 'photo_fails.png'),
   SELFIE_PHOTO_TUTORIAL: require(pathPrefix + 'selfie_photo_tutorial.png'),
+  SELFIE_PHOTO_GUIDE: require(pathPrefix + 'selfie_photo_guide.png'),
   SELFIE_EXAMPLE_1: require(pathPrefix + 'selfie_example_1.png'),
   SELFIE_EXAMPLE_2: require(pathPrefix + 'selfie_example_2.png'),
   SELFIE_EXAMPLE_3: require(pathPrefix + 'selfie_example_3.png'),

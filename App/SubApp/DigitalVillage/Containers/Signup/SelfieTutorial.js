@@ -1,93 +1,66 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { withNavigation } from 'react-navigation';
 import { any } from 'prop-types';
 
-import { NavHeader, ButtonTwosWithIcon, Button } from 'common-v3';
+import { NavHeader, Button, TourHighlight, TourModal } from 'common-v3';
 import { FONTS, METRICS, IMAGES } from 'themes-v3';
 import { moderateScale } from 'Lib';
 
 class SelfieTutorial extends PureComponent {
-  SELFIE_PHOTO_EXAMPLES = [
-    IMAGES.SELFIE_EXAMPLE_1,
-    IMAGES.SELFIE_EXAMPLE_2,
-    IMAGES.SELFIE_EXAMPLE_3,
-  ];
-
-  constructor(props) {
-    super(props);
-    const randomInit = Math.floor(Math.random() * Math.floor(3));
-    this.state = { isFirstPage: true, photoExampleIndex: randomInit };
-  }
-
   componentDidMount() {
     SplashScreen.hide();
   }
 
-  onOpenCamera = () => {
+  onProceed = () => {
     const { navigation } = this.props;
-    navigation.navigate('SelfieFails');
+    navigation.navigate('SelfiePrepare');
   };
 
-  onNextSection = () => {
-    this.setState({ isFirstPage: false });
-  };
-
-  onViewOtherExample = () => {
-    this.setState((prevState) => {
-      return { photoExampleIndex: (prevState.photoExampleIndex + 1) % 3 };
-    });
+  renderSelfiePoseGuide = () => {
+    return (
+      <View style={styles.selfiePoseGuideWrapper}>
+        <Image
+          source={IMAGES.SELFIE_PHOTO_GUIDE}
+          style={styles.selfieGuideExamplePhoto}
+        />
+        <Image
+          source={IMAGES.GUIDE_ARROW_UP}
+          style={styles.selfiePoseGuideArrow}
+          resizeMode="contain"
+        />
+        <Text style={styles.selfiePoseGuideText}>
+          Ambil foto selfie KTP sesuai contoh pose pada ilustrasi
+        </Text>
+      </View>
+    );
   };
 
   render() {
-    const { isFirstPage, photoExampleIndex } = this.state;
     return (
-      <View style={styles.container}>
+      <TourModal style={styles.container}>
         <NavHeader title="Contoh selfie KTP" info="3/7" />
-        {isFirstPage ? (
-          <>
-            <View style={styles.content}>
-              <Text style={styles.title}>Pose di depan kamera</Text>
-              <Image
-                source={IMAGES.SELFIE_PHOTO_TUTORIAL}
-                style={styles.smartphoneExamplePhoto}
-              />
-              <Text style={styles.desc}>
-                Posisikan HP dalam keadaan lanskap/miring ketika ambil foto
-              </Text>
-            </View>
-            <View>
-              <Button text="Lanjut" onPress={this.onNextSection} />
-            </View>
-          </>
-        ) : (
-          <>
-            <View style={styles.content}>
-              <Text style={styles.title}>Contoh yang tepat</Text>
-              <TouchableOpacity onPress={this.onViewOtherExample}>
-                <Image
-                  source={this.SELFIE_PHOTO_EXAMPLES[photoExampleIndex || 0]}
-                  style={styles.resultExamplePhoto}
-                />
-              </TouchableOpacity>
-
-              <Text style={styles.desc}>
-                Pastikan wajah dan KTP terlihat memenuhi area tangkapan kamera
-              </Text>
-            </View>
-            <View>
-              <ButtonTwosWithIcon
-                leftText="Kamera"
-                rightText="Galeri"
-                leftIcon={IMAGES.CAMERA_THUMBNAIL}
-                rightIcon={IMAGES.GALLERY_THUMBNAIL}
-                onPressLeft={this.onOpenCamera}
-              />
-            </View>
-          </>
-        )}
-      </View>
+        <View style={styles.content}>
+          <Text style={styles.title}>Pose di depan kamera</Text>
+          <TourHighlight
+            step={1}
+            isNoHighlight={true}
+            GuideView={this.renderSelfiePoseGuide}
+            style={styles.selfiePoseHighlight}
+          />
+          <Image
+            source={IMAGES.SELFIE_PHOTO_TUTORIAL}
+            style={styles.selfieExamplePhoto}
+          />
+          <Text style={styles.desc}>
+            Posisikan HP dalam keadaan lanskap/miring ketika ambil foto
+          </Text>
+        </View>
+        <View>
+          <Button text="Lanjut" onPress={this.onProceed} />
+        </View>
+      </TourModal>
     );
   }
 }
@@ -107,14 +80,31 @@ const styles = StyleSheet.create({
       textAlign: 'center',
     },
   },
-  resultExamplePhoto: {
-    height: moderateScale(176),
-    width: moderateScale(250),
-  },
-  smartphoneExamplePhoto: {
+  selfieExamplePhoto: {
     height: moderateScale(121),
     width: moderateScale(248),
   },
+  selfieGuideExamplePhoto: {
+    height: moderateScale(202),
+    width: moderateScale(205),
+  },
+  selfiePoseGuideArrow: {
+    height: moderateScale(55),
+    marginRight: METRICS.HUGE,
+    transform: [{ scaleX: -1 }],
+    width: moderateScale(35),
+  },
+  selfiePoseGuideText: {
+    ...FONTS.SEMIBOLD_LARGE_WHITE,
+    ...{ textAlign: 'center' },
+  },
+  selfiePoseGuideWrapper: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: METRICS.EXTRA_HUGE,
+  },
+  selfiePoseHighlight: { height: 0, width: 0 },
   title: {
     ...FONTS.REGULAR_LARGE_PRIMARY,
     ...{ textAlign: 'center' },

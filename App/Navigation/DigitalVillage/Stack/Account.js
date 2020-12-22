@@ -29,7 +29,7 @@ const AccountNav = createStackNavigator(
     SelfiePrepare: { screen: SelfiePrepare },
   },
   {
-    initialRouteName: 'SelfieTutorial',
+    initialRouteName: 'SelfiePrepare',
     headerMode: 'none',
     navigationOptions: {
       headerVisible: false,

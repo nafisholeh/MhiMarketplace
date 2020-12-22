@@ -25,7 +25,14 @@ class ButtonTwosWithIcon extends PureComponent {
   };
 
   render() {
-    const { leftText, rightText, leftIcon, rightIcon } = this.props;
+    const {
+      leftText,
+      rightText,
+      leftIcon,
+      rightIcon,
+      TourHighlightRight,
+      TourHighlightLeft,
+    } = this.props;
     return (
       <View style={styles.container}>
         <ButtonWithIcon
@@ -33,6 +40,7 @@ class ButtonTwosWithIcon extends PureComponent {
           width={TWO_BUTTON_WIDTH}
           icon={leftIcon}
           onPress={this.onPressLeft}
+          TourHighlight={TourHighlightLeft}
         />
         <View style={{ marginLeft: -METRICS.LARGE }}>
           <ButtonWithIcon
@@ -40,6 +48,7 @@ class ButtonTwosWithIcon extends PureComponent {
             width={TWO_BUTTON_WIDTH}
             icon={rightIcon}
             onPress={this.onPressRight}
+            TourHighlight={TourHighlightRight}
           />
         </View>
       </View>
@@ -58,6 +67,8 @@ ButtonTwosWithIcon.propTypes = {
   leftText: string.isRequired,
   rightIcon: any.isRequired,
   leftIcon: any.isRequired,
+  TourHighlightRight: any,
+  TourHighlightLeft: any,
 };
 
 export default ButtonTwosWithIcon;

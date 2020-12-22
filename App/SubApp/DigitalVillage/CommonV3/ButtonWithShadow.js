@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 
 import { FONTS, METRICS, COLORS } from 'themes-v3';
-import { string, func, number } from 'prop-types';
+import { string, func, number, any } from 'prop-types';
 import { ViewShadow } from 'Components';
 import { screenWidth } from 'Lib';
 
@@ -12,7 +12,7 @@ class ButtonWithShadow extends PureComponent {
     if (onPress) onPress();
   };
 
-  render() {
+  renderButton = () => {
     const { text, width, containerPadding } = this.props;
     const renderedWidth = width || screenWidth - containerPadding * 2;
     return (
@@ -34,6 +34,14 @@ class ButtonWithShadow extends PureComponent {
         </TouchableOpacity>
       </ViewShadow>
     );
+  };
+
+  render() {
+    const { TourHighlight } = this.props;
+    if (TourHighlight) {
+      return <TourHighlight>{this.renderButton()}</TourHighlight>;
+    }
+    return <>{this.renderButton()}</>;
   }
 }
 
@@ -54,6 +62,7 @@ ButtonWithShadow.propTypes = {
   text: string.isRequired,
   width: number,
   containerPadding: number,
+  TourHighlight: any,
 };
 
 ButtonWithShadow.defaultProps = {

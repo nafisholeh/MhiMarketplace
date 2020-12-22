@@ -11,7 +11,7 @@ class ButtonWithIcon extends PureComponent {
     if (onPress) onPress();
   };
 
-  render() {
+  renderButton = () => {
     const { text, width, icon } = this.props;
     const renderedButtonStyles = width
       ? { ...styles.button, ...{ width } }
@@ -22,6 +22,14 @@ class ButtonWithIcon extends PureComponent {
         <Text style={styles.text}>{text}</Text>
       </TouchableOpacity>
     );
+  };
+
+  render() {
+    const { TourHighlight } = this.props;
+    if (TourHighlight) {
+      return <TourHighlight>{this.renderButton()}</TourHighlight>;
+    }
+    return <>{this.renderButton()}</>;
   }
 }
 
@@ -48,6 +56,7 @@ ButtonWithIcon.propTypes = {
   text: string.isRequired,
   icon: any.isRequired,
   width: number,
+  TourHighlight: any,
 };
 
 export default ButtonWithIcon;

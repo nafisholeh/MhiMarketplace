@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 
 import { FONTS, METRICS, COLORS } from 'themes-v3';
-import { string, func, number } from 'prop-types';
+import { any, string, func, number } from 'prop-types';
 
 class Button extends PureComponent {
   onPress = () => {
@@ -10,7 +10,7 @@ class Button extends PureComponent {
     if (onPress) onPress();
   };
 
-  render() {
+  renderButton = () => {
     const { text, width } = this.props;
     const renderedButtonStyles = width
       ? { ...styles.button, ...{ width } }
@@ -20,6 +20,14 @@ class Button extends PureComponent {
         <Text style={styles.text}>{text}</Text>
       </TouchableOpacity>
     );
+  };
+
+  render() {
+    const { TourHighlight } = this.props;
+    if (TourHighlight) {
+      return <TourHighlight>{this.renderButton()}</TourHighlight>;
+    }
+    return <>{this.renderButton()}</>;
   }
 }
 
@@ -41,6 +49,7 @@ Button.propTypes = {
   onPress: func.isRequired,
   text: string.isRequired,
   width: number,
+  TourHighlight: any,
 };
 
 export default Button;

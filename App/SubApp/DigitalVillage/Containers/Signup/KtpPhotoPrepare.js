@@ -60,7 +60,7 @@ class KtpPhotoPrepare extends PureComponent {
   renderCameraButtonGuide = () => (
     <View style={styles.buttonGuideWrapper}>
       <Text style={styles.guideText}>
-        Sentuh “kamera” untuk mengambil foto dari kamera HP anda
+        Sentuh “Kamera” untuk mengambil foto dari kamera HP anda
       </Text>
       <Image
         source={IMAGES.GUIDE_ARROW_DOWN}
@@ -70,10 +70,23 @@ class KtpPhotoPrepare extends PureComponent {
     </View>
   );
 
+  renderGalleryButtonGuide = () => (
+    <View style={styles.buttonGuideWrapper}>
+      <Text style={styles.guideText}>
+        Sentuh “Galeri” untuk mengambil foto dari galeri foto HP anda
+      </Text>
+      <Image
+        source={IMAGES.GUIDE_ARROW_DOWN}
+        resizeMode="contain"
+        style={styles.buttonRightGuideArrow}
+      />
+    </View>
+  );
+
   render() {
     const { photoExampleIndex } = this.state;
     return (
-      <TourModal totalStep={2} style={styles.container}>
+      <TourModal totalStep={3} style={styles.container}>
         <NavHeader title="Contoh foto KTP" info="2/7" />
         <View style={styles.content}>
           <Text style={styles.title}>Contoh yang tepat</Text>
@@ -108,6 +121,15 @@ class KtpPhotoPrepare extends PureComponent {
                 step={2}
                 isGuideBelowHighlight={false}
                 GuideView={this.renderCameraButtonGuide}
+              >
+                {props.children}
+              </TourHighlight>
+            )}
+            TourHighlightRight={(props) => (
+              <TourHighlight
+                step={3}
+                isGuideBelowHighlight={false}
+                GuideView={this.renderGalleryButtonGuide}
               >
                 {props.children}
               </TourHighlight>

@@ -3,7 +3,6 @@ import { StyleSheet, View, Text, Image } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { any } from 'prop-types';
 
-import { withNoHeader } from 'Hoc';
 import { IMAGES, METRICS, FONTS } from 'themes-v3';
 import { NavHeader, Button } from 'common-v3';
 import { moderateScale } from 'Lib';
@@ -71,4 +70,4 @@ KtpPhotoFails.propTypes = {
   navigation: any,
 };
 
-export default withNavigation(withNoHeader(KtpPhotoFails));
+export default withNavigation(KtpPhotoFails);

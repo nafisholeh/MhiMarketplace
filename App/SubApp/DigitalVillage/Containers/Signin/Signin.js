@@ -10,7 +10,6 @@ import {
 import SplashScreen from 'react-native-splash-screen';
 import { withNavigation } from 'react-navigation';
 import { any } from 'prop-types';
-import { compose } from 'redux';
 
 import {
   InputTextWithShadow,
@@ -20,7 +19,6 @@ import {
   TourModal,
   TourHighlight,
 } from 'common-v3';
-import { withNoHeader } from 'Hoc';
 import { IMAGES, METRICS, FONTS, COLORS } from 'themes-v3';
 import { moderateScale } from 'Lib';
 
@@ -159,4 +157,4 @@ Signin.propTypes = {
   navigation: any,
 };
 
-export default compose(withNavigation, withNoHeader)(Signin);
+export default withNavigation(Signin);

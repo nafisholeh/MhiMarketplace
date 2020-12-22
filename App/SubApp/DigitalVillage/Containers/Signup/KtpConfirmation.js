@@ -4,7 +4,6 @@ import SplashScreen from 'react-native-splash-screen';
 import { withNavigation } from 'react-navigation';
 import { any } from 'prop-types';
 
-import { withNoHeader } from 'Hoc';
 import {
   NavHeader,
   Ktp,
@@ -215,4 +214,4 @@ KtpConfirmation.propTypes = {
   navigation: any,
 };
 
-export default withNavigation(withNoHeader(KtpConfirmation));
+export default withNavigation(KtpConfirmation);

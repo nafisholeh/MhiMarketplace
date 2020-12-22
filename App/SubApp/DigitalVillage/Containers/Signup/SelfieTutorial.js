@@ -4,7 +4,6 @@ import SplashScreen from 'react-native-splash-screen';
 import { withNavigation } from 'react-navigation';
 import { any } from 'prop-types';
 
-import { withNoHeader } from 'Hoc';
 import { NavHeader, ButtonTwosWithIcon, Button } from 'common-v3';
 import { FONTS, METRICS, IMAGES } from 'themes-v3';
 import { moderateScale } from 'Lib';
@@ -126,4 +125,4 @@ SelfieTutorial.propTypes = {
   navigation: any,
 };
 
-export default withNavigation(withNoHeader(SelfieTutorial));
+export default withNavigation(SelfieTutorial);

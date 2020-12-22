@@ -25,7 +25,11 @@ const AccountNav = createStackNavigator(
     SelfieFails: { screen: SelfieFails },
   },
   {
-    initialRouteName: 'KtpConfirmation',
+    initialRouteName: 'Signin',
+    headerMode: 'none',
+    navigationOptions: {
+      headerVisible: false,
+    },
   }
 );
 

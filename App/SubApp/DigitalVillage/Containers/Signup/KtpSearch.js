@@ -4,7 +4,6 @@ import SplashScreen from 'react-native-splash-screen';
 import { withNavigation } from 'react-navigation';
 import { any } from 'prop-types';
 
-import { withNoHeader } from 'Hoc';
 import {
   NavHeader,
   InputText,
@@ -286,4 +285,4 @@ KtpSearch.propTypes = {
   navigation: any,
 };
 
-export default withNavigation(withNoHeader(KtpSearch));
+export default withNavigation(KtpSearch);

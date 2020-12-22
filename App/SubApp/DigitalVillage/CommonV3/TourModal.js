@@ -38,6 +38,7 @@ class TourModal extends Component {
       pageX,
       pageY,
       borderRadius,
+      isNoHighlight,
     } = value || {};
     const newHighlightPosition = { width, height, pageX, pageY };
     const roundedRectPath = drawRoundedRectangle(
@@ -51,7 +52,9 @@ class TourModal extends Component {
       borderRadius || BORDER_RADIUS
     );
     const canvasPath = drawFullScreen(screenWidth, screenHeight);
-    const newSvgPath = canvasPath + roundedRectPath;
+    const newSvgPath = isNoHighlight
+      ? canvasPath
+      : canvasPath + roundedRectPath;
     const newConfigs = {
       step,
       GuideView: newGuideView,

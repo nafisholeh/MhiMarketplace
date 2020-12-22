@@ -4,11 +4,17 @@ import SplashScreen from 'react-native-splash-screen';
 import { withNavigation } from 'react-navigation';
 import { any } from 'prop-types';
 
-import { NavHeader, ButtonTwosWithIcon, Button } from 'common-v3';
+import {
+  NavHeader,
+  ButtonTwosWithIcon,
+  Button,
+  TourHighlight,
+  TourModal,
+} from 'common-v3';
 import { FONTS, METRICS, IMAGES } from 'themes-v3';
 import { moderateScale } from 'Lib';
 
-class KtpTutorial extends PureComponent {
+class KtpPhotoTutorial extends PureComponent {
   KTP_PHOTO_EXAMPLES = [
     IMAGES.KTP_EXAMPLE_1,
     IMAGES.KTP_EXAMPLE_2,
@@ -40,19 +46,42 @@ class KtpTutorial extends PureComponent {
     });
   };
 
+  renderKtpPoseGuide = () => {
+    return (
+      <View style={styles.ktpPoseGuideWrapper}>
+        <Image
+          source={IMAGES.GUIDE_ARROW_UP}
+          style={styles.ktpPoseGuideArrow}
+          resizeMode="contain"
+        />
+        <Text style={styles.ktpPoseGuideText}>
+          Ambil foto KTP dengan kamera HP sesuai ilustrasi
+        </Text>
+      </View>
+    );
+  };
+
   render() {
     const { isFirstPage, photoExampleIndex } = this.state;
     return (
-      <View style={styles.container}>
+      <TourModal style={styles.container}>
         <NavHeader title="Contoh foto KTP" info="2/7" />
         {isFirstPage ? (
           <>
             <View style={styles.content}>
-              <Text style={styles.title}>Letakkan KTP di depan kamera</Text>
-              <Image
-                source={IMAGES.KTP_PHOTO_TUTORIAL}
-                style={styles.smartphoneExamplePhoto}
-              />
+              <Text style={styles.title}>Letakkan KTP di depan kamera HP</Text>
+              <TourHighlight
+                step={1}
+                isGuideBelowHighlight={true}
+                GuideView={this.renderKtpPoseGuide}
+                style={styles.ktpPoseHighlight}
+                borderRadius={METRICS.LARGE}
+              >
+                <Image
+                  source={IMAGES.KTP_PHOTO_TUTORIAL}
+                  style={styles.smartphoneExamplePhoto}
+                />
+              </TourHighlight>
               <Text style={styles.desc}>
                 Posisikan HP dalam keadaan lanskap/miring ketika ambil foto
               </Text>
@@ -87,7 +116,7 @@ class KtpTutorial extends PureComponent {
             </View>
           </>
         )}
-      </View>
+      </TourModal>
     );
   }
 }
@@ -107,6 +136,20 @@ const styles = StyleSheet.create({
       textAlign: 'center',
     },
   },
+  ktpPoseGuideArrow: { height: moderateScale(55), width: moderateScale(35) },
+  ktpPoseGuideText: {
+    ...FONTS.SEMIBOLD_LARGE_WHITE,
+    ...{ textAlign: 'center' },
+  },
+  ktpPoseGuideWrapper: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'flex-start',
+    paddingHorizontal: METRICS.EXTRA_HUGE,
+  },
+  ktpPoseHighlight: {
+    padding: METRICS.TINY,
+  },
   resultExamplePhoto: {
     height: moderateScale(176),
     width: moderateScale(250),
@@ -121,8 +164,8 @@ const styles = StyleSheet.create({
   },
 });
 
-KtpTutorial.propTypes = {
+KtpPhotoTutorial.propTypes = {
   navigation: any,
 };
 
-export default withNavigation(KtpTutorial);
+export default withNavigation(KtpPhotoTutorial);

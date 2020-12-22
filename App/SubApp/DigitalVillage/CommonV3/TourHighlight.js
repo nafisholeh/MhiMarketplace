@@ -13,7 +13,12 @@ class TourHighlight extends PureComponent {
 
   callbackToProvider = (context) => {
     if (this.highlight) {
-      const { GuideView, isGuideBelowHighlight, step } = this.props;
+      const {
+        GuideView,
+        isGuideBelowHighlight,
+        step,
+        borderRadius,
+      } = this.props;
       this.isLayoutReady = true;
       this.highlight.measure((x, y, width, height, pageX, pageY) => {
         context.setHighlightMetrics({
@@ -24,6 +29,7 @@ class TourHighlight extends PureComponent {
           height,
           pageX,
           pageY,
+          borderRadius,
         });
       });
     }
@@ -39,7 +45,9 @@ class TourHighlight extends PureComponent {
               ref={(ref) => {
                 this.highlight = ref;
               }}
-              onLayout={() => this.handleLayout(context)}
+              onLayout={() => {
+                this.handleLayout(context);
+              }}
               {...this.props}
             >
               {children}
@@ -56,6 +64,7 @@ TourHighlight.propTypes = {
   isGuideBelowHighlight: bool,
   GuideView: any,
   step: number,
+  borderRadius: number,
 };
 
 export default TourHighlight;

@@ -37,6 +37,7 @@ class TourModal extends Component {
       height,
       pageX,
       pageY,
+      borderRadius,
     } = value || {};
     const newHighlightPosition = { width, height, pageX, pageY };
     const roundedRectPath = drawRoundedRectangle(
@@ -44,10 +45,10 @@ class TourModal extends Component {
       pageY,
       width,
       height,
-      BORDER_RADIUS,
-      BORDER_RADIUS,
-      BORDER_RADIUS,
-      BORDER_RADIUS
+      borderRadius || BORDER_RADIUS,
+      borderRadius || BORDER_RADIUS,
+      borderRadius || BORDER_RADIUS,
+      borderRadius || BORDER_RADIUS
     );
     const canvasPath = drawFullScreen(screenWidth, screenHeight);
     const newSvgPath = canvasPath + roundedRectPath;

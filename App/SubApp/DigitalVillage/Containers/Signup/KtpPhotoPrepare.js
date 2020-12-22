@@ -4,7 +4,12 @@ import SplashScreen from 'react-native-splash-screen';
 import { withNavigation } from 'react-navigation';
 import { any } from 'prop-types';
 
-import { NavHeader, ButtonTwosWithIcon, TourModal } from 'common-v3';
+import {
+  NavHeader,
+  ButtonTwosWithIcon,
+  TourModal,
+  TourHighlight,
+} from 'common-v3';
 import { FONTS, METRICS, IMAGES } from 'themes-v3';
 import { moderateScale } from 'Lib';
 
@@ -36,6 +41,21 @@ class KtpPhotoPrepare extends PureComponent {
     });
   };
 
+  renderKtpCardGuide = () => {
+    return (
+      <View style={styles.ktpPoseGuideWrapper}>
+        <Image
+          source={IMAGES.GUIDE_ARROW_UP}
+          style={styles.ktpPoseGuideArrow}
+          resizeMode="contain"
+        />
+        <Text style={styles.ktpPoseGuideText}>
+          Sentuh KTP untuk melihat contoh KTP lain
+        </Text>
+      </View>
+    );
+  };
+
   render() {
     const { photoExampleIndex } = this.state;
     return (
@@ -43,12 +63,20 @@ class KtpPhotoPrepare extends PureComponent {
         <NavHeader title="Contoh foto KTP" info="2/7" />
         <View style={styles.content}>
           <Text style={styles.title}>Contoh yang tepat</Text>
-          <TouchableOpacity onPress={this.onViewOtherExample}>
-            <Image
-              source={this.KTP_PHOTO_EXAMPLES[photoExampleIndex || 0]}
-              style={styles.resultExamplePhoto}
-            />
-          </TouchableOpacity>
+          <TourHighlight
+            step={1}
+            isGuideBelowHighlight={true}
+            GuideView={this.renderKtpCardGuide}
+            style={{ padding: METRICS.MEDIUM }}
+            borderRadius={METRICS.LARGE}
+          >
+            <TouchableOpacity onPress={this.onViewOtherExample}>
+              <Image
+                source={this.KTP_PHOTO_EXAMPLES[photoExampleIndex || 0]}
+                style={styles.resultExamplePhoto}
+              />
+            </TouchableOpacity>
+          </TourHighlight>
 
           <Text style={styles.desc}>
             Sentuh foto KTP di atas untuk melihat contoh lainnya
@@ -82,6 +110,17 @@ const styles = StyleSheet.create({
     ...{
       textAlign: 'center',
     },
+  },
+  ktpPoseGuideArrow: { height: moderateScale(55), width: moderateScale(35) },
+  ktpPoseGuideText: {
+    ...FONTS.SEMIBOLD_LARGE_WHITE,
+    ...{ textAlign: 'center' },
+  },
+  ktpPoseGuideWrapper: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'flex-start',
+    paddingHorizontal: METRICS.EXTRA_HUGE,
   },
   resultExamplePhoto: {
     height: moderateScale(176),
